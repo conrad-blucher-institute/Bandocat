@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BandoCat" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+    <TestRunner directory="$PROJECT_DIR$" />
+    <method />
+  </configuration>
+</component>
