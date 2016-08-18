@@ -4,6 +4,77 @@ html{
 body{
     background-color:#e5f1fd;
 }
+
+/* _______________________________________________________________________________________  */
+/*Side menu classes */
+.menu_left
+{
+    float:left;
+    width: 220px;
+    line-height:45px;
+    margin-left:0;
+    font-size:1.2em;
+
+}
+.menu_left ul
+{
+    position:relative;
+    list-style-type: none;
+}
+
+.menu_left ul li{
+    display: block;
+    position:relative;
+    background:#73a55b;
+    box-shadow: rgba(93, 100, 106, .75) 0 0 1px;
+}
+
+.menu_left ul li a{
+    text-decoration: none;
+    padding-left:10px;
+    color: #FFFFFF;
+}
+
+.menu_left ul li:hover{
+    background: #9DA55B;
+}
+
+li.submenu_left ul{
+    white-space: nowrap;
+    display: none;
+}
+
+li.submenu_left:hover > ul{
+    display: block;
+}
+
+
+ul:before,
+ul:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+ul:after { clear: both; }
+
+/* _______________________________________________________________________________________  */
+/*Container classes */
+
+/*Default Container*/
+.container
+{
+    float:right;
+    width: 1100px;
+    margin-right:20px;
+    padding:10px;
+    height:100%;
+}
+
+.container > div{
+    border: 1px solid black;
+    padding: 10px 1px 10px 1px;
+    border-radius: 2px;
+}
+
 /* _______________________________________________________________________________________  */
 /*utility classes */
 .unselectable

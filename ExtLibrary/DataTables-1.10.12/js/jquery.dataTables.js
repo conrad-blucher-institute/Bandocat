@@ -5439,7 +5439,7 @@
 	 * Apply a given function to the display child nodes of an element array (typically
 	 * TD children of TR rows
 	 *  @param {function} fn Method to apply to the objects
-	 *  @param array {nodes} an1 List of elements to look through for display children
+	 *  @param array {nodes} an1 scripts of elements to look through for display children
 	 *  @param array {nodes} an2 Another list (identical structure to the first) - optional
 	 *  @memberof DataTable#oApi
 	 */
@@ -13535,7 +13535,7 @@
 		"fnFormatNumber": null,
 	
 		/**
-		 * List of options that can be used for the user selectable length menu.
+		 * scripts of options that can be used for the user selectable length menu.
 		 * Note that this parameter will be set by the initialisation routine. To
 		 * set a default use {@link DataTable.defaults}.
 		 *  @type array

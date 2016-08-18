@@ -13667,7 +13667,7 @@ function datepicker_getZindex( elem ) {
 function Datepicker() {
 	this._curInst = null; // The current instance in use
 	this._keyEvent = false; // If the last event was a key event
-	this._disabledInputs = []; // List of date picker inputs that have been disabled
+	this._disabledInputs = []; // scripts of date picker inputs that have been disabled
 	this._datepickerShowing = false; // True if the popup picker is showing , false if not
 	this._inDialog = false; // True if showing within a "dialog", false if not
 	this._mainDivId = "ui-datepicker-div"; // The ID of the main datepicker division
@@ -31913,7 +31913,7 @@ var tooltip = $.widget( "ui.tooltip", {
 	 * Apply a given function to the display child nodes of an element array (typically
 	 * TD children of TR rows
 	 *  @param {function} fn Method to apply to the objects
-	 *  @param array {nodes} an1 List of elements to look through for display children
+	 *  @param array {nodes} an1 scripts of elements to look through for display children
 	 *  @param array {nodes} an2 Another list (identical structure to the first) - optional
 	 *  @memberof DataTable#oApi
 	 */
@@ -40009,7 +40009,7 @@ var tooltip = $.widget( "ui.tooltip", {
 		"fnFormatNumber": null,
 	
 		/**
-		 * List of options that can be used for the user selectable length menu.
+		 * scripts of options that can be used for the user selectable length menu.
 		 * Note that this parameter will be set by the initialisation routine. To
 		 * set a default use {@link DataTable.defaults}.
 		 *  @type array
@@ -44326,7 +44326,7 @@ $.extend( FixedColumns.prototype , {
 	/**
 	 * From a given table node (THEAD etc), get a list of TR direct child elements
 	 *  @param   {Node} nIn Table element to search for TR elements (THEAD, TBODY or TFOOT element)
-	 *  @returns {Array} List of TR elements found
+	 *  @returns {Array} scripts of TR elements found
 	 *  @private
 	 */
 	"_fnGetTrNodes": function ( nIn )
@@ -47102,7 +47102,7 @@ $.extend( Responsive.prototype, {
 
 
 /**
- * List of default breakpoints. Each item in the array is an object with two
+ * scripts of default breakpoints. Each item in the array is an object with two
  * properties:
  *
  * * `name` - the breakpoint name.
@@ -47281,7 +47281,7 @@ Responsive.renderer = {
  */
 Responsive.defaults = {
 	/**
-	 * List of breakpoints for the instance. Note that this means that each
+	 * scripts of breakpoints for the instance. Note that this means that each
 	 * instance can have its own breakpoints. Additionally, the breakpoints
 	 * cannot be changed once an instance has been creased.
 	 *

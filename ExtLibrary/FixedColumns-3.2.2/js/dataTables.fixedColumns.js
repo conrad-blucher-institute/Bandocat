@@ -1323,7 +1323,7 @@ $.extend( FixedColumns.prototype , {
 	/**
 	 * From a given table node (THEAD etc), get a list of TR direct child elements
 	 *  @param   {Node} nIn Table element to search for TR elements (THEAD, TBODY or TFOOT element)
-	 *  @returns {Array} List of TR elements found
+	 *  @returns {Array} scripts of TR elements found
 	 *  @private
 	 */
 	"_fnGetTrNodes": function ( nIn )
