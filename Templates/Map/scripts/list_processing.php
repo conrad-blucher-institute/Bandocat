@@ -31,14 +31,16 @@ $primaryKey = 'DocumentIndex';
 $columns = array(
     array( 'db' => 'LibraryIndex', 'dt' => 0 ),
     array( 'db' => 'DocumentTitle',  'dt' => 1 ),
+    array( 'db' => 'DocumentSubtitle', 'dt' => 2),
+    array( 'db' => 'DocumentEndDate', 'dt' => 3)
 );
 
 // SQL server connection information
 $sql_details = array(
-    'user' => '',
-    'pass' => '',
-    'db'   => '',
-    'host' => ''
+    'user' => 'root',
+    'pass' => 'notroot',
+    'db'   => 'bluchermapsinventory',
+    'host' => 'localhost'
 );
 
 
