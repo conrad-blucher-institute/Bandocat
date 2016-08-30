@@ -1,3 +1,5 @@
+<!--This page allows users to login-->
+<!--If login successfully, login form will disappear, user can see Main Menu-->
 <?php
 session_start();
 ?>
@@ -17,22 +19,14 @@ session_start();
 </head>
 <body>
 <?php include 'Master/header.php'; ?>
-<div id="home-nav">
-    <ul>
-        <li><a href="../MapsDB/">Blucher Maps</a></li>
-        <li><a href="../GreenCollection">Green Maps</a></li>
-        <li><a href="../JobFolder">Job Folder</a></li>
-        <li><a href="../FieldBook">FieldBook</a></li>
-        <li><a href="Queries/">Queries</a></li>
-        <li><a href="admin/stats.php">Statistics</a></li>
-    </ul>
+<div>
+    <form id="frm_auth" name="frm_auth" method="post" action="Controllers/Auth.php">
+        <label for="username">Username</label>
+        <input type="text" id="txtUsername" name="name" required>
+        <label for="password">Password</label>
+        <input type="password" id="txtPassword" name="password" required>
+        <input type="submit" name = "login" id="btnSubmit" value="Login">
+    </form>
 </div>
-
-
-
-<footer>
-    <?php include 'Master/footer.php'; ?>
-</footer>
 </body>
-
 </html>
