@@ -29,16 +29,19 @@ $primaryKey = 'DocumentIndex';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(
-    array( 'db' => 'LibraryIndex', 'dt' => 0 ),
-    array( 'db' => 'DocumentTitle',  'dt' => 1 ),
+    array( 'db' => 'DocumentIndex', 'dt' => 0 ),
+    array( 'db' => 'LibraryIndex', 'dt' => 1 ),
+    array( 'db' => 'DocumentTitle',  'dt' => 2 ),
+    array( 'db' => 'DocumentSubtitle', 'dt' => 3),
+    array( 'db' => 'DocumentEndDate', 'dt' => 4)
 );
 
 // SQL server connection information
 $sql_details = array(
-    'user' => '',
-    'pass' => '',
-    'db'   => '',
-    'host' => ''
+    'user' => 'root',
+    'pass' => 'notroot',
+    'db'   => 'bluchermapsinventory',
+    'host' => 'localhost'
 );
 
 

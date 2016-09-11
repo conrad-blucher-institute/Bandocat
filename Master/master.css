@@ -1,77 +1,187 @@
-html{
+/*
+TAMUCC COLOR GUIDES:
+BLUE: #0067C5
+GREEN: #007F3E
+SILVER: #9EA2A4
+*/
 
+html{
+    min-width:600px;
 }
 body{
     background-color:#e5f1fd;
 }
 
+#thetable
+{
+    width:100%;
+}
+#thetable_left
+{
+    width: 230px;
+    vertical-align: top;
+}
+
+#thetable_right
+{
+    width: 100%;
+    vertical-align: top;
+}
+
 /* _______________________________________________________________________________________  */
 /*Side menu classes */
-.menu_left
-{
-    float:left;
-    width: 220px;
-    line-height:45px;
-    margin-left:0;
-    font-size:1.2em;
+/* Reference: https://designshack.net/articles/navigation/verticalaccordionav/ */
 
-}
-.menu_left ul
-{
-    position:relative;
-    list-style-type: none;
+nav {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    margin: 70px 0px 40px 15px;
+    width: 240px;
+    -webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    -moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 
-.menu_left ul li{
+.menu-item {
+    background: #fff;
+    width: 240px;
+}
+
+/*Menu Header Styles*/
+.menu-item h4 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 7px 12px;
+    margin: 0;
+}
+
+.menu-item h4 a {
+    color: white;
     display: block;
-    position:relative;
-    background:#73a55b;
-    box-shadow: rgba(93, 100, 106, .75) 0 0 1px;
-}
-
-.menu_left ul li a{
     text-decoration: none;
-    padding-left:10px;
-    color: #FFFFFF;
+    width: 200px;
 }
 
-.menu_left ul li:hover{
-    background: #9DA55B;
+/*Menu Header Styles*/
+.menu-item h4 {
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 7px 12px;
+
+    /*Gradient*/
+    background: rgba(0,103,197,1);
+    background: -moz-linear-gradient(left, rgba(0,103,197,1) 0%, rgba(0,103,197,0.89) 91%, rgba(0,103,197,0.89) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,103,197,1)), color-stop(91%, rgba(0,103,197,0.89)), color-stop(100%, rgba(0,103,197,0.89)));
+    background: -webkit-linear-gradient(left, rgba(0,103,197,1) 0%, rgba(0,103,197,0.89) 91%, rgba(0,103,197,0.89) 100%);
+    background: -o-linear-gradient(left, rgba(0,103,197,1) 0%, rgba(0,103,197,0.89) 91%, rgba(0,103,197,0.89) 100%);
+    background: -ms-linear-gradient(left, rgba(0,103,197,1) 0%, rgba(0,103,197,0.89) 91%, rgba(0,103,197,0.89) 100%);
+    background: linear-gradient(to right, rgba(0,103,197,1) 0%, rgba(0,103,197,0.89) 91%, rgba(0,103,197,0.89) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0067c5', endColorstr='#0067c5', GradientType=1 );
 }
 
-li.submenu_left ul{
-    white-space: nowrap;
-    display: none;
+.menu-item h4:hover {
+    background: rgba(0,127,62,1);
+    background: -moz-linear-gradient(left, rgba(0,127,62,1) 0%, rgba(0,127,62,0.89) 14%, rgba(0,127,62,0.89) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,127,62,1)), color-stop(14%, rgba(0,127,62,0.89)), color-stop(100%, rgba(0,127,62,0.89)));
+    background: -webkit-linear-gradient(left, rgba(0,127,62,1) 0%, rgba(0,127,62,0.89) 14%, rgba(0,127,62,0.89) 100%);
+    background: -o-linear-gradient(left, rgba(0,127,62,1) 0%, rgba(0,127,62,0.89) 14%, rgba(0,127,62,0.89) 100%);
+    background: -ms-linear-gradient(left, rgba(0,127,62,1) 0%, rgba(0,127,62,0.89) 14%, rgba(0,127,62,0.89) 100%);
+    background: linear-gradient(to right, rgba(0,127,62,1) 0%, rgba(0,127,62,0.89) 14%, rgba(0,127,62,0.89) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007f3e', endColorstr='#007f3e', GradientType=1 );
 }
 
-li.submenu_left:hover > ul{
+/*First Item Styles*/
+.alpha p {
+    font-size: 13px;
+    padding: 8px 12px;
+    color: #aaa;
+}
+/*ul Styles*/
+.menu-item ul {
+    background: #fff;
+    font-size: 13px;
+    line-height: 30px;
+    list-style-type: none;
+    overflow: hidden;
+    padding: 0px;
+    margin:0;
+}
+
+.menu-item ul a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #0067C5;
     display: block;
+    width: 200px;
 }
 
-
-ul:before,
-ul:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
+/*li Styles*/
+.menu-item li {
+    border-bottom: 1px solid #eee;
 }
-ul:after { clear: both; }
 
+.menu-item li:hover {
+    background: #eee;
+}
+
+/*ul Styles*/
+.menu-item ul {
+    background: #fff;
+    font-size: 13px;
+    line-height: 30px;
+    height: 0px; /*Collapses the menu*/
+    list-style-type: none;
+    overflow: hidden;
+    padding: 0px;
+}
+
+/*ul Styles*/
+.menu-item ul {
+    background: #fff;
+    font-size: 13px;
+    line-height: 30px;
+    height: 0px;
+    list-style-type: none;
+    overflow: hidden;
+    padding: 0px;
+
+    /*Animation*/
+    -webkit-transition: height 1s ease;
+    -moz-transition: height 1s ease;
+    -o-transition: height 1s ease;
+    -ms-transition: height 1s ease;
+    transition: height 1s ease;
+}
+/* Adjust height of submenu depends on number of submenu items: .menu-item_subN (N = number of submenu items) */
+.menu-item:hover ul {
+    height:auto;
+}
+.menu-item_sub3:hover ul {
+    height:95px !important;
+}
+.menu-item_sub4:hover ul {
+    height:125px !important;
+}
+.menu-item_sub5:hover ul {
+    height:158px !important;
+}
 /* _______________________________________________________________________________________  */
 /*Container classes */
 
 /*Default Container*/
 .container
 {
-    float:right;
-    width: 1100px;
     margin-right:20px;
-    padding:10px;
+    padding:0px;
     height:100%;
 }
 
 .container > div{
-    border: 1px solid black;
-    padding: 10px 1px 10px 1px;
+    padding: 5px 1px 5px 1px;
     border-radius: 2px;
 }
 
@@ -137,9 +247,9 @@ ul:after { clear: both; }
     -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, transparent), color-stop(.75, rgba(0, 0, 0, 0.05))),
     -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, rgba(0, 0, 0, 0.05)));
     background-image: -moz-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%, transparent),
-    -moz-linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%, transparent),
+    -moz-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%, transparent),
     -moz-linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%),
-    -moz-linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%);
+    -moz-linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%);
 
     /* Pattern settings */
 
@@ -242,12 +352,14 @@ ul:after { clear: both; }
 /* Font Styles */
 h2
 {
-    color:#0099FF;
-    font-family:"DigifaceWide";
+    color:#0067C5;
+    /*font-family:"DigifaceWide";*/
     text-align: center;
     font-weight:bold;
+    margin: 10px;
     font-size: 30px;
 }
+
 /* End Font Styles */
 /* _______________________________________________________________________________________  */
 
