@@ -107,5 +107,6 @@
     </td>
     </tr>
 </table>
+<?php include '../../Master/footer.php'; ?>
 </body>
 </html>

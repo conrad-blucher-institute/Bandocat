@@ -1,6 +1,6 @@
 <?php
-    require( dirname(__DIR__) . "/Library/DBHelper.php");
-    $username = $_POST["name"];
+    require("../../Library/DBHelper.php");
+    $username = $_POST["username"];
     $pwd = $_POST["password"];
 
     $db = new DBHelper();
