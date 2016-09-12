@@ -1,1 +1,1 @@
-<img src="../../Images/Logos/4.png"/>
+<img width="300px" src="../../Images/Logos/bando-logo-medium.png"/>
