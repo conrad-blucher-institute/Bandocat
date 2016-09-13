@@ -96,5 +96,8 @@ session_start();
         </table>
     </form>
 </div>
+<footer>
+</footer>
+
 </body>
 </html>
