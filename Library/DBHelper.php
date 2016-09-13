@@ -64,23 +64,14 @@ class DBHelper
         //$port = ":";
         $user = "root";
         $pwd = "notroot";
-        $this->conn = new mysqli($host, $user, $pwd, $db);
-        if ($this->conn->connect_error) {
-            trigger_error('Database connection failed: ' . $this->conn->connect_error, E_USER_ERROR);
-            return null;
-        }
-        else return 0;
-    }
 
-    //Need testing
-    function DB_SWITCH($db)
-    {
-        $this->conn->select_db($db);
+        $this->conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pwd);
+        return 0;
     }
 
     function DB_CLOSE()
     {
-        $this->conn->close();
+        $this->setConn(null);
     }
 
     /**********************************************
@@ -99,20 +90,19 @@ class DBHelper
         /* PREPARE STATEMENT */
         $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRoleID)");
         if (!$call)
-            trigger_error("SQL failed: " . $this->conn->errno . " - " . $this->conn->error);
-        $call->bind_param('ss', $iUsername, md5($iPassword));
+            trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, $iUsername, PDO::PARAM_STR,32);
+        $call->bindParam(2, md5($iPassword), PDO::PARAM_STR,64);
 
         /* EXECUTE STATEMENT */
         $call->execute();
 
         /* RETURN RESULT */
         $select = $this->conn->query('SELECT @oMessage,@oUserID, @oRoleID');
-        $result = $select->fetch_assoc();
+        $result = $select->fetch(PDO::FETCH_ASSOC);
         $oMessage = $result['@oMessage'];
         $oUserID = $result['@oUserID'];
         $oRoleID = $result['@oRoleID'];
-        /* FREE RESULT */
-        $call->close();
     }
 
 }

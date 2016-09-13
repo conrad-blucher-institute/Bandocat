@@ -29,10 +29,6 @@ session_start();
 </div>
 
 
-
-<footer>
-    <?php include 'Master/footer.php'; ?>
-</footer>
 </body>
 
 </html>
