@@ -14,6 +14,7 @@ session_start();
     <title>Welcome to BandoCat!</title>
     <link rel="shortcut icon" type="image/png" href="../../Images/favicon.ico"/>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
+    <link rel="stylesheet" type="text/css" href="footer-distributed.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 <style>
     #login_container{
@@ -96,8 +97,65 @@ session_start();
         </table>
     </form>
 </div>
-<footer>
+
+
+
+
+<footer class="footer-distributed">
+
+    <div class="footer-right">
+        <div>
+            <a href="http://spatialquerylab.com/" target="_blank" ><img class="Logo" src="../../Images/Query.PNG" title="Spatial Query Lab Website"></img></a>
+            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/facebook-small.png"></img></a>
+            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/twitter_35x35.png"></img></a>
+        </div>
+    </div>
+
+    <div class="footer-left">
+
+        <p class="footer-links"> Learn more about Bandocat at the
+            <a href="http://spatialquerylab.com/" target="_blank"><u>Spatial {Query} Lab</u></a>
+        </p>
+
+    </div>
+
+    <p>Contact Information</p>
+    <ul>
+        <li>Website Administrator: <a href="mailto:snguyen1@islander.tamucc.edu" target="_top">snguyen1@islander.tamucc.edu</li></a>
+        <li>Project Manager:<a href="mailto:snguyen1@islander.tamucc.edu" target="_top"> richard.smith@tamucc.edu</li></a>
+    </ul>
+        <p class = "Copyrights" style="" class="unselectable">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science  </p>
 </footer>
+
+
+<style>
+    .Copyrights{position: absolute;
+        width: 100%;
+        float: right;
+        text-align: right;
+        font-family: serif;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        right: 1%;
+        bottom: 10%;}
+
+        .Logo{position: relative;
+            top: 10%;
+            width: 75%;
+            height: 75%;}
+    li{
+        margin:1%;
+    }
+
+    a:hover{
+        color: #0c0c0c !important;
+    }
+</style>
+
+<script>
+    var date = new Date();
+    document.getElementById("CBI_Year").innerHTML = date.getFullYear();
+</script>
 
 </body>
 </html>

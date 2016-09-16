@@ -7,7 +7,7 @@
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="$USER_HOME$/vendor/autoload.php" phpunit_phar_path="$PROJECT_DIR$/phpunit.phar" />
+      <PhpUnitSettings load_method="PHPUNIT_PHAR" custom_loader_path="$USER_HOME$/vendor/autoload.php" phpunit_phar_path="$PROJECT_DIR$/../../phpunit-5.5.4.phar" />
     </phpunit_settings>
   </component>
 </project>

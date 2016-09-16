@@ -16,7 +16,7 @@ session_start();
 
 </head>
 <body>
-<?php include 'Master/header.php'; ?>
+<?php include '../../Master/header.php'; ?>
 <div id="home-nav">
     <ul>
         <li><a href="../MapsDB/">Blucher Maps</a></li>
