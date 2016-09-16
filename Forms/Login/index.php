@@ -144,7 +144,11 @@ session_start();
             width: 75%;
             height: 75%;}
     li{
-        margin:1%;
+        margin-top:1%;
+    }
+
+    ul{
+        margin: 0px !important;
     }
 
     a:hover{
