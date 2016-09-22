@@ -1,3 +1,8 @@
-<footer>
-    <span style="float:right" class="unselectable">Copyrights &copy; The Conrad Blucher Institute for Surveying and Science 2016 </span>
+<footer style="background-color: #0079C2; text-align: right; position: fixed !important;">
+    <span style=" width: 100%; class="unselectable">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science </span>
 </footer>
+
+<script>
+    var date = new Date();
+    document.getElementById("CBI_Year").innerHTML = date.getFullYear();
+</script>

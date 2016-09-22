@@ -26,6 +26,7 @@ body{
 {
     width: 100%;
     vertical-align: top;
+    background: #f1f1f1;
 }
 
 /* _______________________________________________________________________________________  */
@@ -380,7 +381,8 @@ nav {
 /* Font Styles */
 h2
 {
-    color:#0067C5;
+    background: #0067C5;
+    color:white;
     /*font-family:"DigifaceWide";*/
     text-align: center;
     font-weight:bold;
@@ -405,7 +407,7 @@ label {
 
 footer{
     position: absolute;
-    right: 5px;
+    right: 0px;
     bottom: 0;
     left: 0;
     padding: .4em;
