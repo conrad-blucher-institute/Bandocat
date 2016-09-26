@@ -1,18 +1,24 @@
 <?php
-    session_start();
+    session_unset();
     require("../../Library/DBHelper.php");
-    $username = $_POST["username"];
+    $username = htmlspecialchars($_POST["username"]);
     $pwd = $_POST["password"];
-
     $db = new DBHelper();
     $db->DB_CONNECT("");
-    $db->SP_USER_AUTH(htmlspecialchars($username),$pwd,$msg,$uID,$rID);
+    $db->SP_USER_AUTH($username,$pwd,$msg,$uID,$role);
 
-    if($rID == "" || $rID == null)
-        ;//return "Inactive";
-    else if ($rID == 0)
-        ;//return "Invalid";
-    else {
-        $_SESSION['username'] = $uID;
-        $_SESSION['role'] = $rID;
+    switch($msg)
+    {
+    case "Invalid":
+        break;
+    case "Inactive";
+        break;
+    case "Success":
+        $_SESSION['username'] = $username;
+        $_SESSION['role'] = $role;
+        $_SESSION['userID'] = $uID;
+        break;
+        default: break;
     }
+
+    echo $msg;

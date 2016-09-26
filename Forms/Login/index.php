@@ -17,6 +17,11 @@ session_start();
     <link rel="stylesheet" type="text/css" href="footer-distributed.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 <style>
+
+    *{margin:0;padding:0;}
+    html, body {height: 100%;}
+    body{min-height:600px;}
+
     #login_container{
         top:80px;
         position: relative;
@@ -49,117 +54,152 @@ session_start();
         cursor: pointer;
         border-style:inset;
     }
+
+
+    #txt_error{color:red;line-height:20px;}
+
+     .Copyrights{position: relative;
+         width: auto;
+         float: right;
+         text-align: right;
+         font-family: serif;
+         margin-bottom: 0px;
+         bottom: 10%;}
+
+    .Logo{position: relative;
+        top: 10%;
+        width: 75%;
+        height: 75%;}
+    li{
+        margin-top:1%;
+    }
+    ul{
+        padding-bottom:10px !important;
+    }
+    a:hover{
+        color: #0c0c0c !important;
+    }
+
+    #footer{
+        position: relative;
+        margin-top: -210px; /* negative value of footer height */
+        height: 210px;
+        clear:both;
+    }
+
+    #wrap {min-height: 100%;}
+
+    #main {overflow:auto;
+        padding-bottom: 210px;}  /* must be same height as the footer */
+
 </style>
-    <script>
-        /* attach a submit handler to the form */
-        $("#frm_auth").submit(function(event) {
-
-            /* stop form from submitting normally */
-            event.preventDefault();
-
-            /* get the action attribute from the <form action=""> element */
-            var $form = $( this ),
-                url = $form.attr( 'action' );
-            /* Send the data using post */
-            var posting = $.post( url, { user: $('#txtUsername').val(), pwd: $('#txtPassword').val() } );
-            /* Alerts the results */
-            posting.done(function( data ) {
-                alert('success');
-            });
-        });
-    </script>
 </head>
-<body>
-<div id="login_container">
-    <form id="frm_auth" name="frm_auth" method="post" action="login_processing.php">
-        <div style="width: 100%;text-align: center"><img width="400px" src="../../Images/Logos/bando-logo-medium.png" class="unselectable"/>
-        </div>
-            <table width="100%" style="text-align:center">
-            <tr>
-                <td><label class="unselectable" for="username">Username</label>
+<body onresize="onResizeWindow()">
+<div id="wrap">
+    <div id="main">
+    <div id="login_container">
+        <form id="frm_auth" name="frm_auth" method="post">
+            <div style="width: 100%;text-align: center"><img width="400px" src="../../Images/Logos/bando-logo-medium.png" class="unselectable"/>
+            </div>
+                <table width="100%" style="text-align:center">
+                <tr>
+                    <td><label class="unselectable" for="username">Username</label>
+                        </td>
+                    <td>
+                        <input type="text" id="txtUsername" name="username" required>
                     </td>
-                <td>
-                    <input type="text" id="txtUsername" name="username" required>
-                </td>
-            </tr>
-            <tr>
-                <td><label class="unselectable" for="password">Password</label></td>
-                <td>
-                    <input type="password" id="txtPassword" name="password" required>
+                </tr>
+                <tr>
+                    <td><label class="unselectable" for="password">Password</label></td>
+                    <td>
+                        <input type="password" id="txtPassword" name="password" required>
 
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" name = "login" id="btnSubmit" value="Login" class="bluebtn"/>
-                </td>
-            </tr>
-        </table>
-    </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" name = "login" id="btnSubmit" value="Login" class="bluebtn"/>
+                    </td>
+                </tr>
+                    <tr>
+                        <td colspan="2"><p id="txt_error"></p></td>
+                    </tr>
+            </table>
+        </form>
+    </div>
 </div>
-
-
-
-
-<footer class="footer-distributed">
+</div>
+<footer id="footer" class="footer-distributed">
 
     <div class="footer-right">
         <div>
-            <a href="http://spatialquerylab.com/" target="_blank" ><img class="Logo" src="../../Images/Query.PNG" title="Spatial Query Lab Website"></img></a>
-            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/facebook-small.png"></img></a>
-            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/twitter_35x35.png"></img></a>
+            <a href="http://spatialquerylab.com/" target="_blank" ><img class="Logo" src="../../Images/Query.PNG" title="Spatial Query Lab Website"/></a>
+            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/facebook-small.png"/></a>
+            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/twitter_35x35.png"/></a>
         </div>
     </div>
 
     <div class="footer-left">
 
-        <p class="footer-links"> Learn more about Bandocat at the
+        <p class="footer-links"> Learn more about BandoCat at the
             <a href="http://spatialquerylab.com/" target="_blank"><u>Spatial {Query} Lab</u></a>
         </p>
 
     </div>
 
-    <p>Contact Information</p>
+    <p>Contact Information:</p>
     <ul>
-        <li>Website Administrator: <a href="mailto:snguyen1@islander.tamucc.edu" target="_top">snguyen1@islander.tamucc.edu</li></a>
-        <li>Project Manager:<a href="mailto:snguyen1@islander.tamucc.edu" target="_top"> richard.smith@tamucc.edu</li></a>
+        <li>Website Admin: <a href="mailto:snguyen1@islander.tamucc.edu" target="_top">snguyen1@islander.tamucc.edu</a></li>
+        <li>Project Manager: <a href="mailto:richard.smith@tamucc.edu" target="_top">richard.smith@tamucc.edu</a></li>
     </ul>
-        <p class = "Copyrights" style="" class="unselectable">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science  </p>
+        <p class = "Copyrights">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science  </p>
 </footer>
-
-
-<style>
-    .Copyrights{position: absolute;
-        width: 100%;
-        float: right;
-        text-align: right;
-        font-family: serif;
-        margin-top: 0px;
-        margin-bottom: 0px;
-        right: 1%;
-        bottom: 10%;}
-
-        .Logo{position: relative;
-            top: 10%;
-            width: 75%;
-            height: 75%;}
-    li{
-        margin-top:1%;
-    }
-
-    ul{
-        margin: 0px !important;
-    }
-
-    a:hover{
-        color: #0c0c0c !important;
-    }
-</style>
-
-<script>
-    var date = new Date();
-    document.getElementById("CBI_Year").innerHTML = date.getFullYear();
-</script>
-
 </body>
+<script>
+
+    //this function resize element's width, height or hide/show elements when the browser resizes
+    function onResizeWindow()
+    {
+        var theWidth = $(window).width();
+        if(theWidth < 850)
+            $("p.Copyrights").hide();
+        else $("p.Copyrights").show();
+    }
+
+    $( document ).ready(function() {
+        onResizeWindow();
+        var date = new Date();
+        document.getElementById("CBI_Year").innerHTML = date.getFullYear();
+
+        /* attach a submit handler to the form */
+        $('#frm_auth').submit(function (event) {
+            $('#txt_error').text("");
+            /* stop form from submitting normally */
+            event.preventDefault();
+            /* Send the data using post */
+            $.ajax({
+                type: 'post',
+                url: 'login_processing.php',
+                data: {"username": $('#txtUsername').val(), "password": $('#txtPassword').val()},
+                success:function(data){
+                    switch(data)
+                    {
+                        case 'Invalid':
+                            $('#txt_error').html("Username & password are incorrect!");
+                            break;
+                        case 'Inactive':
+                            $('#txt_error').html("User is inactive!<br>Please contact Administrator!");
+                            break;
+                        case 'Success':
+                            window.location.replace("../Main/");
+                            break;
+                        default: break;
+                    }
+
+                }
+            });
+        });
+    });
+
+</script>
 </html>
