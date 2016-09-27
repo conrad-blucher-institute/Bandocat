@@ -49,6 +49,32 @@ session_start();
         cursor: pointer;
         border-style:inset;
     }
+
+    .Copyrights{position: absolute;
+        width: 100%;
+        float: right;
+        text-align: right;
+        font-family: serif;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        right: 1%;
+        bottom: 10%;}
+
+    .Logo{position: relative;
+        top: 10%;
+        width: 75%;
+        height: 75%;}
+    li{
+        margin-top:1%;
+    }
+
+    ul{
+        margin: 0px !important;
+    }
+
+    a:hover{
+        color: #0c0c0c !important;
+    }
 </style>
     <script>
         /* attach a submit handler to the form */
@@ -66,6 +92,11 @@ session_start();
             posting.done(function( data ) {
                 alert('success');
             });
+        });
+
+        $(document).ready(function(){
+            var date = new Date();
+            document.getElementById("CBI_Year").innerHTML = date.getFullYear();
         });
     </script>
 </head>
@@ -126,40 +157,6 @@ session_start();
     </ul>
         <p class = "Copyrights" style="" class="unselectable">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science  </p>
 </footer>
-
-
-<style>
-    .Copyrights{position: absolute;
-        width: 100%;
-        float: right;
-        text-align: right;
-        font-family: serif;
-        margin-top: 0px;
-        margin-bottom: 0px;
-        right: 1%;
-        bottom: 10%;}
-
-        .Logo{position: relative;
-            top: 10%;
-            width: 75%;
-            height: 75%;}
-    li{
-        margin-top:1%;
-    }
-
-    ul{
-        margin: 0px !important;
-    }
-
-    a:hover{
-        color: #0c0c0c !important;
-    }
-</style>
-
-<script>
-    var date = new Date();
-    document.getElementById("CBI_Year").innerHTML = date.getFullYear();
-</script>
 
 </body>
 </html>
