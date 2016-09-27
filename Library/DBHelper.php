@@ -43,6 +43,8 @@ class DBHelper
     //Constructor
     function DBHelper()
     {
+        if($this->getConn() == null)
+            $this->DB_CONNECT(null);
     }
 
     //IMPORTANT: Default Host, username, password can be changed here!
@@ -58,7 +60,7 @@ class DBHelper
 
     function DB_CONNECT($db)
     {
-        if ($db == "") //empty parameter = default = bandocatdb
+        if ($db == "" || $db == null) //empty parameter = default = bandocatdb
             $db = "bandocatdb";
         $host = "localhost";
         //$port = ":";
@@ -75,6 +77,39 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: SP_GET_COLLECTION_CONFIG
+     * Description: GET COLLECTION CONFIGURATION
+     * Parameter(s):
+     * $iName (in string) - input DB Name
+     * &$oDisplayName (out string) - Collection Display Name
+     * &$oDbName (out ref string) - db name
+     * &$oStorageDir (out ref string) - Document storage dir
+     * &$oPublicDir (out ref string) - Collection public dir (might not need)
+     * &$oThumbnailDir (out ref string) - Thumbnail dir
+     * &$oTemplateID (out ref int) - Collection template id (template table)
+     * Return value(s):
+     * $result (assoc array) - return above values in an assoc array
+     ***********************************************/
+    function SP_GET_COLLECTION_CONFIG($iName)
+    {
+        /* PREPARE STATEMENT */
+        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,oPublicDir,oThumbnailDir,oTemplateID)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, $iName, PDO::PARAM_STR,50);
+
+        /* EXECUTE STATEMENT */
+        $call->execute();
+
+        /* RETURN RESULT */
+        $select = $this->conn->query('SELECT @oDisplayName,@oDbName,@oStorageDir,oPublicDir,oThumbnailDir,oTemplateID');
+        $result = $select->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+
+    /**********************************************
      * Function: SP_USER_AUTH
      * Description: USER LOGIN AUTHENTICATION
      * Parameter(s):
@@ -85,10 +120,10 @@ class DBHelper
      * &$oRole (out ref int) - output User Role if success
      * Return value(s): NONE
      ***********************************************/
-    function SP_USER_AUTH($iUsername, $iPassword, &$oMessage, &$oUserID, &$oRoleID)
+    function SP_USER_AUTH($iUsername, $iPassword, &$oMessage, &$oUserID, &$oRole)
     {
         /* PREPARE STATEMENT */
-        $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRoleID)");
+        $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRole)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
         $call->bindParam(1, $iUsername, PDO::PARAM_STR,32);
@@ -98,11 +133,27 @@ class DBHelper
         $call->execute();
 
         /* RETURN RESULT */
-        $select = $this->conn->query('SELECT @oMessage,@oUserID, @oRoleID');
+        $select = $this->conn->query('SELECT @oMessage,@oUserID, @oRole');
         $result = $select->fetch(PDO::FETCH_ASSOC);
         $oMessage = $result['@oMessage'];
         $oUserID = $result['@oUserID'];
-        $oRoleID = $result['@oRoleID'];
+        $oRole = $result['@oRole'];
+    }
+
+    /**********************************************
+     * Function: GET_COLLECTION_FOR_DROPDOWN
+     * Description: GET COLLECTIONS INFO FOR DROPDOWN
+     * Parameter(s): NONE
+     * Return value(s):
+     * $result  (associative array) - return associative array of collection info
+     ***********************************************/
+    function GET_COLLECTION_FOR_DROPDOWN()
+    {
+        $sth = $this->getConn()->prepare("SELECT `ID`,`displayname` FROM bandocatdb.`collection`");
+        $sth->execute();
+
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
 }

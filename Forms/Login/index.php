@@ -75,20 +75,18 @@ session_start();
     }
     ul{
         padding-bottom:10px !important;
+        padding-left:20px !important;
     }
     a:hover{
         color: #0c0c0c !important;
     }
-
     #footer{
         position: relative;
         margin-top: -210px; /* negative value of footer height */
         height: 210px;
         clear:both;
     }
-
     #wrap {min-height: 100%;}
-
     #main {overflow:auto;
         padding-bottom: 210px;}  /* must be same height as the footer */
 
@@ -141,7 +139,7 @@ session_start();
 
     <div class="footer-left">
 
-        <p class="footer-links"> Learn more about BandoCat at the
+        <p class="footer-links" style="white-space: nowrap"> Learn more about BandoCat at the
             <a href="http://spatialquerylab.com/" target="_blank"><u>Spatial {Query} Lab</u></a>
         </p>
 
