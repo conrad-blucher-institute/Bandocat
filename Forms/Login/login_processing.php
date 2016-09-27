@@ -4,7 +4,6 @@
     $username = htmlspecialchars($_POST["username"]);
     $pwd = $_POST["password"];
     $db = new DBHelper();
-    $db->DB_CONNECT("");
     $db->SP_USER_AUTH($username,$pwd,$msg,$uID,$role);
 
     switch($msg)
