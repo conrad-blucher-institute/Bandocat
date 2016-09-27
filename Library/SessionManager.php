@@ -4,6 +4,7 @@ class SessionManager
     private $userName;
     private $userID;
     private $role;
+    private $logged_in;
 
     /**
      * SessionManager constructor.
@@ -14,9 +15,18 @@ class SessionManager
     public function __construct()
     {
         session_start();
-        $this->userName = $_SESSION['username'];
-        $this->userID = $_SESSION['userID'];
-        $this->role = $_SESSION['role'];
+        if(isset($_SESSION['username'])) {
+            $this->userName = $_SESSION['username'];
+            $this->userID = $_SESSION['userID'];
+            $this->role = $_SESSION['role'];
+        }
+
+        if($this->userName == null || $this->userName == ""
+             || $this->userID == null || $this->userID == ""
+            || $this->role == null || $this->role == "") {
+            $this->setLoggedIn(false);
+        }
+        else $this->setLoggedIn(true);
     }
 
     /**
@@ -66,6 +76,24 @@ class SessionManager
     {
         $this->role = $role;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLoggedIn()
+    {
+        return $this->logged_in;
+    }
+
+    /**
+     * @param mixed $logged_in
+     */
+    public function setLoggedIn($logged_in)
+    {
+        $this->logged_in = $logged_in;
+    }
+
+
 
 
     //Super admin & admin
