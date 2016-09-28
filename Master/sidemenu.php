@@ -8,7 +8,7 @@
             <li><a href="#">Blucher Maps</a></li>
             <li><a href="#">Field Book</a></li>
             <li><a href="#">Green Maps</a></li>
-            <li><a hgref="#">Indices</a></li>
+            <li><a href="#">Indices</a></li>
             <li><a href="#">Job Folder</a></li>
         </ul>
     </div>
@@ -36,6 +36,6 @@
         </ul>
     </div>
     <div class="menu-item">
-        <h4><a href="#">Logout</a></h4>
+        <h4><a href="#" id="sidemenu_logout">Logout</a></h4>
     </div>
 </nav>

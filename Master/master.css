@@ -412,6 +412,7 @@ footer{
     left: 0;
     padding: .4em;
     background-color: #efefef;
+    clear:both;
 }
 
 footer a{

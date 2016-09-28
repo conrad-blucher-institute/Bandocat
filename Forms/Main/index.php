@@ -1,5 +1,6 @@
 <?php
-session_start();
+    include '../../Library/SessionManager.php';
+    $session = new SessionManager();
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,14 +25,14 @@ session_start();
             <?php include '../../Master/header.php'?>
         </th>
         <th class="tg-chpy" colspan="2">
-            Welcome <span id= "Username" class="Username">Username, </span><span id="Time_Day"></span><span id="Greetings"></span>
+            Welcome <span id= "lblUsername" class="Username"><?php echo $session->getUserName(); ?> </span><span id="Time_Day"></span><span id="Greetings"></span>
         </th>
     </tr>
     <tr style="height: 630px">
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/sidemenu.php' ?>
         </td>
-        <td class="tg-zhyu"><h2>Bandocat</h2></td>
+        <td class="tg-zhyu"><h2>BandoCat</h2></td>
         <td class="tg-0za1"><h2>Announcements</h2></td>
     </tr>
 </table>
@@ -63,6 +64,11 @@ session_start();
 </script>
 
 <style>
+
+    #lblUsername{
+        text-decoration: underline;
+    }
+
     .tg-0za1:hover{
         opacity: 0.95;
         box-shadow: none;
