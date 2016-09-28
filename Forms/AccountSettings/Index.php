@@ -49,7 +49,7 @@
                 <td><label class="unselectable" for="password">Current Password</label>
                 </td>
                 <td>
-                    <input type="text" id="txtPassword" name="oldpassword" required>
+                    <input type="password" id="txtPassword" name="oldpassword" required>
                 </td>
             </tr>
             <tr>
@@ -63,25 +63,57 @@
             <tr>
                 <td><label class="unselectable" for="password">Re-enter Password</label></td>
                 <td>
-                    <input type="text" id="txtPassword" name="validatenew" required>
+                    <input type="password" id="txtPassword" name="validatenew" required>
 
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
                     <br>
-                    <button class="bluebtn">Change Password</button>
+                    <input type="submit" name = "login" id="btnSubmit" value="Update" class="bluebtn"/>
                 </td>
+            </tr>
+            <tr>
+                <td colspan="2"><p id="Info_Error"></p></td>
             </tr>
         </table>
     </div>
 </form>
             <form id="frm_auth" name="frm_auth" method="post" action="dosomething.php">
                 <div id="Something">
-                    <table width="50%" style="text-align:center">
-                        <thead>
-                        <h3>Do Something In this Form</h3>
-                        </thead>
+                    <table id = "thetable_password" style="text-align:center">
+                        <th>User Information</th>
+                        <tr>
+                            <td><label class="unselectable" for="UserName">Change Username</label>
+                            </td>
+                            <td>
+                                <input type="text" id="UserName" name="ChangeUser" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label class="unselectable" for="Email">Change Email</label></td>
+                            <td>
+                                <input type="text" id="Email" name="ChangeEmail">
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><label class="unselectable" for="FullName"> Change Full Name</label></td>
+                            <td>
+                                <input type="text" id="FullName" name="ChangeName">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <br>
+                                <input type="submit" name = "login" id="btnSubmit" value="Save" class="bluebtn"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p id="Info_Error"></p></td>
+                        </tr>
+
                     </table>
                 </div>
             </form>
