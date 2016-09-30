@@ -27,10 +27,10 @@
     {
         width: 60%;
         vertical-align: top;
-        margin-left: 20px;
+        margin-left: 22%;
         background-color: #e6e6e6;
         border: 1px solid #a6a6a6;
-        padding: 10px;
+        padding: 8px;
         font-family: verdana;
         font-size: 1em;
     }
@@ -38,7 +38,7 @@
     {
         width: 60%;
         vertical-align: top;
-        margin-left: 20px;
+        margin-left: 25%;
         text-align: center;
     }
 </style>
