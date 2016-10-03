@@ -102,12 +102,6 @@ class DBHelper
      * Description: GET COLLECTION CONFIGURATION
      * Parameter(s):
      * $iName (in string) - input DB Name
-     * &$oDisplayName (out string) - Collection Display Name
-     * &$oDbName (out ref string) - db name
-     * &$oStorageDir (out ref string) - Document storage dir
-     * &$oPublicDir (out ref string) - Collection public dir (might not need)
-     * &$oThumbnailDir (out ref string) - Thumbnail dir
-     * &$oTemplateID (out ref int) - Collection template id (template table)
      * Return value(s):
      * $result (assoc array) - return above values in an assoc array
      ***********************************************/

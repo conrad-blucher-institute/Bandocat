@@ -6,6 +6,7 @@
     else header('Location: ../../');
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
+
 // SQL server connection information
 $sql_details = array(
     'user' => $DB->getUser(),

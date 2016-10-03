@@ -178,7 +178,7 @@ session_start();
             $.ajax({
                 type: 'post',
                 url: 'login_processing.php',
-                data: {"username": $('#txtUsername').val(), "password": $('#txtPassword').val()},
+                data: {username: $('#txtUsername').val(), password: $('#txtPassword').val()},
                 success:function(data){
                     switch(data)
                     {

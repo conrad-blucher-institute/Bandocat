@@ -1,5 +1,10 @@
 <?php
-//scripts map
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+    if(isset($_GET['col']))
+        $collection = $_GET['col'];
+    else header('Location: ../../');
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -49,7 +54,7 @@
                         "targets": 4
                     },
                 ],
-                "ajax": "scripts/list_processing.php"
+                "ajax": "list_processing.php?col=" + <?php echo json_encode($collection);?>
             } );
 
             //hide first column (DocID)
@@ -101,6 +106,8 @@
                     <th>Document Title</th>
                     <th width="280px">Document Subtitle</th>
                     <th width="70px">End Date</th>
+                    <th width="60px">Has Coast</th>
+                    <th width="60px">Needs Review</th>
                 </tr>
             </thead>
         </table>
