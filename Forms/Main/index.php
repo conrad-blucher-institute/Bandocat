@@ -19,9 +19,9 @@
 <body>
 
 
-<table class="tg">
+<table id="thetable">
     <tr>
-        <th class="tg-yw4l">
+        <th class="menu_left" id="thetable_left">
             <?php include '../../Master/header.php'?>
         </th>
         <th class="tg-chpy" colspan="2">
@@ -29,7 +29,7 @@
         </th>
     </tr>
     <tr style="height: 630px">
-        <td class="tg-yw4l">
+        <td class="menu_left" id="thetable_left">
             <?php include '../../Master/sidemenu.php' ?>
         </td>
         <td class="tg-zhyu"><h2>BandoCat</h2></td>
@@ -41,6 +41,8 @@
 </body>
 
 <script>
+    /*Program that will get the time in hours from the Date function. Then, a conditional statement will determine what
+    time of the day it is; morning or afternoon*/
         var d = new Date();
         var n = d.getHours();
         if(n >= 12)
@@ -51,12 +53,12 @@
         else{
             document.getElementById("Time_Day").innerHTML= "Good Morning! ";
         }
-
+    /*Program that will obtain a random number from the random function. Then, it will multiply it by the length of the
+    Greetings javascript array, which is saved in an external document. Finally the integer number retrieved is used to
+    select an index with a greeting that will be displayed at the top of the page.*/
         var Random = Math.random();
         var Generic_Number = Random * (Greetings.length);
         var Integer = parseInt(Generic_Number);
-        console.log(Random);
-        console.log(Greetings.length);
         document.getElementById("Greetings").innerHTML = Greetings[Integer];
 
 </script>
@@ -85,14 +87,15 @@
         font-size: 15px !important;
         font-family: sans-serif;
     }
-    nav{margin: 15px 0px 40px 15px !important;}
+    nav{margin: 12px 0px 40px 16px !important;}
     .tg  {border-collapse:collapse;border-spacing:0; width: 100%}
-    .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;overflow:hidden;word-break:normal; border-style: groove}
-    .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;overflow:hidden;word-break:normal;}
-    .tg .tg-chpy{font-size:20px;font-family:serif !important;;text-align:right;vertical-align:top; width: 77%; background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c;}
-    .tg .tg-0za1{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c;}
-    .tg .tg-yw4l{vertical-align:top; border-style: none}
-    .tg .tg-zhyu{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; width: 55%}
+    #thetable td{font-family:Arial, sans-serif;font-size:14px; padding-top: 0px; padding-left: 0px; overflow:hidden;word-break:normal;}
+    #thetable th{width: 1%}
+    #thetable .tg-chpy{font-size:20px;font-family:serif !important;;text-align:right;vertical-align:top; width: 77%; background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c;}
+    #thetable .tg-0za1{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c;}
+    #thetable .tg-yw4l{vertical-align:top; border-style: none}
+    #thetable .tg-zhyu{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; width: 55%}
+    a:hover {color: white !important; decoration: underline}
 </style>
 
 </html>
