@@ -20,7 +20,11 @@ class DBHelper
 {
     //Members
     protected $conn;
+    static private $host = "localhost";
+    static private $user = "root";
+    static private $pwd = "notroot";
 
+    //Getter and setters
     /**
      * @return mixed
      */
@@ -37,7 +41,29 @@ class DBHelper
         $this->conn = $conn;
     }
 
-    //Getter and setters
+    /**
+     * @return string
+     */
+    public static function getHost()
+    {
+        return self::$host;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getUser()
+    {
+        return self::$user;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPwd()
+    {
+        return self::$pwd;
+    }
 
 
     //Constructor
@@ -62,12 +88,7 @@ class DBHelper
     {
         if ($db == "" || $db == null) //empty parameter = default = bandocatdb
             $db = "bandocatdb";
-        $host = "localhost";
-        //$port = ":";
-        $user = "root";
-        $pwd = "notroot";
-
-        $this->conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pwd);
+        $this->conn = new PDO('mysql:host=' . $this->getHost() . ';dbname=' . $db, $this->getUser(), $this->getPwd());
         return 0;
     }
 
@@ -81,32 +102,24 @@ class DBHelper
      * Description: GET COLLECTION CONFIGURATION
      * Parameter(s):
      * $iName (in string) - input DB Name
-     * &$oDisplayName (out string) - Collection Display Name
-     * &$oDbName (out ref string) - db name
-     * &$oStorageDir (out ref string) - Document storage dir
-     * &$oPublicDir (out ref string) - Collection public dir (might not need)
-     * &$oThumbnailDir (out ref string) - Thumbnail dir
-     * &$oTemplateID (out ref int) - Collection template id (template table)
      * Return value(s):
      * $result (assoc array) - return above values in an assoc array
      ***********************************************/
     function SP_GET_COLLECTION_CONFIG($iName)
     {
         /* PREPARE STATEMENT */
-        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,oPublicDir,oThumbnailDir,oTemplateID)");
+        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
-        $call->bindParam(1, $iName, PDO::PARAM_STR,50);
-
+        $call->bindParam(1, $iName, PDO::PARAM_STR|PDO::PARAM_INPUT_OUTPUT,50);
         /* EXECUTE STATEMENT */
         $call->execute();
-
         /* RETURN RESULT */
-        $select = $this->conn->query('SELECT @oDisplayName,@oDbName,@oStorageDir,oPublicDir,oThumbnailDir,oTemplateID');
+        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID');
         $result = $select->fetch(PDO::FETCH_ASSOC);
+        $result["Name"] = htmlspecialchars($iName);
         return $result;
     }
-
 
 
     /**********************************************
@@ -133,7 +146,7 @@ class DBHelper
         $call->execute();
 
         /* RETURN RESULT */
-        $select = $this->conn->query('SELECT @oMessage,@oUserID, @oRole');
+        $select = $this->getConn()->query('SELECT @oMessage,@oUserID, @oRole');
         $result = $select->fetch(PDO::FETCH_ASSOC);
         $oMessage = $result['@oMessage'];
         $oUserID = $result['@oUserID'];

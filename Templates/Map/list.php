@@ -1,5 +1,14 @@
 <?php
-//scripts map
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+    if(isset($_GET['col'])) {
+        $collection = $_GET['col'];
+        require('../../Library/DBHelper.php');
+        $DB = new DBHelper();
+        $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+    }
+    else header('Location: ../../');
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -17,12 +26,23 @@
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
+            var collection_config = <?php echo json_encode($config); ?>;
+            $('#page_title').text(collection_config.DisplayName);
+
+
             var table = $('#dtable').DataTable( {
                 "processing": true,
                 "serverSide": true,
                 "lengthMenu": [20, 40 , 60, 80, 100],
-                "bStateSave": true,
+                "bStateSave": false,
                 "columnDefs": [
+                    //column Document Index: Replace with Hyperlink
+                    {
+                        "render": function ( data, type, row ) {
+                            return "<a href='editform.php?col=" + data + "'>Edit/View</a>" ;
+                        },
+                        "targets": 0
+                    },
                     //column Title
                     {
                         "render": function ( data, type, row ) {
@@ -46,14 +66,33 @@
                                 return "";
                             return data;
                         },
-                        "targets": 4
+                        "targets": 5
                     },
+                    //column : HasCoast
+                    {
+                        "render": function ( data, type, row ) {
+                            if(data == 1)
+                                return "Yes";
+                            return "No";
+                        },
+                        "targets": 6
+                    },
+                    //column : NeedsReview
+                    {
+                        "render": function ( data, type, row ) {
+                            if(data == 1)
+                                return "Yes";
+                            return "No";
+                        },
+                        "targets": 7
+                    },
+
                 ],
-                "ajax": "scripts/list_processing.php"
+                "ajax": "list_processing.php?col=" + collection_config.Name
             } );
 
             //hide first column (DocID)
-            table.column(0).visible(false);
+            table.column(0).visible(true);
 
             // show or hide subtitle
             table.column(3).visible(false);
@@ -64,6 +103,7 @@
                 // Toggle the visibility
                 column.visible( ! column.visible() );
             } );
+
             // select row on single click
             $('#dtable tbody').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('selected') ) {
@@ -75,38 +115,48 @@
                 }
             } );
 
+
         });
     </script>
 
 </head>
 <body>
+<div id="wrap">
+    <div id="main">
 <table id="thetable">
-    <tr >
+    <tr>
         <td class="menu_left" id="thetable_left">
         <?php include '../../Master/header.php';
         include '../../Master/sidemenu.php' ?>
     </td>
     <td class="container" id="thetable_right">
-        <h2>Title</h2>
+        <h2 id="page_title">Title</h2>
         <table width="100%">
             <tr>
                 <td style="float:right;font-size:13px" colspan="100%"><input name="checkbox_subtitle" type="checkbox" id="checkbox_subtitle" />Show/Hide Subtitle</td>
             </tr>
         </table>
+        <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:674px">
         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
             <thead>
                 <tr>
-                    <th>Document Index</th>
-                    <th width="150px">Library Index</th>
+                    <th></th>
+                    <th width="100px">Library Index</th>
                     <th>Document Title</th>
                     <th width="280px">Document Subtitle</th>
+                    <th width="200px">Customer</th>
                     <th width="70px">End Date</th>
+                    <th width="40px">Has Coast</th>
+                    <th width="30px">Needs Review</th>
                 </tr>
             </thead>
         </table>
+        </div>
     </td>
     </tr>
 </table>
+    </div>
+</div>
 <?php include '../../Master/footer.php'; ?>
 </body>
 </html>
