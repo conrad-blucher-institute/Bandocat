@@ -64,7 +64,7 @@ session_start();
          text-align: right;
          font-family: serif;
          margin-bottom: 0px;
-         bottom: 10%;}
+         bottom: 0%;}
 
     .Logo{position: relative;
         top: 10%;
