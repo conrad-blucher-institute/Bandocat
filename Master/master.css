@@ -4,12 +4,16 @@ BLUE: #0067C5
 GREEN: #007F3E
 SILVER: #9EA2A4
 */
-
+html,body{margin:0;padding: 0;overflow: hidden;}
 html{
     min-width:600px;
 }
 body{
     background-color:#fff;
+}
+
+#header_logo{
+    padding-bottom:10px;
 }
 
 #thetable
@@ -20,6 +24,7 @@ body{
 {
     width: 230px;
     vertical-align: top;
+    padding: 8px 8px 8px 8px;
 }
 
 #thetable_right
@@ -36,7 +41,7 @@ body{
 nav {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     line-height: 1.5;
-    margin: 15px 0px 40px 15px;
+    margin: 15px 0px 40px 15px ;
     width: 240px;
     -webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     -moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
@@ -392,6 +397,7 @@ h2
 
 /* End Font Styles */
 /* _______________________________________________________________________________________  */
+
 
 form {
     margin: 0 auto;

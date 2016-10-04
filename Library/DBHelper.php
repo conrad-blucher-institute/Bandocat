@@ -108,15 +108,16 @@ class DBHelper
     function SP_GET_COLLECTION_CONFIG($iName)
     {
         /* PREPARE STATEMENT */
-        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,oPublicDir,oThumbnailDir,oTemplateID)");
+        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
-        $call->bindParam(1, $iName, PDO::PARAM_STR,50);
+        $call->bindParam(1, $iName, PDO::PARAM_STR|PDO::PARAM_INPUT_OUTPUT,50);
         /* EXECUTE STATEMENT */
         $call->execute();
         /* RETURN RESULT */
-        $select = $this->getConn()->query('SELECT @oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID');
+        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID');
         $result = $select->fetch(PDO::FETCH_ASSOC);
+        $result["Name"] = htmlspecialchars($iName);
         return $result;
     }
 

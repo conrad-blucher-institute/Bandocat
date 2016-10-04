@@ -11,7 +11,7 @@
 $sql_details = array(
     'user' => $DB->getUser(),
     'pass' => $DB->getPwd(),
-    'db'   => $DB->SP_GET_COLLECTION_CONFIG($collection)['@oDbName'],
+    'db'   => $DB->SP_GET_COLLECTION_CONFIG($collection)['DbName'],
     'host' => $DB->getHost()
 );
 
@@ -45,7 +45,7 @@ $primaryKey = 'documentID';
 // indexes
 $columns = array(
     array( 'db' => '`document`.`documentID`', 'dt' => 0, 'field' => 'documentID' ),
-    array( 'db' => '`document`.`libraryindex`', 'dt' => 1,'field' => 'libraryinex'),
+    array( 'db' => '`document`.`libraryindex`', 'dt' => 1,'field' => 'libraryindex'),
     array( 'db' => '`document`.`title`', 'dt' => 2,'field' => 'title' ),
     array( 'db' => '`document`.`subtitle`',  'dt' => 3, 'field' => 'subtitle' ),
     array( 'db' => '`customer`.`customername`', 'dt' => 4,'field' => 'customername'),
@@ -61,7 +61,7 @@ $columns = array(
 
 require('../../Library/sspwithjoin.class.php');
 
-$joinQuery = " FROM `documents` INNER JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
+$joinQuery = " FROM `document` INNER JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
 $extraWhere = "";
 
 echo json_encode(
