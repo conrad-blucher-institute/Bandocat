@@ -18,16 +18,28 @@
 <style>
     #thetable_Account
     {
-        width: 70%;
+        width: 100%;
         vertical-align: top;
+        border: 1px solid #f2f2f2;
 
     }
     #thetable_password
     {
-        width: 100%;
+        width: 60%;
         vertical-align: top;
-        margin-left: 20px;
-
+        margin-left: 22%;
+        background-color: #e6e6e6;
+        border: 1px solid #a6a6a6;
+        padding: 8px;
+        font-family: verdana;
+        font-size: 1em;
+    }
+    #thetable_buttons
+    {
+        width: 60%;
+        vertical-align: top;
+        margin-left: 25%;
+        text-align: center;
     }
 </style>
 <table id="thetable_Account">
@@ -39,54 +51,78 @@
         <td class="container" id="thetable_right">
             <h2>Account Settings</h2>
             <table width="100%">
-
             </table>
             <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
-    <div id="Change Password">
-        <table id = "thetable_password" style="text-align:center">
-            <th>Change Password</th>
-            <tr>
-                <td><label class="unselectable" for="password">Current Password</label>
-                </td>
-                <td>
-                    <input type="text" id="txtPassword" name="oldpassword" required>
-                </td>
-            </tr>
-            <tr>
-                <td><label class="unselectable" for="password">New Password</label></td>
-                <td>
-                    <input type="password" id="txtPassword" name="newpassword" required>
+                <div id="Change Password">
+                    <table id = "thetable_password" style="text-align:left">
+                        <script type="text/javascript" src="PasswordMatch.js">
+                        </script>
+                        <th>Change Password</th>
+                        <tr>
+                            <td><label class="unselectable" for="password">Current Password:</label>
+                            </td>
+                            <td>
+                                <input type="password" id="txtPassword" name="oldpassword" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label class="unselectable" for="pass1">New Password:</label></td>
+                            <td>
+                                <input type="password" name="pass1" id="pass1">
+                            </td>
 
-                </td>
-
-            </tr>
-            <tr>
-                <td><label class="unselectable" for="password">Re-enter Password</label></td>
-                <td>
-                    <input type="text" id="txtPassword" name="validatenew" required>
-
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <br>
-                    <button class="bluebtn">Change Password</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-</form>
-            <form id="frm_auth" name="frm_auth" method="post" action="dosomething.php">
-                <div id="Something">
-                    <table width="50%" style="text-align:center">
-                        <thead>
-                        <h3>Do Something In this Form</h3>
-                        </thead>
+                        </tr>
+                        <tr>
+                            <td><label class="unselectable" for="pass2">Confirm Password:</label></td>
+                            <td>
+                                <input type="password" name="pass2" id="pass2" onkeyup="checkPass(); return false;">
+                            </td>
+                        </tr>
+                    </table>
+                    <table id="thetable_buttons">
+                        <tr>
+                            <td colspan="2">
+                                <br>
+                                <input type="submit" name = "login" id="btnSubmit" value="Update" class="bluebtn"/>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </form>
-</td>
-</tr>
+            <form id="frm_info" name="frm_info" method="post" action="dosomething.php">
+                <div id="Something">
+                    <table id = "thetable_password" style="text-align:left" >
+                        <script>
+
+                        </script>
+                        <th>User Information</th>
+                        <tr>
+                            <td><label class="unselectable" for="Email">Change Email:</label></td>
+                            <td>
+                                <input type="text" id="Email" name="ChangeEmail">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label class="unselectable" for="ChangeName"> Change Name:</label></td>
+                            <td>
+                                <input type="text" id="ChangeName" name="ChangeName">
+                            </td>
+                        </tr>
+                            <td colspan="2"><p id="Info_Error"></p></td>
+                        </tr>
+                    </table>
+                    <table id="thetable_buttons">
+                        <tr>
+                            <td colspan="2">
+                                <br>
+                                <input type="submit" name = "login" id="btnSubmit" value="Save" class="bluebtn"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </td>
+    </tr>
 </table>
 
 <?php include '../../Master/footer.php'; ?>
