@@ -1,0 +1,2 @@
+<?php
+//For all users
