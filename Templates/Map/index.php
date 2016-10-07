@@ -18,7 +18,7 @@
     <body>
     <table id = "thetable">
         <tr>
-            <td class="menu_left" id="thetable_left">
+            <td class="menu_left" id="thetable_left" style="padding-right: 5px">
                 <?php include '../../Master/header.php';
                 include '../../Master/sidemenu.php' ?>
             </td>
@@ -63,6 +63,11 @@
                 </table>
             </td>
         </tr>
+
+        <style>
+            nav{margin-left: 8px;
+                margin-top: 22px;}
+        </style>
 
     </table>
 
