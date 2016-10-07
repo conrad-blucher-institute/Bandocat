@@ -1,5 +1,9 @@
 <?php
-session_start();
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+require '../../Library/DBHelper.php';
+    $DB = new DBHelper();
+    $collection_array = $DB->GET_COLLECTION_FOR_DROPDOWN();
 ?>
 <!doctype html>
 <html lang="en">
@@ -9,10 +13,14 @@ session_start();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Welcome to BandoCat!</title>
+    <title>Submit Ticket</title>
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <style type="text/css">
+        .Error_Input{margin-left: 10%; margin-top: 0%; background-color: #f1f1f1; border-radius: 10px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; padding-left: 8%; margin-right: 10%; padding-bottom: 5%; padding-top: 2.5%;}
+        nav{margin: -1px 0px 40px 15px !important;}
+    </style>
 </head>
 
 <body>
@@ -21,36 +29,58 @@ session_start();
         <th class="menu_left" id="thetable_left"> <?php include '../../Master/header.php'?> </th>
         <th class="Top" colspan="2"><h2>Error reporting</h2></th>
     </tr>
-    <tr class="Bottom"></tr>
+    <tr class="Bottom" style="height: 10px"></tr>
         <td class="menu_left" id="thetable_left"> <?php include '../../Master/sidemenu.php' ?> </td>
         <td class="Bottom-right" colspan="2">
 
             <div class= "Error_Input" >
                 <h3>Database Name:</h3>
-                <select name="ddl_dbname" id="ddl_dbname">
-                    <option value=1">Blucher Maps</option><option value=2">Green Maps</option><option value=3">Job Folder</option><option value=4">Field Book</option>				</select>
-
-                <h3>Library Index:</h3>
-                <input type = "text" name = "libraryindex" id = "libraryindex" size="32" required/>
+                <form name="frm_ticket" id="frm_ticket" method="post">
+                <select name="ddlDBname" id="ddlDBname" required>
+                    <option value="">Select...</option>
+                    <?php
+                        foreach($collection_array as $col)
+                            echo "<option value='" . $col['collectionID'] .  "'>$col[displayname]</option>";
+                    ?>
+                </select>
+                <h3>Subject / Library Index:</h3>
+                <input type = "text" name = "txtSubject" id = "txtSubject" size="32" required/>
 
                 <h3>What's wrong?</h3>
-                <textarea name = "desc" rows = "10" cols = "70"/></textarea>
+                <textarea name = "txtDesc" id="txtDesc" rows = "10" cols = "70" required/></textarea>
 
-                <br><input type = "submit" name = "Send" value = "Send" class="bluebtn"/>
-                <input type = "hidden" name = "userIDInput" value = "31" />
+                <br><input type = "submit" name = "btnSubmit" value = "Submit" class="bluebtn"/>
+                </form>
             </div>
         </td>
     </tr>
 </table>
-
-<style type="text/css">
-    .Error_Input{margin-left: 10%; margin-top: 0%; background-color: #f1f1f1; border-radius: 10px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; padding-left: 8%; margin-right: 10%; padding-bottom: 5%; padding-top: 2.5%;}
-    nav{margin: -1px 0px 40px 15px !important;}
-    #thetable_left{padding-top: 8px}
-    #thetable td{padding-top: 11px; padding-left: 1px}
-</style>
-
 <?php include '../../Master/footer.php'; ?>
-
 </body>
+<script>
+
+    $( document ).ready(function() {
+
+        /* attach a submit handler to the form */
+        $('#frm_ticket').submit(function (event) {
+            /* stop form from submitting normally */
+            event.preventDefault();
+            /* Send the data using post */
+            $.ajax({
+                type: 'post',
+                url: 'index_processing.php',
+                data: {dbname: $('#ddlDBname :selected').val(), subject: $('#txtSubject').val(), description: $('#txtDesc').val()},
+                success:function(data){
+                    if(data == "true")
+                    {
+                        alert("Ticket Submitted!");
+                        window.close();
+                    }
+                    else alert("Ticket failed to submit!");
+                }
+            });
+        });
+    });
+
+</script>
 </html>

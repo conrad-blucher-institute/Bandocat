@@ -162,11 +162,28 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $sth = $this->getConn()->prepare("SELECT `ID`,`displayname` FROM bandocatdb.`collection`");
+        $sth = $this->getConn()->prepare("SELECT `collectionID`,`displayname` FROM `bandocatdb`.`collection`");
         $sth->execute();
 
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
+
+    function SP_INSERT_TICKET($iSubject, $iPosterID, $iCollectionID, $iDescription)
+    {
+        /* PREPARE STATEMENT */
+        $call = $this->getConn()->prepare("CALL SP_TICKET_INSERT(?,?,?,?)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, $iSubject, PDO::PARAM_STR,strlen($iSubject));
+        $call->bindParam(2, $iPosterID, PDO::PARAM_INT);
+        $call->bindParam(3, $iCollectionID, PDO::PARAM_INT);
+        $call->bindParam(4, $iDescription, PDO::PARAM_STR,strlen($iDescription));
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        if($call)
+            return true;
+        return false;
+    }
 }
