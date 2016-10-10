@@ -1,4 +1,5 @@
 <?php
+//Menu
 ?>
 <!doctype html>
 <html lang="en">
@@ -9,122 +10,121 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>Account Settings</title>
-
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-
+    <script type="text/javascript" src="ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 
 </head>
 <body>
 <style>
-    #thetable_Account
-    {
-        width: 100%;
-        vertical-align: top;
-        border: 1px solid #f2f2f2;
+    /*Account Stylesheet Adaptation from Collection Name */
+    .Account{
+        border-radius: 2%;
+        box-shadow: 0px 0px 4px;
+    }
 
-    }
-    #thetable_password
-    {
-        width: 60%;
-        vertical-align: top;
-        margin-left: 22%;
-        background-color: #e6e6e6;
-        border: 1px solid #a6a6a6;
-        padding: 8px;
+    .Account_Table{
+        background-color: white;
+        padding: 3%;
+        border-radius: 6%;
+        box-shadow: 0px 0px 2px;
+        margin: auto;
         font-family: verdana;
-        font-size: 1em;
-    }
-    #thetable_buttons
-    {
-        width: 60%;
-        vertical-align: top;
-        margin-left: 25%;
+        font-size: 1.5em;
         text-align: center;
+        margin-top: 4%;
+        margin-bottom: 9%;
     }
+
+    .Account_Table .Account_Title{
+        margin-top: 2px;
+        margin-bottom: 12px;
+        color: #008852;
+    }
+
+    .Account_Table .Collection_data{
+        width: 50%;
+    }
+
 </style>
-<table id="thetable_Account">
-    <tr >
+<table id = "thetable">
+    <script type="text/javascript" src="PasswordMatch.js"></script>
+    <tr>
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
         </td>
-        <td class="container" id="thetable_right">
+        <td class="Account" id="thetable_right">
             <h2>Account Settings</h2>
-            <table width="100%">
+            <table class="Account_Table">
+                <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
+                <tr>
+                    <td>
+                        <h4 class="Account_Title">Change Password</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="unselectable" for="password">Current Password:</label>
+                    </td>
+                    <td>
+                        <input type="password" id="txtPassword" name="oldpassword" >
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="unselectable" for="pass1">New Password:</label></td>
+                    <td>
+                        <input type="password" name="pass1" id="pass1">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><label class="unselectable" for="pass2">Confirm Password:</label></td>
+                    <td>
+                        <input type="password" name="pass2" id="pass2" onkeyup="checkPass(); return false;">
+                    </td>
+                </tr>
+                <td colspan="2">
+                    <br>
+                    <input type="submit" name = "login" id="btnSubmit" value="Update" class="bluebtn"/>
+                </td>
+                </form>
+
+                <form id="frm_info" name="frm_info" method="post" action="dosomething.php">
+                <tr>
+                    <td>
+                        <h4 class="Account_Title">User Information</h4>
+                    </td>
+                </tr>
+                    <tr>
+                        <td><label class="unselectable" for="Email">Change Email:</label></td>
+                        <td>
+                            <input type="text" id="Email" name="Email">
+                        </td>
+                    </tr>
+                <tr>
+                    <td><label class="unselectable" for="CheckEmail">Re-enter Email:</label></td>
+                    <td>
+                        <input type="text" id="CheckEmail" name="CheckEmail" onkeyup="checkEmail(); return false;">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="unselectable" for="ChangeName"> Change Name:</label></td>
+                    <td>
+                        <input type="text" id="ChangeName" name="ChangeName">
+                    </td>
+                </tr>
+                <td colspan="2">
+                    <br>
+                    <input type="submit" name = "login" id="btnSubmit" value="Update" class="bluebtn"/>
+                </td>
+                </form>
+
             </table>
-            <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
-                <div id="Change Password">
-                    <table id = "thetable_password" style="text-align:left">
-                        <script type="text/javascript" src="PasswordMatch.js">
-                        </script>
-                        <th>Change Password</th>
-                        <tr>
-                            <td><label class="unselectable" for="password">Current Password:</label>
-                            </td>
-                            <td>
-                                <input type="password" id="txtPassword" name="oldpassword" required>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="unselectable" for="pass1">New Password:</label></td>
-                            <td>
-                                <input type="password" name="pass1" id="pass1">
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td><label class="unselectable" for="pass2">Confirm Password:</label></td>
-                            <td>
-                                <input type="password" name="pass2" id="pass2" onkeyup="checkPass(); return false;">
-                            </td>
-                        </tr>
-                    </table>
-                    <table id="thetable_buttons">
-                        <tr>
-                            <td colspan="2">
-                                <br>
-                                <input type="submit" name = "login" id="btnSubmit" value="Update" class="bluebtn"/>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </form>
-            <form id="frm_info" name="frm_info" method="post" action="dosomething.php">
-                <div id="Something">
-                    <table id = "thetable_password" style="text-align:left" >
-                        <script>
-
-                        </script>
-                        <th>User Information</th>
-                        <tr>
-                            <td><label class="unselectable" for="Email">Change Email:</label></td>
-                            <td>
-                                <input type="text" id="Email" name="ChangeEmail">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="unselectable" for="ChangeName"> Change Name:</label></td>
-                            <td>
-                                <input type="text" id="ChangeName" name="ChangeName">
-                            </td>
-                        </tr>
-                            <td colspan="2"><p id="Info_Error"></p></td>
-                        </tr>
-                    </table>
-                    <table id="thetable_buttons">
-                        <tr>
-                            <td colspan="2">
-                                <br>
-                                <input type="submit" name = "login" id="btnSubmit" value="Save" class="bluebtn"/>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </form>
         </td>
     </tr>
+
 </table>
 
 <?php include '../../Master/footer.php'; ?>
+
 </body>
 </html>
