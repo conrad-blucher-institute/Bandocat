@@ -93,11 +93,7 @@
         width: 200px;
         padding: 10px 10px;
     }
-    p
-    {
-        font-size: 14px;
-        margin-left: 40%;
-    }
+
 </style>
 <table id = "thetable">
 
@@ -110,9 +106,9 @@
         <td class="Account" id="thetable_right">
             <h2>Input Form</h2>
             <table class="Account_Table">
-                <p style = "color:red;">(*) required field</p>
-                <p style = "color:red;">(Hover mouse on 'Has POI' for more information)</p>
-                <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
+                <span class="label" style = "color:red; margin-left: 40%">(*) required field (Hover mouse on 'Has POI' for more information)</span>
+
+                <form id="frm_auth" name="frm_auth" method="post" action="">
                     <tr>
                         <td id="col1">
                             <div class="cell">
@@ -224,23 +220,13 @@
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> * </span>Readability:</span>
                                 <select id="bookid" name="bookid" style="width:210px" required="true">
-                                    <?php
-                                    //this part will collect all book title fields and populate them to the dropdown booktitle
-                                    $query = mysql_query("SELECT id,book_title FROM indicesinventory.books");
-                                    while($row = mysql_fetch_array($query))
-                                        echo "<option value='" . $row[0] . "'>$row[1]</option>";
-                                    ?>
+
                                 </select>
                             </div>
                             <div class="cell" >
                                 <span class="label"><span style = "color:red;"> * </span>Rectifiability:</span>
                                 <select id="bookid" name="bookid" style="width:210px" required="true">
-                                    <?php
-                                    //this part will collect all book title fields and populate them to the dropdown booktitle
-                                    $query = mysql_query("SELECT id,book_title FROM indicesinventory.books");
-                                    while($row = mysql_fetch_array($query))
-                                        echo "<option value='" . $row[0] . "'>$row[1]</option>";
-                                    ?>
+
                                 </select>
                             </div>
                             <div class="cell">
@@ -254,12 +240,7 @@
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> * </span>Document Medium:</span>
                                 <select id="bookid" name="bookid" style="width:210px">
-                                    <?php
-                                    //this part will collect all book title fields and populate them to the dropdown booktitle
-                                    $query = mysql_query("SELECT id,book_title FROM indicesinventory.books");
-                                    while($row = mysql_fetch_array($query))
-                                        echo "<option value='" . $row[0] . "'>$row[1]</option>";
-                                    ?>
+
                                 </select>
                             </div>
                             <div class="cell">
@@ -271,7 +252,7 @@
                                 <input type="file" name="fileupload" id="fileupload" accept="image/*" required="true" /><span class = "errorInput" id = "fileuploadErr"></span>
                             </div>
                             <div class="cell">
-                                <input type = "hidden" name = "userIDInput" value = "<?php echo $userid; ?>" />
+                                <input type = "hidden" name = "userIDInput" value = "" />
                                 <input type = "hidden" name = "docID" value = "" />
                                 <input type = "hidden" name="action" value="input" />  <!-- input or edit -->
                                 <span><input type="submit" id="btnSubmit" name="btnSubmit" value="Reset" class="button button-blue"/></span>
