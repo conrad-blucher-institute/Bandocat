@@ -169,8 +169,17 @@ class DBHelper
         return $result;
     }
 
-
-    function SP_INSERT_TICKET($iSubject, $iPosterID, $iCollectionID, $iDescription)
+    /**********************************************
+     * Function: SP_TICKET_INSERT
+     * Description: Insert ticket when user submit new ticket
+     * Parameter(s):
+     * $iSubject (in string) - Subject or library index
+     * $iPosterID (in int) - userID of submitter
+     * $iCollectionID (in int) - collectionID in which the ticket submit for
+     * $iDescription (in string) - description of what goes wrong
+     * Return value(s): true if success, false if fail
+     ***********************************************/
+    function SP_TICKET_INSERT($iSubject, $iPosterID, $iCollectionID, $iDescription)
     {
         /* PREPARE STATEMENT */
         $call = $this->getConn()->prepare("CALL SP_TICKET_INSERT(?,?,?,?)");
@@ -185,5 +194,57 @@ class DBHelper
         if($call)
             return true;
         return false;
+    }
+
+    /**********************************************
+     * Function: SP_LOG_WRITE
+     * Description: Insert new log entry
+     * Parameter(s):
+     * $iAction (in string) - input, edit or ....
+     * $iCollectionID (in int) - collection id of the document
+     * $iDocID (in int) - document ID
+     * $iUserID (in string) -  userID of user who performs the action
+     * $iStatus (in string) - success or fail
+     * Return value(s): true if success, false if fail
+     ***********************************************/
+    function SP_LOG_WRITE($iAction,$iCollectionID,$iDocID, $iUserID,$iStatus)
+    {
+        /* PREPARE STATEMENT */
+        $call = $this->getConn()->prepare("CALL SP_LOG_WRITE(?,?,?,?,?)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, $iAction, PDO::PARAM_STR,10);
+        $call->bindParam(2, $iCollectionID, PDO::PARAM_INT);
+        $call->bindParam(3, $iDocID, PDO::PARAM_INT);
+        $call->bindParam(4, $iUserID, PDO::PARAM_INT);
+        $call->bindParam(5, $iStatus, PDO::PARAM_STR,7);
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        if($call)
+            return true;
+        return false;
+    }
+
+    /**********************************************
+     * Function: SP_ADMIN_TICKET_SELECT
+     * Description: GIVEN A TICKET ID, RETURN INFORMATION ABOUT TICKET
+     * Parameter(s):
+     * $iTicketID (in Integer) - ticket ID
+     * Return value(s):
+     * $result (assoc array) - return a ticket info into a associative array
+     ***********************************************/
+    function SP_ADMIN_TICKET_SELECT($iTicketID)
+    {
+        /* PREPARE STATEMENT */
+        $call = $this->getConn()->prepare("CALL SP_ADMIN_TICKET_SELECT(?,@oSubject,@oSubmissionDate,@oSolvedDate,@oPoster,@oCollection,@oDescription,@oNotes,@oSolver,@oStatus)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, htmlspecialchars($iTicketID), PDO::PARAM_INT,11);
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        /* RETURN RESULT */
+        $select = $this->getConn()->query('SELECT @oSubject AS Subject,@oSubmissionDate AS SubmissionDate,@oSolvedDate AS SolvedDate,@oPoster AS Submitter,@oCollection AS Collection,@oDescription AS Description,@oNotes AS Notes,@oSolver AS Solver,@oStatus AS Status');
+        $result = $select->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
