@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -73,9 +72,11 @@
         float:left;
         width:150px;
         min-width: 195px;
+    }
+    mark {
         background-color: #ccf5ff;
     }
-    span.labelradio:hover a{
+    span.labelradio:hover p{
         z-index: 10;
         display: inline;
         position: absolute;
@@ -86,11 +87,16 @@
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px; -o-border-radius: 3px;
         border-radius: 3px;
-        -webkit-box-shadow: 4px 4px 4px #bdfcd1;
-        -moz-box-shadow: 4px 4px 4px #bdfcd1;
-        box-shadow: 4px 4px 4px #bdfcd1;
+        -webkit-box-shadow: 4px 4px 4px #36c476;
+        -moz-box-shadow: 4px 4px 4px #36c476;
+        box-shadow: 4px 4px 4px #36c476;
         width: 200px;
         padding: 10px 10px;
+    }
+    p
+    {
+        font-size: 14px;
+        margin-left: 40%;
     }
 </style>
 <table id = "thetable">
@@ -104,7 +110,8 @@
         <td class="Account" id="thetable_right">
             <h2>Input Form</h2>
             <table class="Account_Table">
-
+                <p style = "color:red;">(*) required field</p>
+                <p style = "color:red;">(Hover mouse on 'Has POI' for more information)</p>
                 <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
                     <tr>
                         <td id="col1">
@@ -125,37 +132,37 @@
                                 <input type = "text" name = "mapscale" id = "mapscale" size="26" value="" required="false" /><span class = "errorInput" id = "mapscaleErr"></span>
                             </div>
                             <div class="cell">
-                                <span class="labelradio">Is Map:<a hidden><b></b>This is to signal if it is a map</a></span>
+                                <span class="labelradio"><mark>Is Map:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
                                 <input type = "radio" name = "ismap" id = "ismap_yes" size="26" value="Yes" checked="true"/>Yes
                                 <input type = "radio" name = "ismap" id = "ismap_no" size="26" value="No"  />No
                             </div>
                             <div class="cell" >
-                                <span class="labelradio" >Needs Review:<a hidden><b></b>This is to signal if a review is needed</a></span>
+                                <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                                 <input type = "radio" name = "needsreview" id = "needsreview_yes" size="26" value="Yes" checked="true"/>Yes
                                 <input type = "radio" name = "needsreview" id = "needsreview_no" size="26" value="No" />No
                             </div>
                             <div class="cell">
-                                <span class="labelradio">Has North Arrow:<a hidden><b></b>This is to signal if it has a North Arrow</a></span>
+                                <span class="labelradio"><mark>Has North Arrow:</mark><p hidden><b></b>This is to signal if it has a North Arrow</p></span>
                                 <input type = "radio" name = "needsreview" id = "needsreview_yes" size="26" value="Yes" checked="true"/>Yes
                                 <input type = "radio" name = "needsreview" id = "needsreview_no" size="26" value="No"  />No
                             </div>
                             <div class="cell">
-                                <span class="labelradio">Has Street:<a hidden><b></b>This is to signal if a Street(s) are present</a></span>
+                                <span class="labelradio"><mark>Has Street:</mark><p hidden><b></b>This is to signal if a Street(s) are present</p></span>
                                 <input type = "radio" name = "hasStreet" id = "hasStreet_yes" size="26" value="Yes" checked="true"/>Yes
                                 <input type = "radio" name = "hasStreet" id = "hasStreet_no" size="26" value="No"  />No
                             </div>
                             <div class="cell">
-                                <span class="labelradio">Has POI:<a hidden><b></b>This is to signal if a Point of Interest is present</a></span>
+                                <span class="labelradio"><mark>Has POI:</mark><p hidden><b></b>This is to signal if a Point of Interest is present</p></span>
                                 <input type = "radio" name = "hasPOI" id = "hasPOI_yes" size="26" value="Yes" checked="true"/>Yes
                                 <input type = "radio" name = "hasPOI" id = "hasPOI_no" size="26" value="No"  />No
                             </div>
                             <div class="cell">
-                                <span class="labelradio">Has Coordinates:<a hidden><b></b>This is to signal if Coordinates are visible</a></span>
+                                <span class="labelradio"><mark>Has Coordinates:</mark><p hidden><b></b>This is to signal if Coordinates are visible</p></span>
                                 <input type = "radio" name = "hascoordinates" id = "hascoordinates_yes" size="26" value="Yes" checked="true" />Yes
                                 <input type = "radio" name = "hascoordinates" id = "hascoordinates_no" size="26" value="No"  />No
                             </div>
                             <div class="cell">
-                                <span class="labelradio">Has Coast:<a hidden><b></b>This is to signal if a Coast line is present</a></span>
+                                <span class="labelradio"><mark>Has Coast:</mark><p hidden><b></b>This is to signal if a Coast line is present</p></span>
                                 <input type = "radio" name = "hascoast" id = "hascoast_yes" size="26" value="Yes" />Yes
                                 <input type = "radio" name = "hascoast" id = "hascoast_no" size="26" value="No" checked="true" />No
                             </div>
