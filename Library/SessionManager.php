@@ -94,8 +94,6 @@ class SessionManager
     }
 
 
-
-
     //Super admin & admin
     public function isAdmin()
     {
@@ -111,5 +109,7 @@ class SessionManager
             return true;
         return false;
     }
+
+
 
 }

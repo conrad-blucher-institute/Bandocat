@@ -303,6 +303,8 @@ nav {
 /*___________________________________*/
 /* Background color: green */
 .bluebtn{
+    font-size: 1em;
+    padding: 10px 10px 10px 10px;
     border-radius:10px;
     color:#ffffff;
     background: rgba(0,103,197,1);
@@ -316,6 +318,7 @@ nav {
 
 .bluebtn:hover{
     color:#ffffff;
+    border-style: inset;
     background: rgba(0,127,62,1);
     background: -moz-linear-gradient(left, rgba(0,127,62,1) 0%, rgba(0,127,62,0.89) 14%, rgba(0,127,62,0.89) 100%);
     background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,127,62,1)), color-stop(14%, rgba(0,127,62,0.89)), color-stop(100%, rgba(0,127,62,0.89)));
@@ -425,7 +428,7 @@ footer a{
     text-decoration: none;
     color: #000;
 }
-
+#footer a:hover{color: white !important;}
 footer a:hover
 {
     text-decoration: underline;
