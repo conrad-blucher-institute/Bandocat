@@ -247,4 +247,96 @@ class DBHelper
         $result = $select->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    /**********************************************
+     * Function: SP_TEMPLATE_MAP_DOCUMENT_SELECT
+     * Description: GIVEN collection name & document ID, RETURN INFORMATION ABOUT Document
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * $iDocID (in Integer) - document ID
+     * Return value(s):
+     * $result (assoc array) - return a document info in an associative array, or FALSE if failed
+     ***********************************************/
+    function SP_TEMPLATE_MAP_DOCUMENT_SELECT($collection,$iDocID)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        if($dbname != null && $dbname != "")
+        {
+            $this->getConn()->exec('USE ' . $dbname);
+            /* PREPARE STATEMENT */
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_SELECT(?,@oLibraryIndex,@oTitle,@oSubtitle,@oIsMap,@oMapScale,@oHasNorthArrow,@oHasStreets,@oHasPOI,@oHasCoordinates,@oHasCoast,@oFileName,@oFileNameBack,@oNeedsReview,@oComments,@oCustomerName,@oStartDate,@oEndDate,@oFieldBookNumber,@oFieldBookPage,@oReadability,@oRectifiability,@oCompanyName,@oType,@oMedium,@oAuthorName,@oFileNamePath,@oFileNameBackPath)");
+            if (!$call)
+                trigger_error("SQL failed: " . $this->getConn()->errorCode()  . " - " . $this->conn->errorInfo()[0]);
+            $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT,11);
+            /* EXECUTE STATEMENT */
+            $call->execute();
+            /* RETURN RESULT */
+            $select = $this->getConn()->query('SELECT @oLibraryIndex AS LibraryIndex,@oTitle AS Title,@oSubtitle AS Subtitle,@oIsMap AS IsMap,@oMapScale AS MapScale,@oHasNorthArrow AS HasNorthArrow,@oHasStreets AS HasStreets,@oHasPOI AS HasPOI,@oHasCoordinates AS HasCoordinates,@oHasCoast AS HasCoast,@oFileName AS FileName,@oFileNameBack AS FileNameBack,@oNeedsReview AS NeedsReview,@oComments AS Comments,@oCustomerName AS CustomerName,@oStartDate AS StartDate,@oEndDate AS EndDate,@oFieldBookNumber AS FieldBookNumber,@oFieldBookPage AS FieldBookPage,@oReadability AS Readability,@oRectifiability AS Rectifiability,@oCompanyName AS CompanyName,@oType AS Type,@oMedium AS Medium,@oAuthorName AS AuthorName,@oFileNamePath AS FileNamePath,@oFileNameBackPath AS FileNameBackPath');
+            $result = $select->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        else return false;
+    }
+
+    /**********************************************
+     * Function: GET_TEMPLATE_MAP_MEDIUM_FOR_DROPDOWN
+     * Description: GET DOCUMENT MEDIUMS FOR DROPDOWN LIST
+     * Parameter(s): $collection (in String) - Name of the collection
+     * Return value(s):
+     * $result  (array) - return array of document medium
+     ***********************************************/
+    function GET_TEMPLATE_MAP_MEDIUM_FOR_DROPDOWN($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT `mediumname` FROM `documentmedium`");
+            $sth->execute();
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        }
+        else return false;
+    }
+
+    function GET_AUTHOR_LIST($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT `authorname` FROM `author`");
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        }
+        else return false;
+    }
+
+    function GET_CUSTOMER_LIST($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT `customername` FROM `customer`");
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        }
+        else return false;
+    }
+
+    function GET_COMPANY_LIST($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT `companyname` FROM `company`");
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        }
+        else return false;
+    }
 }

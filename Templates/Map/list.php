@@ -39,7 +39,7 @@ $session = new SessionManager();
                     //column Document Index: Replace with Hyperlink
                     {
                         "render": function ( data, type, row ) {
-                            return "<a href='editform.php?col=" + data + "'>Edit/View</a>" ;
+                            return "<a href='review.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Edit/View</a>" ;
                         },
                         "targets": 0
                     },
