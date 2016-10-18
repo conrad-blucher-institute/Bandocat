@@ -85,7 +85,6 @@ $date = new DateHelper();
         width: 200px;
         padding: 10px 10px;
     }
-
 </style>
 <table id = "thetable">
     <tr>
@@ -94,9 +93,9 @@ $date = new DateHelper();
             include '../../Master/sidemenu.php' ?>
         </td>
         <td class="Account" id="thetable_right">
-            <h2>Review Form</h2>
+            <h2><?php echo $config['DisplayName'];?> Review Form</h2>
             <div style="overflow-y: scroll;overflow-x:hidden;min-height:600px;max-height:700px">
-                <form id="frm_catalog" name="frm_catalog" method="post" action="form_processing.php">
+                <form id="theform" name="theform" method="post">
             <table id="table2">
                     <tr>
                         <td>
@@ -109,7 +108,7 @@ $date = new DateHelper();
                             <span class="label">Customer Name:</span>
                         </td>
                         <td>
-                            <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="<?php echo $document['CustomerName']; ?>" required="true" />
+                            <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="<?php echo $document['CustomerName']; ?>" />
                             <datalist id="lstCustomer">
                                 <?php $Render->getDataList($DB->GET_CUSTOMER_LIST($collection)); ?>
                             </datalist>
@@ -164,7 +163,7 @@ $date = new DateHelper();
                                 <span class="label">Field Book Number:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value="<?php if($document['FieldBookNumber'] != 0 && $document['FieldBookNumber'] != null) {echo $document['FieldBookNumber'];} ?>" required="true" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value="<?php if($document['FieldBookNumber'] != 0 && $document['FieldBookNumber'] != null) {echo $document['FieldBookNumber'];} ?>"/><span class = "errorInput" id = "customernameErr"></span>
                             </td>
                         </tr>
 
@@ -172,11 +171,11 @@ $date = new DateHelper();
                              <td><span class="labelradio"><mark>Is Map:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
                              </td>
                              <td>
-                                 <input type = "radio" name = "rbIsMap" id = "rbIsMap_yes" size="26" value="Yes" <?php if($document['IsMap'] == 1) echo "checked"; ?>/>Yes
-                                 <input type = "radio" name = "rbIsMap" id = "rbIsMap_no" size="26" value="No"  <?php if($document['IsMap'] == 0) echo "checked"; ?>/>No
+                                 <input type = "radio" name = "rbIsMap" id = "rbIsMap_yes" size="26" value="1" <?php if($document['IsMap'] == 1) echo "checked"; ?>/>Yes
+                                 <input type = "radio" name = "rbIsMap" id = "rbIsMap_no" size="26" value="0"  <?php if($document['IsMap'] == 0) echo "checked"; ?>/>No
                              </td>
                              <td><span class="label">Field Book Page:</span></td>
-                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo $document['FieldBookPage']; ?>" required /></span>
+                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo $document['FieldBookPage']; ?>" /></span>
                              </td>
                          </tr>
                         <tr>
@@ -184,8 +183,8 @@ $date = new DateHelper();
                                 <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                             </td>
                             <td>
-                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="Yes" <?php if($document['NeedsReview'] == 1) echo "checked"; ?>/>Yes
-                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="No" <?php if($document['NeedsReview'] == 0) echo "checked"; ?>/>No
+                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" <?php if($document['NeedsReview'] == 1) echo "checked"; ?>/>Yes
+                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?>/>No
                             </td>
                             <td>
                                 <?php $readrec = array("POOR","GOOD","EXCELLENT"); ?>
@@ -203,8 +202,8 @@ $date = new DateHelper();
                                 <td><span class="labelradio"><mark>Has North Arrow:</mark><p hidden><b></b>This is to signal if it has a North Arrow</p></span>
                                 </td>
                                 <td>
-                                    <input type = "radio" name = "rbHasNorthArrow" id = "rbHasNorthArrow_yes" size="26" value="Yes" <?php if($document['HasNorthArrow'] == 1) echo "checked"; ?>/>Yes
-                                    <input type = "radio" name = "rbHasNorthArrow" id = "rbHasNorthArrow_no" size="26" value="No"  <?php if($document['HasNorthArrow'] == 0) echo "checked"; ?>/>No
+                                    <input type = "radio" name = "rbHasNorthArrow" id = "rbHasNorthArrow_yes" size="26" value="1" <?php if($document['HasNorthArrow'] == 1) echo "checked"; ?>/>Yes
+                                    <input type = "radio" name = "rbHasNorthArrow" id = "rbHasNorthArrow_no" size="26" value="0"  <?php if($document['HasNorthArrow'] == 0) echo "checked"; ?>/>No
                                 </td>
                                 <td>
                                      <span class="label"><span style = "color:red;"> * </span>Rectifiability:</span>
@@ -222,15 +221,15 @@ $date = new DateHelper();
                                 <span class="labelradio"><mark>Has Street:</mark><p hidden><b></b>This is to signal if a Street(s) are present</p></span>
                             </td>
                             <td>
-                                <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_yes" size="26" value="Yes" <?php if($document['HasStreets'] == 1) echo "checked"; ?>/>Yes
-                                <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_no" size="26" value="No" <?php if($document['HasStreets'] == 0) echo "checked"; ?> />No
+                                <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_yes" size="26" value="1" <?php if($document['HasStreets'] == 1) echo "checked"; ?>/>Yes
+                                <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_no" size="26" value="0" <?php if($document['HasStreets'] == 0) echo "checked"; ?> />No
                             </td>
                             <td>
                                 <span class="label">Company Name:</span>
 
                             </td>
                             <td>
-                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="<?php echo $document['CompanyName'];?>" required="true" /></span>
+                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="<?php echo $document['CompanyName'];?>" /></span>
                                 <datalist id="lstCompany">
                                     <?php $Render->getDataList($DB->GET_COMPANY_LIST($collection)); ?>
                                 </datalist>
@@ -241,8 +240,8 @@ $date = new DateHelper();
                                 <span class="labelradio"><mark>Has POI:</mark><p hidden><b></b>This is to signal if a Point of Interest is present</p></span>
                             </td>
                             <td>
-                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_yes" size="26" value="Yes" <?php if($document['HasPOI'] == 1) echo "checked"; ?>/>Yes
-                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_no" size="26" value="No"  <?php if($document['HasPOI'] == 0) echo "checked"; ?>/>No
+                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_yes" size="26" value="1" <?php if($document['HasPOI'] == 1) echo "checked"; ?>/>Yes
+                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_no" size="26" value="0"  <?php if($document['HasPOI'] == 0) echo "checked"; ?>/>No
                             </td>
                             <td>
                                 <span class="label">Document Type:</span>
@@ -256,8 +255,8 @@ $date = new DateHelper();
                                 <span class="labelradio"><mark>Has Coordinates:</mark><p hidden><b></b>This is to signal if Coordinates are visible</p></span>
                             </td>
                             <td>
-                                <input type = "radio" name = "rbHasCoordinates" id = "rbHasCoordinates_yes" size="26" value="Yes" <?php if($document['HasCoordinates'] == 1) echo "checked"; ?> />Yes
-                                <input type = "radio" name = "rbHasCoordinates" id = "rbHasCoordinates_no" size="26" value="No"  <?php if($document['HasCoordinates'] == 0) echo "checked"; ?>/>No
+                                <input type = "radio" name = "rbHasCoordinates" id = "rbHasCoordinates_yes" size="26" value="1" <?php if($document['HasCoordinates'] == 1) echo "checked"; ?> />Yes
+                                <input type = "radio" name = "rbHasCoordinates" id = "rbHasCoordinates_no" size="26" value="0"  <?php if($document['HasCoordinates'] == 0) echo "checked"; ?>/>No
                             </td>
                             <td>
                                 <span class="label"><span style = "color:red;"> * </span>Document Medium:</span>
@@ -275,14 +274,14 @@ $date = new DateHelper();
                                 <span class="labelradio"><mark>Has Coast:</mark><p hidden><b></b>This is to signal if a Coast line is present</p></span>
                             </td>
                             <td>
-                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_yes" size="26" value="Yes" <?php if($document['HasCoast'] == 1) echo "checked"; ?>/>Yes
-                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_no" size="26" value="No" <?php if($document['HasCoast'] == 0) echo "checked"; ?> />No
+                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_yes" size="26" value="1" <?php if($document['HasCoast'] == 1) echo "checked"; ?>/>Yes
+                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_no" size="26" value="0" <?php if($document['HasCoast'] == 0) echo "checked"; ?> />No
                             </td>
                             <td>
                                 <span class="label">Document Author:</span>
                             </td>
                             <td>
-                                <input type = "text" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" size="26" value="<?php echo $document['AuthorName']; ?>" required="true" /></span>
+                                <input type = "text" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" size="26" value="<?php echo $document['AuthorName']; ?>" /></span>
                                 <datalist id="lstAuthor">
                                     <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                                 </datalist>
@@ -317,13 +316,14 @@ $date = new DateHelper();
                                 <span class="label">Comments:</span>
                             </td>
                             <td>
-                                <textarea name = "comments" rows = "5" cols = "35" id="comments"/><?php echo $document['Comments']; ?></textarea>
+                                <textarea name = "txtComments" rows = "5" cols = "35" id="txtComments"/><?php echo $document['Comments']; ?></textarea>
                             </td>
                         </tr>
                 <tr>
                     <td colspan="4" style="text-align: center">
-                        <input type = "hidden" name = "txtDocID" value = "<?php echo $docID;?>" />
-                        <input type = "hidden" name="txtAction" value="review" />  <!-- catalog or review -->
+                        <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
+                        <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
+                        <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                         <span><input type="submit" id="btnSubmit" name="btnSubmit" value="Update" class="bluebtn"/></span>
                     </td>
                 </tr>
@@ -339,4 +339,23 @@ $date = new DateHelper();
 <?php include '../../Master/footer.php'; ?>
 
 </body>
+<script>
+    $( document ).ready(function() {
+        /* attach a submit handler to the form */
+        $('#theform').submit(function (event) {
+            /* stop form from submitting normally */
+            event.preventDefault();
+            /* Send the data using post */
+            $.ajax({
+                type: 'post',
+                url: 'form_processing.php',
+                data:  $('#theform').serializeArray(),
+                success:function(data){
+                        alert(data);
+
+                }
+            });
+        });
+    });
+</script>
 </html>

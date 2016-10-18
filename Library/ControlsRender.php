@@ -26,12 +26,13 @@ class ControlsRender
 
     function GET_DDL_MONTH($input)
     {
-        if($input == null || $input == '00')
-            echo '<option selected="selected" value="">Month</option>';
-        else echo '<option value="">Month</option>';
+        if($input == null || $input == '00' || $input == '0' || $input == '')
+            echo '<option selected="selected" value="00">Month</option>';
+        else echo '<option value="00">Month</option>';
         for($num = 1; $num <= 12; $num++)
         {
-
+            if($num < 10)
+                $num = '0' . $num;
             if($input == $num)
                 echo '<option selected = "selected" >'.$input.'</option>';
             else
@@ -42,11 +43,13 @@ class ControlsRender
 
     function GET_DDL_DAY($input)
     {
-        if($input == null || $input == '00')
-            echo '<option selected="selected" value="">Day</option>';
-        else echo '<option value="">Day</option>';
+        if($input == null || $input == '00' || $input == '0' || $input == '')
+            echo '<option selected="selected" value="00">Day</option>';
+        else echo '<option value="00">Day</option>';
         for($num= 1; $num<=31; $num++)
         {
+            if($num < 10)
+                $num = '0' . $num;
             if($input == $num)
                 echo '<option selected = "selected" >'.$input.'</option>';
             else
@@ -56,9 +59,9 @@ class ControlsRender
 
     function GET_DDL_YEAR($input)
     {
-        if($input == null || $input == '0000')
-            echo '<option selected="selected" value="">Year</option>';
-        else echo '<option value="">Year</option>';
+        if($input == null || $input == '0000' || $input == '0' || $input == '')
+            echo '<option selected="selected" value="0000">Year</option>';
+        else echo '<option value="0000">Year</option>';
         $current = date("Y");
         for($num=1750; $num<=$current; $num++)
         {
