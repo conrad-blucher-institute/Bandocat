@@ -20,6 +20,8 @@ require '../../Library/DBHelper.php';
     <style type="text/css">
         .Error_Input{margin-left: 10%; margin-top: 0%; background-color: #f1f1f1; border-radius: 10px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; padding-left: 8%; margin-right: 10%; padding-bottom: 5%; padding-top: 2.5%;}
         nav{margin: -1px 0px 40px 15px !important;}
+        nav{margin-left: 8px;
+          margin-top: 22px;}
     </style>
 </head>
 
