@@ -11,6 +11,7 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new DBHelper();
+$config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
 
 ?>
@@ -110,10 +111,10 @@ $date = new DateHelper();
             include '../../Master/sidemenu.php' ?>
         </td>
         <td class="Account" id="thetable_right">
-            <h2>Catalog Form</h2>
+            <h2><?php echo $config['DisplayName'];?> Catalog Form</h2>
             <table class="Account_Table">
 
-                <form id="frm_catalog" name="frm_catalog" method="post" action="form_processing.php">
+                <form id="theform" name="theform" method="post" action="form_processing.php">
                     <tr>
                         <td id="col1">
                             <div class="cell">
@@ -134,38 +135,38 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Is Map:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
-                                <input type = "radio" name = "rbIsMap" id = "rbIsMap_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "rbIsMap" id = "rbIsMap_no" size="26" value="No"  />No
+                                <input type = "radio" name = "rbIsMap" id = "rbIsMap_yes" size="26" value="1" checked="true"/>Yes
+                                <input type = "radio" name = "rbIsMap" id = "rbIsMap_no" size="26" value="0"  />No
                             </div>
                             <div class="cell" >
                                 <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
-                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="No" />No
+                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" checked="true"/>Yes
+                                <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has North Arrow:</mark><p hidden><b></b>This is to signal if it has a North Arrow</p></span>
-                                <input type = "radio" name = "rbNorthArrow" id = "rbNorthArrow_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "rbNorthArrow" id = "rbNorthArrow_no" size="26" value="No"  />No
+                                <input type = "radio" name = "rbNorthArrow" id = "rbNorthArrow_yes" size="26" value="1" checked="true"/>Yes
+                                <input type = "radio" name = "rbNorthArrow" id = "rbNorthArrow_no" size="26" value="0"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Street:</mark><p hidden><b></b>This is to signal if a Street(s) are present</p></span>
-                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_no" size="26" value="No"  />No
+                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_yes" size="26" value="1" checked="true"/>Yes
+                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_no" size="26" value="0"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has POI:</mark><p hidden><b></b>This is to signal if a Point of Interest is present</p></span>
-                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_no" size="26" value="No"  />No
+                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_yes" size="26" value="1" checked="true"/>Yes
+                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_no" size="26" value="0"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Coordinates:</mark><p hidden><b></b>This is to signal if Coordinates are visible</p></span>
-                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_yes" size="26" value="Yes" checked="true" />Yes
-                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_no" size="26" value="No"  />No
+                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_yes" size="26" value="1" checked="true" />Yes
+                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_no" size="26" value="0"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Coast:</mark><p hidden><b></b>This is to signal if a Coast line is present</p></span>
-                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_yes" size="26" value="Yes" />Yes
-                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_no" size="26" value="No" checked="true" />No
+                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_yes" size="26" value="1" />Yes
+                                <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_no" size="26" value="0" checked="true" />No
                             </div>
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> * </span>Scan Of Front:</span>
@@ -173,13 +174,13 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> &nbsp; </span>Comments:</span>
-                                <textarea name = "comments" rows = "5" cols = "35" id="comments"/></textarea>
+                                <textarea name = "txtComments" rows = "5" cols = "35" id="txtComments"/></textarea>
                             </div>
                         </td>
                         <td id="col2">
                             <div class="cell">
                                 <span class="label">Customer Name:</span>
-                                <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="" /><span class = "errorInput" id = "customernameErr"></span>
                                 <datalist id="lstCustomer">
                                     <?php $Render->getDataList($DB->GET_CUSTOMER_LIST($collection)); ?>
                                 </datalist>
@@ -213,11 +214,11 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="label">Field Book Number:</span>
-                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value=""/><span class = "errorInput" id = "customernameErr"></span>
                             </div>
                             <div class="cell">
                                 <span class="label">Field Book Page:</span>
-                                <input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="" /><span class = "errorInput" id = "customernameErr"></span>
                             </div>
                             <div class="cell">
                                 <?php $readrec = array("POOR","GOOD","EXCELLENT"); ?>
@@ -238,7 +239,7 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="label">Company Name:</span>
-                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="" /><span class = "errorInput" id = "customernameErr"></span>
                                 <datalist id="lstCompany">
                                     <?php $Render->getDataList($DB->GET_COMPANY_LIST($collection)); ?>
                                 </datalist>
@@ -257,18 +258,19 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="label">Document Author:</span>
-                                <input type = "text" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" size="26" value="" /></span>
                                 <datalist id="lstAuthor">
                                     <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                                 </datalist>
                             </div>
                             <div class="cell">
                                 <span class="label">Scan Of Back:</span>
-                                <input type="file" name="fileUploadBack" id="fileUploadBack" accept="image/*" /><span class = "errorInput" id = "fileuploadErr"></span>
+                                <input type="file" name="fileUploadBack" id="fileUploadBack" accept="image/*" /></span>
                             </div>
                             <div class="cell" style="text-align: center;padding-top:20px">
-                                <input type = "hidden" name = "txtDocID" value = "" />
-                                <input type = "hidden" name="txtAction" value="catalog" />  <!-- catalog or review -->
+                                <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
+                                <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
+                                <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                 <span><input type="submit" id="btnSubmit" name="btnSubmit" value="Upload" class="bluebtn"/></span>
                             </div>
                         </td>
