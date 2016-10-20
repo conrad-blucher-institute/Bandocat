@@ -1,3 +1,8 @@
+<?php include '../../Library/ControlsRender.php';
+$dateControl = new ControlsRender();
+$input = null;
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -94,9 +99,10 @@
         padding: 10px 10px;
     }
 </style>
-<table id = "thetable">
 
-    <script type="text/javascript" src="PasswordMatch.js"></script>
+<script type="text/javascript" src="PasswordMatch.js"></script>
+
+<table id = "thetable">
     <tr>
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/header.php';
@@ -105,182 +111,217 @@
         <td class="Account" id="thetable_right">
             <h2>Input Form</h2>
             <table class="Account_Table">
+            <!--Left Table-->
+                <tr>
+                    <td id="col1">
+                        <table id="innerLeftTable">
 
-                <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
-                    <tr>
-                        <td id="col1">
-                            <div class="cell">
-                                <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                <input type = "text" name = "libraryindex" id = "libraryindex" size="26" value="" required="true" /><span class = "errorInput" id = "libraryindexErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label"><span style = "color:red;"> * </span>Document Title:</span>
-                                <input type = "text" name = "documenttitle" id = "documenttitle" size="26" value="" required="true" /><span class = "errorInput" id = "documenttitleErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Document Subtitle:</span>
-                                <input type = "text" name = "documentsubtitle" id = "documentsubtitle" size="26" value="" required="false" /><span class = "errorInput" id = "documentsubtitleErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Map Scale:</span>
-                                <input type = "text" name = "mapscale" id = "mapscale" size="26" value="" required="false" /><span class = "errorInput" id = "mapscaleErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="labelradio"><mark>Is Map:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
-                                <input type = "radio" name = "ismap" id = "ismap_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "ismap" id = "ismap_no" size="26" value="No"  />No
-                            </div>
-                            <div class="cell" >
-                                <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
-                                <input type = "radio" name = "needsreview" id = "needsreview_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "needsreview" id = "needsreview_no" size="26" value="No" />No
-                            </div>
-                            <div class="cell">
-                                <span class="labelradio"><mark>Has North Arrow:</mark><p hidden><b></b>This is to signal if it has a North Arrow</p></span>
-                                <input type = "radio" name = "needsreview" id = "needsreview_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "needsreview" id = "needsreview_no" size="26" value="No"  />No
-                            </div>
-                            <div class="cell">
-                                <span class="labelradio"><mark>Has Street:</mark><p hidden><b></b>This is to signal if a Street(s) are present</p></span>
-                                <input type = "radio" name = "hasStreet" id = "hasStreet_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "hasStreet" id = "hasStreet_no" size="26" value="No"  />No
-                            </div>
-                            <div class="cell">
-                                <span class="labelradio"><mark>Has POI:</mark><p hidden><b></b>This is to signal if a Point of Interest is present</p></span>
-                                <input type = "radio" name = "hasPOI" id = "hasPOI_yes" size="26" value="Yes" checked="true"/>Yes
-                                <input type = "radio" name = "hasPOI" id = "hasPOI_no" size="26" value="No"  />No
-                            </div>
-                            <div class="cell">
-                                <span class="labelradio"><mark>Has Coordinates:</mark><p hidden><b></b>This is to signal if Coordinates are visible</p></span>
-                                <input type = "radio" name = "hascoordinates" id = "hascoordinates_yes" size="26" value="Yes" checked="true" />Yes
-                                <input type = "radio" name = "hascoordinates" id = "hascoordinates_no" size="26" value="No"  />No
-                            </div>
-                            <div class="cell">
-                                <span class="labelradio"><mark>Has Coast:</mark><p hidden><b></b>This is to signal if a Coast line is present</p></span>
-                                <input type = "radio" name = "hascoast" id = "hascoast_yes" size="26" value="Yes" />Yes
-                                <input type = "radio" name = "hascoast" id = "hascoast_no" size="26" value="No" checked="true" />No
-                            </div>
-                            <div class="cell">
-                                <span class="label"><span style = "color:red;"> * </span>Scan Of Front:</span>
-                                <input type="file" name="fileupload" id="fileupload" accept="image/*" required="true" /><span class = "errorInput" id = "fileuploadErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label"><span style = "color:red;"> &nbsp; </span>Comments:</span>
-                                <textarea name = "comments" rows = "5" cols = "35" id="comments"/></textarea>
-                            </div>
-                        </td>
-                        <td id="col2">
-                            <div class="cell">
-                                <span class="label">Customer Name:</span>
-                                <input type = "text" name = "customername" id = "customername" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Document Start Date:</span>
-                                <select name="day" id="day">
-                                    <option value="">Day</option>
-                                    <script type="text/javascript" src="DateJS.js"></script>
-                                </select>
-                                <select name="month" id="month">
-                                    <option value="">Month</option>
-                                    <script type="text/javascript" src="DateJS.js"></script>
-                                </select>
+                <!--Library Index field-->
+                            <tr class="cell">
+                                <td>
+                                    <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
+                                    <input type = "text" name = "libraryindex" id = "libraryindex" size="26" value="" required="true" /><span class = "errorInput" id = "libraryindexErr"></span>
+                                </td>
+                            </tr>
 
-                                <select id="year" name="year">
-                                    <option value="">Year</option>
-                                    <script type="text/javascript" src="DateJS.js"></script>
-                                </select>
+                <!--Document Title-->
+                            <tr class="cell">
+                                <td>
+                                    <span class="label"><span style = "color:red;"> * </span>Document Title:</span>
+                                    <input type = "text" name = "documenttitle" id = "documenttitle" size="26" value="" required="true" /><span class = "errorInput" id = "documenttitleErr"></span>
+                                </td>
+                            </tr>
 
-                            </div>
-                            <div class="cell">
-                                <span class="label">Document End Date:</span>
-                                <select name="day" id="day2">
-                                    <option value="">Day</option>
-                                    <script type="text/javascript" src="DateJS.js"></script>
-                                </select>
+                <!--Needs Review-->
+                            <tr class="cell">
+                                <td>
+                                    <p>
+                                        <span class="labelradio" >
+                                            <mark>Needs Review:</mark>
+                                            <p hidden><b></b>This is to signal if a review is needed</p>
+                                        </span>
+                                        <form>
+                                            <input type = "radio" name = "needsreview" id = "needsreview_yes" size="26" value=1 />Yes
+                                            <input type = "radio" name = "needsreview" id = "needsreview_no" size="26" value=0 checked/>No
+                                        </form>
+                                    </p>
+                                </td>
+                            </tr>
 
-                                <select name="month" id="month2">
-                                    <option value="">Month</option>
+                <!--In A Subfolder-->
+                            <tr class="cell">
+                                <td>
+                                    <p>
+                                        <span class="labelradio" >
+                                            <mark>In A Subfolder:</mark>
+                                            <p hidden><b></b>This document belongs in a subfolder</p>
+                                        </span>
+                                    <form>
+                                        <input type = "radio" name = "inasubfolder" id = "inasubfolder_yes" size="26" value=1/>Yes
+                                        <input type = "radio" name = "inasubfolder" id = "inasubfolder_no" size="26" value=0 checked/>No
+                                    </form>
+                                    </p>
+                                </td>
+                            </tr>
 
-                                </select>
-                                <select name="year" id="year2">
-                                    <option value="">Year</option>
-                                    <script type="text/javascript" src="DateJS.js"></script>
-                                </select>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Fieldbook Number:</span>
-                                <input type = "text" name = "customername" id = "customername" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Field Book Page:</span>
-                                <input type = "text" name = "customername" id = "customername" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label"><span style = "color:red;"> * </span>Readability:</span>
-                                <select id="bookid" name="bookid" style="width:210px" required="true">
-                                    <?php
-                                    //this part will collect all book title fields and populate them to the dropdown booktitle
-                                    $query = mysql_query("SELECT id,book_title FROM indicesinventory.books");
-                                    while($row = mysql_fetch_array($query))
-                                        echo "<option value='" . $row[0] . "'>$row[1]</option>";
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="cell" >
-                                <span class="label"><span style = "color:red;"> * </span>Rectifiability:</span>
-                                <select id="bookid" name="bookid" style="width:210px" required="true">
-                                    <?php
-                                    //this part will collect all book title fields and populate them to the dropdown booktitle
-                                    $query = mysql_query("SELECT id,book_title FROM indicesinventory.books");
-                                    while($row = mysql_fetch_array($query))
-                                        echo "<option value='" . $row[0] . "'>$row[1]</option>";
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Company Name:</span>
-                                <input type = "text" name = "customername" id = "customername" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Document type:</span>
-                                <input type = "text" name = "customername" id = "customername" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label"><span style = "color:red;"> * </span>Document Medium:</span>
-                                <select id="bookid" name="bookid" style="width:210px">
-                                    <?php
-                                    //this part will collect all book title fields and populate them to the dropdown booktitle
-                                    $query = mysql_query("SELECT id,book_title FROM indicesinventory.books");
-                                    while($row = mysql_fetch_array($query))
-                                        echo "<option value='" . $row[0] . "'>$row[1]</option>";
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="cell">
-                                <span class="label">Document Author:</span>
-                                <input type = "text" name = "customername" id = "customername" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
-                            </div>
-                            <div class="cell">
-                                <span class="label"><span style = "color:red;"> * </span>Scan Of Back:</span>
-                                <input type="file" name="fileupload" id="fileupload" accept="image/*" required="true" /><span class = "errorInput" id = "fileuploadErr"></span>
-                            </div>
-                            <div class="cell">
-                                <input type = "hidden" name = "userIDInput" value = "<?php echo $userid; ?>" />
-                                <input type = "hidden" name = "docID" value = "" />
-                                <input type = "hidden" name="action" value="input" />  <!-- input or edit -->
-                                <span><input type="submit" id="btnSubmit" name="btnSubmit" value="Reset" class="button button-blue"/></span>
-                                <span><input type="submit" id="btnSubmit" name="btnSubmit" value="Upload" class="button button-blue"/></span>
-                            </div>
-                        </td>
-                    </tr>
-                </form>
 
+                    <!--Subfolder Comments-->
+                            <tr class="cell">
+                                <td>
+                                    <span class="label">Subfolder Comments:</span>
+                                    <textarea rows = "2" cols = "35" id="subfolderComments"/></textarea>
+                                </td>
+                            </tr>
+                    <!--Classification-->
+                            <tr class="cell">
+                                <td>
+                                    <span class="label">Classification:</span>
+                                    <select>
+                                        <option>
+
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                    <!--Classification Comments-->
+                            <tr class="cell">
+                                <td>
+                                    <span class="label">Classification Comments:</span>
+                                    <textarea rows = "2" cols = "35" id="classificationComments"/></textarea>
+                                </td>
+                            </tr>
+
+                    <!--Scan of Front-->
+                            <tr>
+                                <td>
+                                    <span class="label">Scan of Front</span></br>
+                                    <img src="../../Images/Sample_Thumbnails/general_index_E-K_287.jpg">
+                                </td>
+                            </tr>
+
+                        </table>
+                    </td>
+
+
+
+                    <!--Right Table-->
+                    <td id="col2">
+                        <table id="innerRightTable">
+
+                    <!--Document Start Date-->
+                            <tr class="cell">
+                                <td>
+                                    <span class="label">Document Start Date:</span>
+                                    <select>
+                                        <?php
+                                            $dateControl->GET_DDL_MONTH($input);
+                                        ?>
+                                    </select>
+                                    <select>
+                                        <?php
+                                            $dateControl->GET_DDL_DAY($input)
+                                        ?>
+                                    </select>
+                                    <select>
+                                        <?php
+                                            $dateControl->GET_DDL_YEAR($input)
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+
+                        <!--Document End Date-->
+                            <tr class="cell">
+                                <td>
+                                    <span class="label">Document End Date:</span>
+                                    <select>
+                                        <?php
+                                        $dateControl->GET_DDL_MONTH($input);
+                                        ?>
+                                    </select>
+                                    <select>
+                                        <?php
+                                        $dateControl->GET_DDL_DAY($input)
+                                        ?>
+                                    </select>
+                                    <select>
+                                        <?php
+                                        $dateControl->GET_DDL_YEAR($input)
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+
+                        <!--Document Authors-->
+                            <tr>
+                                <td>
+                                    <table id="authorsTable">
+                                        <tr>
+                                            <td>
+                                                <span class="label">Document Authors:</span>
+                                            </td>
+
+                                            <td>
+                                                <input type="button" id="plusAuthor" value="+" onclick="addAuthor()">
+                                                <input type="button" id="minusAuthor" value="-" onclick="subtractAuthor()">
+                                            </td>
+
+                                            <td>
+                                                <input type="text" id="documentAuthors">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        <!--Comments-->
+                            <tr>
+                                <td>
+                                    <span class="label">Comments:</span>
+                                    <textarea rows = "2" cols = "35" id="comments"/></textarea>
+                                </td>
+                            </tr>
+                        <!--Scan of Back-->
+                            <tr>
+                                <td>
+                                    <span class="label">Scan of Back</span></br>
+                                    <img src="../../Images/Sample_Thumbnails/general_index_E-K_259.jpg">
+                                </td>
+                            </tr>
+
+
+                         </table>
+                    </td>
+                </tr>
             </table>
-
         </td>
     </tr>
-
 </table>
+
+<script>
+    //Authors table global variables
+    var table = document.getElementById("authorsTable");
+    var tableRows = table.rows.length;
+
+    //function that add rows and an input text element as row data
+function addAuthor() {
+
+    var row = table.insertRow(tableRows);
+    for (i = 0; i < table.rows[0].cells.length; i++){
+        var cell = row.insertCell(0);
+
+        //console.log(table.rows[tableRows].cells[0]);
+
+    }
+    table.rows[tableRows].cells[0].innerHTML = "<input type='text' id='documentAuthors'>"
+}
+
+    //function that removes rows from the authors' table
+function subtractAuthor() {
+    var row= table.deleteRow(tableRows);
+}
+</script>
 
 <?php include '../../Master/footer.php'; ?>
 
