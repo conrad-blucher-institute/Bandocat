@@ -1,6 +1,16 @@
 <?php
 //Menu
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+if(isset($_GET['col'])) {
+    $collection = $_GET['col'];
+    require('../../Library/DBHelper.php');
+    $DB = new DBHelper();
+    $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+}
+else header('Location: ../../');
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,7 +19,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Welcome to BandoCat!</title>
+    <title><?php echo $config["DisplayName"]." Menu"; ?></title>
     <link rel = "stylesheet" type = "text/css" href = "CSS/Map_Collection.css" >
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <script type="text/javascript" src="ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
@@ -27,39 +37,17 @@
             <table class="Collection_Table">
                 <tr>
                     <td>
-                        <h4 class="Collection_Title">Collection Name</h4>
+                        <h4 class="Collection_Title"><?php echo $config["DisplayName"]; ?></h4>
                     </td>
                 </tr>
                 <tr>
                     <td class="Collection_data">
-                    <ul class="Collection_Button">
-                        <li style="padding-top: 4%"><a style="font-family: Arial; color: white; text-decoration: none;" href="#">Input Map Information</a></li>
-                    </ul>
+                        <a class="Collection_Button" href="http://spatialquerylab.com/"style="text-decoration: none; color: white; display: block">Input Map Information</a>
                     </td>
                 </tr>
                 <tr>
                     <td class="Collection_data">
-                        <input type="button" class="Collection_Button" value="View Map Information" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="Collection_data">
-                        <input type="button" class="Collection_Button" value="View Tickets" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="Collection_data">
-                        <input type="button" class="Collection_Button" value="Utilities" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="Collection_data">
-                        <input type="button" class="Collection_Button" value="Submit a Ticket" />
-                    </td class="Collection_data">
-                </tr>
-                <tr>
-                    <td class="Collection_data">
-                        <input type="button" class="Collection_Button" value="Change My Password" />
+                        <a class="Collection_Button" href="http://spatialquerylab.com/"style="text-decoration: none; color: white; display: block">Edit/View Map Information</a>
                     </td>
                 </tr>
             </table>
