@@ -114,24 +114,24 @@ $date = new DateHelper();
             <h2><?php echo $config['DisplayName'];?> Catalog Form</h2>
             <table class="Account_Table">
 
-                <form id="theform" name="theform" method="post" action="form_processing.php">
+                <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
                     <tr>
                         <td id="col1">
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required="true" /><span class = "errorInput" id = "libraryindexErr"></span>
+                                <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required />
                             </div>
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> * </span>Document Title:</span>
-                                <input type = "text" name = "txtTitle" id = "txtTitle" size="26" value="" required="true" /><span class = "errorInput" id = "documenttitleErr"></span>
+                                <input type = "text" name = "txtTitle" id = "txtTitle" size="26" value="" required />
                             </div>
                             <div class="cell">
                                 <span class="label">Document Subtitle:</span>
-                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value="" /><span class = "errorInput" id = "documentsubtitleErr"></span>
+                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value="" />
                             </div>
                             <div class="cell">
                                 <span class="label">Map Scale:</span>
-                                <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value=""  /><span class = "errorInput" id = "mapscaleErr"></span>
+                                <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value=""  />
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Is Map:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
@@ -150,18 +150,18 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Street:</mark><p hidden><b></b>This is to signal if a Street(s) are present</p></span>
-                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_yes" size="26" value="1" checked="true"/>Yes
-                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_no" size="26" value="0"  />No
+                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_yes" size="26" value="1" />Yes
+                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_no" size="26" value="0" checked="true" />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has POI:</mark><p hidden><b></b>This is to signal if a Point of Interest is present</p></span>
-                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_yes" size="26" value="1" checked="true"/>Yes
-                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_no" size="26" value="0"  />No
+                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_yes" size="26" value="1"/>Yes
+                                <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_no" size="26" value="0"  checked="true"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Coordinates:</mark><p hidden><b></b>This is to signal if Coordinates are visible</p></span>
-                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_yes" size="26" value="1" checked="true" />Yes
-                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_no" size="26" value="0"  />No
+                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_yes" size="26" value="1"  />Yes
+                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_no" size="26" value="0"checked="true"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Coast:</mark><p hidden><b></b>This is to signal if a Coast line is present</p></span>
@@ -170,7 +170,7 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> * </span>Scan Of Front:</span>
-                                <input type="file" name="fileUpload" id="fileUpload" accept="image/*" required="true" /><span class = "errorInput" id = "fileuploadErr"></span>
+                                <input type="file" name="fileUpload" id="fileUpload" accept="image/*" required />
                             </div>
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> &nbsp; </span>Comments:</span>
@@ -180,7 +180,7 @@ $date = new DateHelper();
                         <td id="col2">
                             <div class="cell">
                                 <span class="label">Customer Name:</span>
-                                <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="" />
                                 <datalist id="lstCustomer">
                                     <?php $Render->getDataList($DB->GET_CUSTOMER_LIST($collection)); ?>
                                 </datalist>
@@ -214,11 +214,11 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="label">Field Book Number:</span>
-                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value=""/><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value=""/>
                             </div>
                             <div class="cell">
                                 <span class="label">Field Book Page:</span>
-                                <input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="" />
                             </div>
                             <div class="cell">
                                 <?php $readrec = array("POOR","GOOD","EXCELLENT"); ?>
@@ -239,14 +239,14 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="label">Company Name:</span>
-                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="" />
                                 <datalist id="lstCompany">
                                     <?php $Render->getDataList($DB->GET_COMPANY_LIST($collection)); ?>
                                 </datalist>
                             </div>
                             <div class="cell">
                                 <span class="label">Document Type:</span>
-                                <input type = "text" name = "txtType" id = "txtType" size="26" value="" required="true" /><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtType" id = "txtType" size="26" value="" />
                             </div>
                             <div class="cell">
                                 <span class="label"><span style = "color:red;"> * </span>Document Medium:</span>
@@ -268,15 +268,19 @@ $date = new DateHelper();
                                 <input type="file" name="fileUploadBack" id="fileUploadBack" accept="image/*" /></span>
                             </div>
                             <div class="cell" style="text-align: center;padding-top:20px">
+                                <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                 <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
                                 <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                 <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
-                                <span><input type="submit" id="btnSubmit" name="btnSubmit" value="Upload" class="bluebtn"/></span>
+                                <span>
+                                    <?php if($session->hasWritePermission())
+                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Upload' class='bluebtn'/>";}
+                                    ?>
+                                </span>
                             </div>
                         </td>
                     </tr>
                 </form>
-
             </table>
         </td>
     </tr>
@@ -286,4 +290,31 @@ $date = new DateHelper();
 <?php include '../../Master/footer.php'; ?>
 
 </body>
+<script>
+    $( document ).ready(function() {
+        /* attach a submit handler to the form */
+        $('#theform').submit(function (event) {
+            /* stop form from submitting normally */
+            var formData = new FormData($(this)[0]);
+            event.preventDefault();
+            /* Send the data using post */
+            $.ajax({
+                type: 'post',
+                url: 'form_processing.php',
+                data:  formData,
+                processData: false,
+                contentType: false,
+                success:function(data){
+                    var json = JSON.parse(data);
+                    var msg = "";
+                    for(var i = 0; i < json.length; i++)
+                    {
+                        msg += json[i] + "\n";
+                    }
+                    alert(msg);
+                }
+            });
+        });
+    });
+</script>
 </html>
