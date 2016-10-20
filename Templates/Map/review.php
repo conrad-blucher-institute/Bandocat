@@ -102,7 +102,7 @@ $date = new DateHelper();
                                 <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                         </td>
                         <td>
-                                <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex']; ?>" required="true" /></span>
+                                <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex']; ?>" required="true" />
                         </td>
                         <td>
                             <span class="label">Customer Name:</span>
@@ -115,7 +115,7 @@ $date = new DateHelper();
                         </td>
                         <tr>
                             <td> <span class="label"><span style = "color:red;"> * </span>Document Title:</span></td>
-                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value="<?php echo $document['Title']; ?>" required="true" />
+                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value="<?php echo $document['Title']; ?>" required />
                             </td>
                             <td>
                                 <span class="label">Document Start Date:</span>
@@ -137,7 +137,7 @@ $date = new DateHelper();
                                 <span class="label">Document Subtitle:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value="<?php echo $document['Subtitle']; ?>" /></span>
+                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value="<?php echo $document['Subtitle']; ?>" />
                             </td>
                             <td>
                                 <span class="label">Document End Date:</span>
@@ -157,7 +157,7 @@ $date = new DateHelper();
 
                         <tr>
                             <td><span class="label">Map Scale:</span></td>
-                            <td> <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value="<?php echo $document['MapScale']; ?>"  /></span>
+                            <td> <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value="<?php echo $document['MapScale']; ?>"  />
                             </td>
                             <td>
                                 <span class="label">Field Book Number:</span>
@@ -175,7 +175,7 @@ $date = new DateHelper();
                                  <input type = "radio" name = "rbIsMap" id = "rbIsMap_no" size="26" value="0"  <?php if($document['IsMap'] == 0) echo "checked"; ?>/>No
                              </td>
                              <td><span class="label">Field Book Page:</span></td>
-                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo $document['FieldBookPage']; ?>" /></span>
+                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo $document['FieldBookPage']; ?>" />
                              </td>
                          </tr>
                         <tr>
@@ -229,7 +229,7 @@ $date = new DateHelper();
 
                             </td>
                             <td>
-                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="<?php echo $document['CompanyName'];?>" /></span>
+                                <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="<?php echo $document['CompanyName'];?>" />
                                 <datalist id="lstCompany">
                                     <?php $Render->getDataList($DB->GET_COMPANY_LIST($collection)); ?>
                                 </datalist>
@@ -247,7 +247,7 @@ $date = new DateHelper();
                                 <span class="label">Document Type:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtType" id = "txtType" size="26" value="<?php echo $document['Type'];?>" /></span>
+                                <input type = "text" name = "txtType" id = "txtType" size="26" value="<?php echo $document['Type'];?>" />
                             </td>
                         </tr>
                         <tr>
@@ -292,28 +292,30 @@ $date = new DateHelper();
                                 <span class="label"><span style = "color:red;"> * </span>Scan Of Front:</span>
 
                             </td>
-                            <td>
+                            <td style="text-align:center">
                                 <?php echo "<a href=\"download.php?file=$document[FileNamePath]\">(Click to download)</a><br>";
                                 echo "<a id='download_front' href=\"download.php?file=$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . str_replace(".tif",".jpg",$document['FileName']) . " ' alt = Error /></a>";
+                                echo "<br>Size: " . round(filesize($document['FileNamePath'])/1024/1024, 2) . " MB";
                                 ?>
                             </td>
                             <td>
                                 <span class="label">Scan Of Back:</span>
                             </td>
-                            <td rowspan="2">
+                            <td rowspan="2" style="text-align: center">
                                 <?php
                                 if($document['FileNameBack'] == '' || $document['FileNameBackPath'] == '')
                                     echo 'No file uploaded';
                                 else {
                                     echo "<a href=\"download.php?file=$document[FileNameBackPath]\">(Click to download)</a><br>";
                                     echo "<a id='download_back' href=\"download.php?file=$document[FileNameBackPath]\"><br><img src='" . '../../' . $config['ThumbnailDir'] . str_replace(".tif", ".jpg", $document['FileNameBack']) . " ' alt = Error /></a>";
+                                    echo "<br>Size: " . round(filesize($document['FileNameBackPath'])/1024/1024, 2) . " MB";
                                 }
                                 ?>
                             </td>
                         </tr>
                         <tr>
                             <td style="vertical-align: top">
-                                <span class="label">Comments:</span>
+                                <span class="label"><br>Comments:</span>
                             </td>
                             <td>
                                 <textarea name = "txtComments" rows = "5" cols = "35" id="txtComments"/><?php echo $document['Comments']; ?></textarea>
@@ -324,7 +326,11 @@ $date = new DateHelper();
                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
                         <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
-                        <span><input type="submit" id="btnSubmit" name="btnSubmit" value="Update" class="bluebtn"/></span>
+                        <span>
+                        <?php if($session->hasWritePermission())
+                            {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='bluebtn'/>";}
+                        ?>
+                        </span>
                     </td>
                 </tr>
 
@@ -351,8 +357,13 @@ $date = new DateHelper();
                 url: 'form_processing.php',
                 data:  $('#theform').serializeArray(),
                 success:function(data){
-                        alert(data);
-
+                    var json = JSON.parse(data);
+                    var msg = "";
+                    for(var i = 0; i < json.length; i++)
+                    {
+                        msg += json[i] + "\n";
+                    }
+                    alert(msg);
                 }
             });
         });

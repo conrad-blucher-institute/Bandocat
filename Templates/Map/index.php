@@ -41,12 +41,12 @@ else header('Location: ../../');
                         </tr>
                         <tr>
                             <td class="Collection_data">
-                                    <a class="Collection_Button" href="http://spatialquerylab.com/"style="text-decoration: none; color: white; display: block">Input Map Information</a>
+                                    <a class="Collection_Button"  href="./catalog.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block">Input Map Information</a>
                             </td>
                         </tr>
                         <tr>
                             <td class="Collection_data">
-                                    <a class="Collection_Button" href="#" style="text-decoration: none; color: white; display: block;">Edit/View Map Information</a>
+                                    <a class="Collection_Button" href="./list.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block;">Edit/View Map Information</a>
                             </td>
                         </tr>
                         <tr>
