@@ -18,10 +18,7 @@ $input = null;
 </head>
 <body>
 <style>
-    html, body {
-        overflow: visible;
 
-    }
     footer {
         position: fixed;
         min-width: 100%;
@@ -42,7 +39,7 @@ $input = null;
         font-family: verdana;
         text-align: left;
         margin-top: 2%;
-        margin-bottom: 9%;
+        margin-bottom: 4%;
 
     }
 
@@ -98,6 +95,19 @@ $input = null;
         width: 200px;
         padding: 10px 10px;
     }
+
+    .bluebtn{
+        font-size: 0.5em;
+        padding: 5px;
+    }
+
+    #innerLeftTable td{
+        padding-top: 2%;
+    }
+
+    #innerRightTable td{
+        padding-top: 2%;
+    }
 </style>
 
 <script type="text/javascript" src="PasswordMatch.js"></script>
@@ -114,7 +124,7 @@ $input = null;
             <!--Left Table-->
                 <tr>
                     <td id="col1">
-                        <table id="innerLeftTable">
+                        <table id="innerLeftTable" style="width: 180%">
 
                 <!--Library Index field-->
                             <tr class="cell">
@@ -135,32 +145,28 @@ $input = null;
                 <!--Needs Review-->
                             <tr class="cell">
                                 <td>
-                                    <p>
+                                    <form style="margin-top: 0% !important;">
                                         <span class="labelradio" >
                                             <mark>Needs Review:</mark>
                                             <p hidden><b></b>This is to signal if a review is needed</p>
                                         </span>
-                                        <form>
-                                            <input type = "radio" name = "needsreview" id = "needsreview_yes" size="26" value=1 />Yes
-                                            <input type = "radio" name = "needsreview" id = "needsreview_no" size="26" value=0 checked/>No
-                                        </form>
-                                    </p>
+                                        <input type = "radio" name = "needsreview" id = "needsreview_yes" size="26" value=1 />Yes
+                                        <input type = "radio" name = "needsreview" id = "needsreview_no" size="26" value=0 checked/>No
+                                    </form>
                                 </td>
                             </tr>
 
                 <!--In A Subfolder-->
                             <tr class="cell">
                                 <td>
-                                    <p>
+                                    <form style="margin-top: 0% !important;">
                                         <span class="labelradio" >
                                             <mark>In A Subfolder:</mark>
                                             <p hidden><b></b>This document belongs in a subfolder</p>
                                         </span>
-                                    <form>
                                         <input type = "radio" name = "inasubfolder" id = "inasubfolder_yes" size="26" value=1/>Yes
                                         <input type = "radio" name = "inasubfolder" id = "inasubfolder_no" size="26" value=0 checked/>No
                                     </form>
-                                    </p>
                                 </td>
                             </tr>
 
@@ -197,6 +203,10 @@ $input = null;
                                 <td>
                                     <span class="label">Scan of Front</span></br>
                                     <img src="../../Images/Sample_Thumbnails/general_index_E-K_287.jpg">
+                                </td>
+                                <td>
+                                    <span class="label">Scan of Back</span></br>
+                                    <img src="../../Images/Sample_Thumbnails/general_index_E-K_259.jpg">
                                 </td>
                             </tr>
 
@@ -263,12 +273,12 @@ $input = null;
                                             </td>
 
                                             <td>
-                                                <input type="button" id="plusAuthor" value="+" onclick="addAuthor()">
-                                                <input type="button" id="minusAuthor" value="-" onclick="subtractAuthor()">
+                                                <input type="button" class= "bluebtn" id="plusAuthor" value="+" onclick="addAuthor()">
+                                                <input type="button" class= "bluebtn" id="minusAuthor" value="-" onclick="subtractAuthor()">
                                             </td>
 
                                             <td>
-                                                <input type="text" id="documentAuthors">
+                                                <input type="text" class="documentAuthors">
                                             </td>
                                         </tr>
                                     </table>
@@ -283,12 +293,9 @@ $input = null;
                                 </td>
                             </tr>
                         <!--Scan of Back-->
-                            <tr>
-                                <td>
-                                    <span class="label">Scan of Back</span></br>
-                                    <img src="../../Images/Sample_Thumbnails/general_index_E-K_259.jpg">
-                                </td>
-                            </tr>
+
+
+
 
 
                          </table>
@@ -302,24 +309,41 @@ $input = null;
 <script>
     //Authors table global variables
     var table = document.getElementById("authorsTable");
-    var tableRows = table.rows.length;
+    var numTableRows = table.rows.length;
 
+//function called in the addAuthor function that allows for only 3 rows of data.
+    function rangeTable(rows) {
+        if (rows <= 3){
+            var row = table.insertRow(rows);
+
+            for (i = 0; i < table.rows[0].cells.length; i++) {
+                var cell = row.insertCell(i);
+            }
+        }
+        return rows;
+    }
     //function that add rows and an input text element as row data
 function addAuthor() {
+    numRows = table.rows.length;
 
-    var row = table.insertRow(tableRows);
-    for (i = 0; i < table.rows[0].cells.length; i++){
-        var cell = row.insertCell(0);
+    if(numRows> 0){
+        numRows = rangeTable(numRows);
+        for(i = 0; i < numRows; i++){
+            idNum = i + 1;
+            table.rows[numRows].cells[2].innerHTML = '<input type="text" class="documentAuthors">';
 
-        //console.log(table.rows[tableRows].cells[0]);
+        }
+
+        //docAthClass is the variable that stores the array of elements with the class name documentAuthors
+        var docAthClass = document.getElementsByClassName('documentAuthors');
 
     }
-    table.rows[tableRows].cells[0].innerHTML = "<input type='text' id='documentAuthors'>"
 }
 
-    //function that removes rows from the authors' table
+    /*function that removes rows from the authors' table*/
 function subtractAuthor() {
-    var row= table.deleteRow(tableRows);
+    numRows = table.rows.length;
+    var row= table.deleteRow(numRows-1);
 }
 </script>
 
