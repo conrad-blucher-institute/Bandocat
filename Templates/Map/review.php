@@ -293,9 +293,9 @@ $date = new DateHelper();
 
                             </td>
                             <td style="text-align:center">
-                                <?php echo "<a href=\"download.php?file=$document[FileNamePath]\">(Click to download)</a><br>";
-                                echo "<a id='download_front' href=\"download.php?file=$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . str_replace(".tif",".jpg",$document['FileName']) . " ' alt = Error /></a>";
-                                echo "<br>Size: " . round(filesize($document['FileNamePath'])/1024/1024, 2) . " MB";
+                                <?php echo "<a href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\">(Click to download)</a><br>";
+                                echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . str_replace(".tif",".jpg",$document['FileName']) . " ' alt = Error /></a>";
+                                echo "<br>Size: " . round(filesize($config['StorageDir'] . $document['FileNamePath'])/1024/1024, 2) . " MB";
                                 ?>
                             </td>
                             <td>
@@ -306,9 +306,9 @@ $date = new DateHelper();
                                 if($document['FileNameBack'] == '' || $document['FileNameBackPath'] == '')
                                     echo 'No file uploaded';
                                 else {
-                                    echo "<a href=\"download.php?file=$document[FileNameBackPath]\">(Click to download)</a><br>";
-                                    echo "<a id='download_back' href=\"download.php?file=$document[FileNameBackPath]\"><br><img src='" . '../../' . $config['ThumbnailDir'] . str_replace(".tif", ".jpg", $document['FileNameBack']) . " ' alt = Error /></a>";
-                                    echo "<br>Size: " . round(filesize($document['FileNameBackPath'])/1024/1024, 2) . " MB";
+                                    echo "<a href=\"download.php?file=$config[StorageDir]$document[FileNameBackPath]\">(Click to download)</a><br>";
+                                    echo "<a id='download_back' href=\"download.php?file=$config[StorageDir]$document[FileNameBackPath]\"><br><img src='" . '../../' . $config['ThumbnailDir'] . str_replace(".tif", ".jpg", $document['FileNameBack']) . " ' alt = Error /></a>";
+                                    echo "<br>Size: " . round(filesize($config['StorageDir'] . $document['FileNameBackPath'])/1024/1024, 2) . " MB";
                                 }
                                 ?>
                             </td>
