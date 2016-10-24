@@ -1,3 +1,10 @@
 2016-10-20 11:55:51amsnguyen1 @bluchermaps - documentID:37-A_001.3.tif: Front Map: EXISTED,Failed to Submit!,
 2016-10-20 11:55:53amsnguyen1 @bluchermaps - documentID:37-A_001.3.tif: Front Map: EXISTED,Failed to Submit!,
 2016-10-20 11:56:54amsnguyen1 @bluchermaps - documentID:37-A_001.3.tif: Front Map: EXISTED,Failed to Submit!,
+2016-10-21 07:44:20pmsnguyen1 @bluchermaps - documentID:testmap-1.tif: 
+2016-10-21 07:50:36pmsnguyen1 @bluchermaps - documentID:testmap-1(back).tif: Front Map: EXISTED,Failed to Submit!,
+2016-10-21 07:55:52pmsnguyen1 @bluchermaps - documentID:testmap-1(back).tif: Front Map: EXISTED,Failed to Submit!,
+2016-10-21 07:56:01pmsnguyen1 @bluchermaps - documentID:testmap-1(back).tif: Front Map: EXISTED,Failed to Submit!,
+2016-10-21 08:03:06pmsnguyen1 @bluchermaps - documentID:testmap-1.tif: Front Map: EXISTED,Failed to Submit!,
+2016-10-21 09:36:29pmsnguyen1 @bluchermaps - documentID:testmap-1.tif: Front Map: EXISTED,Failed to Submit!,
+2016-10-21 09:36:41pmsnguyen1 @bluchermaps - documentID:testmap-1(back).tif: Front Map: EXISTED,Failed to Submit!,

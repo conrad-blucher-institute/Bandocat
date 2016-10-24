@@ -334,7 +334,7 @@ class DBHelper
         if ($dbname != null && $dbname != "") {
             $this->getConn()->exec('USE ' . $dbname);
             /* PREPARE STATEMENT */
-            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
             $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 40);
