@@ -145,13 +145,13 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has North Arrow:</mark><p hidden><b></b>This is to signal if it has a North Arrow</p></span>
-                                <input type = "radio" name = "rbNorthArrow" id = "rbNorthArrow_yes" size="26" value="1" checked="true"/>Yes
-                                <input type = "radio" name = "rbNorthArrow" id = "rbNorthArrow_no" size="26" value="0"  />No
+                                <input type = "radio" name = "rbHasNorthArrow" id = "rbHasNorthArrow_yes" size="26" value="1" checked="true"/>Yes
+                                <input type = "radio" name = "rbHasNorthArrow" id = "rbHasNorthArrow_no" size="26" value="0"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Street:</mark><p hidden><b></b>This is to signal if a Street(s) are present</p></span>
-                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_yes" size="26" value="1" />Yes
-                                <input type = "radio" name = "rbHasStreet" id = "rbHasStreet_no" size="26" value="0" checked="true" />No
+                                <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_yes" size="26" value="1" />Yes
+                                <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_no" size="26" value="0" checked="true" />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has POI:</mark><p hidden><b></b>This is to signal if a Point of Interest is present</p></span>
@@ -160,8 +160,8 @@ $date = new DateHelper();
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Coordinates:</mark><p hidden><b></b>This is to signal if Coordinates are visible</p></span>
-                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_yes" size="26" value="1"  />Yes
-                                <input type = "radio" name = "rbCoordinates" id = "rbCoordinates_no" size="26" value="0"checked="true"  />No
+                                <input type = "radio" name = "rbHasCoordinates" id = "rbHasCoordinates_yes" size="26" value="1"  />Yes
+                                <input type = "radio" name = "rbHasCoordinates" id = "rbHasCoordinates_no" size="26" value="0"checked="true"  />No
                             </div>
                             <div class="cell">
                                 <span class="labelradio"><mark>Has Coast:</mark><p hidden><b></b>This is to signal if a Coast line is present</p></span>

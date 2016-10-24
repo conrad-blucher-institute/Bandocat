@@ -139,17 +139,6 @@ nav {
     background: #fff;
     font-size: 13px;
     line-height: 30px;
-    height: 0px; /*Collapses the menu*/
-    list-style-type: none;
-    overflow: hidden;
-    padding: 0px;
-}
-
-/*ul Styles*/
-.menu-item ul {
-    background: #fff;
-    font-size: 13px;
-    line-height: 30px;
     height: 0px;
     list-style-type: none;
     overflow: hidden;
