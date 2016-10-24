@@ -204,9 +204,10 @@ $input = null;
                                     <span class="label">Scan of Front</span></br>
                                     <img src="../../Images/Sample_Thumbnails/general_index_E-K_287.jpg">
                                 </td>
+                    <!--Scan of Back-->
                                 <td>
-                                    <span class="label">Scan of Back</span></br>
-                                    <img src="../../Images/Sample_Thumbnails/general_index_E-K_259.jpg">
+                                    <span style="margin-left: -42%" class="label">Scan of Back</span></br>
+                                    <img style="margin-left: 16%" src="../../Images/Sample_Thumbnails/general_index_E-K_259.jpg">
                                 </td>
                             </tr>
 
@@ -292,12 +293,6 @@ $input = null;
                                     <textarea rows = "2" cols = "35" id="comments"/></textarea>
                                 </td>
                             </tr>
-                        <!--Scan of Back-->
-
-
-
-
-
                          </table>
                     </td>
                 </tr>
