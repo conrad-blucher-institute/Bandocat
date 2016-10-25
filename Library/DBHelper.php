@@ -223,10 +223,8 @@ class DBHelper
         $call->bindParam(4, $iUserID, PDO::PARAM_INT,11);
         $call->bindParam(5, $iStatus, PDO::PARAM_STR, 7);
         /* EXECUTE STATEMENT */
-        $call->execute();
-        if ($call)
-            return true;
-        return false;
+        $ret = $call->execute();
+        return $ret;
     }
 
     /**********************************************
