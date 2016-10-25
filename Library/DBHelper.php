@@ -226,6 +226,38 @@ class DBHelper
         $ret = $call->execute();
         return $ret;
     }
+    /**********************************************
+     * Function: SP_LOG_INSERT
+     * Description: Slightly different version of SP_LOG_WRITE, allows to insert timestamp (use for log migration) and comments
+     * Parameter(s):
+     * $iAction (in string) - input, edit or ....
+     * $iCollectionID (in int) - collection id of the document
+     * $iDocID (in int) - document ID
+     * $iUserID (in string) -  userID of user who performs the action
+     * $iStatus (in string) - success or fail
+     * $iTimestamp (in string) - timestamp
+     * $iComments (in string) - comments (usually libraryindex if docID is missing)
+     * Return value(s): true if success, false if fail
+     ***********************************************/
+    function SP_LOG_INSERT($iAction,$iCollectionID,$iDocID,$iUserID,$iStatus,$iTimestamp,$iComments)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        /* PREPARE STATEMENT */
+        $call = $this->getConn()->prepare("CALL SP_LOG_INSERT(?,?,?,?,?,?,?)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, $iAction, PDO::PARAM_STR, 10);
+        $call->bindParam(2, $iCollectionID, PDO::PARAM_INT,11);
+        $call->bindParam(3, $iDocID, PDO::PARAM_INT,11);
+        $call->bindParam(4, $iUserID, PDO::PARAM_INT,11);
+        $call->bindParam(5, $iStatus, PDO::PARAM_STR, 7);
+        $call->bindParam(6, $iTimestamp, PDO::PARAM_STR);
+        $call->bindParam(7, $iComments, PDO::PARAM_STR,40);
+        /* EXECUTE STATEMENT */
+        $ret = $call->execute();
+        return $ret;
+    }
+
 
     /**********************************************
      * Function: SP_ADMIN_TICKET_SELECT
@@ -540,6 +572,6 @@ class DBHelper
             return $oMediumID;
         } else return false;
     }
-    
+
 
 }
