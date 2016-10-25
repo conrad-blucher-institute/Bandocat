@@ -155,11 +155,11 @@ $session = new SessionManager();
 
 
             //INSERT QUERY
-            $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
-                $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
-                $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
-                $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
-                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath),str_replace($config['StorageDir'],"",$filenamebackpath));
+//            $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
+//                $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
+//                $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
+//                $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
+//                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath),str_replace($config['StorageDir'],"",$filenamebackpath));
         }
 
 

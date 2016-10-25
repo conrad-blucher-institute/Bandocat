@@ -326,10 +326,14 @@ $date = new DateHelper();
                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
                         <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
-                        <span>
+                        <span class="update">
                         <?php if($session->hasWritePermission())
                             {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='bluebtn'/>";}
                         ?>
+                            <div class="bluebtn" id="loader" style="display: none;">
+                                updating
+                                <img style="width: 2%;;" src='../../Images/loader.gif'/></div>
+                            </div>
                         </span>
                     </td>
                 </tr>
@@ -350,6 +354,10 @@ $date = new DateHelper();
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
+            $('#btnSubmit').css("display", "none");
+            $('#loader').css("display", "inherit");
+            event.disabled;
+
             event.preventDefault();
             /* Send the data using post */
             $.ajax({
@@ -358,15 +366,17 @@ $date = new DateHelper();
                 data:  $('#theform').serializeArray(),
                 success:function(data){
                     var json = JSON.parse(data);
-                    var msg = "";
+                    var msg = json;
                     for(var i = 0; i < json.length; i++)
                     {
                         msg += json[i] + "\n";
                     }
-                    alert(msg);
-                }
+                        alert(msg);},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                    }
+                });
             });
         });
-    });
 </script>
 </html>

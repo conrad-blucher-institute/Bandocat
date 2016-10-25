@@ -338,7 +338,10 @@ function addAuthor() {
     /*function that removes rows from the authors' table*/
 function subtractAuthor() {
     numRows = table.rows.length;
-    var row= table.deleteRow(numRows-1);
+
+    if (numRows > 1){
+        var row= table.deleteRow(numRows-1);
+    }
 }
 </script>
 
