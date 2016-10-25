@@ -305,6 +305,7 @@ $date = new DateHelper();
                 processData: false,
                 contentType: false,
                 success:function(data){
+                    console.log(data);
                     var json = JSON.parse(data);
                     var msg = "";
                     for(var i = 0; i < json.length; i++)
