@@ -31,61 +31,6 @@ $date = new DateHelper();
 
 </head>
 <body>
-<style>
-
-
-    #table2{
-        width:95%;
-        background-color: white;
-        padding: 40px;
-        border-radius: 6%;
-        box-shadow: 0px 0px 2px;
-        margin: auto;
-        font-family: verdana;
-        text-align: left;
-        margin-top: 10px;
-        margin-bottom: 50px;
-
-    }
-    #table2 td,tr{line-height:42px;}
-
-    }
-
-    .label
-    {
-        float:left;
-        width:150px;
-        min-width: 195px;
-        padding-top:2px;
-    }
-    .labelradio
-    {
-        float:left;
-        width:150px;
-        min-width: 195px;
-        line-height:20px;
-    }
-    mark {
-        background-color: #ccf5ff;
-    }
-    span.labelradio:hover p{
-        z-index: 10;
-        display: inline;
-        position: absolute;
-        border: 1px solid #000000;
-        background: #bfe9ff;
-        font-size: 13px;
-        font-style: normal;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px; -o-border-radius: 3px;
-        border-radius: 3px;
-        -webkit-box-shadow: 4px 4px 4px #000000;
-        -moz-box-shadow: 4px 4px 4px #000000;
-        box-shadow: 4px 4px 4px #000000;
-        width: 200px;
-        padding: 10px 10px;
-    }
-</style>
 <table id = "thetable">
     <tr>
         <td class="menu_left" id="thetable_left">
@@ -94,7 +39,7 @@ $date = new DateHelper();
         </td>
         <td class="Account" id="thetable_right">
             <h2><?php echo $config['DisplayName'];?> Review Form</h2>
-            <div style="overflow-y: scroll;overflow-x:hidden;min-height:600px;max-height:700px">
+            <div id="div_scroller">
                 <form id="theform" name="theform" method="post">
             <table id="table2">
                     <tr>
@@ -326,10 +271,14 @@ $date = new DateHelper();
                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
                         <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
-                        <span>
+                        <span class="update">
                         <?php if($session->hasWritePermission())
                             {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='bluebtn'/>";}
                         ?>
+                            <div class="bluebtn" id="loader" style="display: none;">
+                                updating
+                                <img style="width: 2%;;" src='../../Images/loader.gif'/></div>
+                            </div>
                         </span>
                     </td>
                 </tr>
@@ -345,27 +294,118 @@ $date = new DateHelper();
 <?php include '../../Master/footer.php'; ?>
 
 </body>
+<style>
+    @media screen and (max-height: 860px) {
+        #div_scroller{
+            max-height:650px;}
+    }
+    @media screen and (min-height: 861px) {
+        #div_scroller{
+            max-height:900px;}
+    }
+
+
+    #div_scroller{
+        overflow-y: scroll;
+        overflow-x:hidden;
+        min-height:600px;
+        /*	max-height:750px; */
+    }
+
+    #table2{
+        width:95%;
+        background-color: white;
+        padding: 40px;
+        border-radius: 6%;
+        box-shadow: 0px 0px 2px;
+        margin: auto;
+        font-family: verdana;
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 50px;
+
+    }
+    #table2 td,tr{line-height:42px;}
+
+
+    .label
+    {
+        float:left;
+        width:150px;
+        min-width: 195px;
+        padding-top:2px;
+    }
+    .labelradio
+    {
+        float:left;
+        width:150px;
+        min-width: 195px;
+        line-height:20px;
+    }
+    mark {
+        background-color: #ccf5ff;
+    }
+    span.labelradio:hover p{
+        z-index: 10;
+        display: inline;
+        position: absolute;
+        border: 1px solid #000000;
+        background: #bfe9ff;
+        font-size: 13px;
+        font-style: normal;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px; -o-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: 4px 4px 4px #000000;
+        -moz-box-shadow: 4px 4px 4px #000000;
+        box-shadow: 4px 4px 4px #000000;
+        width: 200px;
+        padding: 10px 10px;
+    }
+
+    #thetable{height:100%;}
+</style>
 <script>
     $( document ).ready(function() {
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
+            $('#btnSubmit').css("display", "none");
+            $('#loader').css("display", "inherit");
+            event.disabled;
+
             event.preventDefault();
             /* Send the data using post */
             $.ajax({
                 type: 'post',
                 url: 'form_processing.php',
-                data:  $('#theform').serializeArray(),
-                success:function(data){
+                data: $('#theform').serializeArray(),
+                success: function (data) {
                     var json = JSON.parse(data);
                     var msg = "";
-                    for(var i = 0; i < json.length; i++)
-                    {
+                    var result = 0;
+                    for (var i = 0; i <= json.length - 1; i++) {
                         msg += json[i] + "\n";
                     }
+
+                    for (var i = 0; i < json.length; i++){
+                        if (json[i] == "Success") {
+                            window.close();
+                            result = 1;
+                        }
+                        else if(json[i] == "Failed to Submit!" || json[i] == "Front Map: EXISTED" || json[i] == "ERROR: Fail to write log!")
+                        {
+                            $('#btnSubmit').css("display", "inherit");
+                            $('#loader').css("display", "none");
+                        }
+                    }
                     alert(msg);
+
+                    if (result == 1){
+                        window.open("http://localhost:81/BandoCat/Templates/Map/list.php?col=bluchermaps")
+                    }
                 }
-            });
+            })
         });
     });
 </script>

@@ -276,6 +276,10 @@ $date = new DateHelper();
                                     <?php if($session->hasWritePermission())
                                     {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Upload' class='bluebtn'/>";}
                                     ?>
+                                    <div class="bluebtn" id="loader" style="display: none;">
+                                        updating
+                                        <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
+                                    </div>
                                 </span>
                             </div>
                         </td>
@@ -296,6 +300,10 @@ $date = new DateHelper();
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
+            $('#btnSubmit').css("display", "none");
+            $('#loader').css("display", "inherit");
+            event.disabled;
+
             event.preventDefault();
             /* Send the data using post */
             $.ajax({
@@ -305,13 +313,32 @@ $date = new DateHelper();
                 processData: false,
                 contentType: false,
                 success:function(data){
+                    console.log(data);
                     var json = JSON.parse(data);
                     var msg = "";
+                    var result = 0;
                     for(var i = 0; i < json.length; i++)
                     {
                         msg += json[i] + "\n";
                     }
+                    console.log(msg);
+                    for (var i = 0; i < json.length; i++){
+                        if (json[i] == "Success") {
+                            window.close();
+                            result = 1;
+                        }
+                        else if(json[i] == "Failed to Submit!" || json[i] == "Front Map: EXISTED" || json[i] == "ERROR: Fail to write log!")
+                        {
+                            $('#btnSubmit').css("display", "inherit");
+                            $('#loader').css("display", "none");
+                        }
+                    }
                     alert(msg);
+
+                    if (result == 1){
+                        window.open("http://localhost:81/bandocat/Templates/Map/catalog.php?col=bluchermaps")
+                    }
+
                 }
             });
         });

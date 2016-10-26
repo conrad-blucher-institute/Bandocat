@@ -25,12 +25,13 @@ $session = new SessionManager();
     $DB->SP_TEMPLATE_MAP_COMPANY_GET_ID_FROM_NAME_WITH_INSERT($collection,$data['txtCompany'],$companyID);
     $DB->SP_TEMPLATE_MAP_AUTHOR_GET_ID_FROM_NAME_WITH_INSERT($collection,$data['txtAuthor'],$authorID);
     $DB->SP_TEMPLATE_MAP_MEDIUM_GET_ID_FROM_NAME($collection,$data['ddlMedium'],$mediumID);
-
+    $valid = false;
     $msg = array();
     $retval = false;
     //review
     if($action == "review")
     {
+        $valid = true;
         $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_UPDATE($collection,$data['txtDocID'],$data['txtLibraryIndex'],$data['txtTitle'],$data['txtSubtitle'],
             $data['rbIsMap'],$data['txtMapScale'],$data['rbHasNorthArrow'],$data['rbHasStreets'],
                 $data['rbHasPOI'],$data['rbHasCoordinates'],$data['rbHasCoast'],$data['rbNeedsReview'],
@@ -155,13 +156,15 @@ $session = new SessionManager();
 
 
             //INSERT QUERY
-            $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
-                $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
-                $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
-                $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
-                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath),str_replace($config['StorageDir'],"",$filenamebackpath));
+//            $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
+//                $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
+//                $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
+//                $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
+//                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath),str_replace($config['StorageDir'],"",$filenamebackpath));
         }
 
+
+    }
 
         //REPORT STATUS
         if ($retval == false) {
@@ -171,11 +174,11 @@ $session = new SessionManager();
             $logstatus = "success";
             array_push($msg, "Success!");
         }
+
         //write log
         $retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus);
-        if($retval == false)
+        if(!$retval)
             array_push($msg, "ERROR: Fail to write log!");
-    }
 
     if($retval == false || $valid == false)
     {
