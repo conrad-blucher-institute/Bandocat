@@ -379,20 +379,34 @@ $date = new DateHelper();
             $.ajax({
                 type: 'post',
                 url: 'form_processing.php',
-                data:  $('#theform').serializeArray(),
-                success:function(data){
+                data: $('#theform').serializeArray(),
+                success: function (data) {
                     var json = JSON.parse(data);
-                    var msg = json;
-                    for(var i = 0; i < json.length; i++)
-                    {
+                    var msg = "";
+                    var result = 0;
+                    for (var i = 0; i <= json.length - 1; i++) {
                         msg += json[i] + "\n";
                     }
-                        alert(msg);},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+
+                    for (var i = 0; i < json.length; i++){
+                        if (json[i] == "Success") {
+                            window.close();
+                            result = 1;
+                        }
+                        else if(json[i] == "Failed to Submit!" || json[i] == "Front Map: EXISTED" || json[i] == "ERROR: Fail to write log!")
+                        {
+                            $('#btnSubmit').css("display", "inherit");
+                            $('#loader').css("display", "none");
+                        }
                     }
-                });
-            });
+                    alert(msg);
+
+                    if (result == 1){
+                        window.open("http://localhost:81/BandoCat/Templates/Map/list.php?col=bluchermaps")
+                    }
+                }
+            })
         });
+    });
 </script>
 </html>
