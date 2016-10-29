@@ -4,6 +4,8 @@ $session = new SessionManager();
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
 
+$config = $DB->SP_GET_COLLECTION_CONFIG($_GET['col']);
+
 // SQL server connection information
 $sql_details = array(
     'user' => $DB->getUser(),
@@ -44,8 +46,10 @@ $columns = array(
     array( 'db' => '`log`.`logID`', 'dt' => 0, 'field' => 'logID' ),
     array( 'db' => '`log`.`timestamp`', 'dt' => 1,'field' => 'timestamp'),
     array( 'db' => '`log`.`action`', 'dt' => 2,'field' => 'action'),
-    array( 'db' => '`user`.`username`', 'dt' => 3,'field' => 'username' ),
-    array( 'db' => '`log`.`comments`',  'dt' => 4, 'field' => 'comments' ),
+    array( 'db' => '`document`.`libraryindex`', 'dt' => 3, 'field' => 'libraryindex'),
+    array( 'db' => '`user`.`username`', 'dt' => 4,'field' => 'username' ),
+    array( 'db' => '`log`.`comments`',  'dt' => 5, 'field' => 'comments' )
+
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -55,9 +59,9 @@ $columns = array(
 
 require('../../Library/sspwithjoin.class.php');
 
-$joinQuery = " FROM `log` INNER JOIN `user` ON (`user`.`userID` = `log`.`userID`)";
-$extraWhere = "";
-
+$joinQuery = " FROM `log` LEFT JOIN `user` ON (`user`.`userID` = `log`.`userID`) LEFT JOIN `collection` ON (`collection`.`collectionID` = `log`.`collectionID`) 
+ LEFT JOIN `$config[DbName]`.`document` ON (`log`.`docID` = `document`.`documentID`)";
+$extraWhere = " `log`.`status` = 'success' AND `log`.`collectionID` = '$config[CollectionID]'";
 echo json_encode(
     SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
 );
