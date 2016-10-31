@@ -7,6 +7,9 @@ if($session->isAdmin()) {
     $DB = new DBHelper();
 }
 else header('Location: ../../');
+require('../../Library/ControlsRender.php');
+$Render = new ControlsRender();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -23,14 +26,15 @@ else header('Location: ../../');
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
-
+        function SSP_DataTable(collection)
+        {
             var table = $('#dtable').DataTable( {
                 "processing": true,
                 "serverSide": true,
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
-                "ajax": "activitylog_processing.php"
+                "destroy": true,
+                "ajax": "activitylog_processing.php?col=" + collection
             } );
 
             //hide first column (LogID)
@@ -47,8 +51,16 @@ else header('Location: ../../');
                     $(this).addClass('selected');
                 }
             } );
+        }
 
-
+        $(document).ready(function() {
+            $( "#ddlCollection" ).change(function() {
+                switch ($("#ddlCollection").val())
+                {
+                    case "": break;
+                    default: SSP_DataTable($("#ddlCollection").val());
+                }
+            });
         });
     </script>
 </head>
@@ -62,16 +74,19 @@ else header('Location: ../../');
                     include '../../Master/sidemenu.php' ?>
                 </td>
                 <td class="container" id="thetable_right">
-                    <h2 id="page_title">Ticket</h2>
-                    <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:674px">
+                    <h2 id="page_title">Activity Log</h2>
+                    <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:665px">
+                        <div><label>Select Database:&nbsp; </label><select name="ddlCollection" id="ddlCollection"><?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN(),null); ?></select></div>
                         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
                             <thead>
                             <tr>
                                 <th width="35px">ID</th>
                                 <th width="130px">Timestamp</th>
                                 <th width="60px">Action</th>
+                                <th width="150px">Library Index</th>
                                 <th width="100px">Username</th>
-                                <th>Note</th>
+                                <th>Notes</th>
+
                             </tr>
                             </thead>
                         </table>

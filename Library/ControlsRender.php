@@ -92,4 +92,15 @@ class ControlsRender
             else echo '<option value="' . $item . '">' . $item . '</option>';
         }
     }
+
+    //Render collection dropdown
+    function GET_DDL_COLLECTION($array,$selected)
+    {
+        echo '<option value="">Select</option>';
+        foreach ($array as $item) {
+            if ($selected == $item)
+                echo '<option value="' . $item['name'] . '" selected>' . $item['displayname'] . '</option>';
+            else echo '<option value="' . $item['name'] . '">' . $item['displayname'] . '</option>';
+        }
+    }
 }

@@ -276,7 +276,7 @@ $date = new DateHelper();
                             {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='bluebtn'/>";}
                         ?>
                             <div class="bluebtn" id="loader" style="display: none;">
-                                updating
+                                Uploading
                                 <img style="width: 2%;;" src='../../Images/loader.gif'/></div>
                             </div>
                         </span>
@@ -389,11 +389,10 @@ $date = new DateHelper();
                     }
 
                     for (var i = 0; i < json.length; i++){
-                        if (json[i] == "Success") {
-                            window.close();
+                        if (json[i].includes("Success")) {
                             result = 1;
                         }
-                        else if(json[i] == "Failed to Submit!" || json[i] == "Front Map: EXISTED" || json[i] == "ERROR: Fail to write log!")
+                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
                         {
                             $('#btnSubmit').css("display", "inherit");
                             $('#loader').css("display", "none");
@@ -402,7 +401,7 @@ $date = new DateHelper();
                     alert(msg);
 
                     if (result == 1){
-                        window.open("http://localhost:81/BandoCat/Templates/Map/list.php?col=bluchermaps")
+                        window.location.href = "./list.php?col=<?php echo $_GET['col'];?>";
                     }
                 }
             })

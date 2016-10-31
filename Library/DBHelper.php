@@ -164,7 +164,7 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $sth = $this->getConn()->prepare("SELECT `collectionID`,`displayname` FROM `bandocatdb`.`collection`");
+        $sth = $this->getConn()->prepare("SELECT `name`,`displayname` FROM `bandocatdb`.`collection`");
         $sth->execute();
 
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -271,7 +271,7 @@ class DBHelper
         $call->bindParam(4, $iUserID, PDO::PARAM_INT,11);
         $call->bindParam(5, $iStatus, PDO::PARAM_STR, 7);
         $call->bindParam(6, $iTimestamp, PDO::PARAM_STR);
-        $call->bindParam(7, $iComments, PDO::PARAM_STR,40);
+        $call->bindParam(7, $iComments, PDO::PARAM_STR,250);
         /* EXECUTE STATEMENT */
         $ret = $call->execute();
         return $ret;
