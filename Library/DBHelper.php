@@ -284,6 +284,23 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: GET_COLLECTION_TEMPLATE
+     * Description: GIVEN collection name , return the collection's template data (dir, fulldir, name)
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * Return value(s):
+     * (assoc array) - return a template info in an associative array
+     ***********************************************/
+    function GET_COLLECTION_TEMPLATE($collection)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT * FROM `template` WHERE `template`.`templateID` = (SELECT `templateID` FROM `collection` WHERE `name` = ? LIMIT 1) LIMIT 1");
+        $sth->bindParam(1,$collection, PDO::PARAM_STR,50);
+        $sth->execute();
+        return $sth->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**********************************************
      * Function: SP_TEMPLATE_MAP_DOCUMENT_SELECT
      * Description: GIVEN collection name & document ID, RETURN INFORMATION ABOUT Document
      * Parameter(s):
