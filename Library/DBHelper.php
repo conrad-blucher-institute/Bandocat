@@ -199,6 +199,25 @@ class DBHelper
         return false;
     }
 
+    function SP_USER_INSERT($iUsername, $iPassword, $iFullname, $iEmail, $iRoleID, $oMessage){
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        /*PREPARE STATEMENT*/
+        $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,?)");
+        if (!call)
+            trigger_error("SQL failed: ". $this->getConn()->errorCode()."-".$this->conn->erorInfo()[0]);
+        $call->bindParam(1, $iUsername, PDO::PARAM_STR, strlen($iSubject));
+        $call->bindParam(2, $iPassword, PDO::PARAM_STR, strlen($iPassword));
+        $call->bindParam(3, $iFullname, PDO::PARAM_STR, strlen($iFullname));
+        $call->bindParam(4, $iEmail, PDO::PARAM_STR, strlen($iEmail));
+        $call->bindParam(5, $iRoleID, PDO::PARAM_INT);
+        $call->bindParam(6, $oMessage, PDO::PARAM_STR, strlen($oMessage));
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        if ($call)
+            return true;
+        return false;
+    }
+
     /**********************************************
      * Function: SP_LOG_WRITE
      * Description: Insert new log entry
