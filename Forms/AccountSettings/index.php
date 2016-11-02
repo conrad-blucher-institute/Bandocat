@@ -1,5 +1,8 @@
 <?php
-//Menu
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+require '../../Library/DBHelper.php';
+$DB = new DBHelper();
 ?>
 <!doctype html>
 <html lang="en">
