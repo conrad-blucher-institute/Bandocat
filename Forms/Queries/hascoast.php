@@ -57,13 +57,13 @@ if(isset($_GET['col'])) {
                                     Select Collection:
                                     <select id="ddl_collection" name="ddl_collection">
                                         <?php
-                                        for ($i = 0; $i < count($array_collection); $i++)
-                                        {
-                                            if(isset($_POST["ddl_collection"]) && ($_POST["ddl_collection"] == $array_table_name[$i]))
-                                            {
-                                                echo '<option value="' . $array_table_name[$i] . '" selected>' . $array_collection[$i] . '</option>';
-                                            }
-                                            else echo '<option value="' . $array_table_name[$i] . '">' . $array_collection[$i] . '</option>';
+                                        if($collection=="greenmaps") {
+                                            echo '<option value="' . $array_table_name[0] . '">' . $array_collection[0] . '</option>';
+                                            echo '<option value="' . $array_table_name[1] . '">' . $array_collection[1] . '</option>';
+                                        }
+                                        if($collection=="bluchermaps") {
+                                            echo '<option value="' . $array_table_name[1] . '">' . $array_collection[1] . '</option>';
+                                            echo '<option value="' . $array_table_name[0] . '">' . $array_collection[0] . '</option>';
                                         }
                                         ?>
                                     </select>
@@ -135,6 +135,7 @@ if(isset($_GET['col'])) {
                                 </form>
 
                                 <h4 id="txt_counter" ></h4>
+
                                 <?php
 
                                // $result = mysql_query("SELECT * FROM ".$countcoll, $link);
@@ -223,12 +224,17 @@ if(isset($_GET['col'])) {
                                 {
                                     var recordsTotal = $('#dtable').DataTable().page.info().recordsTotal;
                                     console.log(recordsTotal);
+                                    document.getElementById("txt_counter").innerHTML =
+                                        "There are " + "NAN" + " Maps with Coasts, out of a total " + recordsTotal;
 
                                 }
 
                             } );
 
+
                             table.fnFilter("1", 6);
+                            var recordsFiltered = $('#dtable').DataTable().page.info().recordsTotal;
+                                alert(recordsFiltered);
 
                             //var rowCount = $('#dtable tr').length;
 
