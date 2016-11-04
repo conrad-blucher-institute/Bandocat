@@ -136,7 +136,7 @@ $session = new SessionManager();
                 <td style="float:right;font-size:13px" colspan="100%"><input name="checkbox_subtitle" type="checkbox" id="checkbox_subtitle" />Show/Hide Subtitle</td>
             </tr>
         </table>
-        <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:674px">
+        <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:654px;">
         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
             <thead>
                 <tr>
