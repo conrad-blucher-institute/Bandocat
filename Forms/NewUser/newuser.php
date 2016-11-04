@@ -1,5 +1,7 @@
 <?php include '../../Library/DBHelper.php';
+require '../../Library/ControlsRender.php';
 $UserDB = new DBHelper();
+$Render = new ControlsRender();
 ?>
 
 <!doctype html>
@@ -17,74 +19,101 @@ $UserDB = new DBHelper();
 
 <body>
 <form id="userForm">
-    Full name
-    <input type="text" class="user"></br>
+    Full name (optional)
+    <input type="text" class="user"/></br>
     Username
-    <input type="text" class="user"></br>
+    <input type="text" class="user" required/></br>
     Password
-    <input type="password" class="user"></br>
-    Password Repeat
-    <input type="password" class="user"></br>
-    Email
-    <input type="text" class="user"></br>
-</form>
+    <input type="password" class="user" required/></br>
+    Repeat Password
+    <input type="password" class="user" required/></br>
+    Email (optional)
+    <input type="text" class="user"/></br>
 
-<form id="permission">
-    Write Permission</br>
-    <select onclick="permissionFunction()">
-        <option>Write</option>
-        <option>Read</option>
-    </select>
-</form>
-<div id="permissionDescription" style="display: none;"><p>write</p></div>
-<input type="button" onclick="userthing()" value="register">
+    User Permission
+    <select id="permissionSelect" oninput="dropdownPermission()" required>
+        <?php
+        $userArray = $UserDB->GET_USER_ROLE_FOR_DROPDOWN();
+        unset($userArray[1]);
+
+        $Render->GET_DDL_ROLE($userArray, $userArray)
+        ?>
+    </select></br>
+    <div>
+        <!--Inactive-->
+        <p class="1" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[0]["description"]); ?></p>
+        <!--Super Admin-->
+        <p class="0" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[1]["description"]); ?></p>
+        <!--Admin-->
+        <p class="2" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[2]["description"]); ?></p>
+        <!--Writer-->
+        <p class="3" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[3]["description"]); ?></p>
+        <!--Reader-->
+        <p class="4" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[4]["description"]); ?></p>
+    </div>
+    <input type="button" value="register" onclick="test()"/>
+</form></br>
 
 <script>
 var User = document.getElementById("userForm");
-var Permission = document.getElementById("permission");
 var userInput = [];
 var userPermission = [];
 
-var permission = $('#mySelectBox option').filter(':selected').text();
-
-//function permissionFunction() {
-  //  $("#permissionDescription").css("display", "block")
-//}
-
-function userthing() {
-    for (i = 0; i < User.elements.length; i++) {
-        userInput.push(User.elements[i].value);
-
-    }
-
-    for (i = 0; i < Permission.elements.length; i++) {
-        userPermission.push(Permission.elements[i].checked);
-    }
-
-    if (User.elements[2].value == User.elements[3].value) {
-        userInput.splice(2, 2, User.elements[2].value);
-        userInput.push(userPermission[0], userPermission[1]);
-        var userJSON = JSON.stringify(userInput);
-        var user = JSON.parse(userJSON);
-        console.log(user);
-    }
-
-    else {
-        alert("Password check doesn't match");
-        userInput = [];
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "newuser_processing.php",
-        data: {data: user},
-        success: function (data) {
-            console.log(data)
-            //data contains the response from the php file.
-            //u can pass it here to the javascript function
+function dropdownPermission() {
+    var selectedIndex = document.getElementById("permissionSelect").options.selectedIndex;
+    var selectedLength = document.getElementById("permissionSelect").options.length;
+    for(i=0; i < selectedLength; i++){
+        if( $("." + i.toString()).is(":visible")){
+            $("." + i.toString()).css("display", "none");
         }
-    });
+    }
+
+    if (selectedIndex > 0){
+        $("." + selectedIndex.toString()).css("display", "block")
+    }
 }
+
+function test(){
+//$(document).ready(function () {
+    //$("form").submit(function(){
+        userInput = [];
+        for(i = 0; i < User.length-1; i++){
+            userInput.push(User.elements[i].value);
+            console.log(User.elements[i].value);
+        }
+        if (User.elements[2].value == User.elements[3].value) {
+            userInput.splice(2, 2, User.elements[2].value);
+            var userJSON = JSON.stringify(userInput);
+            var user = JSON.parse(userJSON);
+            console.log(user[1]);
+        }
+
+        else {
+            alert("Password check doesn't match");
+            userInput = [];
+            if (!validData())
+                return false;
+        }
+        event.disabled;
+
+       event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "newuser_processing.php",
+            data: {data: user},
+            success: function (data) {
+                console.log(data);
+                if(data == "true"){
+                    console.log(data);
+                    alert("New user created successfully!")
+                }
+                //data contains the response from the php file.
+                //u can pass it here to the javascript function
+            }
+        });
+
+    }
+
 </script>
 </body>
 

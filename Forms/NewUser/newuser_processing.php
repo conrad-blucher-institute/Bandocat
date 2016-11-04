@@ -1,9 +1,12 @@
 <?php include '../../Library/DBHelper.php';
 $UserDB = new DBHelper();
 $user= $_POST['data'];
-//$UserDB->SP_USER_INSERT($user[0],)
 $fullname = $user[0];
 $username = $user[1];
-$email = $user[2];
-//echo $user[3];
+$password = $user[2];
+$email = $user[3];
+$roleID = $user[4];
+$oMessage = "";
+$result = $UserDB->SP_USER_INSERT($username, $password, $fullname, $email, $roleID, $oMessage);
+echo json_encode($result);
 ?>

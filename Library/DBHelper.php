@@ -172,6 +172,22 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: GET_USER_ROLE_FOR_DROPDOWN
+     * Description: GET USERS ROLE INFO FOR DROPDOWN
+     * Parameter(s): NONE
+     * Return value(s):
+     * $result  (associative array) - return associative array of collection info
+     ***********************************************/
+    function GET_USER_ROLE_FOR_DROPDOWN()
+    {
+        $call = $this->getConn()->prepare("SELECT `roleID`,`name`, `description` FROM `bandocatdb`.`role`");
+        $call->execute();
+
+        $role = $call->fetchAll(PDO::FETCH_ASSOC);
+        return $role;
+    }
+
+    /**********************************************
      * Function: SP_TICKET_INSERT
      * Description: Insert ticket when user submit new ticket
      * Parameter(s):
@@ -199,23 +215,41 @@ class DBHelper
         return false;
     }
 
-    function SP_USER_INSERT($iUsername, $iPassword, $iFullname, $iEmail, $iRoleID, $oMessage){
+    /**********************************************
+     * Under development.
+     * Function:
+     * Description:
+     * Parameter(s):
+     * $iAction (in string) - input, edit or ....
+     * $iCollectionID (in int) - collection id of the document
+     * $iDocID (in int) - document ID
+     * $iUserID (in string) -  userID of user who performs the action
+     ***********************************************/
+    function SP_USER_INSERT($iUsername, $iPassword, $iFullname, $iEmail, $iRoleID, &$oMessage){
         $this->getConn()->exec('USE' . DBHelper::$maindb);
         /*PREPARE STATEMENT*/
-        $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,?)");
-        if (!call)
+        $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,@oMessage)");
+        if (!$call)
             trigger_error("SQL failed: ". $this->getConn()->errorCode()."-".$this->conn->erorInfo()[0]);
-        $call->bindParam(1, $iUsername, PDO::PARAM_STR, strlen($iSubject));
-        $call->bindParam(2, $iPassword, PDO::PARAM_STR, strlen($iPassword));
+        $call->bindParam(1, $iUsername, PDO::PARAM_STR, strlen($iUsername));
+        $call->bindParam(2, md5($iPassword), PDO::PARAM_STR, strlen($iPassword));
         $call->bindParam(3, $iFullname, PDO::PARAM_STR, strlen($iFullname));
         $call->bindParam(4, $iEmail, PDO::PARAM_STR, strlen($iEmail));
         $call->bindParam(5, $iRoleID, PDO::PARAM_INT);
-        $call->bindParam(6, $oMessage, PDO::PARAM_STR, strlen($oMessage));
+
         /* EXECUTE STATEMENT */
         $call->execute();
-        if ($call)
+
+        /* RETURN RESULT */
+        $select = $this->getConn()->query('SELECT @oMessage');
+        $result = $select->fetch(PDO::FETCH_ASSOC);
+        $oMessage = $result['@oMessage'];
+        if ($call){
             return true;
+            return $oMessage;
+        }
         return false;
+        return $oMessage;
     }
 
     /**********************************************
