@@ -337,6 +337,36 @@ class DBHelper
     }
 
     /**********************************************
+     * Function:  GET_DOCUMENT_COUNT
+     * Description: Count number of rows for the table specified by the Col parameter
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * Return value(s):
+     * $result (integer) - Number of rows as an integer
+     ***********************************************/
+    function GET_DOCUMENT_COUNT($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document`");
+            $sth->execute();
+            $result = $sth->fetchColumn();
+            return $result;
+        } else return false;
+    }
+    function GET_DOCUMENT_FILTEREDCOUNT($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `hascoast`='1'");
+            $sth->execute();
+            $result = $sth->fetchColumn();
+            return $result;
+        } else return false;
+    }
+    /**********************************************
      * Function: GET_COLLECTION_TEMPLATE
      * Description: GIVEN collection name , return the collection's template data (dir, fulldir, name)
      * Parameter(s):
