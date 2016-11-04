@@ -22,6 +22,13 @@ class SessionManager
         }
         else header('Location: ../../Forms/Login/');
 
+        if (time() > $_SESSION['end']) {
+            $this->setLoggedIn(false);
+            session_destroy();
+            header('Location: ../../Forms/Login/?keyword=sessionexpired');
+        }
+
+
         if($this->userName == null || $this->userName == ""
              || $this->userID == null || $this->userID == ""
             || $this->role == null || $this->role == "") {

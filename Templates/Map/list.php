@@ -25,10 +25,24 @@ $session = new SessionManager();
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
+        function DeleteDocument(col,id)
+        {
+            $response = confirm('Are you sure you want to delete this document?');
+            if($response)
+            {
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data: {"txtAction": "delete", "txtCollection": col, "txtDocID": id},
+                    success:function(data){
+                        alert(data);
+                    }
+                });
+            }
+        }
         $(document).ready(function() {
             var collection_config = <?php echo json_encode($config); ?>;
             $('#page_title').text(collection_config.DisplayName);
-
 
             var table = $('#dtable').DataTable( {
                 "processing": true,
@@ -86,6 +100,12 @@ $session = new SessionManager();
                         },
                         "targets": 7
                     },
+                    {
+                        "render": function ( data, type, row ) {
+                        return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
+                        },
+                        "targets": 8
+                    },
 
                 ],
                 "ajax": "list_processing.php?col=" + collection_config.Name
@@ -93,7 +113,8 @@ $session = new SessionManager();
 
             //hide first column (DocID)
             table.column(0).visible(true);
-
+            table.column(8).visible(false);
+            <?php if($session->isAdmin()){ ?> table.column(8).visible(true); <?php } ?>
             // show or hide subtitle
             table.column(3).visible(false);
             $('#checkbox_subtitle').change(function (e) {
@@ -114,7 +135,6 @@ $session = new SessionManager();
                     $(this).addClass('selected');
                 }
             } );
-
 
         });
     </script>
@@ -148,6 +168,7 @@ $session = new SessionManager();
                     <th width="70px">End Date</th>
                     <th width="40px">Has Coast</th>
                     <th width="30px">Needs Review</th>
+                    <th></th>
                 </tr>
             </thead>
         </table>

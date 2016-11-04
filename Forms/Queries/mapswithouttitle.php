@@ -33,7 +33,7 @@ $Render = new ControlsRender();
                     //column Document Index: Replace with Hyperlink
                     {
                         "render": function ( data, type, row ) {
-                            return "<a href='../../index.php?doc=" + data + "&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>" ;
+                            return "<a target='_blank'  href='../../index.php?doc=" + data + "&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>" ;
                         },
                         "targets": 0
                     },
