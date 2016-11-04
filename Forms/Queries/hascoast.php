@@ -10,13 +10,9 @@ if(isset($_GET['col'])) {
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+    $count = $DB->GET_DOCUMENT_COUNT($collection);
+    $countfilter =$DB->GET_DOCUMENT_FILTEREDCOUNT($collection);
 
-    if($collection=="greenmaps"){
-        $countcoll= $array_table_name[0];
-    }
-    if($collection=="bluchermaps"){
-        $countcoll= $array_table_name[1];
-    }
 }
 
 ?>
@@ -71,9 +67,6 @@ if(isset($_GET['col'])) {
                                     <?php
                                     if(isset($_POST['btn_Submit']))
                                     {
-//                                        mysql_connect("localhost","root","notroot");
-//                                        mysql_select_db("maps") or die('Could not connect to the database');
-
 
                                         $jobfolder_flag = false;
 
@@ -135,21 +128,6 @@ if(isset($_GET['col'])) {
                                 </form>
 
                                 <h4 id="txt_counter" ></h4>
-
-                                <?php
-
-                               // $result = mysql_query("SELECT * FROM ".$countcoll, $link);
-
-                                $filter ="hascoast = '1'";
-                                //$query = mysql_query("SELECT * FROM ".$countcoll." WHERE ".$filter, $link);
-                                //$hascoast_rows = mysql_num_rows($query);
-                                //$totnum_rows = mysql_num_rows($result);
-
-                                //  echo "<script type='text/javascript'>
-                                // alert('A total of '  + $hascoast_rows + ' Have coasts out of ' + $totnum_rows);
-                                // </script>";
-
-                                ?>
 
                         </tr>
                     </table>
@@ -224,8 +202,7 @@ if(isset($_GET['col'])) {
                                 {
                                     var recordsTotal = $('#dtable').DataTable().page.info().recordsTotal;
                                     console.log(recordsTotal);
-                                    document.getElementById("txt_counter").innerHTML =
-                                        "There are " + "NAN" + " Maps with Coasts, out of a total " + recordsTotal;
+
 
                                 }
 
@@ -233,8 +210,8 @@ if(isset($_GET['col'])) {
 
 
                             table.fnFilter("1", 6);
-                            var recordsFiltered = $('#dtable').DataTable().page.info().recordsTotal;
-                                alert(recordsFiltered);
+                            //var recordsFiltered = $('#dtable').DataTable().page.info().recordsTotal;
+                               // alert(recordsFiltered);
 
                             //var rowCount = $('#dtable tr').length;
 
@@ -301,8 +278,16 @@ if(isset($_GET['col'])) {
 </div>
 <?php include '../../Master/footer.php'; ?>
 </body>
-<script>
-    //document.getElementById("txt_counter").innerHTML = "Result: " + counter + " documents out of " + total + " documents (" + percentage.toFixed(2) + "%)" + " Have Coasts";
-</script>
+<?php
+echo "
+<script type ='text/javascript'>
+    var counttot = $count;
+    var filtercount = $countfilter;
+
+    var percentage = (filtercount/counttot)*100;
+    document.getElementById(\"txt_counter\").innerHTML =
+    \"There are \" + filtercount +  \" Maps with Coasts, out of a total \"  + counttot + \" (\" + percentage.toFixed(2) + \"%)\";
+</script>"
+?>
 
 </html>
