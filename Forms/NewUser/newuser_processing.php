@@ -8,5 +8,5 @@ $email = $user[3];
 $roleID = $user[4];
 $oMessage = "";
 $result = $UserDB->SP_USER_INSERT($username, $password, $fullname, $email, $roleID, $oMessage);
-echo json_encode($result);
+echo $oMessage;
 ?>
