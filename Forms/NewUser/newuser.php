@@ -23,9 +23,6 @@ $Render = new ControlsRender();
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/header.php';?>
         </td>
-        <td>
-            <h2>New User</h2>
-        </td>
     </tr>
     <tr>
         <td>
@@ -37,43 +34,83 @@ $Render = new ControlsRender();
                     <td>
                         <!--New user input form-->
                         <form id="userForm">
-
+                            <h2>New User</h2>
                             <!--Block of new user input types-->
-                            <label>
-                                Full name (optional)
-                                <input name="" type="text" class="user"/></br>
-                            </label>
-                            </br>
-                            <label>
-                                Username
-                                <input type="text" class="user" required/></br>
-                            </label>
-                            </br>
-                            <label>
-                                Password
-                                <input type="password" class="user" required/></br>
-                            </label>
-                            </br>
-                            <label>
-                                Repeat Password
-                                <input type="password" class="user" required/></br>
-                            </label>
-                            </br>
-                            <label>
-                                Email (optional)
-                                <input type="text" class="user"/>
-                            </label>
-                            </br>
-                            <label>
-                                User Permission
-                                <select id="permissionSelect" oninput="dropdownPermission()" required>
-                                    <?php
-                                    $userArray = $UserDB->GET_USER_ROLE_FOR_DROPDOWN();
-                                    unset($userArray[1]);
-                                    $Render->GET_DDL_ROLE($userArray, $userArray)
-                                    ?>
-                                </select>
-                            </label>
+                            <table id="innerRightTable">
+                                <tr>
+                                    <td>
+                                        <label>
+                                            Full name:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input name="" type="text" class="user"/></br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            Username:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="user" required/></br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            Password:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="password" class="user" required/></br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            Repeat Password:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="password" class="user" required/></br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            Email:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="user"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            User Permission:
+                                        </label>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <select id="permissionSelect" oninput="dropdownPermission()" required>
+                                            <?php
+                                            $userArray = $UserDB->GET_USER_ROLE_FOR_DROPDOWN();
+                                            unset($userArray[1]);
+                                            $Render->GET_DDL_ROLE($userArray, $userArray)
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: center">
+                                        <!--Submit form-->
+                                        <input type="submit" value="Register" class="bluebtn"/>
+                                    </td>
+                                </tr>
+                            </table>
+
                             </br>
 
                             <!--User permission description-->
@@ -91,8 +128,7 @@ $Render = new ControlsRender();
                             </div>
 
 
-                            <!--Submit form-->
-                            <input type="submit" value="register" class="bluebtn"/>
+
                         </form>
                         </br>
                     </td>
@@ -177,12 +213,12 @@ a procedure in the database that insert the information into the bandocatdb data
     #thetable_right{
         width:65%;
         padding: 2%;
-        margin-left: 20%;
+        margin-left: 15%;
         border-radius: 10px;
         box-shadow: 0px 0px 2px;
     }
     form{
-        text-align: center;
+        text-align: right;
     }
 
     label{
@@ -201,6 +237,11 @@ a procedure in the database that insert the information into the bandocatdb data
         font-size: 1em;
         padding: 1%;
     }
+
+    #innerRightTable{
+        margin-left: 25%;
+    }
+
 </style>
 
 
