@@ -73,6 +73,7 @@ $session = new SessionManager();
                         },
                         "targets": 3
                     },
+                    { "searchable": false, "targets": 3 },
                     //column : Date
                     {
                         "render": function ( data, type, row ) {
