@@ -17,6 +17,8 @@
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $role;
             $_SESSION['userID'] = $uID;
+            $_SESSION['start'] = time();
+            $_SESSION['end'] = $_SESSION['start'] + (60*480); //session = 8 hours
             break;
             default: break;
         }
