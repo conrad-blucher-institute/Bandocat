@@ -162,6 +162,7 @@ $session = new SessionManager();
                 $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
                 $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
                 $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath) . "/" . $filename,str_replace($config['StorageDir'],"",$filenamebackpath) . "/" . $filenameback);
+            $data['txtDocID'] = $retval;
         }
 
 
