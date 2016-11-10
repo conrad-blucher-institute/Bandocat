@@ -277,7 +277,7 @@ $date = new DateHelper();
                                     {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Upload' class='bluebtn'/>";}
                                     ?>
                                     <div class="bluebtn" id="loader" style="display: none;">
-                                        Updating
+                                        Uploading
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
                                     </div>
                                 </span>
@@ -300,6 +300,7 @@ $date = new DateHelper();
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
+            /*jquery that displays the three points loader*/
             $('#btnSubmit').css("display", "none");
             $('#loader').css("display", "inherit");
             event.disabled;
@@ -313,7 +314,7 @@ $date = new DateHelper();
                 processData: false,
                 contentType: false,
                 success:function(data){
-                    console.log(data);
+                    console.log("this is the value that is being returned in data:" + data );
                     var json = JSON.parse(data);
                     var msg = "";
                     var result = 0;
