@@ -496,7 +496,14 @@ class DBHelper
             $call->bindParam(27, htmlspecialchars($iFileNameBackPath), PDO::PARAM_STR, 200);
 
             /* EXECUTE STATEMENT */
-            return $call->execute();
+            $ret = $call->execute();
+            if($ret)
+            {
+                $select = $this->getConn()->query('SELECT LAST_INSERT_ID()');
+                $ret = $select->fetch(PDO::FETCH_COLUMN);
+                return $ret;
+            }
+            return 0;
         } else return false;
     }
 
