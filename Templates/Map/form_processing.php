@@ -169,7 +169,8 @@ $session = new SessionManager();
     }
     else if($action == "delete")
     {
-       // $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
+       $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
+        echo $retval;
 
         //remove thumbnail
         //remove front & back map

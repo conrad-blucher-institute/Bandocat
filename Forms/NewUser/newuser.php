@@ -21,14 +21,10 @@ $Render = new ControlsRender();
 <table id="thetable">
     <tr>
         <td class="menu_left" id="thetable_left">
-            <?php include '../../Master/header.php';?>
+            <?php include '../../Master/header.php';
+            include '../../Master/sidemenu.php';?>
         </td>
-    </tr>
-    <tr>
-        <td>
-            <?php include '../../Master/sidemenu.php';?>
-        </td>
-        <td>
+        <td height="510px">
             <table id="thetable_right">
                 <tr>
                     <td>
@@ -136,6 +132,10 @@ $Render = new ControlsRender();
             </table>
         </td>
     </tr>
+    <tr>
+
+
+    </tr>
 </table>
 
 <!--End of new user input form-->
@@ -158,12 +158,13 @@ function dropdownPermission() {
     for(i=0; i < selectedLength; i++){
         if( $("." + i.toString()).is(":visible")){
             $("." + i.toString()).css("display", "none");
+            $("." + i.toString()).css("transition", "opacity 1s ease-out");
         }
     }
 
 //Conditional statement that displays only the selected information linked to the permission drop-down//
     if (selectedIndex > 0){
-        $("." + selectedIndex.toString()).css("display", "block")
+        $("." + selectedIndex.toString()).css("display", "block");
     }
 }
 
@@ -214,6 +215,7 @@ a procedure in the database that insert the information into the bandocatdb data
         width:65%;
         padding: 2%;
         margin-left: 15%;
+        margin-top: 4%;
         border-radius: 10px;
         box-shadow: 0px 0px 2px;
     }
@@ -239,10 +241,13 @@ a procedure in the database that insert the information into the bandocatdb data
     }
 
     #innerRightTable{
-        margin-left: 25%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    input{
+        margin-top: 7%;
     }
 
 </style>
-
-
 </html>
