@@ -61,7 +61,7 @@ $columns = array(
 
 require('../../Library/sspwithjoin.class.php');
 
-$joinQuery = " FROM `document` INNER JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
+$joinQuery = " FROM `document` LEFT JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
 $extraWhere = "";
 
 echo json_encode(
