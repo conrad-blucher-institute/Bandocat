@@ -34,6 +34,7 @@ $Render = new ControlsRender();
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
                 "destroy": true,
+                "order": [[ 0, "desc" ]],
                 "ajax": "activitylog_processing.php?col=" + collection
             } );
 

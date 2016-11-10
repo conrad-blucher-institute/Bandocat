@@ -87,7 +87,6 @@ $Render = new ControlsRender();
 
                     pieData.push(array);
                 }
-                console.log(pieData);
                 var ctx1 = document.getElementById("chartDocumentCount").getContext("2d");
                 window.MyPieChart= new Chart(ctx1).Pie(pieData);
                 document.getElementById("legendDocumentCount").innerHTML = MyPieChart.generateLegend();
