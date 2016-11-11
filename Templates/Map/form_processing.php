@@ -12,7 +12,6 @@ $session = new SessionManager();
     $action = htmlspecialchars($data['txtAction']);
     $collection = htmlspecialchars($data['txtCollection']);
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-
     if($action != "delete") {
         //data pre-processing
         //Date
@@ -155,13 +154,15 @@ $session = new SessionManager();
                 exec($exec2, $yaks2);
             }
 
-
+            $backpath = "";
+            if($hasBack == true)
+                $backpath = str_replace($config['StorageDir'],"",$filenamebackpath) . "/" . $filenameback;
            // INSERT QUERY
             $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
                 $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
                 $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
                 $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
-                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath) . "/" . $filename,str_replace($config['StorageDir'],"",$filenamebackpath) . "/" . $filenameback);
+                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath) . "/" . $filename,$backpath);
             $data['txtDocID'] = $retval;
         }
 

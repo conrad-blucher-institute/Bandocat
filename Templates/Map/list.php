@@ -49,6 +49,7 @@ $session = new SessionManager();
                 "serverSide": true,
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
+                "order": [[ 0, "desc" ]],
                 "columnDefs": [
                     //column Document Index: Replace with Hyperlink
                     {
@@ -57,6 +58,7 @@ $session = new SessionManager();
                         },
                         "targets": 0
                     },
+                    { "searchable": false, "targets": 0 },
                     //column Title
                     {
                         "render": function ( data, type, row ) {
@@ -92,6 +94,7 @@ $session = new SessionManager();
                         },
                         "targets": 6
                     },
+                    { "searchable": false, "targets": 6 },
                     //column : NeedsReview
                     {
                         "render": function ( data, type, row ) {
@@ -101,6 +104,7 @@ $session = new SessionManager();
                         },
                         "targets": 7
                     },
+                    { "searchable": false, "targets": 7 },
                     {
                         "render": function ( data, type, row ) {
                         return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
