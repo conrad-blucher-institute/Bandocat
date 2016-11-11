@@ -6,25 +6,26 @@ $session = new SessionManager();
     if(!isset($_POST))
         header('Location: index.php');
 
-
     require '../../Library/DBHelper.php';
     $DB = new DBHelper();
     $data = $_POST;
     $action = htmlspecialchars($data['txtAction']);
     $collection = htmlspecialchars($data['txtCollection']);
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-
-    //data pre-processing
-    //Date
-    require '../../Library/DateHelper.php';
-    $date = new DateHelper();
-    $startdate = $date->mergeDate($data['ddlStartMonth'],$data['ddlStartDay'],$data['ddlStartYear']);
-    $enddate = $date->mergeDate($data['ddlEndMonth'],$data['ddlEndDay'],$data['ddlEndYear']);
-    //Company, Author, Customer, Medium ID
-    $DB->SP_TEMPLATE_MAP_CUSTOMER_GET_ID_FROM_NAME_WITH_INSERT($collection,$data['txtCustomer'],$customerID);
-    $DB->SP_TEMPLATE_MAP_COMPANY_GET_ID_FROM_NAME_WITH_INSERT($collection,$data['txtCompany'],$companyID);
-    $DB->SP_TEMPLATE_MAP_AUTHOR_GET_ID_FROM_NAME_WITH_INSERT($collection,$data['txtAuthor'],$authorID);
-    $DB->SP_TEMPLATE_MAP_MEDIUM_GET_ID_FROM_NAME($collection,$data['ddlMedium'],$mediumID);
+    $comments = null;
+    if($action != "delete") {
+        //data pre-processing
+        //Date
+        require '../../Library/DateHelper.php';
+        $date = new DateHelper();
+        $startdate = $date->mergeDate($data['ddlStartMonth'], $data['ddlStartDay'], $data['ddlStartYear']);
+        $enddate = $date->mergeDate($data['ddlEndMonth'], $data['ddlEndDay'], $data['ddlEndYear']);
+        //Company, Author, Customer, Medium ID
+        $DB->SP_TEMPLATE_MAP_CUSTOMER_GET_ID_FROM_NAME_WITH_INSERT($collection, $data['txtCustomer'], $customerID);
+        $DB->SP_TEMPLATE_MAP_COMPANY_GET_ID_FROM_NAME_WITH_INSERT($collection, $data['txtCompany'], $companyID);
+        $DB->SP_TEMPLATE_MAP_AUTHOR_GET_ID_FROM_NAME_WITH_INSERT($collection, $data['txtAuthor'], $authorID);
+        $DB->SP_TEMPLATE_MAP_MEDIUM_GET_ID_FROM_NAME($collection, $data['ddlMedium'], $mediumID);
+    }
     $valid = false;
     $msg = array();
     $retval = false;
@@ -37,6 +38,7 @@ $session = new SessionManager();
                 $data['rbHasPOI'],$data['rbHasCoordinates'],$data['rbHasCoast'],$data['rbNeedsReview'],
                 $data['txtComments'],$customerID,$startdate,$enddate,$data['txtFieldBookNumber'],$data['txtFieldBookPage'],$data['ddlReadability'],
             $data['ddlRectifiability'],$companyID,$data['txtType'],$mediumID,$authorID);
+        $comments = "Library Index:" . $data['txtLibraryIndex'];
        // array_push($msg,"Update Query: GOOD");
     }
     //catalog (new document)
@@ -150,20 +152,60 @@ $session = new SessionManager();
             $exec1 = "convert " . $filenamepath . '/' . basename($_FILES["fileUpload"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $frontthumbnail;
             exec($exec1, $yaks1);
             if ($hasBack == true) {
-                $exec2 = "convert " . $filenamepath . '/' . basename($_FILES["fileUploadBack"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $backthumbnail;
+                $exec2 = "convert " . $filenamebackpath . '/' . basename($_FILES["fileUploadBack"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $backthumbnail;
                 exec($exec2, $yaks2);
             }
 
-
-            //INSERT QUERY
-//            $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
-//                $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
-//                $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
-//                $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
-//                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath),str_replace($config['StorageDir'],"",$filenamebackpath));
+            $backpath = "";
+            if($hasBack == true)
+                $backpath = str_replace($config['StorageDir'],"",$filenamebackpath) . "/" . $filenameback;
+           // INSERT QUERY
+            $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
+                $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
+                $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
+                $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
+                $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath) . "/" . $filename,$backpath);
+            $data['txtDocID'] = $retval;
+            $comments = "Library Index: " . $data['txtLibraryIndex'];
         }
 
 
+    }
+    else if($action == "delete")
+    {
+        $errors = 0;
+        $info = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($data["txtCollection"], $data['txtDocID']);
+        $comments = "Library Index: " . $info['LibraryIndex'];
+
+        $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
+        $backScanPath = $config['StorageDir'].$info['FileNameBackPath'];
+
+        //Thumbnail conversion to jpg and path detection
+        //$thumbnailPath = str_replace('/','\\',$config['ThumbnailDir']);
+        $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
+
+        $frontThumbnailPathTIF = $config['ThumbnailDir'].$info['FileName'];
+        $backThumbnailPathTIF = $config['ThumbnailDir'].$info['FileNameBack'];
+
+        $frontThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $frontThumbnailPathTIF);
+        $backThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $backThumbnailPathTIF);
+
+        $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
+
+        if (file_exists($frontScanPath))
+            unlink($frontScanPath);
+        if (file_exists($frontThumbnailPathJPG))
+            unlink($frontThumbnailPathJPG);
+
+        if ($info['FileNameBack'] !== "")
+        {
+            if (file_exists($backScanPath))
+                unlink($backScanPath);
+            if (file_exists($backThumbnailPathJPG))
+                unlink($backThumbnailPathJPG);
+        }
+//        if (file_exists($frontScanPath) || file_exists($frontThumbnailPathJPG) || file_exists($backScanPath) || file_exists($backThumbnailPathJPG))
+//            $errors++;
     }
 
         //REPORT STATUS
@@ -176,7 +218,7 @@ $session = new SessionManager();
         }
 
         //write log
-        $retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus);
+        $retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus,$comments);
         if(!$retval)
             array_push($msg, "ERROR: Fail to write log!");
 
@@ -188,5 +230,7 @@ $session = new SessionManager();
             $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg);
         else if ($action == "catalog")
             $LOG->writeErrorLog($session->getUserName(),$collection,basename($_FILES['fileUpload']['name']),$msg);
+        else if ($action == "delete")
+            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg);
     }
     echo json_encode($msg);

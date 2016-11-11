@@ -152,6 +152,7 @@ nav {
     transition: height 1s ease;
 }
 /* Adjust height of submenu depends on number of submenu items: .menu-item_subN (N = number of submenu items) */
+
 .menu-item:hover ul {
     height:auto;
 }

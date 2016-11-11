@@ -25,16 +25,36 @@ $session = new SessionManager();
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
+        function DeleteDocument(col,id)
+        {
+            $response = confirm('Are you sure you want to delete this document?');
+            if($response)
+            {
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data: {"txtAction": "delete", "txtCollection": col, "txtDocID": id},
+                    success:function(data){
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        for(var i = 0; i < json.length; i++)
+                            msg += json[i] + "\n";
+                        alert(msg);
+                        $('#dtable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
         $(document).ready(function() {
             var collection_config = <?php echo json_encode($config); ?>;
             $('#page_title').text(collection_config.DisplayName);
-
 
             var table = $('#dtable').DataTable( {
                 "processing": true,
                 "serverSide": true,
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
+                "order": [[ 0, "desc" ]],
                 "columnDefs": [
                     //column Document Index: Replace with Hyperlink
                     {
@@ -43,6 +63,7 @@ $session = new SessionManager();
                         },
                         "targets": 0
                     },
+                    { "searchable": false, "targets": 0 },
                     //column Title
                     {
                         "render": function ( data, type, row ) {
@@ -59,6 +80,7 @@ $session = new SessionManager();
                         },
                         "targets": 3
                     },
+                    { "searchable": false, "targets": 3 },
                     //column : Date
                     {
                         "render": function ( data, type, row ) {
@@ -77,6 +99,7 @@ $session = new SessionManager();
                         },
                         "targets": 6
                     },
+                    { "searchable": false, "targets": 6 },
                     //column : NeedsReview
                     {
                         "render": function ( data, type, row ) {
@@ -86,6 +109,13 @@ $session = new SessionManager();
                         },
                         "targets": 7
                     },
+                    { "searchable": false, "targets": 7 },
+                    {
+                        "render": function ( data, type, row ) {
+                        return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
+                        },
+                        "targets": 8
+                    },
 
                 ],
                 "ajax": "list_processing.php?col=" + collection_config.Name
@@ -93,7 +123,8 @@ $session = new SessionManager();
 
             //hide first column (DocID)
             table.column(0).visible(true);
-
+            table.column(8).visible(false);
+            <?php if($session->isAdmin()){ ?> table.column(8).visible(true); <?php } ?>
             // show or hide subtitle
             table.column(3).visible(false);
             $('#checkbox_subtitle').change(function (e) {
@@ -115,7 +146,6 @@ $session = new SessionManager();
                 }
             } );
 
-
         });
     </script>
 
@@ -136,7 +166,7 @@ $session = new SessionManager();
                 <td style="float:right;font-size:13px" colspan="100%"><input name="checkbox_subtitle" type="checkbox" id="checkbox_subtitle" />Show/Hide Subtitle</td>
             </tr>
         </table>
-        <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:674px">
+        <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:654px;">
         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
             <thead>
                 <tr>
@@ -148,6 +178,7 @@ $session = new SessionManager();
                     <th width="70px">End Date</th>
                     <th width="40px">Has Coast</th>
                     <th width="30px">Needs Review</th>
+                    <th></th>
                 </tr>
             </thead>
         </table>

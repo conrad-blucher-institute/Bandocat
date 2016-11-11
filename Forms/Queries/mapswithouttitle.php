@@ -1,15 +1,10 @@
 <?php
-//for admin use only
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if($session->isAdmin()) {
-    require('../../Library/DBHelper.php');
-    $DB = new DBHelper();
-}
-else header('Location: ../../');
+require('../../Library/DBHelper.php');
+$DB = new DBHelper();
 require('../../Library/ControlsRender.php');
 $Render = new ControlsRender();
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,7 +14,7 @@ $Render = new ControlsRender();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Activity Log</title>
+    <title>Maps Without Titles</title>
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
@@ -34,12 +29,28 @@ $Render = new ControlsRender();
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
                 "destroy": true,
-                "order": [[ 0, "desc" ]],
-                "ajax": "activitylog_processing.php?col=" + collection
+                "columnDefs": [
+                    //column Document Index: Replace with Hyperlink
+                    {
+                        "render": function ( data, type, row ) {
+                            return "<a target='_blank'  href='../../index.php?doc=" + data + "&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>" ;
+                        },
+                        "targets": 0
+                    },
+                    //column needs review
+                    {
+                        "render": function ( data, type, row ) {
+                            if(data == 1)
+                                return "Yes";
+                            return "No";
+                        },
+                        "targets": 3
+                    },],
+                "ajax": "mapswithouttitle_processing.php?col=" + collection
             } );
 
             //hide first column (LogID)
-            table.column(0).visible(false);
+            table.column(0).visible(true);
 
 
             // select row on single click
@@ -75,18 +86,16 @@ $Render = new ControlsRender();
                     include '../../Master/sidemenu.php' ?>
                 </td>
                 <td class="container" id="thetable_right">
-                    <h2 id="page_title">Activity Log</h2>
+                    <h2 id="page_title">Maps Without Titles</h2>
                     <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:665px">
                         <div><label>Select Database:&nbsp; </label><select name="ddlCollection" id="ddlCollection"><?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN(),null); ?></select></div>
                         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
                             <thead>
                             <tr>
-                                <th width="35px">ID</th>
-                                <th width="130px">Timestamp</th>
-                                <th width="60px">Action</th>
-                                <th width="150px">Library Index</th>
-                                <th width="100px">Username</th>
-                                <th>Notes</th>
+                                <th width="70px"></th>
+                                <th width="120px">Library Index</th>
+                                <th>Document Title</th>
+                                <th width="40px">Needs Review</th>
 
                             </tr>
                             </thead>
@@ -100,3 +109,4 @@ $Render = new ControlsRender();
 <?php include '../../Master/footer.php'; ?>
 </body>
 </html>
+

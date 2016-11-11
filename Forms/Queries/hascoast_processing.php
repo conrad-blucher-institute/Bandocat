@@ -1,11 +1,11 @@
 <?php
-    include '../../Library/SessionManager.php';
-    $session = new SessionManager();
-    if(isset($_GET['col']))
-        $collection = htmlspecialchars($_GET['col']);
-    else header('Location: ../../');
-    require('../../Library/DBHelper.php');
-    $DB = new DBHelper();
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+if(isset($_GET['col']))
+    $collection = htmlspecialchars($_GET['col']);
+else header('Location: ../../');
+require('../../Library/DBHelper.php');
+$DB = new DBHelper();
 
 // SQL server connection information
 $sql_details = array(
@@ -61,7 +61,7 @@ $columns = array(
 
 require('../../Library/sspwithjoin.class.php');
 
-$joinQuery = " FROM `document` LEFT JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
+$joinQuery = " FROM `document` INNER JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
 $extraWhere = "";
 
 echo json_encode(

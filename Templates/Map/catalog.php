@@ -277,7 +277,7 @@ $date = new DateHelper();
                                     {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Upload' class='bluebtn'/>";}
                                     ?>
                                     <div class="bluebtn" id="loader" style="display: none;">
-                                        updating
+                                        Uploading
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
                                     </div>
                                 </span>
@@ -300,6 +300,7 @@ $date = new DateHelper();
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
+            /*jquery that displays the three points loader*/
             $('#btnSubmit').css("display", "none");
             $('#loader').css("display", "inherit");
             event.disabled;
@@ -313,7 +314,6 @@ $date = new DateHelper();
                 processData: false,
                 contentType: false,
                 success:function(data){
-                    console.log(data);
                     var json = JSON.parse(data);
                     var msg = "";
                     var result = 0;
@@ -321,22 +321,20 @@ $date = new DateHelper();
                     {
                         msg += json[i] + "\n";
                     }
-                    console.log(msg);
                     for (var i = 0; i < json.length; i++){
-                        if (json[i] == "Success") {
+                        if (json[i].includes("Success")) {
                             window.close();
                             result = 1;
                         }
-                        else if(json[i] == "Failed to Submit!" || json[i] == "Front Map: EXISTED" || json[i] == "ERROR: Fail to write log!")
+                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
                         {
                             $('#btnSubmit').css("display", "inherit");
                             $('#loader').css("display", "none");
                         }
                     }
                     alert(msg);
-
                     if (result == 1){
-                        window.open("http://localhost:81/bandocat/Templates/Map/catalog.php?col=bluchermaps")
+                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
                     }
 
                 }

@@ -82,6 +82,18 @@ class ControlsRender
             else echo '<option value="' . $item[0] . '">' . $item[0] . '</option>';
         }
     }
+
+    //fetch from DB for use by new users
+    function GET_DDL_ROLE($array,$selected)
+    {
+        echo '<option value="">Select</option>';
+        foreach ($array as $item) {
+            if ($selected == $item['name'])
+                echo '<option value="' . $item['roleID'] . '" selected>' . $item['name'] . '</option>';
+            else echo '<option value="' . $item['roleID'] . '">' . $item['name'] . '</option>';
+        }
+    }
+
     //FETCH FROM PHP ARRAY
     function GET_DDL2($array,$selected)
     {
@@ -90,6 +102,17 @@ class ControlsRender
             if ($selected == $item)
                 echo '<option value="' . $item . '" selected>' . $item . '</option>';
             else echo '<option value="' . $item . '">' . $item . '</option>';
+        }
+    }
+
+    //Render collection dropdown
+    function GET_DDL_COLLECTION($array,$selected)
+    {
+        echo '<option value="">Select</option>';
+        foreach ($array as $item) {
+            if ($selected == $item)
+                echo '<option value="' . $item['name'] . '" selected>' . $item['displayname'] . '</option>';
+            else echo '<option value="' . $item['name'] . '">' . $item['displayname'] . '</option>';
         }
     }
 }

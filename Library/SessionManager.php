@@ -15,11 +15,19 @@ class SessionManager
     public function __construct()
     {
         session_start();
-        if(isset($_SESSION['username'])) {
+        if(isset($_SESSION['username']) && isset($_SESSION['userID']) || isset($_SESSION['role'])) {
             $this->userName = $_SESSION['username'];
             $this->userID = $_SESSION['userID'];
             $this->role = $_SESSION['role'];
         }
+        else header('Location: ../../Forms/Login/');
+
+        if (time() > $_SESSION['end']) {
+            $this->setLoggedIn(false);
+            session_destroy();
+            header('Location: ../../Forms/Login/?keyword=sessionexpired');
+        }
+
 
         if($this->userName == null || $this->userName == ""
              || $this->userID == null || $this->userID == ""

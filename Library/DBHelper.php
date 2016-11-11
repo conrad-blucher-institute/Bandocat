@@ -164,11 +164,27 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $sth = $this->getConn()->prepare("SELECT `collectionID`,`displayname` FROM `bandocatdb`.`collection`");
+        $sth = $this->getConn()->prepare("SELECT `name`,`displayname` FROM `bandocatdb`.`collection`");
         $sth->execute();
 
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    /**********************************************
+     * Function: GET_USER_ROLE_FOR_DROPDOWN
+     * Description: GET USERS ROLE INFO FOR DROPDOWN
+     * Parameter(s): NONE
+     * Return value(s):
+     * $result  (associative array) - return associative array of collection info
+     ***********************************************/
+    function GET_USER_ROLE_FOR_DROPDOWN()
+    {
+        $call = $this->getConn()->prepare("SELECT `roleID`,`name`, `description` FROM `bandocatdb`.`role`");
+        $call->execute();
+
+        $role = $call->fetchAll(PDO::FETCH_ASSOC);
+        return $role;
     }
 
     /**********************************************
@@ -200,6 +216,43 @@ class DBHelper
     }
 
     /**********************************************
+     * Under development.
+     * Function:
+     * Description:
+     * Parameter(s):
+     * $iAction (in string) - input, edit or ....
+     * $iCollectionID (in int) - collection id of the document
+     * $iDocID (in int) - document ID
+     * $iUserID (in string) -  userID of user who performs the action
+     ***********************************************/
+    function SP_USER_INSERT($iUsername, $iPassword, $iFullname, $iEmail, $iRoleID, &$oMessage){
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        /*PREPARE STATEMENT*/
+        $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,@oMessage)");
+        if (!$call)
+            trigger_error("SQL failed: ". $this->getConn()->errorCode()."-".$this->conn->erorInfo()[0]);
+        $call->bindParam(1, $iUsername, PDO::PARAM_STR, strlen($iUsername));
+        $call->bindParam(2, md5($iPassword), PDO::PARAM_STR, strlen($iPassword));
+        $call->bindParam(3, $iFullname, PDO::PARAM_STR, strlen($iFullname));
+        $call->bindParam(4, $iEmail, PDO::PARAM_STR, strlen($iEmail));
+        $call->bindParam(5, $iRoleID, PDO::PARAM_INT);
+
+        /* EXECUTE STATEMENT */
+        $call->execute();
+
+        /* RETURN RESULT */
+        $select = $this->getConn()->query('SELECT @oMessage');
+        $result = $select->fetch(PDO::FETCH_ASSOC);
+        $oMessage = $result['@oMessage'];
+        if ($call){
+            return true;
+            return $oMessage;
+        }
+        return false;
+        return $oMessage;
+    }
+
+    /**********************************************
      * Function: SP_LOG_WRITE
      * Description: Insert new log entry
      * Parameter(s):
@@ -208,13 +261,14 @@ class DBHelper
      * $iDocID (in int) - document ID
      * $iUserID (in string) -  userID of user who performs the action
      * $iStatus (in string) - success or fail
+     * $iComment (in string) - comments
      * Return value(s): true if success, false if fail
      ***********************************************/
-    function SP_LOG_WRITE($iAction, $iCollectionID, $iDocID, $iUserID, $iStatus)
+    function SP_LOG_WRITE($iAction, $iCollectionID, $iDocID, $iUserID, $iStatus,$iComments)
     {
         $this->getConn()->exec('USE ' . DBHelper::$maindb);
         /* PREPARE STATEMENT */
-        $call = $this->getConn()->prepare("CALL SP_LOG_WRITE(?,?,?,?,?)");
+        $call = $this->getConn()->prepare("CALL SP_LOG_WRITE(?,?,?,?,?,?)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         $call->bindParam(1, $iAction, PDO::PARAM_STR, 10);
@@ -222,6 +276,7 @@ class DBHelper
         $call->bindParam(3, $iDocID, PDO::PARAM_INT,11);
         $call->bindParam(4, $iUserID, PDO::PARAM_INT,11);
         $call->bindParam(5, $iStatus, PDO::PARAM_STR, 7);
+        $call->bindParam(6, $iComments, PDO::PARAM_STR,250);
         /* EXECUTE STATEMENT */
         $ret = $call->execute();
         return $ret;
@@ -252,7 +307,7 @@ class DBHelper
         $call->bindParam(4, $iUserID, PDO::PARAM_INT,11);
         $call->bindParam(5, $iStatus, PDO::PARAM_STR, 7);
         $call->bindParam(6, $iTimestamp, PDO::PARAM_STR);
-        $call->bindParam(7, $iComments, PDO::PARAM_STR,40);
+        $call->bindParam(7, $iComments, PDO::PARAM_STR,250);
         /* EXECUTE STATEMENT */
         $ret = $call->execute();
         return $ret;
@@ -281,6 +336,53 @@ class DBHelper
         $select = $this->getConn()->query('SELECT @oSubject AS Subject,@oSubmissionDate AS SubmissionDate,@oSolvedDate AS SolvedDate,@oPoster AS Submitter,@oCollection AS Collection,@oDescription AS Description,@oNotes AS Notes,@oSolver AS Solver,@oStatus AS Status');
         $result = $select->fetch(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    /**********************************************
+     * Function:  GET_DOCUMENT_COUNT
+     * Description: Count number of rows for the table specified by the Col parameter
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * Return value(s):
+     * $result (integer) - Number of rows as an integer
+     ***********************************************/
+    function GET_DOCUMENT_COUNT($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document`");
+            $sth->execute();
+            $result = $sth->fetchColumn();
+            return $result;
+        } else return false;
+    }
+    function GET_DOCUMENT_FILTEREDCOUNT($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `hascoast`='1'");
+            $sth->execute();
+            $result = $sth->fetchColumn();
+            return $result;
+        } else return false;
+    }
+    /**********************************************
+     * Function: GET_COLLECTION_TEMPLATE
+     * Description: GIVEN collection name , return the collection's template data (dir, fulldir, name)
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * Return value(s):
+     * (assoc array) - return a template info in an associative array
+     ***********************************************/
+    function GET_COLLECTION_TEMPLATE($collection)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT * FROM `template` WHERE `template`.`templateID` = (SELECT `templateID` FROM `collection` WHERE `name` = ? LIMIT 1) LIMIT 1");
+        $sth->bindParam(1,$collection, PDO::PARAM_STR,50);
+        $sth->execute();
+        return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
     /**********************************************
@@ -396,7 +498,14 @@ class DBHelper
             $call->bindParam(27, htmlspecialchars($iFileNameBackPath), PDO::PARAM_STR, 200);
 
             /* EXECUTE STATEMENT */
-            return $call->execute();
+            $ret = $call->execute();
+            if($ret)
+            {
+                $select = $this->getConn()->query('SELECT LAST_INSERT_ID()');
+                $ret = $select->fetch(PDO::FETCH_COLUMN);
+                return $ret;
+            }
+            return 0;
         } else return false;
     }
 
@@ -422,6 +531,27 @@ class DBHelper
         } else return false;
     }
 
+    /**********************************************
+     * Function: DELETE_DOCUMENT
+     * Description: DELETE DOCUMENT GIVEN collection name and document ID
+     * Parameter(s): $collection (in String) - Name of the collection
+     *               $iDocID (in int) - document id
+     * Return value(s):
+     * $result  (array) - true if success, otherwise, false
+     ***********************************************/
+    function DELETE_DOCUMENT($collection,$iDocID)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        if ($dbname != null && $dbname != "") {
+            $this->getConn()->exec('USE ' . $dbname);
+
+            $sth = $this->getConn()->prepare("DELETE FROM `document` WHERE `documentID`=?");
+            $sth->bindParam(1,$iDocID,PDO::PARAM_INT,11);
+            $ret = $sth->execute();
+            return $ret;
+        }
+        return false;
+    }
 
     /**********************************************
      * Function: GET_TEMPLATE_MAP_MEDIUM_FOR_DROPDOWN
