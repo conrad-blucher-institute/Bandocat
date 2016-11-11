@@ -35,7 +35,12 @@ $session = new SessionManager();
                     url: 'form_processing.php',
                     data: {"txtAction": "delete", "txtCollection": col, "txtDocID": id},
                     success:function(data){
-                        alert(data);
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        for(var i = 0; i < json.length; i++)
+                            msg += json[i] + "\n";
+                        alert(msg);
+                        $('#dtable').DataTable().ajax.reload();
                     }
                 });
             }

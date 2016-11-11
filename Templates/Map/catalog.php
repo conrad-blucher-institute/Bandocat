@@ -314,7 +314,6 @@ $date = new DateHelper();
                 processData: false,
                 contentType: false,
                 success:function(data){
-                    console.log("this is the value that is being returned in data:" + data );
                     var json = JSON.parse(data);
                     var msg = "";
                     var result = 0;
@@ -322,7 +321,6 @@ $date = new DateHelper();
                     {
                         msg += json[i] + "\n";
                     }
-                    console.log(msg);
                     for (var i = 0; i < json.length; i++){
                         if (json[i].includes("Success")) {
                             window.close();

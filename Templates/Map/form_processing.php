@@ -12,6 +12,7 @@ $session = new SessionManager();
     $action = htmlspecialchars($data['txtAction']);
     $collection = htmlspecialchars($data['txtCollection']);
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+    $comments = null;
     if($action != "delete") {
         //data pre-processing
         //Date
@@ -37,6 +38,7 @@ $session = new SessionManager();
                 $data['rbHasPOI'],$data['rbHasCoordinates'],$data['rbHasCoast'],$data['rbNeedsReview'],
                 $data['txtComments'],$customerID,$startdate,$enddate,$data['txtFieldBookNumber'],$data['txtFieldBookPage'],$data['ddlReadability'],
             $data['ddlRectifiability'],$companyID,$data['txtType'],$mediumID,$authorID);
+        $comments = "Library Index:" . $data['txtLibraryIndex'];
        // array_push($msg,"Update Query: GOOD");
     }
     //catalog (new document)
@@ -150,7 +152,7 @@ $session = new SessionManager();
             $exec1 = "convert " . $filenamepath . '/' . basename($_FILES["fileUpload"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $frontthumbnail;
             exec($exec1, $yaks1);
             if ($hasBack == true) {
-                $exec2 = "convert " . $filenamepath . '/' . basename($_FILES["fileUploadBack"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $backthumbnail;
+                $exec2 = "convert " . $filenamebackpath . '/' . basename($_FILES["fileUploadBack"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $backthumbnail;
                 exec($exec2, $yaks2);
             }
 
@@ -164,6 +166,7 @@ $session = new SessionManager();
                 $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
                 $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath) . "/" . $filename,$backpath);
             $data['txtDocID'] = $retval;
+            $comments = "Library Index: " . $data['txtLibraryIndex'];
         }
 
 
@@ -172,6 +175,8 @@ $session = new SessionManager();
     {
         $errors = 0;
         $info = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($data["txtCollection"], $data['txtDocID']);
+        $comments = "Library Index: " . $info['LibraryIndex'];
+
         $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
         $backScanPath = $config['StorageDir'].$info['FileNameBackPath'];
 
@@ -199,15 +204,8 @@ $session = new SessionManager();
             if (file_exists($backThumbnailPathJPG))
                 unlink($backThumbnailPathJPG);
         }
-
-        if (file_exists($frontScanPath) || file_exists($frontThumbnailPathJPG) || file_exists($backScanPath) || file_exists($backThumbnailPathJPG))
-            $errors++;
-
-        if($retval)
-            echo 'Thumbnails and Image files deleted successfully';
-
-        //remove thumbnail
-        //remove front & back map
+//        if (file_exists($frontScanPath) || file_exists($frontThumbnailPathJPG) || file_exists($backScanPath) || file_exists($backThumbnailPathJPG))
+//            $errors++;
     }
 
         //REPORT STATUS
@@ -220,7 +218,7 @@ $session = new SessionManager();
         }
 
         //write log
-        $retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus);
+        $retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus,$comments);
         if(!$retval)
             array_push($msg, "ERROR: Fail to write log!");
 
@@ -232,5 +230,7 @@ $session = new SessionManager();
             $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg);
         else if ($action == "catalog")
             $LOG->writeErrorLog($session->getUserName(),$collection,basename($_FILES['fileUpload']['name']),$msg);
+        else if ($action == "delete")
+            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg);
     }
     echo json_encode($msg);

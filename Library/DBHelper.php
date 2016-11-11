@@ -261,13 +261,14 @@ class DBHelper
      * $iDocID (in int) - document ID
      * $iUserID (in string) -  userID of user who performs the action
      * $iStatus (in string) - success or fail
+     * $iComment (in string) - comments
      * Return value(s): true if success, false if fail
      ***********************************************/
-    function SP_LOG_WRITE($iAction, $iCollectionID, $iDocID, $iUserID, $iStatus)
+    function SP_LOG_WRITE($iAction, $iCollectionID, $iDocID, $iUserID, $iStatus,$iComments)
     {
         $this->getConn()->exec('USE ' . DBHelper::$maindb);
         /* PREPARE STATEMENT */
-        $call = $this->getConn()->prepare("CALL SP_LOG_WRITE(?,?,?,?,?)");
+        $call = $this->getConn()->prepare("CALL SP_LOG_WRITE(?,?,?,?,?,?)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         $call->bindParam(1, $iAction, PDO::PARAM_STR, 10);
@@ -275,6 +276,7 @@ class DBHelper
         $call->bindParam(3, $iDocID, PDO::PARAM_INT,11);
         $call->bindParam(4, $iUserID, PDO::PARAM_INT,11);
         $call->bindParam(5, $iStatus, PDO::PARAM_STR, 7);
+        $call->bindParam(6, $iComments, PDO::PARAM_STR,250);
         /* EXECUTE STATEMENT */
         $ret = $call->execute();
         return $ret;
