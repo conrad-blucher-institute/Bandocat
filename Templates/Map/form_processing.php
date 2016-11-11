@@ -169,8 +169,41 @@ $session = new SessionManager();
     }
     else if($action == "delete")
     {
-       $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
-        echo $retval;
+        $errors = 0;
+        $info = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($data["txtCollection"], $data['txtDocID']);
+        $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
+        $backScanPath = $config['StorageDir'].$info['FileNameBackPath'];
+
+        //Thumbnail conversion to jpg and path detection
+        //$thumbnailPath = str_replace('/','\\',$config['ThumbnailDir']);
+        $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
+
+        $frontThumbnailPathTIF = $config['ThumbnailDir'].$info['FileName'];
+        $backThumbnailPathTIF = $config['ThumbnailDir'].$info['FileNameBack'];
+
+        $frontThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $frontThumbnailPathTIF);
+        $backThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $backThumbnailPathTIF);
+
+        $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
+
+        if (file_exists($frontScanPath))
+            unlink($frontScanPath);
+        if (file_exists($frontThumbnailPathJPG))
+            unlink($frontThumbnailPathJPG);
+
+        if ($info['FileNameBack'] !== "")
+        {
+            if (file_exists($backScanPath))
+                unlink($backScanPath);
+            if (file_exists($backThumbnailPathJPG))
+                unlink($backThumbnailPathJPG);
+        }
+
+        if (file_exists($frontScanPath) || file_exists($frontThumbnailPathJPG) || file_exists($backScanPath) || file_exists($backThumbnailPathJPG))
+            $errors++;
+
+        if($retval)
+            echo 'Thumbnails and Image files deleted successfully';
 
         //remove thumbnail
         //remove front & back map
