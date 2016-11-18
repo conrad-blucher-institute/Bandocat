@@ -164,7 +164,7 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $sth = $this->getConn()->prepare("SELECT `name`,`displayname` FROM `bandocatdb`.`collection`");
+        $sth = $this->getConn()->prepare("SELECT`collectionID`,`name`,`displayname` FROM `bandocatdb`.`collection`");
         $sth->execute();
 
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -703,5 +703,38 @@ class DBHelper
         } else return false;
     }
 
+    //******************************* IN DEVELOPMENT FUNCTION ******************//
 
+
+    /**********************************************
+     * Function: SP_WEEKLYREPORT_INSERT
+     * Description: INSERT INTO WEEKLYREPORT TABLE FROM COUNTING ENTRIES IN LOG TABLE
+     * Parameter(s): $iYear (in int) - year
+     *               $iWeek (in int) - week (1-52)
+     *               $iCollectionID (in string) - collectionID
+     * Return value(s): true if success, false if fail
+     ***********************************************/
+    function SP_WEEKLYREPORT_INSERT($iYear,$iWeek,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $call = $this->getConn()->prepare("CALL SP_WEEKLYREPORT_INSERT(?,?,?)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, $iYear, PDO::PARAM_INT);
+        $call->bindParam(2, $iWeek, PDO::PARAM_INT);
+        $call->bindParam(3, $iCollectionID,PDO::PARAM_INT);
+        /* EXECUTE STATEMENT */
+        $ret = $call->execute();
+        return $ret;
+    }
+
+    function GET_WEEKLYREPORT($iYear,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare('SELECT `weeklyreport`.`week`,`weeklyreport`.`count` FROM `weeklyreport` WHERE `weeklyreport`.`year` = ? AND `weeklyreport`.`collectionID` = ?');
+        $sth->bindParam(1,$iYear,PDO::PARAM_INT);
+        $sth->bindParam(2,$iCollectionID,PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
