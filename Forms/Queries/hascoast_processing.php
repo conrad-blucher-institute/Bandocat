@@ -1,11 +1,15 @@
 <?php
-include '../../Library/SessionManager.php';
-$session = new SessionManager();
 if(isset($_GET['col']))
     $collection = htmlspecialchars($_GET['col']);
 else header('Location: ../../');
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
+
+$array_collection = ["Green Maps","Blucher Maps"];
+$array_col_name = ["greenmaps","bluchermaps"];
+$array_dir = ["GreenCollection","MapsDB"];
+
+
 
 // SQL server connection information
 $sql_details = array(
@@ -47,11 +51,7 @@ $columns = array(
     array( 'db' => '`document`.`documentID`', 'dt' => 0, 'field' => 'documentID' ),
     array( 'db' => '`document`.`libraryindex`', 'dt' => 1,'field' => 'libraryindex'),
     array( 'db' => '`document`.`title`', 'dt' => 2,'field' => 'title' ),
-    array( 'db' => '`document`.`subtitle`',  'dt' => 3, 'field' => 'subtitle' ),
-    array( 'db' => '`customer`.`customername`', 'dt' => 4,'field' => 'customername'),
-    array( 'db' => '`document`.`enddate`', 'dt' => 5,'field' => 'enddate'),
-    array( 'db' => '`document`.`hascoast`', 'dt' => 6, 'field' => 'hascoast'),
-    array( 'db' => '`document`.`needsreview`', 'dt' => 7,'field' => 'needsreview')
+    array( 'db' => '`document`.`needsreview`', 'dt' => 3,'field' => 'needsreview')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -61,9 +61,8 @@ $columns = array(
 
 require('../../Library/sspwithjoin.class.php');
 
-$joinQuery = " FROM `document` INNER JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
+$joinQuery = "FROM `document` WHERE `hascoast` = 1";
 $extraWhere = "";
-
 echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
+    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere)
 );
