@@ -164,7 +164,8 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $sth = $this->getConn()->prepare("SELECT`collectionID`,`name`,`displayname` FROM `bandocatdb`.`collection`");
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT `collectionID`,`name`,`displayname` FROM `collection`");
         $sth->execute();
 
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -176,10 +177,11 @@ class DBHelper
      * Description: GET USERS ROLE INFO FOR DROPDOWN
      * Parameter(s): NONE
      * Return value(s):
-     * $result  (associative array) - return associative array of collection info
+     * $result  (associative array) - return associative array of role info
      ***********************************************/
     function GET_USER_ROLE_FOR_DROPDOWN()
     {
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
         $call = $this->getConn()->prepare("SELECT `roleID`,`name`, `description` FROM `bandocatdb`.`role`");
         $call->execute();
 
@@ -745,5 +747,28 @@ class DBHelper
         $sth->bindParam(2,$iCollectionID,PDO::PARAM_INT);
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function GET_MONTHLYREPORT($iYear,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT 
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 1 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 2 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 3 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 4 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 5 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 6 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 7 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 8 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 9 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 10 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 11 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 12 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success')");
+            $sth->bindParam(':y',$iYear,PDO::PARAM_INT);
+            $sth->bindParam(':collection',$iCollectionID,PDO::PARAM_INT);
+
+            $sth->execute();
+            return $sth->fetchAll(PDO::FETCH_NUM);
     }
 }

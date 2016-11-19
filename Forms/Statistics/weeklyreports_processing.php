@@ -4,6 +4,17 @@ function getIsoWeeksInYear($year) {
     $date->setISODate($year, 53);
     return ($date->format("W") === "53" ? 53 : 52);
 }
+function getStartAndEndDate($week, $year)
+{
+
+    $time = strtotime("1 January $year", time());
+    $day = date('w', $time);
+    $time += ((7*$week)+1-$day)*24*3600;
+    $return[0] = date('n/j', $time);
+    $time += 6*24*3600;
+    $return[1] = date('n/j', $time);
+    return $return[0] . " - " . $return[1];
+}
 
 
 require '../../Library/DBHelper.php';
@@ -36,6 +47,14 @@ foreach($collections as $col) {
     }
     array_push($array,$subarray);
 }
-echo json_encode($array);
+
+//labels array
+$labels = array();
+for($i = 0; $i < $week_upperbound; $i++) {
+    array_push($labels,getStartAndEndDate(($i + 1),$year));
+}
+
+$final_array = array("labels" => $labels,"datasets" => $array);
+echo json_encode($final_array);
 
 ?>

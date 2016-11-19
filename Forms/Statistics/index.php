@@ -47,26 +47,49 @@ $collections = $DB->GET_COLLECTION_FOR_DROPDOWN();
                 </td>
                 <td class="container" id="thetable_right">
                     <h2 id="page_title">Statistics</h2>
-<!--                    <div style="overflow-y: scroll;overflow-x:hidden;min-height:1000px">-->
-<!--                        <button id="btnCollectionCount" onclick="getCollectionCount()" class="bluebtn">-->
-<!--                            Collection Count-->
-<!--                        </button>-->
-<!--                        <div id="divDocumentCount" style="width:450px;height:500px;display: none"; >-->
-<!--                            <h3 id="titleDocumentCount">Total Maps/Documents per Collection </h3>-->
-<!--                                <canvas id="chartDocumentCount" height="350" width="300"></canvas>-->
-<!--                                <div class="graph-legend" id="legendDocumentCount"></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                    <div id="divReports">
-                        Select Year: <select id="ddlYear" name="ddlYear"">
+                    <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:654px;">
+                        <div>Select Year: <select id="ddlYear" name="ddlYear"">
                             <?php
-                                    echo "<option value=''>Select</option>";
-                                for($i = 2015;$i <= date("Y");$i++)
-                                    echo "<option value='$i'>$i</option>";
+                            echo "<option value=''>Select</option>";
+                            for($i = 2015;$i <= date("Y");$i++)
+                                echo "<option value='$i'>$i</option>";
                             ?>
-                        </select>
-                        <canvas id="chartWeeklyReport" height="300" width="400"></canvas>
-                        <div class="graph-legend" id="legendWeeklyReport"></div>
+                            </select>
+                        </div>
+                        <table><tr>
+                                <td style="vertical-align: top">
+                                    <h3>Monthly Performance <span class="spanYear"></span></h3>
+                                    <canvas id="chartMonthlyReport" height="400" width="500"></canvas>
+                                    <div class="graph-legend" id="legendMonthlyReport"></div>
+                                </td>
+                                <td style="padding-left:80px;vertical-align: top">
+                                        <h3 id="titleDocumentCount">Total Maps/Documents per Collection </h3>
+                                            <canvas id="chartDocumentCount" height="300" width="300"></canvas>
+                                            <div class="graph-legend" id="legendDocumentCount"></div>
+                                    <div id="storage_capacity">
+                                        <h3>Storage Capacity</h3>
+                                        <?php
+                                            foreach($collections as $col)
+                                            {
+                                                echo "<div id='storagecap_$col[name]'>$col[displayname]:</div>";
+                                            }
+                                        ?>
+                                        <div id ="storage_total"><b>All Collections:</b></div>
+                                        <div id="storage_free">Disk Free Space:</div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <h3>Weekly Performance <span class="spanYear"></span></h3>
+                                    <canvas id="chartWeeklyReport" height="400" width="1000"></canvas>
+                                    <div class="graph-legend" id="legendWeeklyReport"></div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -77,8 +100,8 @@ $collections = $DB->GET_COLLECTION_FOR_DROPDOWN();
 </body>
 <script>
     var collections = <?php echo json_encode($collections); ?>;
-    var collection_color = ['blue','green','orange','yellow','grey','black'];
-    var collection_highlight = ['#FF5A5E','#7FFF55','#007FFF','#244400','#ffffff'];
+    var collection_color = ['#0067C5','#00BC65','#FFAA2A','#FFFF00','#787878','#00000'];
+    var collection_highlight = ['#FF5A5E','#7FFF55','#007FFF','#244400','#D4D4FF'];
     function getCollectionCount() {
         $('#divDocumentCount').show();
         $.ajax({
@@ -104,43 +127,92 @@ $collections = $DB->GET_COLLECTION_FOR_DROPDOWN();
             }
         });
     }
-
+    //weekly
         $("#ddlYear").change(function()
-        {
-            var year = $("#ddlYear").val();
-            if(year != "") {
-                $.ajax({
-                    type: "POST",
-                    url: "./reports_processing.php?year=" + year,
-                    success: function (data) {
-                        var JSONdata = JSON.parse(data);
-                        //generate total chart
-                        var weeklyData = [];
-                        for (var i = 0; i < collections.length; i++) {
-                            var array = {
-                                label: collections[i],
-                                fillColor: collection_color[i],
-                                strokeColor: collection_highlight[i],
-                                pointColor: collection_highlight[i],
-                                pointStrokeColor: "#fff",
-                                pointHighlightFill: "#fff",
-                                pointHighlightStroke: "rgba(151,187,205,1)",
-                                data: JSONdata[i]
+            {
+                var year = $("#ddlYear").val();
+                if(year != "") {
+                    $(".spanYear").text(year);
+                    $.ajax({
+                        type: "POST",
+                        url: "./weeklyreports_processing.php?year=" + year,
+                        success: function (data) {
+                            var JSONdata = JSON.parse(data);
+                            //generate total chart
+                            var weeklyData = [];
+                            for (var i = 0; i < collections.length; i++) {
+                                var array = {
+                                    label: collections[i].displayname,
+                                    fillColor: "transparent",
+                                    strokeColor: collection_color[i],
+                                    pointColor: collection_color[i],
+                                    pointStrokeColor: collection_color[i],
+                                    pointHighlightFill: collection_highlight[i],
+                                    pointHighlightStroke: "rgba(151,187,205,1)",
+                                    data: JSONdata.datasets[i]
+                                };
+                                weeklyData.push(array);
+                                array = null;
+                            }
+                            //generate weekly input chart
+                            var dat = {
+                                labels: JSONdata.labels,
+                                datasets: weeklyData,
+                                options: {
+                                    responsive: false
+                                }
                             };
-                            weeklyData.push(array);
+                            var ctx = new Chart(document.getElementById("chartWeeklyReport").getContext("2d")).Line(dat);
+//                            document.getElementById("legendWeeklyreport").innerHTML = ctx.generateLegend();
                         }
-                        console.log(weeklyData);
-                        //generate weekly input chart
-                        var ctx1 = document.getElementById("chartWeeklyReport").getContext("2d");
-                        window.MyLineChart2= new Chart(ctx1).Line(weeklyData, {
-                            responsive: true
-                        });
-                        document.getElementById("legendWeeklyReport").innerHTML = MyLineChart2.generateLegend();
+                    });
+                }
+            });
+        //monthly
+            $("#ddlYear").change(function()
+            {
+                var year = $("#ddlYear").val();
+                if(year != "") {
+                    $.ajax({
+                        type: "POST",
+                        url: "./monthlyreports_processing.php?year=" + year,
+                        success: function (data) {
+                            var JSONdata = JSON.parse(data);
+                            //generate total chart
+                            var monthlyData = [];
+                            for (var i = 0; i < collections.length; i++) {
+                                var array = {
+                                    label: collections[i].displayname,
+                                    fillColor: "transparent",
+                                    strokeColor: collection_color[i],
+                                    pointColor: collection_color[i],
+                                    pointStrokeColor: collection_color[i],
+                                    pointHighlightFill: collection_highlight[i],
+                                    pointHighlightStroke: "rgba(151,187,205,1)",
+                                    data: JSONdata[i][0]
+                                };
+                                monthlyData.push(array);
+                                array = null;
+                            }
+                            //generate weekly input chart
+                            var dat = {
+                                labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+                                datasets: monthlyData,
+                                options: {
+                                    responsive: false
+                                }
+                            };
+                            var ctx = new Chart(document.getElementById("chartMonthlyReport").getContext("2d")).Line(dat);
+                            document.getElementById("legendMonthlyReport").innerHTML = ctx.generateLegend();
+                        }
+                    });
+                }
+            });
 
-                    }
-                });
-            }
-        });
+    $( document ).ready(function() {
+        getCollectionCount();
+    });
+
 
 </script>
 </html>
