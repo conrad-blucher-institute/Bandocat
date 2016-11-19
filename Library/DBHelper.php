@@ -164,7 +164,8 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $sth = $this->getConn()->prepare("SELECT `name`,`displayname` FROM `bandocatdb`.`collection`");
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT `collectionID`,`name`,`displayname` FROM `collection`");
         $sth->execute();
 
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -176,10 +177,11 @@ class DBHelper
      * Description: GET USERS ROLE INFO FOR DROPDOWN
      * Parameter(s): NONE
      * Return value(s):
-     * $result  (associative array) - return associative array of collection info
+     * $result  (associative array) - return associative array of role info
      ***********************************************/
     function GET_USER_ROLE_FOR_DROPDOWN()
     {
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
         $call = $this->getConn()->prepare("SELECT `roleID`,`name`, `description` FROM `bandocatdb`.`role`");
         $call->execute();
 
@@ -261,14 +263,13 @@ class DBHelper
      * $iDocID (in int) - document ID
      * $iUserID (in string) -  userID of user who performs the action
      * $iStatus (in string) - success or fail
-     * $iComment (in string) - comments
      * Return value(s): true if success, false if fail
      ***********************************************/
-    function SP_LOG_WRITE($iAction, $iCollectionID, $iDocID, $iUserID, $iStatus,$iComments)
+    function SP_LOG_WRITE($iAction, $iCollectionID, $iDocID, $iUserID, $iStatus)
     {
         $this->getConn()->exec('USE ' . DBHelper::$maindb);
         /* PREPARE STATEMENT */
-        $call = $this->getConn()->prepare("CALL SP_LOG_WRITE(?,?,?,?,?,?)");
+        $call = $this->getConn()->prepare("CALL SP_LOG_WRITE(?,?,?,?,?)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         $call->bindParam(1, $iAction, PDO::PARAM_STR, 10);
@@ -276,7 +277,6 @@ class DBHelper
         $call->bindParam(3, $iDocID, PDO::PARAM_INT,11);
         $call->bindParam(4, $iUserID, PDO::PARAM_INT,11);
         $call->bindParam(5, $iStatus, PDO::PARAM_STR, 7);
-        $call->bindParam(6, $iComments, PDO::PARAM_STR,250);
         /* EXECUTE STATEMENT */
         $ret = $call->execute();
         return $ret;
@@ -357,12 +357,23 @@ class DBHelper
             return $result;
         } else return false;
     }
-    function GET_DOCUMENT_FILTEREDCOUNT($collection)
+    function GET_DOCUMENT_FILTEREDCOAST_COUNT($collection)
     {
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
             $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `hascoast`='1'");
+            $sth->execute();
+            $result = $sth->fetchColumn();
+            return $result;
+        } else return false;
+    }
+    function GET_DOCUMENT_FILTEREDTITLE_COUNT($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `libraryindex` = `title`");
             $sth->execute();
             $result = $sth->fetchColumn();
             return $result;
@@ -703,5 +714,61 @@ class DBHelper
         } else return false;
     }
 
+    //******************************* IN DEVELOPMENT FUNCTION ******************//
 
+
+    /**********************************************
+     * Function: SP_WEEKLYREPORT_INSERT
+     * Description: INSERT INTO WEEKLYREPORT TABLE FROM COUNTING ENTRIES IN LOG TABLE
+     * Parameter(s): $iYear (in int) - year
+     *               $iWeek (in int) - week (1-52)
+     *               $iCollectionID (in string) - collectionID
+     * Return value(s): true if success, false if fail
+     ***********************************************/
+    function SP_WEEKLYREPORT_INSERT($iYear,$iWeek,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $call = $this->getConn()->prepare("CALL SP_WEEKLYREPORT_INSERT(?,?,?)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        $call->bindParam(1, $iYear, PDO::PARAM_INT);
+        $call->bindParam(2, $iWeek, PDO::PARAM_INT);
+        $call->bindParam(3, $iCollectionID,PDO::PARAM_INT);
+        /* EXECUTE STATEMENT */
+        $ret = $call->execute();
+        return $ret;
+    }
+
+    function GET_WEEKLYREPORT($iYear,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare('SELECT `weeklyreport`.`week`,`weeklyreport`.`count` FROM `weeklyreport` WHERE `weeklyreport`.`year` = ? AND `weeklyreport`.`collectionID` = ?');
+        $sth->bindParam(1,$iYear,PDO::PARAM_INT);
+        $sth->bindParam(2,$iCollectionID,PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function GET_MONTHLYREPORT($iYear,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT 
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 1 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 2 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 3 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 4 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 5 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 6 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 7 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 8 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 9 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 10 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 11 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success'),
+            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 12 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success')");
+            $sth->bindParam(':y',$iYear,PDO::PARAM_INT);
+            $sth->bindParam(':collection',$iCollectionID,PDO::PARAM_INT);
+
+            $sth->execute();
+            return $sth->fetchAll(PDO::FETCH_NUM);
+    }
 }

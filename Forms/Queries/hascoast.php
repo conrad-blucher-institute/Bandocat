@@ -1,20 +1,10 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-$array_collection = ["Green Maps","Blucher Maps"];
-$array_db_name = ["greenmapsinventory","bluchermapsinventory"];
-$array_table_name = ["greenmapsinventory.documentinformation","bluchermapsinventory.document"];
-$array_dir = ["GreenCollection","MapsDB"];
-if(isset($_GET['col'])) {
-    $collection = $_GET['col'];
-    require('../../Library/DBHelper.php');
-    $DB = new DBHelper();
-    $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-    $count = $DB->GET_DOCUMENT_COUNT($collection);
-    $countfilter =$DB->GET_DOCUMENT_FILTEREDCOUNT($collection);
-
-}
-
+require('../../Library/DBHelper.php');
+$DB = new DBHelper();
+require('../../Library/ControlsRender.php');
+$Render = new ControlsRender();
 ?>
 <!doctype html>
 <html lang="en">
@@ -30,8 +20,6 @@ if(isset($_GET['col'])) {
     <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
-
-
 </head>
 <body>
 <div id="wrap">
@@ -49,186 +37,62 @@ if(isset($_GET['col'])) {
                             <td style="margin-left: 45% ;font-size:13px" colspan="20%"
                             <td style="float:left;font-size:13px" colspan="20%">
 
-                                <form id = "form1" name="form1" method="post">
+                                <form id = "form" name="form" method="post">
                                     Select Collection:
-                                    <select id="ddl_collection" name="ddl_collection">
-                                        <?php
-                                        if($collection=="greenmaps") {
-                                            echo '<option value="' . $array_table_name[0] . '">' . $array_collection[0] . '</option>';
-                                            echo '<option value="' . $array_table_name[1] . '">' . $array_collection[1] . '</option>';
-                                        }
-                                        if($collection=="bluchermaps") {
-                                            echo '<option value="' . $array_table_name[1] . '">' . $array_collection[1] . '</option>';
-                                            echo '<option value="' . $array_table_name[0] . '">' . $array_collection[0] . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                    <input type="submit" name="btn_Submit" id="btn_Submit" value="Select" onclick="selectedValue()"/>
-                                    <?php
-                                    if(isset($_POST['btn_Submit']))
-                                    {
-
-                                        $jobfolder_flag = false;
-
-                                        if ($_POST['ddl_collection'] == $array_table_name[0])
-                                        {
-                                            echo "<script type='text/javascript'>                                        
-                                        var coltable;
-                                        var newurl;
-                                        var standingurl;
-
-                                            //Check to see if a query exists in the URL
-                                            standingurl = window.location.href;
-                                            //If Query Exists, remove it before adding a new query
-                                            if(standingurl.includes('?')){
-                                                standingurl = standingurl.substring(0, standingurl.indexOf('?'));
-                                            }
-                                            //If no Query Exists, add the query
-                                            else{
-                                                standingurl = window.location.href
-                                            }
-                                                coltable=\"greenmaps\";
-
-                                            //document.getElementById(\"demo\").innerHTML =
-                                            newurl = standingurl + \"?col=\" + coltable;
-
-                                            window.location.assign(newurl)
-                                        
-                                        </script>";
-                                        }
-
-                                        if ($_POST['ddl_collection'] == $array_table_name[1])
-                                        {
-                                            echo "<script type='text/javascript'>                                        
-                                        var coltable;
-                                        var newurl;
-                                        var standingurl;
-
-                                            //Check to see if a query exists in the URL
-                                            standingurl = window.location.href;
-                                            //If Query Exists, remove it before adding a new query
-                                            if(standingurl.includes('?')){
-                                                standingurl = standingurl.substring(0, standingurl.indexOf('?'));
-                                            }
-                                            //If no Query Exists, add the query
-                                            else{
-                                                standingurl = window.location.href
-                                            }
-                                                coltable=\"bluchermaps\";
-
-                                            //document.getElementById(\"demo\").innerHTML =
-                                            newurl = standingurl + \"?col=\" + coltable;
-
-                                            window.location.assign(newurl)
-                                        
-                                        </script>";
-                                        }
-                                    }
-                                    ?>
+                                    <select name="ddlCollection" id="ddlCollection" onchange="Calculate(this.value)"><?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN(),null);
+                                        ?></select>
                                 </form>
-
                                 <h4 id="txt_counter" ></h4>
-
                         </tr>
                     </table>
                     <script>
-                        $(document).ready(function() {
-                            var collection_config = <?php echo json_encode($config); ?>;
-                            $('#page_title').text(collection_config.DisplayName);
-
-                            var table = $('#dtable').dataTable( {
+                        function Calculate(Query) {
+                            if (Query.length == 0) {
+                                document.getElementById("txt_counter").innerHTML = "";
+                                return;
+                            } else {
+                                var xmlhttp = new XMLHttpRequest();
+                                xmlhttp.onreadystatechange = function() {
+                                    if (this.readyState == 4 && this.status == 200) {
+                                        document.getElementById("txt_counter").innerHTML = this.responseText;
+                                    }
+                                };
+                                xmlhttp.open("GET", "StatisticsHelper.php?q=" + Query + "_Coast", true);
+                                xmlhttp.send();
+                            }
+                        }
+                    </script>
+                    <script>
+                        function SSP_DataTable(collection)
+                        {
+                            var table = $('#dtable').DataTable( {
                                 "processing": true,
                                 "serverSide": true,
                                 "lengthMenu": [20, 40 , 60, 80, 100],
                                 "bStateSave": false,
+                                "destroy": true,
                                 "columnDefs": [
                                     //column Document Index: Replace with Hyperlink
                                     {
                                         "render": function ( data, type, row ) {
-                                            return "<a href='editform.php?col=" + data + "'>Edit/View</a>" ;
+                                            return "<a target='_blank'  href='../../index.php?doc=" + data + "&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>" ;
                                         },
                                         "targets": 0
                                     },
-                                    //column Title
+                                    //column needs review
                                     {
                                         "render": function ( data, type, row ) {
-                                            return data;
-                                        },
-                                        "targets": 2
-                                    },
-                                    //column Subtitle
-                                    {
-                                        "render": function ( data, type, row ) {
-                                            if(data.length > 38)
-                                                return data.substr(0,38) + "...";
-                                            return data;
+                                            if(data == 1)
+                                                return "Yes";
+                                            return "No";
                                         },
                                         "targets": 3
-                                    },
-                                    //column : Date
-                                    {
-                                        "render": function ( data, type, row ) {
-                                            if(data == "00/00/0000")
-                                                return "";
-                                            return data;
-                                        },
-                                        "targets": 5,
-                                        "visible": false
-                                    },
-                                    //column : HasCoast
-                                    {
-                                        "render": function ( data, type, row ) {
-                                            if(data == 1)
-                                                return "Yes";
-                                            return "No";
-                                        },
-                                        "targets": 6
-
-                                    },
-                                    //column : NeedsReview
-                                    {
-                                        "render": function ( data, type, row ) {
-                                            if(data == 1)
-                                                return "Yes";
-                                            return "No";
-                                        },
-                                        "targets": 7,
-                                        "visible": false
-                                    },
-
-                                ],
-                                "ajax": "hascoast_processing.php?col=" + collection_config.Name,
-                                "initComplete": function(settings,json)
-                                {
-                                    var recordsTotal = $('#dtable').DataTable().page.info().recordsTotal;
-                                    console.log(recordsTotal);
-
-
-                                }
-
+                                    },],
+                                "ajax": "hascoast_processing.php?col=" + collection
                             } );
 
 
-                            table.fnFilter("1", 6);
-                            //var recordsFiltered = $('#dtable').DataTable().page.info().recordsTotal;
-                               // alert(recordsFiltered);
-
-                            //var rowCount = $('#dtable tr').length;
-
-//                            document.getElementById("demo").innerHTML =
-//                                "There are: " + rowCount + " Maps with Coasts, out of a total ";
-                            //hide first column (DocID)
-//                            table.column(0).visible(true);
-
-                            // show or hide subtitle
-                           // table.column(3).visible(false);
-                            $('#checkbox_subtitle').change(function (e) {
-                                e.preventDefault();
-                                // Get the column API object
-                                var column = table.column(3);
-                                // Toggle the visibility
-                                column.visible( ! column.visible() );
-                            } );
+                            table.column(0).visible(true);
 
 
                             // select row on single click
@@ -241,16 +105,17 @@ if(isset($_GET['col'])) {
                                     $(this).addClass('selected');
                                 }
                             } );
+                        }
 
-                            $('a.toggle-vis').on( 'click', function (e) {
-                                e.preventDefault();
+                        $(document).ready(function() {
+                            $( "#ddlCollection" ).change(function() {
+                                switch ($("#ddlCollection").val())
+                                {
+                                    case "": break;
+                                    default: SSP_DataTable($("#ddlCollection").val());
 
-                                // Get the column API object
-                                var column = table.column( $(this).attr('data-column') );
-
-                                // Toggle the visibility
-                                column.visible( ! column.visible() );
-                            } );
+                                }
+                            });
                         });
 
                     </script>
@@ -258,14 +123,11 @@ if(isset($_GET['col'])) {
                         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
                             <thead>
                             <tr>
-                                <th></th>
-                                <th width="100px">Library Index</th>
+                                <th width="70px"></th>
+                                <th width="120px">Library Index</th>
                                 <th>Document Title</th>
-                                <th width="280px" >Document Subtitle</th>
-                                <th width="200px">Customer</th>
-                                <th width="70px">End Date</th>
-                                <th width="40px">Has Coast</th>
-                                <th width="30px">Needs Review</th>
+                                <th width="40px">Needs Review</th>
+
                             </tr>
                             </thead>
                         </table>
@@ -274,20 +136,7 @@ if(isset($_GET['col'])) {
             </tr>
         </table>
     </div>
-
 </div>
 <?php include '../../Master/footer.php'; ?>
 </body>
-<?php
-echo "
-<script type ='text/javascript'>
-    var counttot = $count;
-    var filtercount = $countfilter;
-
-    var percentage = (filtercount/counttot)*100;
-    document.getElementById(\"txt_counter\").innerHTML =
-    \"There are \" + filtercount +  \" Maps with Coasts, out of a total \"  + counttot + \" (\" + percentage.toFixed(2) + \"%)\";
-</script>"
-?>
-
 </html>
