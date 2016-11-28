@@ -351,7 +351,33 @@ class DBHelper
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
-            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document`");
+            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document`");
+            $sth->execute();
+            $result = $sth->fetchColumn();
+            return $result;
+        } else return false;
+    }
+
+    function GET_LOG_INFO($collection, $docID){
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $dbID = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['CollectionID'];
+        $logsth = $this->getConn()->prepare("SELECT `action`, `user`.`username`, `timestamp` FROM `log` LEFT JOIN `user` ON `user`.`userID`=`log`.`userID` WHERE `docID` = ? AND `collectionID` = ?");
+        if (!$logsth)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        $logsth->bindParam(1, htmlspecialchars($docID), PDO::PARAM_INT, 11);
+        $logsth->bindParam(2, $dbID, PDO::PARAM_INT, 11);
+        $logsth->execute();
+        $logArray = $logsth->fetchAll();
+        return $logArray;
+    }
+
+
+    function GET_DOCUMENT_FILTEREDCOUNT($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document` WHERE `hascoast`='1'");
             $sth->execute();
             $result = $sth->fetchColumn();
             return $result;
@@ -362,7 +388,7 @@ class DBHelper
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
-            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `hascoast`='1'");
+            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document` WHERE `hascoast`='1'");
             $sth->execute();
             $result = $sth->fetchColumn();
             return $result;
@@ -373,7 +399,7 @@ class DBHelper
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
-            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `libraryindex` = `title`");
+            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document` WHERE `libraryindex` = `title`");
             $sth->execute();
             $result = $sth->fetchColumn();
             return $result;

@@ -25,7 +25,7 @@
             <?php include '../../Master/header.php'?>
         </th>
         <th class="tg-chpy" colspan="2">
-            Welcome <span id= "lblUsername" class="Username"><a href="../../Forms/AccountSettings"><?php echo $session->getUserName(); ?></a></span>,&nbsp;<span id="Time_Day"></span><span id="Greetings"></span>
+            <span id= "lblUsername" class="Username"><a href="../../Forms/AccountSettings"><?php echo $session->getUserName(); ?></a></span>,&nbsp;<span id="Time_Day"></span><span id="Greetings"></span>
         </th>
     </tr>
     <tr style="height: 630px">

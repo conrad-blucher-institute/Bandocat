@@ -4,7 +4,7 @@ BLUE: #0067C5
 GREEN: #007F3E
 SILVER: #9EA2A4
 */
-html,body{margin:0;padding: 0;overflow: hidden;}
+html,body{margin:0;padding: 0;overflow-y: hidden;overflow-x:auto;}
 html{
     min-width:600px;
 }
@@ -34,6 +34,21 @@ body{
     background: #f1f1f1;
 }
 
+
+#divleft{float:left;
+    width:20%;
+    overflow:hidden;}
+#divright{float:left;
+    width:79%;
+
+    overflow-y:hidden;
+}
+#divscroller {
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+
 /* _______________________________________________________________________________________  */
 /*Side menu classes */
 /* Reference: https://designshack.net/articles/navigation/verticalaccordionav/ */
@@ -42,10 +57,10 @@ nav {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     line-height: 1.5;
     margin: 15px 15px 40px 15px ;
-    width: 240px;
-    -webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    -moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    min-width: 300px;
+    /*-webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);*/
+    /*-moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);*/
+    /*box-shadow: 2px 2px 5px rgba(0,0,0,0.2);*/
 }
 
 .menu-item {
