@@ -39,15 +39,18 @@ $date = new DateHelper();
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
-            <input type="checkbox" id="note">Sticky note
-            <div id="stickyNote" class="ui-widget-content" style="text-align: center">
+            <input type="checkbox" id="historyCheck"><span id="historyText">Document History</span>
+            <div id="documentHistory" class="ui-widget-content" style="text-align: center">
                 <p>Document History</p>
-                <table id="historyTable">
-                    <tr>
-                        <th>Action</th>
-                        <th>Username</th>
-                        <th>Timestamp</th>
-                    </tr>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Username</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+
                         <?php
                         $user = [];
                         $length = count($logInfo);
@@ -329,13 +332,13 @@ $date = new DateHelper();
             max-height:900px;}
     }
 
-    #historyTable td{
-        border-style:ridge;
-    }
-
-    #historyTable th{
-        border-style:solid;
-    }
+    #documentHistory table { border-collapse: collapse; text-align: left; width: 100%; }
+    #documentHistory {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+    #documentHistory table td, #documentHistory table th { padding: 3px 10px; }
+    #documentHistory table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
+    #documentHistory table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; }
+    #documentHistory table tbody tr:hover { background-color: #bce1ff; }
+    div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
 
     #timeStamp{
         font-size: 12px;
@@ -444,21 +447,31 @@ $date = new DateHelper();
             })
         });
     });
+
+    //Condition that determines if the user has Admin permission to view the document history//
+        var admin = <?php $admin = $session->isAdmin(); echo json_encode($admin); ?>;
+        if (admin)
+           $('#historyCheck').css('display', 'inline');
+       else{
+            $('#historyCheck').css('display', 'none');
+            $('#historyText').text(" ");
+        }
+
     //jQuery that allows the visibility of the draggable element if checked
-        //$('#stickyNote').css('display', 'none');
-    $('#note').change(function () {
-        if($("#note").is(':checked')){
-            $("#stickyNote").css('display', 'block');  // checked
+        $('#documentHistory').css('display', 'none');
+    $('#historyCheck').change(function () {
+        if($("#historyCheck").is(':checked')){
+            $("#documentHistory").css('display', 'block');  // checked
         }
 
         else{
-            $("#stickyNote").css('display', 'none');  // checked
+            $("#documentHistory").css('display', 'none');  // checked
         }
 
     });
     //jQuery function that drags the draggable element
     $( function() {
-        $( "#stickyNote" ).draggable();
+        $( "#documentHistory" ).draggable();
     } );
 </script>
 </html>
