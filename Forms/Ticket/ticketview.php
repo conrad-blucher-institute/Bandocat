@@ -75,7 +75,7 @@ $ticket = $DB->SP_ADMIN_TICKET_SELECT($tID); //assoc array contains ticket info
                 </tr>
                 <tr>
                     <td>
-                        <input class="bluebtn" style="position: relative; left: 95%; width: 20%; height: 2.1em;" type="submit"/>
+                        <input class="bluebtn" type="submit"/>
                     </td>
 
                 </tr>

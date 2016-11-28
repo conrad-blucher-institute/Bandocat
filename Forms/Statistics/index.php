@@ -7,7 +7,47 @@ $session = new SessionManager();
 require('../../Library/ControlsRender.php');
 $Render = new ControlsRender();
 
-$collections = $DB->GET_COLLECTION_FOR_DROPDOWN();
+$collections = $DB->GET_COLLECTION_TABLE();
+
+//Disk space management
+function foldersize($path) {
+    $total_size = 0;
+    $files = scandir($path);
+    $cleanPath = rtrim($path, '/'). '/';
+
+    foreach($files as $t) {
+        if ($t<>"." && $t<>"..") {
+            $currentFile = $cleanPath . $t;
+            if (is_dir($currentFile)) {
+                $size = foldersize($currentFile);
+                $total_size += $size;
+            }
+            else {
+                $size = filesize($currentFile);
+                $total_size += $size;
+            }
+        }
+    }
+
+    return $total_size;
+}
+
+$units = explode(' ', 'B KB MB GB TB PB');
+function format_size($size) {
+    global $units;
+
+    $mod = 1024;
+
+    for ($i = 0; $size > $mod; $i++) {
+        $size /= $mod;
+    }
+
+    $endIndex = strpos($size, ".")+3;
+
+    return substr( $size, 0, $endIndex).' '.$units[$i];
+}
+
+
 
 ?>
 <!doctype html>
@@ -51,8 +91,11 @@ $collections = $DB->GET_COLLECTION_FOR_DROPDOWN();
                         <div>Select Year: <select id="ddlYear" name="ddlYear"">
                             <?php
                             echo "<option value=''>Select</option>";
-                            for($i = 2015;$i <= date("Y");$i++)
-                                echo "<option value='$i'>$i</option>";
+                            for($i = date("Y");$i >= 2015;$i--) {
+                               // if($i == date("Y")) echo "<option selected value='$i'>$i</option>";
+                                //else
+                                    echo "<option value='$i'>$i</option>";
+                            }
                             ?>
                             </select>
                         </div>
@@ -69,14 +112,16 @@ $collections = $DB->GET_COLLECTION_FOR_DROPDOWN();
                                     <div id="storage_capacity">
                                         <h3>Storage Capacity</h3>
                                         <?php
-                                            foreach($collections as $col)
-                                            {
-                                                echo "<div id='storagecap_$col[name]'>$col[displayname]:</div>";
-                                            }
+                                        $total_storage = 0;
+                                        foreach($collections as $col)
+                                        {
+                                            $temp = foldersize($col['storagedir']);
+                                            $total_storage += $temp;
+                                            echo "<div class='storagecap'>$col[displayname]: " . format_size($temp) . "</div>";
+                                        }
+                                        echo "<div class='storagecap'><b>All Collections:" . format_size($total_storage) . "</b></div>";
+                                        echo "<div class='storagecap'>Disk Free Space: " . format_size(disk_free_space($collections[0]['storagedir'])) . "</div>";
                                         ?>
-                                        <div id ="storage_total"><b>All Collections:</b></div>
-                                        <div id="storage_free">Disk Free Space:</div>
-
                                     </div>
                                 </td>
                             </tr>
@@ -209,9 +254,11 @@ $collections = $DB->GET_COLLECTION_FOR_DROPDOWN();
                 }
             });
 
-    $( document ).ready(function() {
+    $(document).ready(function() {
+        //$("#ddlYear").change();
         getCollectionCount();
     });
+
 
 
 </script>

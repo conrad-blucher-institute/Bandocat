@@ -351,7 +351,7 @@ class DBHelper
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
-            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document`");
+            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document`");
             $sth->execute();
             $result = $sth->fetchColumn();
             return $result;
@@ -362,7 +362,7 @@ class DBHelper
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
-            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `hascoast`='1'");
+            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document` WHERE `hascoast`='1'");
             $sth->execute();
             $result = $sth->fetchColumn();
             return $result;
@@ -373,7 +373,7 @@ class DBHelper
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
-            $sth = $this->getConn()->prepare("SELECT COUNT(`libraryindex`) FROM `document` WHERE `libraryindex` = `title`");
+            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document` WHERE `libraryindex` = `title`");
             $sth->execute();
             $result = $sth->fetchColumn();
             return $result;
