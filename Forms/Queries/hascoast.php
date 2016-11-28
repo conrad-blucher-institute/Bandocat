@@ -60,6 +60,7 @@ $Render = new ControlsRender();
                                 xmlhttp.open("GET", "StatisticsHelper.php?q=" + Query + "_Coast", true);
                                 xmlhttp.send();
                             }
+                            //HMM
                         }
                     </script>
                     <script>

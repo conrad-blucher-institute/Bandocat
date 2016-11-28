@@ -31,7 +31,7 @@ $Render = new ControlsRender();
                     include '../../Master/sidemenu.php' ?>
                 </td>
                 <td class="container" id="thetable_right">
-                    <h2 id="page_title">Maps With Coast</h2>
+                    <h2 id="page_title">Maps Without Titles</h2>
                     <table width="100%">
                         <tr>
                             <td style="margin-left: 45% ;font-size:13px" colspan="20%"
@@ -106,7 +106,7 @@ $Render = new ControlsRender();
                                 }
                             } );
                         }
-
+                        //HMM
                         $(document).ready(function() {
                             $( "#ddlCollection" ).change(function() {
                                 switch ($("#ddlCollection").val())
