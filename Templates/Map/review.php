@@ -10,6 +10,7 @@ if(isset($_GET['col']) && isset($_GET['doc'])) {
     $DB = new DBHelper();
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     $document = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($collection,$docID);
+    $logInfo = $DB->GET_LOG_INFO($collection, $docID);
     //var_dump($document);
 }
 else header('Location: ../../');
@@ -27,7 +28,9 @@ $date = new DateHelper();
 
     <title>Review Form</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
+    <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
 
 </head>
 <body>
@@ -36,6 +39,28 @@ $date = new DateHelper();
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
+            <input type="checkbox" id="note">Sticky note
+            <div id="stickyNote" class="ui-widget-content" style="text-align: center">
+                <p>Document History</p>
+                <table id="historyTable">
+                    <tr>
+                        <th>Action</th>
+                        <th>Username</th>
+                        <th>Timestamp</th>
+                    </tr>
+                        <?php
+                        $user = [];
+                        $length = count($logInfo);
+                        for ($x = 0; $x <= $length-1; $x++) {
+                            $action[$x] = $logInfo[$x][0];
+                            $user[$x] = $logInfo[$x][1];
+                            $time[$x] = $logInfo[$x][2];
+                            echo "<tr><td>$action[$x]</td><td>$user[$x]</td><td id='timeStamp'>$time[$x]</td></tr>";
+                            }
+                        ?>
+                </table>
+
+            </div>
         </td>
         <td class="Account" id="thetable_right">
             <h2><?php echo $config['DisplayName'];?> Review Form</h2>
@@ -304,6 +329,17 @@ $date = new DateHelper();
             max-height:900px;}
     }
 
+    #historyTable td{
+        border-style:ridge;
+    }
+
+    #historyTable th{
+        border-style:solid;
+    }
+
+    #timeStamp{
+        font-size: 12px;
+    }
 
     #div_scroller{
         overflow-y: scroll;
@@ -365,6 +401,7 @@ $date = new DateHelper();
 
     #thetable{height:100%;}
 </style>
+
 <script>
     $( document ).ready(function() {
         /* attach a submit handler to the form */
@@ -407,5 +444,21 @@ $date = new DateHelper();
             })
         });
     });
+    //jQuery that allows the visibility of the draggable element if checked
+        //$('#stickyNote').css('display', 'none');
+    $('#note').change(function () {
+        if($("#note").is(':checked')){
+            $("#stickyNote").css('display', 'block');  // checked
+        }
+
+        else{
+            $("#stickyNote").css('display', 'none');  // checked
+        }
+
+    });
+    //jQuery function that drags the draggable element
+    $( function() {
+        $( "#stickyNote" ).draggable();
+    } );
 </script>
 </html>

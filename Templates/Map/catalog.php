@@ -25,7 +25,9 @@ $date = new DateHelper();
 
     <title>Input Form</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
+    <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
 
 </head>
 <body>
@@ -109,7 +111,6 @@ $date = new DateHelper();
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
-        </td>
         <td class="Account" id="thetable_right">
             <h2><?php echo $config['DisplayName'];?> Catalog Form</h2>
             <table class="Account_Table">
