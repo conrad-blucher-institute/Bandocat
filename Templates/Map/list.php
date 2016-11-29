@@ -145,7 +145,8 @@ $session = new SessionManager();
                     $(this).addClass('selected');
                 }
             } );
-
+            //resize height of the scroller
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         });
     </script>
 
@@ -153,20 +154,18 @@ $session = new SessionManager();
 <body>
 <div id="wrap">
     <div id="main">
-<table id="thetable">
-    <tr>
-        <td class="menu_left" id="thetable_left">
+        <div id="divleft">
         <?php include '../../Master/header.php';
         include '../../Master/sidemenu.php' ?>
-    </td>
-    <td class="container" id="thetable_right">
+        </div>
+        <div id="divright">
         <h2 id="page_title">Title</h2>
         <table width="100%">
             <tr>
                 <td style="float:right;font-size:13px" colspan="100%"><input name="checkbox_subtitle" type="checkbox" id="checkbox_subtitle" />Show/Hide Subtitle</td>
             </tr>
         </table>
-        <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:654px;">
+        <div id="divscroller">
         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
             <thead>
                 <tr>
@@ -183,9 +182,7 @@ $session = new SessionManager();
             </thead>
         </table>
         </div>
-    </td>
-    </tr>
-</table>
+        </div>
     </div>
 </div>
 <?php include '../../Master/footer.php'; ?>

@@ -106,13 +106,15 @@ $date = new DateHelper();
     }
 
 </style>
-<table id = "thetable">
-    <tr>
-        <td class="menu_left" id="thetable_left">
+<div id="wrap">
+    <div id="main">
+<div id="divleft">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
-        <td class="Account" id="thetable_right">
+</div>
+<div id="divright">
             <h2><?php echo $config['DisplayName'];?> Catalog Form</h2>
+    <div id="divscroller">
             <table class="Account_Table">
 
                 <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
@@ -282,16 +284,14 @@ $date = new DateHelper();
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
                                     </div>
                                 </span>
-                            </div>
                         </td>
                     </tr>
                 </form>
             </table>
-        </td>
-    </tr>
-
-</table>
-
+        </div>
+    </div>
+</div>
+</div>
 <?php include '../../Master/footer.php'; ?>
 
 </body>
@@ -341,6 +341,8 @@ $date = new DateHelper();
                 }
             });
         });
+        //resize height of the scroller
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
     });
 </script>
 </html>

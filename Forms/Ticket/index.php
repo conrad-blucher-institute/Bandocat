@@ -95,22 +95,21 @@ else header('Location: ../../');
                 }
             } );
 
-
+            //resize height of the scroller
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         });
     </script>
 </head>
 <body>
 <div id="wrap">
     <div id="main">
-        <table id="thetable">
-            <tr>
-                <td class="menu_left" id="thetable_left">
+        <div id="divleft">
                     <?php include '../../Master/header.php';
                     include '../../Master/sidemenu.php' ?>
-                </td>
-                <td class="container" id="thetable_right">
+        </div>
+        <div id="divright">
                     <h2 id="page_title">Ticket</h2>
-                    <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:674px">
+                    <div id="divscroller">
                         <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
                             <thead>
                             <tr>
@@ -124,9 +123,7 @@ else header('Location: ../../');
                             </thead>
                         </table>
                     </div>
-                </td>
-            </tr>
-        </table>
+        </div>
     </div>
 </div>
 <?php include '../../Master/footer.php'; ?>
