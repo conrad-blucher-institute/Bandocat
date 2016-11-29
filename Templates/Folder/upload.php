@@ -16,13 +16,13 @@
 
 </head>
 <body>
-<table id = "thetable">
-    <tr>
-        <td class="menu_left" id="thetable_left" style="padding-right: 5px">
+<div id="wrap"></div>
+    <div id="main"></div>
+        <div id = "divleft">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
-        </td>
-        <td class="Collection" id="thetable_right">
+        </div>
+        <div id="divright">
             <h2>Document Upload</h2>
             <table class="Collection_Table">
                 <tr>
@@ -46,9 +46,8 @@
                     </td>
                 </tr>
             </table>
-        </td>
-    </tr>
-</table>
+        </div>
+
 
 <script>
     var selDiv = "";
@@ -93,7 +92,6 @@
     #selectedFiles{
         height:10em;
         overflow: auto;
-        padding:0;
     }
 
     #file_array{
@@ -106,6 +104,18 @@
     }
     #btnUpload{
         height:100%}
+    .bluebtn{
+        font-size: 0.4em !important;
+        padding-bottom: 24px;
+    }
+
+    #divright{
+        font-size:45% !important;
+        vertical-align: top;
+        background: #f1f1f1;
+        border-radius: 2%;
+        box-shadow: 0px 0px 2px;
+    }
 </style>
 <?php include '../../Master/footer.php'; ?>
 
