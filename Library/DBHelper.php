@@ -807,16 +807,16 @@ class DBHelper
     }
     //NEED TESTING
     function SP_TEMPLATE_JOBFOLDER_DOCUMENT_UPDATE_WITHOUT_AUTHOR($collection,$iDocID,$iLibraryIndex, $iTitle, $iInSubfolder, $iSubfolderComment,
-                                                   $iClassificationID, $iClassificationComment, $iFileName, $iFileNameBack,
-                                                   $iNeedsInput,$iNeedsReview, $iFileNamePath,$iFileNameBackPath,$iComments,
+                                                   $iClassificationID, $iClassificationComment,
+                                                   $iNeedsInput,$iNeedsReview,$iComments,
                                                    $iStartDate, $iEndDate)
     {
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         if ($dbname != null && $dbname != "") {
             $this->getConn()->exec('USE ' . $dbname);
             /* PREPARE STATEMENT */
-            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_JOBFOLDER_DOCUMENT_UPDATE_WITHOUT_AUTHOR(:docID,:libindex,:title,:insub,:subcomment,:classID,:classcom,:fname,
-            :fnameback,:input,:review,:fnamepath,:fnamebackpath,:comm,:startdate,:enddate)");
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_JOBFOLDER_DOCUMENT_UPDATE_WITHOUT_AUTHOR(:docID,:libindex,:title,:insub,:subcomment,:classID,:classcom,
+            :input,:review,:comm,:startdate,:enddate)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
             $call->bindParam(':docID', $iDocID, PDO::PARAM_INT, 200);
@@ -824,12 +824,8 @@ class DBHelper
             $call->bindParam(':title', $iTitle, PDO::PARAM_STR, 350);
             $call->bindParam(':insub',$iInSubfolder,PDO::PARAM_INT,1);
             $call->bindParam(':subcomment',$iSubfolderComment,PDO::PARAM_STR,300);
-            $call->bindParam(':fname', $iFileName, PDO::PARAM_STR, 80);
-            $call->bindParam(':fnameback', $iFileNameBack, PDO::PARAM_STR, 80);
             $call->bindParam(':input',$iNeedsInput,PDO::PARAM_INT,1);
             $call->bindParam(':review', $iNeedsReview, PDO::PARAM_INT, 1);
-            $call->bindParam(':fnamepath', $iFileNamePath, PDO::PARAM_STR, 200);
-            $call->bindParam(':fnamepathback', $iFileNameBackPath, PDO::PARAM_STR, 200);
             $call->bindParam(':comm', $iComments, PDO::PARAM_STR,500);
             $call->bindParam(':startdate', $iStartDate, PDO::PARAM_STR, 10);
             $call->bindParam(':enddate', $iEndDate, PDO::PARAM_STR, 10);

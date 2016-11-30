@@ -50,7 +50,7 @@ $date = new DateHelper();
                             <th>Timestamp</th>
                         </tr>
                     </thead>
-                </table>
+                    <tbody>
 
                         <?php
                         $user = [];
@@ -62,6 +62,7 @@ $date = new DateHelper();
                             echo "<tr><td>$action[$x]</td><td>$user[$x]</td><td id='timeStamp'>$time[$x]</td></tr>";
                             }
                         ?>
+                    </tbody>
                 </table>
             </div>
         </div>
