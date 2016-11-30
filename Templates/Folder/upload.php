@@ -32,7 +32,20 @@
                 </tr>
                 <tr>
                     <td class="Collection_data" >
-                        <div class="Collection_Button" id = "selectedFiles">Selected Files</div>
+                        <div id="selectedFilesDiv">
+                            <table >
+                                <thead><span style="font-family: Algerian; font: message-box;">Selected Files</span>
+                                <tr>
+                                    <th>File Name</th>
+                                    <th>File Size</th>
+                                </tr>
+                                </thead>
+                                <tbody id="selectedFilesTable">
+                                    <tr><td>No files selected</td></tr>
+                                </tbody>
+                                <tfoot id="selectedFilesTableFooter" style="background: #007F3E; color: white;"></tfoot>
+                            </table>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -50,15 +63,14 @@
 
 
 <script>
-    var selDiv = "";
     var totalFsize = 0;
-
 
     document.addEventListener("DOMContentLoaded", init, false);
 
     function init() {
         document.querySelector('#file_array').addEventListener('change', handleFileSelect, false);
-        selDiv = document.querySelector("#selectedFiles");
+        selTable = document.querySelector("#selectedFilesTable");
+        selTableFooter = document.querySelector("#selectedFilesTableFooter");
     }
 
     function handleFileSelect(e) {
@@ -66,17 +78,29 @@
         totalFsize = 0;
         if(!e.target.files) return;
 
-        selDiv.innerHTML = "";
+        selTable.innerHTML = "";
 
         var files = e.target.files;
         for(var i=0; i<files.length; i++) {
             var f = files[i];
             totalFsize += f.size/1000000;
             total = totalFsize.toFixed(2);
-
-            selDiv.innerHTML += "<ul><li>" +  f.name + "\t" +(f.size/1000000).toFixed(2) + " mb" + "</li></ul>";
+                var row = selTable.insertRow(i);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML =  f.name;
+                cell2.innerHTML =  (f.size/1000000).toFixed(2) + " mb"
         }
-        selDiv.innerHTML += "Total file upload " + total+" mb";
+        var tableFooterLength = selTableFooter.rows.length;
+        var row = selTableFooter.insertRow(0);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerHTML =  "Files ready for upload: " + files.length;
+        cell2.innerHTML += "Total file size upload: " + total+" mb";
+
+        if (tableFooterLength > 0){
+            selTableFooter.deleteRow(1);
+        }
     }
 
 </script>
@@ -87,12 +111,14 @@
     ul{
         text-align: left;
         margin:auto;
-        white-space: pre;
     }
-    #selectedFiles{
-        height:10em;
-        overflow: auto;
-    }
+    #selectedFilesDiv table { border-collapse: collapse; text-align: start; width: 100%;padding-left:2px; }
+    #selectedFilesDiv {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+    #selectedFilesDiv table td, #documentHistory table th { padding: 3px 10px; }
+    #selectedFilesDiv table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #1b77cb), color-stop(1, #125490) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
+    #selectedFilesDiv table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; width: 50%}
+    #selectedFilesDiv table tbody tr:hover { background-color: #bce1ff; }
+    div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
 
     #file_array{
         height:90%;
@@ -116,6 +142,11 @@
         border-radius: 2%;
         box-shadow: 0px 0px 2px;
     }
+    .Collection_Table .Collection_Button{
+        font-size: 45% !important;
+    }
+
+
 </style>
 <?php include '../../Master/footer.php'; ?>
 

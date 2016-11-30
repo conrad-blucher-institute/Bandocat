@@ -50,6 +50,7 @@ $date = new DateHelper();
                             <th>Timestamp</th>
                         </tr>
                     </thead>
+                </table>
 
                         <?php
                         $user = [];
