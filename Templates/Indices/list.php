@@ -1,13 +1,13 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-    if(isset($_GET['col'])) {
-        $collection = $_GET['col'];
-        require('../../Library/DBHelper.php');
-        $DB = new DBHelper();
-        $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-    }
-    else header('Location: ../../');
+if(isset($_GET['col'])) {
+    $collection = $_GET['col'];
+    require('../../Library/DBHelper.php');
+    $DB = new DBHelper();
+    $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+}
+else header('Location: ../../');
 
 ?>
 <!doctype html>
@@ -64,42 +64,13 @@ $session = new SessionManager();
                         "targets": 0
                     },
                     { "searchable": false, "targets": 0 },
-                    //column Title
+                    //column : Page Number
                     {
                         "render": function ( data, type, row ) {
                             return data;
                         },
-                        "targets": 2
+                        "targets": 4
                     },
-                    //column Subtitle
-                    {
-                        "render": function ( data, type, row ) {
-                            if(data.length > 38)
-                                return data.substr(0,38) + "...";
-                            return data;
-                        },
-                        "targets": 3
-                    },
-                    { "searchable": false, "targets": 3 },
-                    //column : Date
-                    {
-                        "render": function ( data, type, row ) {
-                            if(data == "00/00/0000")
-                                return "";
-                            return data;
-                        },
-                        "targets": 5
-                    },
-                    //column : HasCoast
-                    {
-                        "render": function ( data, type, row ) {
-                            if(data == 1)
-                                return "Yes";
-                            return "No";
-                        },
-                        "targets": 6
-                    },
-                    { "searchable": false, "targets": 6 },
                     //column : NeedsReview
                     {
                         "render": function ( data, type, row ) {
@@ -107,14 +78,13 @@ $session = new SessionManager();
                                 return "Yes";
                             return "No";
                         },
-                        "targets": 7
+                        "targets": 5
                     },
-                    { "searchable": false, "targets": 7 },
                     {
                         "render": function ( data, type, row ) {
-                        return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
+                            return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
                         },
-                        "targets": 8
+                        "targets": 6
                     },
 
                 ],
@@ -123,17 +93,9 @@ $session = new SessionManager();
 
             //hide first column (DocID)
             table.column(0).visible(true);
-            table.column(8).visible(false);
-            <?php if($session->isAdmin()){ ?> table.column(8).visible(true); <?php } ?>
-            // show or hide subtitle
-            table.column(3).visible(false);
-            $('#checkbox_subtitle').change(function (e) {
-                e.preventDefault();
-                // Get the column API object
-                var column = table.column(3);
-                // Toggle the visibility
-                column.visible( ! column.visible() );
-            } );
+            table.column(6).visible(false);
+            <?php if($session->isAdmin()){ ?> table.column(6).visible(true); <?php } ?>
+
 
             // select row on single click
             $('#dtable tbody').on( 'click', 'tr', function () {
@@ -155,33 +117,26 @@ $session = new SessionManager();
 <div id="wrap">
     <div id="main">
         <div id="divleft">
-        <?php include '../../Master/header.php';
-        include '../../Master/sidemenu.php' ?>
+            <?php include '../../Master/header.php';
+            include '../../Master/sidemenu.php' ?>
         </div>
         <div id="divright">
-        <h2 id="page_title">Title</h2>
-        <table width="100%">
-            <tr>
-                <td style="float:right;font-size:13px" colspan="100%"><input name="checkbox_subtitle" type="checkbox" id="checkbox_subtitle" />Show/Hide Subtitle</td>
-            </tr>
-        </table>
-        <div id="divscroller">
-        <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th width="100px">Library Index</th>
-                    <th>Document Title</th>
-                    <th width="280px">Document Subtitle</th>
-                    <th width="200px">Customer</th>
-                    <th width="70px">End Date</th>
-                    <th width="40px">Has Coast</th>
-                    <th width="30px">Needs Review</th>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
-        </div>
+            <h2 id="page_title">Title</h2>
+            <div id="divscroller">
+                <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
+                    <thead>
+                    <tr>
+                        <th width="70px"></th>
+                        <th width="100px">Page Type</th>
+                        <th>Library Index</th>
+                        <th width="280px">Book Title</th>
+                        <th width="50px">Page Number</th>
+                        <th width="30px">Needs Review</th>
+                        <th width="40px"></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 </div>
