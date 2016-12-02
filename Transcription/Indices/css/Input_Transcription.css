@@ -1,0 +1,137 @@
+#title {
+    position: absolute;
+    width: 453px;
+    top: 4%;
+    color: #0099FF;
+    text-align: center;
+    font-family: "DigifaceWide";
+    font-weight: bold;
+    font-size: 30px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#DOCUMENT_VIEW {
+	cursor: crosshair;
+	position:absolute;
+	top:8%;
+	bottom:2%;
+	width:69%;
+	height: 86%; 
+	right:.25%;
+	left: 1%;
+	box-shadow: 1px 1px 10px 3px #423a3a;
+	border-radius: 20px;
+ }
+
+ #myForm{
+	position: fixed;
+    right: 2%;
+    width: 27%;
+    height: 86%;
+    bottom: 0%;
+    font-size: 77%;
+    margin-bottom: 3%;
+    overflow: auto;
+	overflow-x: hidden;
+ }
+ 
+ .Input_Field{
+	 width: 92%;
+    margin: 0.75%;
+    font-size: 80%;
+    margin-left: 4%;	 
+ }
+ 
+#buttons{
+    position: absolute;
+    width: 100%;
+    height: 6%;
+	left: 0%;
+    font-size: 2.5vw;
+	bottom : 0%;
+}
+#submit{
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    left: 30%;
+    height: 40%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+    margin-left: 5%;
+    margin-right: 5%;
+	
+}
+#Submit{
+	margin-top: 5%;
+    margin-left: 30%;
+	margin-bottom: 5%;
+}
+
+#done{
+    width: 28%;
+    left: 71%;
+    height: 83%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+}
+
+#done:hover {
+	background-color:#1e83a0;
+}
+
+#Table_Rows{
+	position: relative;
+    font-size: 1.45vw;
+	margin-top: 2%;
+}
+
+#addFieldBookRow{
+	font-size: 60%;
+}
+
+#deleteFieldBookRow{
+	font-size: 60%;
+}
+
+#addMapTableRow{
+	font-size: 60%;
+}
+
+#deleteMapTableRow{
+	font-size: 60%;
+}
+
+#Plus_Row{
+	font-size: 50%;
+}
+
+#Minus_Row{
+	font-size: 50%;
+}
+
+#date_table{
+	font-size: 2.3vw;
+}
+
+select{
+	font-size: 85%
+}
+
+.Submit{font-size: 78%}
+.Reset{font-size: 78%}
+
+#inputs {
+	font-size: 1.5vw;
+    position: absolute;
+    bottom: 6%;
+}
+	
+	

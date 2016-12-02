@@ -1,0 +1,309 @@
+#title {
+    position: absolute;
+    width: 453px;
+    top: 4%;
+    color: #0099FF;
+    text-align: center;
+    font-family: "DigifaceWide";
+    font-weight: bold;
+    font-size: 30px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#logo {
+  position:absolute;
+  top:0.2em;
+  left:0.5em;
+}
+
+#fileName {
+	position: absolute;
+	right: 20%;
+	font-size: 12px;
+	top: 5%;
+	font-family: "DigifaceWide";
+    font-weight: bold;
+}
+
+#buttons{
+    position: absolute;
+    bottom: 16%;
+    width: 98%;
+    height: 10%;
+	left: 1%;
+    font-size: 2.5vw;
+}
+
+#getMapType{
+    position: absolute;
+    top: 0;
+    width: 30%;
+    left: 15%;
+    height: 48%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+    transform: translate(-50%);
+}
+#getMapType:hover {
+	background-color:#1e83a0;
+}
+
+
+#cancel{
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    left: 0%;
+    height: 48%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;	
+}
+#cancel:hover {
+	background-color:#1e83a0;
+}
+
+#openCatalog{
+    position: absolute;
+    top: 0%;
+    width: 30%;
+    right: 0%;
+    height: 48%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+}
+#openCatalog:hover {
+	background-color:#1e83a0;
+}
+#notRectifiable{
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    left: 50%;
+    height: 48%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+    transform: translate(-50%);
+}
+#notRectifiable:hover {
+	background-color:#1e83a0;
+}
+#rectify{
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    right: 0%;
+    height: 48%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+}
+#rectify:hover {
+	background-color:#1e83a0;
+}
+
+#map { position:absolute; 
+	top:8%; 
+	bottom:25%; 
+	width:49%; 
+	border:3px solid #aabcfe; 
+	height: 65%; 
+	left:.25%
+	}
+	
+#raster{position:absolute;
+ top:8%;
+ bottom:25%;
+ width:49%;
+ border:3px solid #aabcfe;
+ height: 65%; 
+ right:.25%
+ }
+ #img{position:absolute;
+ height: 5%;
+ width: 5%;
+ z-index:1;
+}
+#Table_Container { overflow:auto; font-size: 2.5vw; width: 99.5%; height:15.2%; bottom: .25%; position: absolute; align:center; left: .25%; right: .25% border: solid 3px #339933}
+#table{width: 100%; height:23%; bottom: 0;}
+tbody{align-items: center; background-color: #ccffff}
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff; text-align:center}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
+.tg tr{ background-color: #ccffcc}
+.tg .tg-qta8{font-family:"Times New Roman", Times, serif !important;}
+.tg .tg-yw4l{vertical-align:text-top}
+.tg .tg-6k2t{background-color:#D2E4FC;vertical-align:top}
+.leaflet-div-icon {
+	background: transparent;
+	border: none;
+}
+
+.leaflet-marker-icon .number{
+	position: relative;
+	top: -72px;
+	font-size: 12px;
+	width: 25px;
+	text-align: center;
+	left: 3px;
+	font-weight:bold;
+}
+
+
+#fade_1 {
+    display: none;
+    position:absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #ababab;
+    z-index: 1001;
+    -moz-opacity: 0.8;
+    opacity: .70;
+    filter: alpha(opacity=80);
+}
+
+#modal_1{
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    width: 15%;
+    height: 15%;
+    padding:30px 15px 0px;
+    border: 3px solid #ababab;
+    box-shadow:1px 1px 10px #ababab;
+    border-radius:20px;
+    background-color: white;
+    z-index: 1002;
+    text-align:center;
+    overflow: auto;
+}
+#fade_1 {
+    display: none;
+    position:absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #ababab;
+    z-index: 1001;
+    -moz-opacity: 0.8;
+    opacity: .70;
+    filter: alpha(opacity=80);
+}
+
+#modal_2{
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    width: 15%;
+    height: 15%;
+    padding:30px 15px 0px;
+    border: 3px solid #ababab;
+    box-shadow:1px 1px 10px #ababab;
+    border-radius:20px;
+    background-color: white;
+    z-index: 1002;
+    text-align:center;
+    overflow: auto;
+}
+#fade_2 {
+    display: none;
+    position:absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #ababab;
+    z-index: 1001;
+    -moz-opacity: 0.8;
+    opacity: .70;
+    filter: alpha(opacity=80);
+}
+#modal_3{
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    width: 15%;
+    height: 15%;
+    padding:30px 15px 0px;
+    border: 3px solid #ababab;
+    box-shadow:1px 1px 10px #ababab;
+    border-radius:20px;
+    background-color: white;
+    z-index: 1002;
+    text-align:center;
+    overflow: auto;
+}
+#fade_3{
+    display: none;
+    position:absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #ababab;
+    z-index: 1001;
+    -moz-opacity: 0.8;
+    opacity: .70;
+    filter: alpha(opacity=80);
+}
+
+
+#results {
+    font-size:1.25em;
+    color:red
+}
+#links { 
+    position: absolute;
+    top: 10%;
+    left: 25%;
+    width: 50%;
+    height: 85%;
+    padding:30px 15px 0px;
+    border: 3px solid #ababab;
+    box-shadow:1px 1px 10px #ababab;
+    border-radius:20px;
+    background-color: white;
+    z-index: 0;
+    text-align:left;
+    overflow: auto;
+}
+
+
+
+.btn{
+    position: absolute;
+    top: 0;
+    width: 30%;
+    left: 30%;
+    height: 48%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.btn:hover {
+	background-color:#1e83a0;
+}
