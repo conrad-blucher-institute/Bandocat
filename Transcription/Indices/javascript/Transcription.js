@@ -554,10 +554,10 @@ function incompleteTranscription()
 	window.close();
 }
 
-function completeTranscription()
+function completeTranscription(collection)
 {
 	var id = document.getElementById("Document_ID").value;
-	$.get("php/completeTranscription.php?id=" + id, function(data,status){
+	$.get("php/completeTranscription.php?id=" + id + "&col=" + collection, function(data,status){
 		alert(data.replace('"','').replace('"',''));
 		window.close();
 	});

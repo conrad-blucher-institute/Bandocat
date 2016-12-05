@@ -4,9 +4,11 @@ $session = new SessionManager();
 if(isset($_GET['col'])) {
 	$collection = $_GET['col'];
 	require('../../Library/DBHelper.php');
-	require('../../Library/TranscriptionDBHelper.php');
-	$DB = new TranscriptionDBHelper();
+	require('../../Library/IndicesDBHelper.php');
+	require('../../Library/ControlsRender.php');
+	$DB = new IndicesDBHelper();
 	$config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+	$Render = new ControlsRender();
 }
 else header('Location: ../../');
 
@@ -20,6 +22,7 @@ else header('Location: ../../');
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 	<script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script><link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
 <link rel="stylesheet" type="text/css" href="css/Transcription_Status.css">
+	<link rel="stylesheet" type="text/css" href="../../Master/master.css">
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 <script src='javascript/rastercoords.js'></script>
@@ -30,7 +33,7 @@ else header('Location: ../../');
 
 <body bgcolor = "#e5f1fd" onload = "getRectangleCoords()">
 
-<div id = 'title'>BANDOCAT TRANSCRIPTION</div>
+<div id = 'title'><?php echo $config['DisplayName']; ?> Transcription</div>
 
 <!-- ENTRIES AND DISPLAY BUTTONS FOR CORRECTION OR COMPLETION-->
 <div id = "Entries">
@@ -91,14 +94,8 @@ else header('Location: ../../');
 			<td id= "Tabledata_Selection">
 				<select id = 'Map_Kind' onchange = "Map_Kind_Dropdown()">
 					<?php 
-//Query that will selec the fields from the table
-						$query = $conn->query("SELECT mp_name FROM mapkind");
-						while($row = $query->fetch_array())
-//Statement that echos the options into the select form with data stored in the database
-							echo "<option  value='". $row[0] ."'>$row[0]</option>";
-	?>
-	
-	
+					$Render->GET_DDL3($DB->GET_INDICES_MAPKIND($collection),null);
+					?>
 				</select>
 			</td>
 		</tr>
@@ -114,8 +111,11 @@ else header('Location: ../../');
 	</table>
 	
 	Job Number:
-	<input type="text" class= "Input_Field" id ="Job_Number" name = "Job_Number">
-	
+	<input type="text" class= "Input_Field" id ="Job_Number" name = "Job_Number" >
+
+	Comments:
+	<textarea class="Input_Field" id="Comments" name="Comments" rows="3"></textarea>
+
 	<!--hidden fields containing entry coordinates-->
 	<input type="hidden" name ="x1" id = "x1" value="x1" disabled = "disabled">
 	<input type="hidden" name ="y1" id = "y1" value="y1"disabled = "disabled">
@@ -123,7 +123,7 @@ else header('Location: ../../');
 	<input type="hidden" name ="y2" id = "y2" value="y2"disabled = "disabled"> 
 	
 	<input type = "button" id = "updateEntry" value = "Update Entry" onclick = "updateEntryData()">
-	<input type = "button" id = "deleteEntry" value = "Delete Entry" onclick = "deleteSelected()">	
+	<input type = "button" id = "deleteEntry" value = "Delete Entry" onclick = "deleteSelected()">
 	<input type="submit"  value="Submit Entry" class = "Submit" id = "Submit" name = "submit">
 
 </form>
@@ -132,7 +132,7 @@ else header('Location: ../../');
 <!-- BUTTONS THAT ARE NOT PART OF THE FORM -->
 <div id = "buttons" style="text-align:center">
 	<button onclick = "deletePrevious()" id = 'deletePrevious' name="deletePrevious" class="btn">Delete Active Rectangle</button>
-	<button  id = "Complete_Transcription" onclick = "completeTranscription()" class="btn">Mark as Complete & Close</button>
+	<button  id = "Complete_Transcription" onclick = "completeTranscription(collection_config.Name)" class="btn">Mark as Complete & Close</button>
 	<button  id = "Incomplete_Transcription" onclick = "incompleteTranscription()" class="btn" >Close </button>
 </div>
 

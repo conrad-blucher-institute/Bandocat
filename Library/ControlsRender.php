@@ -105,6 +105,17 @@ class ControlsRender
         }
     }
 
+    //FETCH FROM DB, $item[0] = id, $item[1] = name
+    function GET_DDL3($array,$selected)
+    {
+        echo '<option value="">Select</option>';
+        foreach ($array as $item) {
+            if ($selected == $item[0])
+                echo '<option value="' . $item[0] . '" selected>' . $item[1] . '</option>';
+            else echo '<option value="' . $item[0] . '">' . $item[1] . '</option>';
+        }
+    }
+
     //Render collection dropdown
     function GET_DDL_COLLECTION($array,$selected)
     {

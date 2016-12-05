@@ -1,4 +1,9 @@
 <?php
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+require('../../../Library/DBHelper.php');
+$DB = new DBHelper();
+
 /* The purpose of this script is to execute the proccesses that are required to delete an entry from 
 our database. It recieves the coordinates of the entry to be deleted from an AJAX call and performs 
 a query to delete the entry that matches those coordinates and fileName in the database.  */

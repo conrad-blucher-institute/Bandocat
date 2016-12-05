@@ -1,23 +1,15 @@
 <?php
-	error_reporting(E_ALL);
+    include '../../Library/SessionManager.php';
+    $session = new SessionManager();
+    require('../../../Library/DBHelper.php');
+    $DB = new DBHelper();
+	//error_reporting(E_ALL);
 	$docID = json_decode($_GET['id']);
+    $collection = json_decode($_GET['col']);
 
-	
-	$servername = "localhost";
-	$username = "root";
-	$password = "notroot";
-	$dbname = "indicesinventory";
-	
-		$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-	if ($conn->connect_error)
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
-		$msg = "";
-		$sql = "UPDATE documents SET `transcribed` = 1 WHERE id = $docID"; // MAKE THIS QUERIE THE DATABASE BY FILENAME
-		$result = $conn->query($sql);
-		if($result)
+    $DB->SET_DOCUMENT_TRANSCRIBED($collection,$docID,1);
+
+		if($result != false)
 			$msg = 'This document has been marked as complete.';
 		else $msg = 'Failed to mark as complete.';
 		
