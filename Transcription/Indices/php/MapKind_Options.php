@@ -1,20 +1,11 @@
 <?php
-	$servername = "localhost";
-	$username = "root";
-	$password = "notroot";
-	$dbname = "indicesinventory";
+include '../../../Library/SessionManager.php';
+$session = new SessionManager();
+require('../../../Library/DBHelper.php');
+require('../../../Library/IndicesDBHelper.php');
+require('../../../Library/ControlsRender.php');
+$Render = new ControlsRender();
+$DB = new IndicesDBHelper();
+echo json_encode($DB->GET_INDICES_MAPKIND($_POST['collection']));
 
-// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-	if ($conn->connect_error) { 
-		die("Connection failed: " . $conn->connect_error);
-	}
- 
-//Query that will selec the fields from the table
-	$query = $conn->query("SELECT mp_name FROM mapkind");
-						while($row = $query->fetch_array())
-//Statement that echos the options into the select form with data stored in the database
-							echo "<option  value='". $row[0] ."'>$row[0]</option>";
 ?>

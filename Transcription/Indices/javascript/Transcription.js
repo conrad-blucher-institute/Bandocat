@@ -13,6 +13,7 @@ function newEntry()
 //This function calls drawRectanglesLeaflet.php and then calls drawRectangles() with JSON returned by drawRectanglesLeaflet.php as parameter.
 function getRectangleCoords()
 {
+	var collection = document.getElementById('Collection').value;
 	var fileName = window.localStorage.getItem('fileName');
 	var docID = window.localStorage.getItem('docID');
 	var rectangleCoords;
@@ -20,10 +21,10 @@ function getRectangleCoords()
 	$.ajax({
 		type: 'post',
 		url: 'php/drawRectanglesLeaflet.php',
-		data: {"fileName": fileName, "docID": docID},
+		data: {"fileName": fileName, "docID": docID,"collection": collection},
 		success:function(data){
 			rectangleCoords = JSON.parse(data);
-			drawRectangles(rectangleCoords);
+			drawRectangles(collection,rectangleCoords);
 			}
 		});
 		
@@ -32,7 +33,7 @@ function getRectangleCoords()
 
 //This function draws rectangles on document viewer window using the JSON passed to it from getRectangleCoords() 
 //it also initiates the click event on each drawn rectangle. 
-function drawRectangles(coords)
+function drawRectangles(collection,coords)
 {
 	var latlng = new Array();
 	var latlng2 = new Array();
@@ -83,7 +84,7 @@ function drawRectangles(coords)
 			point2 = rc.project(this.getBounds()._northEast);
 			//initiates entryObject with coordinates and path of selected rectangle. 
 			//for use in getEntryData.php to query for other entry field date.
-			entryObject = addEntryObject(docID,point1.x, point1.y, point2.x, point2.y, fileName);
+			entryObject = addEntryObject(collection,docID,point1.x, point1.y, point2.x, point2.y, fileName);
 			$.ajax({
 				type: 'post',
 				url: 'php/getEntryData.php',
@@ -221,25 +222,25 @@ function deletePrevious()
 function displayEntryData(entryData)
 {
 	//write entry data to form
-	document.getElementById("Document_ID").value = entryData[0].document_id;
+	document.getElementById("Document_ID").value = entryData[0].documentID;
 	//document.getElementById("File_Name").value = entryData[0].Document;
 	document.getElementById("Entry_Coordinates").value = "SouthWest(" + entryData[0].x1 + ", " + entryData[0].y1 + ")" 
 														+ " " + "NorthEast(" + entryData[0].x2 + ", " +  entryData[0].y2 + ")";
-	document.getElementById("Survey_Or_Section").value = entryData[0].survey_or_section;
-	document.getElementById("Block_Or_Tract").value = entryData[0].block_or_tract;
-	document.getElementById("Lot_Or_Acres").value = entryData[0].lot_or_acres;
+	document.getElementById("Survey_Or_Section").value = entryData[0].surveyorsection;
+	document.getElementById("Block_Or_Tract").value = entryData[0].blockortract;
+	document.getElementById("Lot_Or_Acres").value = entryData[0].lotoracres;
 	document.getElementById("Description").value = entryData[0].description;
 	document.getElementById("Client").value = entryData[0].client;
-	displayFieldBookTableInfo(entryData[0].field_book_info, "Field_Book_Table");
-	displayMapTableInfo(entryData[0].map_info, "Map_Table");
+	displayFieldBookTableInfo(entryData[0].fieldbookinfo, "Field_Book_Table");
+	displayMapTableInfo(document.getElementById("Collection").value,entryData[0].mapinfo, "Map_Table");
 	
 	//document.getElementById("Field_Book_Info").value = entryData[0].Field_Book_Info;
-	document.getElementById("Related_Papers_File_No").value = entryData[0].related_papers_file_no;
+	document.getElementById("Related_Papers_File_No").value = entryData[0].relatedpapersfileno;
 
 	
 	//document.getElementById("Map_Info").value = entryData[0].Map_Info;
 	document.getElementById("Date").value = entryData[0].date;
-	document.getElementById("Map_Table_Info").value = entryData[0].map_info;
+	document.getElementById("Map_Table_Info").value = entryData[0].mapinfo;
 	
 	var Time = entryData[0].date.split("-");
 	if (Time[1] == 00)
@@ -272,7 +273,8 @@ function displayEntryData(entryData)
 		document.getElementById("Year").value = Year;
 	}
 	
-	document.getElementById("Job_Number").value = entryData[0].job_number;
+	document.getElementById("Job_Number").value = entryData[0].jobnumber;
+	document.getElementById("Comments").value = entryData[0].comments;
 	
 	//write to hidden forms
 	document.getElementById("x1").value = entryData[0].x1;
@@ -295,6 +297,7 @@ function updateEntryData()
 	getMapTableJSON();
 	
 	//retrieve values from form and set them to appropriate variables
+	collection = document.getElementById("Collection").value;
 	docID = document.getElementById("Document_ID").value;
 	fileName = document.getElementById("File_Name").value;
 	x1 = document.getElementById("x1").value;
@@ -311,6 +314,7 @@ function updateEntryData()
 	//date = document.getElementById("Date").value;
 	jobNumber = document.getElementById("Job_Number").value;
 	mapInfo = document.getElementById("Map_Table_Info").value;
+	comments = document.getElementById("Comments").value;
 	
 	/*Conditional statement that allows to update the entry by selecting a value from the Date table, so if the
 	value selected is not a numeric value like; Month, Day, or Year, the value that will be stored in the 
@@ -368,7 +372,7 @@ function deleteSelected()
 		alert("No rectangled selected");
 		return null;
 	}
-		
+	var collection = document.getElementById("Collection").value;
 	var docID = document.getElementById("Document_ID").value;
 	var x1 = document.getElementById("x1").value;
 	var y1 = document.getElementById("y1").value;
@@ -416,45 +420,45 @@ function displayFieldBookTableInfo(string, id)
 }
 
 //same as displayFieldBookTableInfo() but for the mapInfo
-function displayMapTableInfo(string, id)
+function displayMapTableInfo(collection,string, id)
 {	
 	object = JSON.parse(string);
 	var table = document.getElementById(id);
 	
 	deleteTable(id);
 	
-	
-$.get("php/MapKind_Options.php", function(data, status){
+
+//$.get("php/MapKind_Options.php",{collection: collection})
 	for(var i = 0 ; i < object.length; i++)
-	{		
-		
+	{
+		var row = table.insertRow(-1)
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		cell1.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' + object[i].mapNumber + '">';
+
+		ddl_id = 'Map_Kind' + i;
+		$.ajax({
+			url: 'php/MapKind_Options.php', //This is the current doc
+			type: "POST",
+			dataType:'json', // add json datatype to get json
+			data: ({collection: collection,mapKind: object[i].mapKind}),
+			success: function(data) {
+				cell2.innerHTML = "<select id = '" + ddl_id + "' onchange = 'Map_Kind_Dropdown()'>" ;
+				var d = JSON.parse(data);
+				cell2.innerHTML +="<option value=''>Select</option>";
+				for(var j = 0; j < d.length; j++)
+				{
+					if(object[i].mapKind == data[j])
+						cell2.innerHTML += "<option selected value='" +  d[j]  + "'>" + d[j]  + "</option>";
+					else cell2.innerHTML += "<option value='" +  d[j]  + "'>" + d[j]  + "</option>";
+				}
+				cell2+= '</select>';
+			}
+		})
+	}
 		if(table.rows.length-1 == object.length)
 			return;
 
-		var row = table.insertRow(-1)
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);	
-
-		cell1.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' + object[i].mapNumber + '">';
-		//cell2.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' +  + '">';
-		//cell2.innerHTML = "<select id = 'Map_Kind' onchange = 'Map_Kind_Dropdown()'>" + object[i].mapKind + '</select>';
-		
-		ddl_id = 'Map_Kind' + i;
-		cell2.innerHTML = "<select id = '" + ddl_id + "' onchange = 'Map_Kind_Dropdown()'>" + data + '</select>';
-		var e = document.getElementById(ddl_id);
-		for(var j = 0; j < e.options.length; j++)
-		{
-			if(e.options[j].value == object[i].mapKind)
-			{
-				e.options[j].selected = true;
-				break;
-			}
-			
-		}
-		//document.getElementById("Map_Kind").value = object[i].mapKind;
-		
-		}
-	});
 }
 
 //This function is an auxillary function for displayFieldBookTableInfo() and displayMapTableInfo().
@@ -574,17 +578,18 @@ function resetForms() {
 }
 
 //Object Construction Functions
-function addEntryObject(docID,x1,y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
+function addEntryObject(collection,docID,x1,y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
 						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber)
 {
-	var entryObject = new entryObjectConstructor(docID,x1,y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
+	var entryObject = new entryObjectConstructor(collection,docID,x1,y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
 						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber);
 	return entryObject;
 }
 
-function entryObjectConstructor(docID,x1,y1, x2, y2, fileName,surveyOrSection, blockOrTract, lotOrAcres, description, client,
+function entryObjectConstructor(collection,docID,x1,y1, x2, y2, fileName,surveyOrSection, blockOrTract, lotOrAcres, description, client,
 						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber)
 {
+	this.collection = collection;
 	this.docID = docID;
 	this.x1 = x1;
 	this.y1 = y1;

@@ -81,9 +81,8 @@ else header('Location: ../../');
                     {
                         "className": "dt-center",
                         "render": function ( data, type, row ) {
-                            var img = collection_config.StorageDir + row[3].replace(' ','').replace(' ','')  + "\\" + data;
                             var col = collection_config.Name;
-                            return "<a href='' id='" + img + "' " +  'onclick = "Jpg_Conversion(' + row[0] + ',this.id,\'' + col + '\');event.preventDefault();" >Transcribe</a>';
+                            return "<a href='' id='aTranscribe' " +  'onclick = "Jpg_Conversion(' + row[0] + ',\'' + data + '\',\'' + col + '\');event.preventDefault();" >Transcribe</a>';
                         },
                         "targets": 7
                     },
@@ -150,9 +149,9 @@ else header('Location: ../../');
             type: "POST",
             url: url,
             //dataType: 'json',
-            data: {"id": docId, "fileName": fileName},
+            data: {"docID": docId, "fileName": fileName, "collection": collection},
             success:function(data) {
-                window.localStorage.setItem("fileName",fileName + ".jpg");
+                window.localStorage.setItem("fileName",data);
                 window.localStorage.setItem("docID",docId);
                 window.open("Transcription.php?col=" + collection );
             },

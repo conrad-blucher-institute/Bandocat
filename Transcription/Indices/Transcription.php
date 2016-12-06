@@ -17,7 +17,7 @@ else header('Location: ../../');
 <!DOCTYPE html>
 <html>
 <head>
-<title>Transcription Status</title>
+<title>BandoCat Transcription</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 	<script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script><link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
@@ -38,7 +38,7 @@ else header('Location: ../../');
 <!-- ENTRIES AND DISPLAY BUTTONS FOR CORRECTION OR COMPLETION-->
 <div id = "Entries">
 <form id = "myForm" >
-
+	<input type="hidden" id="Collection" class="Input_Field" name="Collection" value="<?php echo $collection; ?>" />
 	<input type = "hidden" id = "Document_ID" class= "Input_Field" name = "Document_ID">
 	<input type = "hidden" id = "File_Name" class= "Input_Field" name = "File_Name">
 	<input type="hidden" id = "Entry_Coordinates" class= "Input_Field"name="Entry_Coordinates">
@@ -94,7 +94,7 @@ else header('Location: ../../');
 			<td id= "Tabledata_Selection">
 				<select id = 'Map_Kind' onchange = "Map_Kind_Dropdown()">
 					<?php 
-					$Render->GET_DDL3($DB->GET_INDICES_MAPKIND($collection),null);
+					$Render->GET_DDL($DB->GET_INDICES_MAPKIND($collection),null);
 					?>
 				</select>
 			</td>
@@ -181,11 +181,9 @@ else header('Location: ../../');
 	//gets Document ID
 	var docID = window.localStorage.getItem("docID");
 	document.getElementById("Document_ID").value = docID;
-	
-	//gets fileName and writes it to hidden form, fileName in this case is the path of the image in the viewer 
-	var fileName_org = window.localStorage.getItem("fileName");
-	var fileName = "..\\..\\transcription_temp\\" + fileName_org.substring(fileName_org.lastIndexOf("\\") + 1,fileName_org.length);
-	//document.getElementById("File_Name").value = fileName;
+	var fileName = window.localStorage.getItem("fileName");
+	//gets fileName and writes it to hidden form, fileName in this case is the path of the image in the viewer
+	document.getElementById("File_Name").value = fileName;
 	
 	
 	//add image to slippy map
@@ -211,7 +209,6 @@ else header('Location: ../../');
 			
 			//dateString = "0000-00-00";
 			getDateTableJSON();
-			
 			getFileName();
 			
 			//reset non-active rectangles to default color
