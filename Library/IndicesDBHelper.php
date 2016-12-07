@@ -52,12 +52,69 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
     }
 
 
-    public function TRANSCRIPTION_ENTRY_INSERT()
+    public function TRANSCRIPTION_ENTRY_INSERT($collection,$newObject)
     {
-
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        $sth = $this->getConn()->prepare("INSERT INTO `transcription` (`documentID`,`x1`, `y1`, `x2`, `y2`, `surveyorsection`, `blockortract`,
+                                          `lotoracres`,`description`,`client`,`fieldbookinfo`,`relatedpapersfileno`,`mapinfo`,`date`,`jobnumber`,`comments`)
+			VALUES (:docID,:x1,:y1,:x2,:y2,:surveyOrSection, :blockOrTract,:lotOrAcres,
+			:description, :entryclient, :fieldBookInfo,:relatedPapersFileNo,:mapInfo,:entrydate,:jobNumber,:comments)");
+        $sth->bindParam(':docID',$newObject->docID,PDO::PARAM_INT,11);
+        $sth->bindParam(':x1',$newObject->x1,PDO::PARAM_INT,11);
+        $sth->bindParam(':y1',$newObject->y1,PDO::PARAM_INT,11);
+        $sth->bindParam(':x2',$newObject->x2,PDO::PARAM_INT,11);
+        $sth->bindParam(':y2',$newObject->y2,PDO::PARAM_INT,11);
+        $sth->bindParam(':surveyOrSection',$newObject->surveyOrSection,PDO::PARAM_STR,100);
+        $sth->bindParam(':blockOrTract',$newObject->blockOrTract,PDO::PARAM_STR,100);
+        $sth->bindParam(':lotOrAcres',$newObject->lotOrAcres,PDO::PARAM_STR,100);
+        $sth->bindParam(':description',$newObject->description,PDO::PARAM_STR,200);
+        $sth->bindParam(':entryclient',$newObject->client,PDO::PARAM_STR,100);
+        $sth->bindParam(':fieldBookInfo',$newObject->fieldBookInfo,PDO::PARAM_STR,900);
+        $sth->bindParam(':relatedPapersFileNo',$newObject->relatedPapersFileNo,PDO::PARAM_STR,100);
+        $sth->bindParam(':mapInfo',$newObject->mapInfo,PDO::PARAM_STR,800);
+        $sth->bindParam(':entrydate',$newObject->entryDate,PDO::PARAM_STR,10);
+        $sth->bindParam(':jobNumber',$newObject->jobNumber,PDO::PARAM_STR,20);
+        $sth->bindParam(':comments',$newObject->comments,PDO::PARAM_STR,200);
+        $ret = $sth->execute();
+        return $ret;
+        
     }
-    public function TRANSCRIPTION_ENTRY_UPDATE()
+    public function TRANSCRIPTION_ENTRY_UPDATE($collection,$updateObject)
     {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        $sth = $this->getConn()->prepare("UPDATE `transcription` SET
+			`surveyorsection` = :surveyOrSection,
+			`blockortract` = :blockOrTract,
+			`lotoracres` = :lotOrAcres,
+			`description` = :description,
+			`client` = :entryclient,
+			`fieldbookinfo` = :fieldBookInfo,
+			`relatedpapersfileno` = :relatedPapersFileNo,
+			`mapinfo` = :mapInfo,
+			`date` = :entrydate,
+			`jobnumber` = :jobNumber,
+			`comments` = :comments
+			WHERE `documentID` = :docID AND `x1` = :x1 AND `y1` = :y1 AND `x2` = :x2 AND `y2` = :y2");
+        $sth->bindParam(':docID',$updateObject->docID,PDO::PARAM_INT,11);
+        $sth->bindParam(':x1',$updateObject->x1,PDO::PARAM_INT,11);
+        $sth->bindParam(':y1',$updateObject->y1,PDO::PARAM_INT,11);
+        $sth->bindParam(':x2',$updateObject->x2,PDO::PARAM_INT,11);
+        $sth->bindParam(':y2',$updateObject->y2,PDO::PARAM_INT,11);
+        $sth->bindParam(':surveyOrSection',$updateObject->surveyOrSection,PDO::PARAM_STR,100);
+        $sth->bindParam(':blockOrTract',$updateObject->blockOrTract,PDO::PARAM_STR,100);
+        $sth->bindParam(':lotOrAcres',$updateObject->lotOrAcres,PDO::PARAM_STR,100);
+        $sth->bindParam(':description',$updateObject->description,PDO::PARAM_STR,200);
+        $sth->bindParam(':entryclient',$updateObject->client,PDO::PARAM_STR,100);
+        $sth->bindParam(':fieldBookInfo',$updateObject->fieldBookInfo,PDO::PARAM_STR,900);
+        $sth->bindParam(':relatedPapersFileNo',$updateObject->relatedPapersFileNo,PDO::PARAM_STR,100);
+        $sth->bindParam(':mapInfo',$updateObject->mapInfo,PDO::PARAM_STR,800);
+        $sth->bindParam(':entrydate',$updateObject->entryDate,PDO::PARAM_STR,10);
+        $sth->bindParam(':jobNumber',$updateObject->jobNumber,PDO::PARAM_STR,20);
+        $sth->bindParam(':comments',$updateObject->comments,PDO::PARAM_STR,200);
+        $ret = $sth->execute();
+        return $ret;
 
     }
 

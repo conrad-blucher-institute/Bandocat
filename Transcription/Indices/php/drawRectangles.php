@@ -1,17 +1,11 @@
 <?php
-error_reporting(E_ALL);
-	$servername = "localhost";
-	$username = "root";
-	$password = "notroot";
-	$dbname = "indicesinventory";
-	
-	$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-	if ($conn->connect_error)
-	{
-		die("Connection failed: " . $conn->connect_error);
-	}
-$draw = 'convert ../images/test.jpg -stroke black -strokewidth 10 -fill "rgba( 40, 213, 187, 0.3 )" -draw "';
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+require('../../../Library/DBHelper.php');
+require('../../../Library/IndicesDBHelper.php');
+$DB = new IndicesDBHelper();
+
+//$draw = 'convert ../images/test.jpg -stroke black -strokewidth 10 -fill "rgba( 40, 213, 187, 0.3 )" -draw "';
 
 $sql = "SELECT x1, y1, x2, y2 FROM transcription";
 $result = $conn->query($sql);
@@ -30,6 +24,5 @@ $draw = $draw . '" ../images/output.jpg';
 
 exec($draw);
 
-print_r($draw);
 	
 ?>

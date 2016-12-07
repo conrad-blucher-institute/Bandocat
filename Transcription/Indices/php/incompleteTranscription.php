@@ -11,19 +11,18 @@
     $fileName = $_POST['fileName'];
 
     $action = "transcribe";
-    $comments = "Finished";
+    $comments = "Not Finished";
 
-    $ret = $DB->SET_DOCUMENT_TRANSCRIBED($collection,$docID,1);
+   // $ret = $DB->SET_DOCUMENT_TRANSCRIBED($collection,$docID,0);
 
 
     //delete file from Temp
     unlink("../" . $fileName);
     //Write Log
-    $ret = $DB->SP_LOG_WRITE($action,$collectionID,$docID,$session->getUserID(),"success",$comments);
+   // $ret = $DB->SP_LOG_WRITE($action,$collectionID,$docID,$session->getUserID(),"success",$comments);
+    echo "";
 
-    if($ret != false)
-        echo 'This document has been marked as complete.';
-    else echo "Failed to mark as complete.";
+
 
 
 ?>
