@@ -1,5 +1,5 @@
 <?php
-include '../../Library/SessionManager.php';
+include '../../../Library/SessionManager.php';
 $session = new SessionManager();
 require('../../../Library/DBHelper.php');
 require('../../../Library/IndicesDBHelper.php');
@@ -10,19 +10,15 @@ our database. It recieves the coordinates of the entry to be deleted from an AJA
 a query to delete the entry that matches those coordinates and fileName in the database.  */
 
 	$updateObject = json_decode($_POST['deleteObject']);
-	
+	var_dump($_POST);
 	//assigning all updateObject data to appropriate variable
-    $collection = $docID = "'" . $updateObject -> collection . "'";
-	$docID = "'" . $updateObject -> docID . "'";
-	$x1 = "'" . $updateObject -> x1 . "'";
-	$y1 = "'" . $updateObject -> y1 . "'";
-	$x2 = "'" . $updateObject -> x2 . "'";
-	$y2 = "'" . $updateObject -> y2 . "'";
-	
-
-	$coords = array();
+    $collection = $updateObject -> collection;
+	$docID = $updateObject -> docID;
+	$x1 = $updateObject -> x1;
+	$y1 = $updateObject -> y1;
+	$x2 = $updateObject -> x2;
+	$y2 = $updateObject -> y2;
 
 	$sql = $DB->TRANSCRIPTION_ENTRY_DELETE($collection,$docID,$x1,$y1,$x2,$y2);
-	
 	echo $docID;
 ?>

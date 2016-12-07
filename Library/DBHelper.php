@@ -836,12 +836,6 @@ class DBHelper
     }
 
 
-    function SELECT_TEMPLATE_JOBFOLDER_DOCUMENTAUTHOR_FROM_DOCID($collection, $iDocID)
-    {
-        $ret = $this->SP_TEMPLATE_JOBFOLDER_DOCUMENT_SELECT_WITHOUT_AUTHOR($collection, $iDocID);
-        $sth = $this->getConn()->prepare("SELECT `authorID ");
-    }
-
 
 
     //NEEDS TESTING
@@ -1033,5 +1027,17 @@ class DBHelper
         $sth->bindParam( ':docID', $docID,PDO::PARAM_INT);
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_NUM);
+    }
+
+
+    function SET_DOCUMENT_TRANSCRIBED($collection,$docID,$val)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        $sth = $this->getConn()->prepare("UPDATE `document` SET `transcribed` = :val WHERE `documentID` = :docID");
+        $sth->bindParam(':val',$val,PDO::PARAM_INT,1);
+        $sth->bindParam(":docID",$docID,PDO::PARAM_INT,11);
+        $ret = $sth->execute();
+        return $ret;
     }
 }

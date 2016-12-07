@@ -10,7 +10,7 @@ require '../../../Library/IndicesDBHelper.php';
 $DB = new IndicesDBHelper();
 	$collection = $_POST['collection'];
 	$fileName = $_POST['fileName'];
-	$fileName = "'" . $fileName . "'";
+	$fileName = $fileName;
 	$docID = $_POST['docID'];
 
 	

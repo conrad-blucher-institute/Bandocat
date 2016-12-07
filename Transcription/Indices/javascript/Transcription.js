@@ -124,14 +124,74 @@ $(function ()
 			return;			
 		}
 
-		
-		getFieldBookTableJSON();
-		getMapTableJSON();
-		
+        getFieldBookTableJSON();
+        getMapTableJSON();
+
+        var entrycoordinates = JSON.parse($("#Entry_Coordinates").val());
+         x1 = entrycoordinates.x1;
+         y1 = entrycoordinates.y1;
+         x2 = entrycoordinates.x2;
+         y2 = entrycoordinates.y2;
+
+
+        //retrieve values from form and set them to appropriate variables
+        collection = document.getElementById("Collection").value;
+        docID = document.getElementById("Document_ID").value;
+        fileName = document.getElementById("File_Name").value;
+        surveyOrSection = document.getElementById("Survey_Or_Section").value ;
+        blockOrTract = document.getElementById("Block_Or_Tract").value;
+        lotOrAcres = document.getElementById("Lot_Or_Acres").value;
+        description = document.getElementById("Description").value ;
+        client = document.getElementById("Client").value ;
+        fieldBookInfo = document.getElementById("Field_Book_Info").value ;
+        relatedPapersFileNo = document.getElementById("Related_Papers_File_No").value;
+        //date = document.getElementById("Date").value;
+        jobNumber = document.getElementById("Job_Number").value;
+        mapInfo = document.getElementById("Map_Table_Info").value;
+        comments = document.getElementById("Comments").value;
+
+        /*Conditional statement that allows to update the entry by selecting a value from the Date table, so if the
+         value selected is not a numeric value like; Month, Day, or Year, the value that will be stored in the
+         database will be a 0000 value for a year, or 00 for month and day*/
+        if (document.getElementById("Year").value == "Year")
+        {
+            var Year = "0000";
+        }
+        else
+            Year = document.getElementById("Year").value;
+
+        if(document.getElementById("Month").value == "Month")
+        {
+            var Month = "00"
+        }
+        else if(document.getElementById("Month").value < 10)
+            Month = "0" + document.getElementById("Month").value;
+        else
+            Month = document.getElementById("Month").value;
+
+        if (document.getElementById("Day").value == "Day")
+        {
+            var Day = "00";
+        }
+        else if(document.getElementById("Day").value < 10)
+            Day = "0" + document.getElementById("Day").value;
+        else
+            Day = document.getElementById("Day").value;
+
+        var dateString = Year + "-" + Month + "-" + Day;
+        date = dateString;
+
+        jobNumber = document.getElementById("Job_Number").value;
+
+
+        //creates JSON that contains all information from form to update the db
+        var newobject = addEntryObject(collection,docID,x1, y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
+            fieldBookInfo, relatedPapersFileNo, mapInfo, date, jobNumber,comments);
+
 		$.ajax({
 			type: 'post',
 			url: 'php/submitEntry.php',
-			data: $('#myForm').serialize(),
+			data: {"newobject": JSON.stringify(newobject)},
 			success: function(results){
 				alert(results);
 				submitEntry(results);
@@ -351,9 +411,8 @@ function updateEntryData()
 	
 	
 	//creates JSON that contains all information from form to update the db
-	updateObject = addEntryObject(docID,x1, y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
-						fieldBookInfo, relatedPapersFileNo, mapInfo, date, jobNumber);
-						
+	updateObject = addEntryObject(collection,docID,x1, y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
+						fieldBookInfo, relatedPapersFileNo, mapInfo, date, jobNumber,comments);
 	$.ajax({
 		type: 'post',
 		url: 'php/updateEntryData.php',
@@ -380,7 +439,7 @@ function deleteSelected()
 	var y2 = document.getElementById("y2").value;
 	
 	//creates object that contains location of selected rectangle so that the db can be queried and delete it 
-	var deleteObject = addEntryObject(docID,x1, y1, x2, y2);
+	var deleteObject = addEntryObject(collection,docID,x1, y1, x2, y2);
 	
 	$.ajax({
 		type: 'post',
@@ -431,33 +490,26 @@ function displayMapTableInfo(collection,string, id)
 //$.get("php/MapKind_Options.php",{collection: collection})
 	for(var i = 0 ; i < object.length; i++)
 	{
-		var row = table.insertRow(-1)
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-		cell1.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' + object[i].mapNumber + '">';
+        //if the table is already the correct size leave for loop
+        if(table.rows.length-1 == object.length)
+            break;
 
-		ddl_id = 'Map_Kind' + i;
+		// var row = table.insertRow(-1);
+		// var cell1 = row.insertCell(0);
+		//table.innerHTML+= '<tr><td><input type="text" class= "Input_Field"' + 'value = "' + object[i].mapNumber + '"></td>';
+
 		$.ajax({
 			url: 'php/MapKind_Options.php', //This is the current doc
 			type: "POST",
-			dataType:'json', // add json datatype to get json
-			data: ({collection: collection,mapKind: object[i].mapKind}),
+			//dataType:'json', // add json datatype to get json
+			data: {"collection": collection,"mapKind": object[i].mapKind,"mapNumber": object[i].mapNumber,"id": i},
 			success: function(data) {
-				cell2.innerHTML = "<select id = '" + ddl_id + "' onchange = 'Map_Kind_Dropdown()'>" ;
-				var d = JSON.parse(data);
-				cell2.innerHTML +="<option value=''>Select</option>";
-				for(var j = 0; j < d.length; j++)
-				{
-					if(object[i].mapKind == data[j])
-						cell2.innerHTML += "<option selected value='" +  d[j]  + "'>" + d[j]  + "</option>";
-					else cell2.innerHTML += "<option value='" +  d[j]  + "'>" + d[j]  + "</option>";
-				}
-				cell2+= '</select>';
+                table.innerHTML += data;
 			}
-		})
+		});
 	}
-		if(table.rows.length-1 == object.length)
-			return;
+		// if(table.rows.length-1 == object.length)
+		// 	return;
 
 }
 
@@ -513,7 +565,7 @@ function getMapTableJSON()
 function addFieldRow(id)
 {	
 		var table = document.getElementById(id);
-		var row = table.insertRow(-1)
+		var row = table.insertRow(-1);
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
 		cell1.innerHTML = '<input type="text" class= "Input_Field">';
@@ -521,17 +573,20 @@ function addFieldRow(id)
 }
 
 //functionality for "+" button 
-function addMapRow(id)
-{	
-		
-	$.get("php/MapKind_Options.php", function(data, status){
-		var table = document.getElementById(id);
-		var row = table.insertRow(-1)
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-		cell1.innerHTML = '<input type="text" class= "Input_Field">';
-		cell2.innerHTML = "<select id = 'Map_Kind' onchange = 'Map_Kind_Dropdown()'>" + data + '</select>';
-	});
+function addMapRow(collection,id)
+{
+    var table = document.getElementById(id);
+
+    $.ajax({
+        url: 'php/MapKind_Options.php', //This is the current doc
+        type: "POST",
+        //dataType:'json', // add json datatype to get json
+        data: {"collection": collection,"mapKind": "","mapNumber": "","id":""},
+        success: function(data) {
+            var row = table.insertRow(-1);
+            row.innerHTML += data;
+        }
+    });
 }
 
 //functionality for "-" button
@@ -555,16 +610,33 @@ function deleteMapRow(id)
 
 function incompleteTranscription()
 {
-	window.close();
+    var collection = document.getElementById("Collection").value;
+    var id = document.getElementById("Document_ID").value;
+
+    $.ajax({
+        url: 'php/incompleteTranscription.php',
+        type: "POST",
+        data: {"collection": collection,"docID": id,"fileName": window.localStorage.getItem('fileName')},
+        success: function(data) {
+            window.close();
+        }
+    });
 }
 
-function completeTranscription(collection)
+function completeTranscription()
 {
+    var collection = document.getElementById("Collection").value;
 	var id = document.getElementById("Document_ID").value;
-	$.get("php/completeTranscription.php?id=" + id + "&col=" + collection, function(data,status){
-		alert(data.replace('"','').replace('"',''));
-		window.close();
-	});
+
+    $.ajax({
+        url: 'php/completeTranscription.php',
+        type: "POST",
+        data: {"collection": collection,"docID": id,"fileName": window.localStorage.getItem('fileName')},
+        success: function(data) {
+            alert(data);
+            window.close();
+        }
+    });
 }
 
 //called on refresh of page 
@@ -579,15 +651,15 @@ function resetForms() {
 
 //Object Construction Functions
 function addEntryObject(collection,docID,x1,y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
-						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber)
+						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber, comments)
 {
 	var entryObject = new entryObjectConstructor(collection,docID,x1,y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
-						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber);
+						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber,comments);
 	return entryObject;
 }
 
 function entryObjectConstructor(collection,docID,x1,y1, x2, y2, fileName,surveyOrSection, blockOrTract, lotOrAcres, description, client,
-						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber)
+						fieldBookInfo, relatedPapersFileNo, mapInfo, entryDate, jobNumber,comments)
 {
 	this.collection = collection;
 	this.docID = docID;
@@ -606,6 +678,7 @@ function entryObjectConstructor(collection,docID,x1,y1, x2, y2, fileName,surveyO
 	this.mapInfo = mapInfo
 	this.entryDate = entryDate;
 	this.jobNumber = jobNumber;
+    this.comments = comments;
 }
 
 function addFieldBookObject(bookNumber, pageNumbers)

@@ -8,8 +8,8 @@
  */
 interface TranscriptionDB
 {
-    public function TRANSCRIPTION_ENTRY_INSERT();
-    public function TRANSCRIPTION_ENTRY_UPDATE();
+    public function TRANSCRIPTION_ENTRY_INSERT($collection,$newObject);
+    public function TRANSCRIPTION_ENTRY_UPDATE($collection,$updateObject);
     public function TRANSCRIPTION_ENTRY_SELECT($collection,$docID,$x1,$y1,$x2,$y2);
 
 }
@@ -26,9 +26,10 @@ trait TranscriptionTrait
             $sth->bindParam(':docID',$docID,PDO::PARAM_INT,11);
             $sth->bindParam(':x1',$x1,PDO::PARAM_INT,11);
             $sth->bindParam(':x2',$x2,PDO::PARAM_INT,11);
-            $sth->bindParam(':y2',$y1,PDO::PARAM_INT,11);
+            $sth->bindParam(':y1',$y1,PDO::PARAM_INT,11);
             $sth->bindParam(':y2',$y2,PDO::PARAM_INT,11);
-            return $sth->execute();
+            $ret = $sth->execute();
+            return $ret;
         }
         return false;
     }

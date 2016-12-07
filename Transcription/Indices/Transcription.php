@@ -80,7 +80,7 @@ else header('Location: ../../');
 	<input type = "hidden" class= "Input_Field" name = "Date" id = "Date">
 	
 	<div id = "Table_Rows">
-		<button type = 'button' onclick = "addMapRow('Map_Table')" id = "addMapTableRow">+</button>
+		<button type = 'button' onclick = "addMapRow('<?php echo $collection;?>','Map_Table')" id = "addMapTableRow">+</button>
 		<button type = 'button' onclick = "deleteMapRow('Map_Table')" id = "deleteMapTableRow">-</button>
 	</div>
 		
@@ -132,7 +132,7 @@ else header('Location: ../../');
 <!-- BUTTONS THAT ARE NOT PART OF THE FORM -->
 <div id = "buttons" style="text-align:center">
 	<button onclick = "deletePrevious()" id = 'deletePrevious' name="deletePrevious" class="btn">Delete Active Rectangle</button>
-	<button  id = "Complete_Transcription" onclick = "completeTranscription(collection_config.Name)" class="btn">Mark as Complete & Close</button>
+	<button  id = "Complete_Transcription" onclick = "completeTranscription()" class="btn">Mark as Complete & Close</button>
 	<button  id = "Incomplete_Transcription" onclick = "incompleteTranscription()" class="btn" >Close </button>
 </div>
 
@@ -205,7 +205,7 @@ else header('Location: ../../');
 			deleteTable("Field_Book_Table");
 			deleteTable("Map_Table");
 			addFieldRow("Field_Book_Table");
-			addMapRow("Map_Table");
+			addMapRow('<?php echo $collection;?>',"Map_Table");
 			
 			//dateString = "0000-00-00";
 			getDateTableJSON();
