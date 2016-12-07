@@ -52,17 +52,18 @@ $date = new DateHelper();
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
-                                    <select>
+                                    <select class="libraryIndexSelect">
                                         <?php
                                         $books = [];
                                         $booksObject = $book;
                                         $length = count($booksObject);
                                         for ($x = 0; $x <= $length-1; $x++) {
                                             $bookID[$x] = $booksObject[$x];
-                                            echo "<option value=$bookID[$x][0]>".$bookID[$x][1]."</option>";
+                                            echo "<option value=".$bookID[$x][0].">".$bookID[$x][1]."</option>";
                                         }
                                         ?>
                                     </select>
+                                    <input type="hidden" name="ddlBookTitle" id="ddlBookTiTle" value=""></input>
                                 </div>
 
                                 <div class="cell">
@@ -114,6 +115,47 @@ $date = new DateHelper();
 
 </body>
 <script>
+
+    //Event listener that it is triggered when a document is loaded to the document//
+    document.addEventListener("DOMContentLoaded", init, false);
+    //Initial function that selects the elements in which the event will take place
+    function init() {
+        document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
+        selLibraryIndex = document.querySelector("#txtLibraryIndex");
+    }
+    //Function that is called that handles all the functions that will reshape the document
+    function handleFileSelect(e) {
+        if(!e.target.files) return;
+
+        var files = e.target.files;
+        var fileName = files[0].name.slice(0,-4);
+        //Library index value is changed to the file name of the document uploaded
+        selLibraryIndex.value = fileName;
+
+        /*Program that conditionally selects the value of the Book title by splitting the filename with a underscore
+         * delimiter and setting the value of the select option if equal to prefix string value*/
+
+        libraryADIndex = fileName.split("_");
+        libraryEKIndex = fileName.split("_");
+        libraryLRIndex = fileName.split("_");
+        librarySZIndex = fileName.split("_");
+
+        if (libraryADIndex[2] == "A-D"){
+            $('select.libraryIndexSelect').val(1);
+            $('.ddlBookTitle').val();
+        }
+        if (libraryEKIndex[2] == "E-K"){
+            $('select.libraryIndexSelect').val(2);
+        }
+        if (libraryLRIndex[2] == "L-R"){
+            $('select.libraryIndexSelect').val(3);
+            $('#ddlBookTiTle').val()=3;
+        }
+        if (librarySZIndex[2] == "S-Z"){
+            $('select.libraryIndexSelect').val(4);
+        }
+    }
+
     $( document ).ready(function() {
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
@@ -164,21 +206,6 @@ $date = new DateHelper();
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
     });
 
-    //Event listener that it is triggered when a document is loaded to the document//
-    document.addEventListener("DOMContentLoaded", init, false);
-
-    function init() {
-        document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
-        selLibraryIndex = document.querySelector("#txtLibraryIndex");
-    }
-
-    function handleFileSelect(e) {
-        if(!e.target.files) return;
-
-        var files = e.target.files;
-        var fileName = files[0].name.slice(0,-4);
-        selLibraryIndex.value = fileName;
-    }
 
 </script>
 <style>

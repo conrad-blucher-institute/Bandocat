@@ -13,7 +13,7 @@ $action = htmlspecialchars($data['txtAction']);
 $collection = htmlspecialchars($data['txtCollection']);
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $comments = null;
-
+print_r($data);
 /*Upload catalog form
     ($action != "delete") {
     data pre-processing
