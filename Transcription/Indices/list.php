@@ -20,7 +20,11 @@ else header('Location: ../../');
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>Welcome to BandoCat!</title>
-
+    <style>
+        .txtDTSearch{
+            width:100%;
+        }
+    </style>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
@@ -90,6 +94,25 @@ else header('Location: ../../');
                 "ajax": "list_processing.php?col=" + collection_config.Name,
             } );
 
+
+
+            // Setup - add a text input to each footer cell
+            $('#dtable tfoot th').each( function () {
+                var title = $(this).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" class="txtDTSearch" />' );
+            } );
+            // Apply the search
+            table.columns().every( function () {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change', function () {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+            } );
+
             table.column(0).visible(true);
 
             // select row on single click
@@ -102,8 +125,6 @@ else header('Location: ../../');
                     $(this).addClass('selected');
                 }
             } );
-
-
 
         });
     </script>
@@ -131,6 +152,18 @@ else header('Location: ../../');
                     <th width="40px"></th>
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <th width="80px"></th>
+                    <th width="110px">Page Type</th>
+                    <th width="200px">Library Index</th>
+                    <th width="100px">Book Title</th>
+                    <th width="30px">Page #</th>
+                    <th width="50px">Needs Review</th>
+                    <th width="50px">Completed?</th>
+                    <th width="40px"></th>
+                </tr>
+                </tfoot>
             </table>
             </div>
         </div>
