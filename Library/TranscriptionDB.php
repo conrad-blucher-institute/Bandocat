@@ -46,4 +46,26 @@ trait TranscriptionTrait
         }
         return false;
     }
+
+    function SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD($collection, $iLibraryIndex)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        if ($dbname != null && $dbname != "") {
+            $this->getConn()->exec('USE ' . $dbname);
+            /* PREPARE STATEMENT */
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD(?,@oReturnValue)");
+            if (!$call)
+                trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+            $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 40);
+            /* EXECUTE STATEMENT */
+            $call->execute();
+            /* RETURN RESULT */
+            $select = $this->getConn()->query('SELECT @oReturnValue');
+            $result = $select->fetch(PDO::FETCH_NUM);
+            if($result[0] == 1)
+                return "EXISTED";
+            else if($result[0] == 0)
+                return "GOOD";
+        } else return false;
+    }
 }

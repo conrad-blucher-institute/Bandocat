@@ -7,10 +7,11 @@ if(isset($_GET['col'])) {
 else header('Location: ../../');
 
 require '../../Library/DBHelper.php';
+require '../../Library/IndicesDBHelper.php';
 require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
-$DB = new DBHelper();
+$DB = new IndicesDBHelper();
 $book = $DB->GET_INDICES_BOOK($collection);
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
@@ -53,6 +54,7 @@ $date = new DateHelper();
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <select class="libraryIndexSelect">
+                                        <option value="0">Select Book Title</option>
                                         <?php
                                         $books = [];
                                         $booksObject = $book;
@@ -63,25 +65,27 @@ $date = new DateHelper();
                                         }
                                         ?>
                                     </select>
-                                    <input type="hidden" name="ddlBookTitle" id="ddlBookTiTle" value=""></input>
+                                    <input type="hidden" name="ddlBookID" id="ddlBookID" value=""/>
                                 </div>
 
                                 <div class="cell">
                                     <span class="labelradio"><mark>Page Type:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
-                                    <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="1" checked="true"/>General Index
-                                    <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="0"/>Table of Contents
+                                    <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="General Index" checked="true"/>General Index
+                                    <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="Table of Contents"/>Table of Contents
                                 </div>
                                 <div class="cell">
-                                    <span class="label"><span style = "color:red;"> * </span>Page Number:</span>
-                                    <input type="text" class="pageNumber" id="pageNumber"/>
+                                    <span class="label"><span style = "color:red;"></span>Page Number:</span>
+                                    <input type="text" name="txtPageNumber" id="txtPageNumber"/>
                                 </div>
                                 <div class="cell" >
                                     <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" checked="true"/>Yes
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" />No
                                 </div>
-
-
+                                <div class="cell">
+                                    <span class="label"><span style = "color:red;"> </span>Comments:</span>
+                                    <textarea cols="35" rows="5" name="txtComments" id="txtComments"></textarea>
+                                </div>
 
 
 
@@ -115,13 +119,13 @@ $date = new DateHelper();
 
 </body>
 <script>
+    selLibraryIndex = document.querySelector("#txtLibraryIndex");
 
     //Event listener that it is triggered when a document is loaded to the document//
     document.addEventListener("DOMContentLoaded", init, false);
     //Initial function that selects the elements in which the event will take place
     function init() {
         document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
-        selLibraryIndex = document.querySelector("#txtLibraryIndex");
     }
     //Function that is called that handles all the functions that will reshape the document
     function handleFileSelect(e) {
@@ -142,23 +146,26 @@ $date = new DateHelper();
 
         if (libraryADIndex[2] == "A-D"){
             $('select.libraryIndexSelect').val(1);
-            $('.ddlBookTitle').val();
+            $('#ddlBookID').val(1);
         }
         if (libraryEKIndex[2] == "E-K"){
             $('select.libraryIndexSelect').val(2);
+            $('#ddlBookID').val(2);
         }
         if (libraryLRIndex[2] == "L-R"){
             $('select.libraryIndexSelect').val(3);
-            $('#ddlBookTiTle').val()=3;
+            $('#ddlBookID').val(3);
         }
         if (librarySZIndex[2] == "S-Z"){
             $('select.libraryIndexSelect').val(4);
+            $('#ddlBookID').val(4);
         }
     }
 
     $( document ).ready(function() {
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
+            //console.log(document.getElementsByClassName('dd')))
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
@@ -175,7 +182,7 @@ $date = new DateHelper();
                 processData: false,
                 contentType: false,
                 success:function(data){
-                    var json = data;
+                    var json = JSON.parse(data);
                     console.log(json);
                     var msg = "";
                     var result = 0;
@@ -188,7 +195,7 @@ $date = new DateHelper();
                             window.close();
                             result = 1;
                         }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                        else if(json[i].includes("FAIL") || json[i].includes("EXISTED"))
                         {
                             $('#btnSubmit').css("display", "inherit");
                             $('#loader').css("display", "none");

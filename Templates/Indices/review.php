@@ -6,17 +6,17 @@ if(isset($_GET['col']) && isset($_GET['doc'])) {
     $docID = $_GET['doc'];
 }
 
-
-
-
 else header('Location: ../../');
 
 require '../../Library/DBHelper.php';
+require '../../Library/IndicesDBHelper.php';
 require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
+
 $Render = new ControlsRender();
-$DB = new DBHelper();
+$DB = new IndicesDBHelper();
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+$document = $DB->SP_TEMPLATE_INDICES_DOCUMENT_SELECT($collection, $docID);
 $book = $DB->GET_INDICES_BOOK($collection);
 $info = $DB->GET_INDICES_INFO($collection, $docID);
 $date = new DateHelper();
@@ -68,6 +68,7 @@ $date = new DateHelper();
                                         }
                                         ?>
                                     </select>
+                                    <input type="hidden" name="ddlBookID" id="ddlBookID" value=""/>
                                 </div>
 
                                 <div class="cell">
@@ -77,12 +78,16 @@ $date = new DateHelper();
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Page Number:</span>
-                                    <input type="text" class="pageNumber" id="pageNumber"/>
+                                    <input type="text" name="txtPageNumber" id="txtPageNumber"/>
                                 </div>
                                 <div class="cell" >
                                     <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" checked="true"/>Yes
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" />No
+                                </div>
+                                <div class="cell">
+                                    <span class="label"><span style = "color:red;"> </span>Comments:</span>
+                                    <textarea cols="35" rows="5" name="txtComments" id="txtComments"></textarea>
                                 </div>
 
 
@@ -100,10 +105,10 @@ $date = new DateHelper();
                                     <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                     <span>
                                     <?php if($session->hasWritePermission())
-                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Upload' class='bluebtn'/>";}
+                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='bluebtn'/>";}
                                     ?>
                                         <div class="bluebtn" id="loader" style="display: none;">
-                                        Uploading
+                                        Updating
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
                                 </div>
                                 </span>
@@ -167,6 +172,11 @@ $date = new DateHelper();
 
         $("#txtLibraryIndex").val("<?php echo $info[0][0]; ?>");
         $("#pageNumber").val("<?php echo $info[0][3]; ?>");
+
+        //Stores Book ID to the ddlBookID hidden input Id
+        $('select.libraryIndexSelect').val("<?php echo $document['ddlBookID'];?>");
+        $('select.libraryIndexSelect').val();
+        $('#ddlBookID').val(bookIdValue);
 
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
