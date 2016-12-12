@@ -1,0 +1,166 @@
+#title {
+    position: absolute;
+    width: 453px;
+    top: 4%;
+    color: #0099FF;
+    text-align: center;
+    font-family: "DigifaceWide";
+    font-weight: bold;
+    font-size: 30px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#myForm{
+	font-size: 70%;
+	margin-top: 4%;
+	margin-bottom: 4%;
+}
+
+#New_Entry{
+	position: absolute;
+    top: 0%;
+    left: 10%;
+    font-size: 80%;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+#Complete_Transcription{
+    width: 30%;
+    left: 70%;
+    height: 80%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+	border-radius: 20px;
+	border: none;
+}
+#Complete_Transcription:hover {
+	background-color:#1e83a0;
+}
+
+#updateEntry{
+	height: 25px;
+	position: absolute;
+    font-size: 80%;
+    margin-top: 2%;
+    margin-left: 33%;
+	width: 30%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 12px;
+	border-radius: 20px;
+	border: none;
+}
+#updateEntry:hover {
+	background-color:#1e83a0;
+}
+#deleteEntry{
+	height: 25px;
+	position: absolute;
+    font-size: 80%;
+    margin-top: 2%;
+    margin-left: 2%;
+	width:30%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 12px;
+	border-radius: 20px;
+	border: none;
+}
+#deleteEntry:hover {
+	background-color:#1e83a0;
+}
+
+#Entries{
+	position: absolute;
+    top: 2%;
+    left: 68%;
+    width: 29.5%;
+    height: 82%;
+    padding: 30px 15px 0px;
+    background-color: light blue;
+    z-index: 0;
+    text-align: left;
+    overflow: auto;
+	font-size: 2.45 vw;
+}
+
+#DOCUMENT_VIEW{
+    box-shadow: 1px 1px 10px 3px #423a3a;
+    position: absolute;
+	border-radius: 20px;
+    top: 8%;
+    left: 2%;
+    width: 65%;
+    height: 86%;
+	cursor: crosshair;
+}
+
+ .Input_Field{
+	 width: 95%;
+    margin: 0.75%;
+    font-size: 80%;
+    margin-left: 4%;	 
+ }
+ 
+ #Entries {
+	font-size: 1.5vw;
+    position: absolute;
+    bottom: 6%;
+}
+
+#buttons{
+    position: absolute;
+    width: 100%;
+    height: 6%;
+	left: 0%;
+    font-size: 2.5vw;
+	bottom : 0%;
+}
+
+#Submit{
+	height: 25px;
+	margin-top: 2.25%;
+    margin-left: 68.6%;
+	width: 30%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 12px;
+	border-radius: 20px;
+	border: none;
+}
+#Submit:hover {
+	background-color:#1e83a0;
+}
+#resultsTable{
+	position: absolute;
+	top:5%;
+}
+
+.btn{
+    width: 25%;
+    left: 0%;
+    height: 80%;
+    background-color: #28afd5;
+    color: #FFFFFF;
+    font-family: Georgia,serif,Times;
+    font-weight: normal;
+    font-size: 55%;
+	border-radius: 20px;
+}
+
+.btn:hover
+{
+	background-color:#1e83a0;
+}

@@ -42,12 +42,12 @@ else header('Location: ../../');
                 </tr>
                 <tr>
                     <td class="Collection_data">
-                        <a class="Collection_Button" href="../Folder/catalog_form.php"style="text-decoration: none; color: white; display: block">Input Map Information</a>
+                        <a class="Collection_Button" href="http://spatialquerylab.com/"style="text-decoration: none; color: white; display: block">Input Fieldbook Information</a>
                     </td>
                 </tr>
                 <tr>
                     <td class="Collection_data">
-                        <a class="Collection_Button" href="http://spatialquerylab.com/"style="text-decoration: none; color: white; display: block">Edit/View Map Information</a>
+                        <a class="Collection_Button" href="http://spatialquerylab.com/"style="text-decoration: none; color: white; display: block">Edit/View Fieldbook Information</a>
                     </td>
                 </tr>
             </table>

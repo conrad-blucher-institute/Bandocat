@@ -32,8 +32,8 @@ $DB = new DBHelper();
         box-shadow: 0px 0px 2px;
         margin: auto;
         font-family: verdana;
-        font-size: 1.5em;
         text-align: center;
+        vertical-align: middle;
         margin-top: 4%;
         margin-bottom: 9%;
     }
@@ -48,15 +48,14 @@ $DB = new DBHelper();
         width: 50%;
     }
 
+
 </style>
-<table id = "thetable">
     <script type="text/javascript" src="PasswordMatch.js"></script>
-    <tr>
-        <td class="menu_left" id="thetable_left">
+    <div id="divleft">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
-        </td>
-        <td class="Account" id="thetable_right">
+    </div>
+    <div id="divright">
             <h2>Account Settings</h2>
             <table class="Account_Table">
                 <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
@@ -122,10 +121,7 @@ $DB = new DBHelper();
                 </form>
 
             </table>
-        </td>
-    </tr>
-
-</table>
+    </div>
 
 <?php include '../../Master/footer.php'; ?>
 

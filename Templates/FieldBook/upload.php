@@ -17,49 +17,49 @@
 </head>
 <body>
 <div id="wrap"></div>
-    <div id="main"></div>
-        <div id = "divleft">
-            <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
-        </div>
-        <div id="divright">
-            <h2>Document Upload</h2>
-            <table class="Collection_Table">
-                <tr>
-                    <td class="Collection_data">
-                        <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept="image/tiff" value="Input Map Information" multiple/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="Collection_data" >
-                        <div id="selectedFilesDiv">
-                            <table >
-                                <thead><span style="font-family: Algerian; font: message-box;">Selected Files</span>
-                                <tr>
-                                    <th>File Name</th>
-                                    <th>File Size</th>
-                                </tr>
-                                </thead>
-                                <tbody id="selectedFilesTable">
-                                    <tr><td>No files selected</td></tr>
-                                </tbody>
-                                <tfoot id="selectedFilesTableFooter" style="background: #007F3E; color: white;"></tfoot>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="Collection_data">
-                        <input type="submit" class="bluebtn" value="Upload files" id="btnUpload"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p style="color:red; font-size: .45em"><br>*Recommended number of files for uploading: 70 files<br>If a file is more than 100MB, upload no more than 5 files simultaneously </p>
-                    </td>
-                </tr>
-            </table>
-        </div>
+<div id="main"></div>
+<div id = "divleft">
+    <?php include '../../Master/header.php';
+    include '../../Master/sidemenu.php' ?>
+</div>
+<div id="divright">
+    <h2>Document Upload</h2>
+    <table class="Collection_Table">
+        <tr>
+            <td class="Collection_data">
+                <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept="image/tiff" value="Input Map Information" multiple/>
+            </td>
+        </tr>
+        <tr>
+            <td class="Collection_data" >
+                <div id="selectedFilesDiv">
+                    <table >
+                        <thead><span style="font-family: Algerian; font: message-box;">Selected Files</span>
+                        <tr>
+                            <th>File Name</th>
+                            <th>File Size</th>
+                        </tr>
+                        </thead>
+                        <tbody id="selectedFilesTable">
+                        <tr><td>No files selected</td></tr>
+                        </tbody>
+                        <tfoot id="selectedFilesTableFooter" style="background: #007F3E; color: white;"></tfoot>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="Collection_data">
+                <input type="submit" class="bluebtn" value="Upload files" id="btnUpload"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="color:red; font-size: .45em"><br>*Recommended number of files for uploading: 70 files<br>If a file is more than 100MB, upload no more than 5 files simultaneously </p>
+            </td>
+        </tr>
+    </table>
+</div>
 
 
 <script>
@@ -85,11 +85,11 @@
             var f = files[i];
             totalFsize += f.size/1000000;
             total = totalFsize.toFixed(2);
-                var row = selTable.insertRow(i);
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                cell1.innerHTML =  f.name;
-                cell2.innerHTML =  (f.size/1000000).toFixed(2) + " mb"
+            var row = selTable.insertRow(i);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML =  f.name;
+            cell2.innerHTML =  (f.size/1000000).toFixed(2) + " mb"
         }
         var tableFooterLength = selTableFooter.rows.length;
         var row = selTableFooter.insertRow(0);

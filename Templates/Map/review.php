@@ -34,12 +34,12 @@ $date = new DateHelper();
 
 </head>
 <body>
-<table id = "thetable">
-    <tr>
-        <td class="menu_left" id="thetable_left">
+<div id="wrap">
+    <div id="main">
+        <div id="divleft">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php' ?>
-            <input type="checkbox" id="historyCheck"><span id="historyText">Document History</span>
+            <div style="padding-left:3px"><input type="checkbox" id="historyCheck"><span id="historyText">Document History</span></div>
             <div id="documentHistory" class="ui-widget-content" style="text-align: center">
                 <p>Document History</p>
                 <table>
@@ -50,6 +50,7 @@ $date = new DateHelper();
                             <th>Timestamp</th>
                         </tr>
                     </thead>
+                    <tbody>
 
                         <?php
                         $user = [];
@@ -61,13 +62,13 @@ $date = new DateHelper();
                             echo "<tr><td>$action[$x]</td><td>$user[$x]</td><td id='timeStamp'>$time[$x]</td></tr>";
                             }
                         ?>
+                    </tbody>
                 </table>
-
             </div>
-        </td>
-        <td class="Account" id="thetable_right">
+        </div>
+        <div id="divright">
             <h2><?php echo $config['DisplayName'];?> Review Form</h2>
-            <div id="div_scroller">
+            <div id="divscroller">
                 <form id="theform" name="theform" method="post">
             <table id="table2">
                     <tr>
@@ -314,45 +315,28 @@ $date = new DateHelper();
             </table>
                 </form>
             </div>
-        </td>
-    </tr>
-
-</table>
+            </div>
+        </div>
+        </div>
 
 <?php include '../../Master/footer.php'; ?>
 
 </body>
 <style>
-    @media screen and (max-height: 860px) {
-        #div_scroller{
-            max-height:650px;}
-    }
-    @media screen and (min-height: 861px) {
-        #div_scroller{
-            max-height:900px;}
-    }
 
-    #documentHistory table { border-collapse: collapse; text-align: left; width: 100%; }
+    #documentHistory table { border-collapse: collapse; text-align: left; width: 100%;padding-left:2px; }
     #documentHistory {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
     #documentHistory table td, #documentHistory table th { padding: 3px 10px; }
     #documentHistory table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
     #documentHistory table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; }
     #documentHistory table tbody tr:hover { background-color: #bce1ff; }
     div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
-
     #timeStamp{
         font-size: 12px;
     }
 
-    #div_scroller{
-        overflow-y: scroll;
-        overflow-x:hidden;
-        min-height:600px;
-        /*	max-height:750px; */
-    }
-
     #table2{
-        width:95%;
+        width:100%;
         background-color: white;
         padding: 40px;
         border-radius: 6%;
@@ -446,32 +430,37 @@ $date = new DateHelper();
                 }
             })
         });
-    });
 
-    //Condition that determines if the user has Admin permission to view the document history//
+        //resize height of the scroller
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+
+        //Condition that determines if the user has Admin permission to view the document history//
         var admin = <?php $admin = $session->isAdmin(); echo json_encode($admin); ?>;
         if (admin)
-           $('#historyCheck').css('display', 'inline');
-       else{
+            $('#historyCheck').css('display', 'inline');
+        else{
             $('#historyCheck').css('display', 'none');
             $('#historyText').text(" ");
         }
 
-    //jQuery that allows the visibility of the draggable element if checked
+        //jQuery that allows the visibility of the draggable element if checked
         $('#documentHistory').css('display', 'none');
-    $('#historyCheck').change(function () {
-        if($("#historyCheck").is(':checked')){
-            $("#documentHistory").css('display', 'block');  // checked
-        }
+        $('#historyCheck').change(function () {
+            if($("#historyCheck").is(':checked')){
+                $("#documentHistory").css('display', 'block');  // checked
+            }
 
-        else{
-            $("#documentHistory").css('display', 'none');  // checked
-        }
+            else{
+                $("#documentHistory").css('display', 'none');  // checked
+            }
 
+        });
+        //jQuery function that drags the draggable element
+        $( function() {
+            $( "#documentHistory" ).draggable({helper:'clone'});
+        } );
     });
-    //jQuery function that drags the draggable element
-    $( function() {
-        $( "#documentHistory" ).draggable();
-    } );
+
+
 </script>
 </html>

@@ -227,10 +227,10 @@ $session = new SessionManager();
         require '../../Library/ErrorLogger.php';
         $LOG = new ErrorLogger();
         if($action == "review")
-            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg);
+            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
         else if ($action == "catalog")
-            $LOG->writeErrorLog($session->getUserName(),$collection,basename($_FILES['fileUpload']['name']),$msg);
+            $LOG->writeErrorLog($session->getUserName(),$collection,basename($_FILES['fileUpload']['name']),$msg,$comments);
         else if ($action == "delete")
-            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg);
+            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
     }
     echo json_encode($msg);

@@ -4,7 +4,7 @@ BLUE: #0067C5
 GREEN: #007F3E
 SILVER: #9EA2A4
 */
-html,body{margin:0;padding: 0;overflow-y: hidden;overflow-x:auto;}
+html,body{margin:0;padding: 0;overflow-y: hidden;overflow-x: hidden;}
 html{
     min-width:600px;
 }
@@ -40,7 +40,6 @@ body{
     overflow:hidden;}
 #divright{float:left;
     width:79%;
-
     overflow-y:hidden;
 }
 #divscroller {

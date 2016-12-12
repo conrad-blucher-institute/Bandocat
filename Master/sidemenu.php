@@ -12,7 +12,7 @@
             <li><a href="../../Templates/Map/index.php?col=bluchermaps">Blucher Maps</a></li>
             <li><a href="../../Templates/FieldBook/index.php?col=fieldbook">Field Book</a></li>
             <li><a href="../../Templates/Map/index.php?col=greenmaps">Green Maps</a></li>
-            <li><a href="../../Templates/Indices/index.php?col=indices">Indices</a></li>
+            <li><a href="../../Templates/Indices/index.php?col=mapindices">Map Indices</a></li>
             <li><a href="../../Templates/Folder/index.php?col=jobfolder">Job Folder</a></li>
         </ul>
     </div>
