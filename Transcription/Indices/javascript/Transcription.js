@@ -121,6 +121,7 @@ $(function ()
 		if(markerCount < 2)
 		{
 			alert("Select area on document before submitting");
+			e.preventDefault();
 			return;			
 		}
 
