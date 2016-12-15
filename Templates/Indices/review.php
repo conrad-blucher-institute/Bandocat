@@ -21,6 +21,7 @@ $book = $DB->GET_INDICES_BOOK($collection);
 $info = $DB->GET_INDICES_INFO($collection, $docID);
 $date = new DateHelper();
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -57,28 +58,28 @@ $date = new DateHelper();
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
-                                    <select>
+                                    <select class="selectBookTitle">
+                                        <option value="0">Select Book Title</option>
                                         <?php
-                                        $books = [];
-                                        $booksObject = $DB->GET_iNDICES_BOOK($collection);
+                                        $booksObject = $DB->GET_INDICES_BOOK($collection);
                                         $length = count($booksObject);
                                         for ($x = 0; $x <= $length-1; $x++) {
                                             $bookID[$x] = $booksObject[$x];
-                                            echo "<option value=$bookID[$x][0]>".$bookID[$x][1]."</option>";
+                                            echo "<option value=".$bookID[$x][0].">".$bookID[$x][1]."</option>";
                                         }
                                         ?>
                                     </select>
                                     <input type="hidden" name="ddlBookID" id="ddlBookID" value=""/>
                                 </div>
 
-                                <div class="cell">
+                                <div class="cell" id="pageType">
                                     <span class="labelradio"><mark>Page Type:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
-                                    <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="1" checked="true"/>General Index
-                                    <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="0"/>Table of Contents
+                                    <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="General Index" checked="true"/>General Index
+                                    <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="Table of Contents"/>Table of Contents
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Page Number:</span>
-                                    <input type="text" name="txtPageNumber" id="txtPageNumber"/>
+                                    <input type="text" name="txtPageNumber" id="txtPageNumber" value="<?php echo $document['PageNumber']?>"/>
                                 </div>
                                 <div class="cell" >
                                     <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
@@ -87,21 +88,27 @@ $date = new DateHelper();
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> </span>Comments:</span>
-                                    <textarea cols="35" rows="5" name="txtComments" id="txtComments"></textarea>
+                                    <textarea cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
                                 </div>
-
-
-
 
 
                                 <div class="cell">
                                     <span class="label">Scan of Page:</span>
-                                    <input type="file" name="fileUpload" id="fileUpload" accept="image/tiff" /></span>
+                                    <?php
+                                    $docSubArr = array();
+                                    $subUpperDoc = str_replace(' ', '_',$document['BookName']);
+                                    $bookDoc = explode("_", $subUpperDoc);
+                                    array_push($docSubArr, lcfirst($bookDoc[0]), lcfirst($bookDoc[1]), $bookDoc[2]);
+                                    $docSub = $docSubArr[0]."_".$docSubArr[1]."_".$docSubArr[2];
+                                    echo "<a href=\"download.php?file=$config[StorageDir]$docSub/$document[FileName].tif\">(Click to download)</a><br>";
+                                    echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileName]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . $document['FileName'].'.jpg' . " ' alt = Error /></a>";
+                                    echo "<br>Size: " . round(filesize($config['StorageDir'].$docSub."/". $document['FileName'].'.tif')/1024/1024, 2) . " MB";
+                                    ?>
                                 </div>
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
-                                    <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
-                                    <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
+                                    <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID; ?>" />
+                                    <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                                     <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                     <span>
                                     <?php if($session->hasWritePermission())
@@ -124,7 +131,78 @@ $date = new DateHelper();
 
 </body>
 <script>
+
     $( document ).ready(function() {
+        //LIBRARY INDEX
+        /*$document: array object that contains the selection from the bandocat_indicesinventory database, document table*/
+        //Library index information retrieved from document array object
+        $("#txtLibraryIndex").val("<?php echo $document['LibraryIndex']; ?>");
+
+        //BOOK TITLE
+        //Book title information retrieved from php, which will be used to select the Book Title option
+        var length = <?php echo $length;?>;
+        var booksJSON = <?php echo json_encode($booksObject);?>;
+        var bookName = '<?php echo $document['BookName']; ?>';
+        console.log(bookName);
+
+        var valueAD = booksJSON[0][0];
+        var valueEK = booksJSON[1][0];
+        var valueLR = booksJSON[2][0];
+        var valueSZ = booksJSON[3][0];
+
+        var nameAD = booksJSON[0][1];
+        var nameEK = booksJSON[1][1];
+        var nameLR = booksJSON[2][1];
+        var nameSZ = booksJSON[3][1];
+
+        if(bookName == nameAD){
+            $('select.selectBookTitle').val(valueAD);
+            $('#ddlBookID').val(valueAD);
+        }
+
+        if(bookName == nameEK){
+            $('select.selectBookTitle').val(valueEK);
+            $('#ddlBookID').val(valueEK);
+        }
+
+        if(bookName == nameLR){
+            $('select.selectBookTitle').val(valueLR);
+            $('#ddlBookID').val(valueLR);
+        }
+
+        if(bookName == nameSZ){
+            $('select.selectBookTitle').val(valueSZ);
+            $('#ddlBookID').val(valueSZ);
+        }
+
+        $('select.selectBookTitle').on('change', function(e){
+            var bookValue = e.target.value;
+            $('#ddlBookID').val(bookValue);
+        });
+
+
+
+
+        //PAGE TYPE
+        //Retrieve PageType from PHP fetched data to check the Page Type input radio button element
+        var pageType = '<?php echo $document['PageType'];?>';
+        var pageElement = document.getElementsByName('rbPageType');
+        if(pageType == 'General Index' )
+            pageElement[0].checked = true;
+        if(pageType == 'Table of Contents' )
+          pageElement[1].checked = true;
+
+        //NEEDS REVIEW
+        //Retrieved NeedsReview from PHP fetched data to check dynamically the Needs Review input radio element
+        var needsReview = <?php echo $document['NeedsReview']?>;
+        var reviewElement = document.getElementsByName('rbNeedsReview');
+        if (needsReview == 1)
+            reviewElement[0].checked = true;
+        if (needsReview == 0)
+            reviewElement[1].checked = true;
+
+
+        //SUBMIT
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
@@ -163,22 +241,12 @@ $date = new DateHelper();
                     }
                     alert(msg);
                     if (result == 1){
-                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                        window.location.href = "../catalog.php?col=<?php echo $_GET['col']; ?>";
                     }
 
                 }
             });
         });
-
-        $("#txtLibraryIndex").val("<?php echo $info[0][0]; ?>");
-        $("#pageNumber").val("<?php echo $info[0][3]; ?>");
-
-        //Stores Book ID to the ddlBookID hidden input Id
-        $('select.libraryIndexSelect').val("<?php echo $document['ddlBookID'];?>");
-        $('select.libraryIndexSelect').val();
-        $('#ddlBookID').val(bookIdValue);
-
-        //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
     });
 </script>

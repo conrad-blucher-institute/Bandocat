@@ -137,7 +137,7 @@ $date = new DateHelper();
         selLibraryIndex.value = fileName;
 
         /*Program that conditionally selects the value of the Book title by splitting the filename with a underscore
-         * delimiter and setting the value of the select option if equal to prefix string value*/
+         * delimiter and setting the value of the select option if equal to the prefix string value*/
 
         libraryADIndex = fileName.split("_");
         libraryEKIndex = fileName.split("_");

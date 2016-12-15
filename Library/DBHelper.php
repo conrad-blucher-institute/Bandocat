@@ -1012,24 +1012,6 @@ class DBHelper
             return $sth->fetchAll(PDO::FETCH_NUM);
     }
 
-    function GET_INDICES_BOOK($collection){
-        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        $this->getConn()->exec('USE '. $dbname);
-        $sth = $this->getConn()->prepare("SELECT * FROM `book`");
-        $sth->execute();
-        return $sth->fetchAll(PDO::FETCH_NUM);
-    }
-
-    function GET_INDICES_INFO($collection, $docID){
-        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        $this->getConn()->exec('USE '. $dbname);
-        $sth = $this->getConn()->prepare("SELECT `libraryindex`, `bookID`, `pagetype`, `pagenumber`, `needsreview` FROM `document` WHERE `documentID` = :docID");
-        $sth->bindParam( ':docID', $docID,PDO::PARAM_INT);
-        $sth->execute();
-        return $sth->fetchAll(PDO::FETCH_NUM);
-    }
-
-
     function SET_DOCUMENT_TRANSCRIBED($collection,$docID,$val)
     {
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];

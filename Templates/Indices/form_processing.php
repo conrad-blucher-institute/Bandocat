@@ -17,15 +17,19 @@ $comments = null;
 $valid = false;
 $msg = array();
 $retval = false;
-print_r($data);
+
 
 if($action == "review")
 {
     $valid = true;
-    $retval = $DB->SP_TEMPLATE_MAP_INDICES_UPDATE($collection, $data['txtLibraryIndex'], $data['ddlBookID'],
+    $retval = $DB->SP_TEMPLATE_INDICES_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['ddlBookID'],
         $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex']);
     $comments = "Library Index:" . $data['txtLibraryIndex'];
-    array_push($msg,"Update Query: Success");
+    if($retval)
+        array_push($msg,"Update Query: Success");
+    else
+        //print_r($retval);
+        array_push($msg, "Update Query: Fail", $retval);
 }
 
 
