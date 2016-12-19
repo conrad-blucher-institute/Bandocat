@@ -79,26 +79,24 @@ function format_size($size) {
 <body>
 <div id="wrap">
     <div id="main">
-        <table id="thetable">
-            <tr>
-                <td class="menu_left" id="thetable_left">
+        <div id="divleft">
                     <?php include '../../Master/header.php';
                     include '../../Master/sidemenu.php' ?>
-                </td>
-                <td class="container" id="thetable_right">
+            </div>
+        <div id="divright">
                     <h2 id="page_title">Statistics</h2>
-                    <div style="overflow-y: scroll;overflow-x:hidden;min-height:500px;max-height:654px;">
-                        <div>Select Year: <select id="ddlYear" name="ddlYear"">
+                        <div id="table-header_right">Select Year: <select id="ddlYear" name="ddlYear"">
                             <?php
                             echo "<option value=''>Select</option>";
                             for($i = date("Y");$i >= 2015;$i--) {
-                               // if($i == date("Y")) echo "<option selected value='$i'>$i</option>";
-                                //else
+                                if($i == date("Y")) echo "<option selected value='$i'>$i</option>";
+                                else
                                     echo "<option value='$i'>$i</option>";
                             }
                             ?>
                             </select>
                         </div>
+                    <div id="divscroller">
                         <table><tr>
                                 <td style="vertical-align: top">
                                     <h3>Monthly Performance <span class="spanYear"></span></h3>
@@ -133,12 +131,10 @@ function format_size($size) {
                                 </td>
                             </tr>
                         </table>
-
-                        </div>
                     </div>
-                </td>
-            </tr>
-        </table>
+            </div>
+
+
     </div>
 </div>
 <?php include '../../Master/footer.php'; ?>
@@ -212,6 +208,7 @@ function format_size($size) {
                         }
                     });
                 }
+
             });
         //monthly
             $("#ddlYear").change(function()
@@ -252,11 +249,15 @@ function format_size($size) {
                         }
                     });
                 }
+                //resize height of the scroller
+                $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#table-header_right").outerHeight() - $("#page_title").outerHeight() - 55);
             });
 
     $(document).ready(function() {
         //$("#ddlYear").change();
         getCollectionCount();
+        $("#ddlYear").change();
+
     });
 
 

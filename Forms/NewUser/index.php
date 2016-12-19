@@ -18,19 +18,17 @@ $Render = new ControlsRender();
 </head>
 
 <body>
-<table id="thetable">
-    <tr>
-        <td class="menu_left" id="thetable_left">
+<div id="wrap">
+    <div id="main">
+        <div id="divleft">
             <?php include '../../Master/header.php';
             include '../../Master/sidemenu.php';?>
-        </td>
-        <td height="510px">
-            <table id="thetable_right">
-                <tr>
-                    <td>
+        </div>
+<div id="divright">
+         <h2>New User</h2>
+        <div id="divscroller">
                         <!--New user input form-->
                         <form id="userForm">
-                            <h2>New User</h2>
                             <!--Block of new user input types-->
                             <table id="innerRightTable">
                                 <tr>
@@ -130,14 +128,12 @@ $Render = new ControlsRender();
                     </td>
                 </tr>
             </table>
-        </td>
-    </tr>
-    <tr>
+        </div>
 
 
-    </tr>
-</table>
-
+</div>
+</div>
+</div>
 <!--End of new user input form-->
 
 <?php include '../../Master/footer.php'; ?>
@@ -181,7 +177,6 @@ a procedure in the database that insert the information into the bandocatdb data
                 userInput.splice(2, 2, User.elements[2].value);
                 var userJSON = JSON.stringify(userInput);
                 var user = JSON.parse(userJSON);
-                console.log(user[1]);
             }
 
             else {
@@ -198,7 +193,7 @@ a procedure in the database that insert the information into the bandocatdb data
                     console.log(data);
                     if (data == "NEW") {
                         console.log(data);
-                        alert("New user created successfully!");
+                        alert("New user created successfully.");
                         window.location.href = "../NewUser/NewUser.php";
                     }
                     else {
@@ -211,14 +206,7 @@ a procedure in the database that insert the information into the bandocatdb data
 </script>
 
 <style>
-    #thetable_right{
-        width:65%;
-        padding: 2%;
-        margin-left: 15%;
-        margin-top: 4%;
-        border-radius: 10px;
-        box-shadow: 0px 0px 2px;
-    }
+
     form{
         text-align: right;
     }
@@ -238,15 +226,6 @@ a procedure in the database that insert the information into the bandocatdb data
         margin: 10px;
         font-size: 1em;
         padding: 1%;
-    }
-
-    #innerRightTable{
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    input{
-        margin-top: 7%;
     }
 
 </style>

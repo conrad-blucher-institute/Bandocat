@@ -7,187 +7,213 @@ if(!isset($_POST))
     header('Location: index.php');
 
 require '../../Library/DBHelper.php';
-$DB = new DBHelper();
+require '../../Library/IndicesDBHelper.php';
+$DB = new IndicesDBHelper();
 $data = $_POST;
 $action = htmlspecialchars($data['txtAction']);
 $collection = htmlspecialchars($data['txtCollection']);
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $comments = null;
+$valid = false;
+$msg = array();
+$retval = false;
 
-/*Upload catalog form
-    ($action != "delete") {
-    data pre-processing
-    $DB->SP_TEMPLATE_INDICES_DOCUMENT_INSERT($data['txtLibraryIndex'], ,$data['txtCustomer'], $customerID);
-*/
 
-    //VALIDATION
-    //check FILES upload //1
-    //check existing index //2
-    //check if thumbnail front exist //5
-    //check if thumbnail back exist (if available) //6
-    //check if record exists on DB //7
-    $files = $_FILES;
+if($action == "review")
+{
+    $valid = true;
+    $retval = $DB->SP_TEMPLATE_INDICES_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['ddlBookID'],
+        $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex']);
+    $comments = "Library Index:" . $data['txtLibraryIndex'];
+    if($retval)
+        array_push($msg,"Update Query: Success");
+    else
+        //print_r($retval);
+        array_push($msg, "Update Query: Fail", $retval);
+}
+
+
+if ($action == "catalog") {
+    $valid = true;
+//INSERT QUERY
+    //Function parameters: Collection, Library Index, Book ID, Page Type, Page Number, Comments, Needs Review, Filename
+    $retval = $DB->SP_TEMPLATE_INDICES_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['ddlBookID'],
+        $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex']);
+    //Stores the document id from the database to the variable for
+    $data['txtDocID'] = $retval;
+    $comments = "Library Index: " . $data['txtLibraryIndex'];
+    if($retval == false){
+        $valid = false;
+    }
+
+
+//VALIDATION
+    //FILES error check //                      1
+    //Existence of index by file name check//   2
+    //Indices thumbnail exists check//          3
+
+    //1
+    if ($valid == true && $_FILES['file_array']['error'] == 0) {
+        $valid = true;
+        $filename = $_FILES['file_array']['name'];
+        array_push($msg, "Indices File upload check: Success");
+    } else {
+        $valid = false;
+        array_push($msg, "Indices File upload check: FAIL");
+    }
+
+    //2
+    if ($valid == true && $_FILES['file_array']['error'] == 0) {
+        $tempFilename = explode('_', $filename);
+        $last = array_pop($tempFilename);
+        $parts = array(implode('_', $tempFilename), $last);
+        $folder = $parts[0];
+        $filenamepath = $config['StorageDir'] . $folder;
+
+        if (file_exists($filenamepath . '/' . $filename)) {
+            array_push($msg, "Indices upload: EXISTED");
+            $valid = false;
+        } else array_push($msg, "Indices upload: Success");
+    }
+    else
+        array_push($msg, "Indices upload: FAIL");
+
+    //3
+    if ($valid == true && $_FILES['file_array']['error'] == 0) {
+        $thumbnail = $config['ThumbnailDir'] . str_replace('.tif', '.jpg', $filename);
+        if (file_exists($thumbnail)) {
+            array_push($msg, "Thumbnail: EXISTED");
+            $valid = false;
+        } else
+            array_push($msg, 'Thumbnail upload: Success');
+    } else
+        array_push($msg, "Thumbnail upload: FAIL");
+
+
+//Check folder, create folder for indices TIF
+    if ($valid == true) {
+        if (!is_dir($filenamepath))
+            mkdir($filenamepath, 0777);
+        move_uploaded_file($_FILES["file_array"]["tmp_name"], $filenamepath . '/' . basename($_FILES["file_array"]["name"]));
+
+        //Script for creation of file and thumbnail
+        if (!is_dir('../../' . $config['ThumbnailDir']))
+            mkdir('../../' . $config['ThumbnailDir'], 0777);
+        $exec1 = "convert " . $filenamepath . '/' . basename($_FILES["file_array"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $thumbnail;
+        exec($exec1, $yaks1);
+    }
+}
+    //REPORT STATUS
+    if ($retval == false) {
+        $logstatus = "fail";
+        array_push($msg, "Failed to Submit!");
+    } else {
+        $logstatus = "success";
+        array_push($msg, "Report Status: Success!");
+    }
+
+    //write log
+    /*$retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus,$comments);
+    if(!$retval)
+        array_push($msg, "ERROR: Fail to write log!");
+
+    if($retval == false || $valid == false)
+    {
+        require '../../Library/ErrorLogger.php';
+        $LOG = new ErrorLogger();
+        if($action == "review")
+            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
+        else if ($action == "catalog")
+            $LOG->writeErrorLog($session->getUserName(),$collection,basename($_FILES['file_array']['name']),$msg,$comments);
+        else if ($action == "delete")
+            $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
+    }*/
+echo json_encode($msg);
+
+/*$files = $_FILES;
+    $filenamepath = "";
     $msg = [];
     $valid = false;
-    $hasBack = true;
+    $thumbnail = "";
+
+/*check if record exists on DB */
+/*if ($valid == true) {
+    $existed = $DB->SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD($collection, $data['txtLibraryIndex']);
+    if ($existed != "GOOD") {
+        $valid = false;
+        array_push($msg, "Database Check: EXISTED");
+    }
+}
+/*
+//Upload catalog form
+if ($action == "catalog") {
+    $valid = false;
+
+//VALIDATION
+    //check FILES errors //1
+    //check existance of index by file name//2
+    //check if indices thumbnail exists//3
 
     //1
     if ($_FILES['file_array']['error'] == 0) {
         $valid = true;
         $filename = $_FILES['file_array']['name'];
-        array_push($msg, "Indices: GOOD NO ERRORS");
+        array_push($msg, "Indices File upload check: Success");
     } else {
         $valid = false;
-        array_push($msg, "Indices: ERROR");
+        array_push($msg, "Indices: FAIL");
     }
+
     //2
     if ($valid == true && $_FILES['file_array']['error'] == 0) {
-        $tempFilename = explode('-', $filename);
-        $folder = $tempFilename[0];
+        $tempFilename = explode('_', $filename);
+        $last = array_pop($tempFilename);
+        $parts = array(implode('_', $tempFilename), $last);
+        $folder = $parts[0];
         $filenamepath = $config['StorageDir'] . $folder;
+
         if (file_exists($filenamepath . '/' . $filename)) {
-            array_push($msg, "Indices: EXISTED");
+            array_push($msg, "Indices upload: EXISTED");
             $valid = false;
         }
-        else array_push($msg, "Indices: GOOD FOR UPLOAD");
-    }
-    //4
-    /*if ($hasBack == true && $valid == true) {
-        $tempFilename = explode('-', $filenameback);
-        $filenamebackpath = $config['StorageDir'] . $tempFilename[0];
-        if (file_exists($filenamebackpath . '/' . $filenameback)) {
-            array_push($msg, "Back Map: EXISTED");
-            $valid = false;
-        }
-        //else array_push($msg, "Back Map: GOOD");
-    }
-    //5
-    if ($valid == true && $_FILES['fileUpload']['error'] == 0) {
-        $frontthumbnail = $config['ThumbnailDir'] . str_replace('.tif', '.jpg', $filename);
-        if (file_exists($frontthumbnail)) {
-            array_push($msg, "Front Thumbnail: EXISTED");
-            $valid = false;
-        }
-        //else array_push($msg, "Front Thumbnail: GOOD");
-    }
-    //6
-    if ($valid == true && $hasBack == true) {
-        $backthumbnail = $config['ThumbnailDir'] . str_replace('.tif', '.jpg', $filenameback);
-        if (file_exists($backthumbnail)) {
-            array_push($msg, "Back Thumbnail: EXISTED");
-            $valid = false;
-        }
-        //else array_push($msg, "Back Thumbnail: GOOD");
+        else array_push($msg, "Indices upload: Success");
     }
 
-    //7
-    if ($valid == true) {
-        $existed = $DB->SP_TEMPLATE_MAP_DOCUMENT_CHECK_EXIST_RECORD($collection, $data['txtLibraryIndex']);
-        if ($existed != "GOOD") {
-            $valid = false;
-            array_push($msg, "Database Check: EXISTED");
+    //3
+    if($valid == true && $_FILES['file_array']['error'] == 0){
+        $thumbnail = $config['ThumbnailDir'].str_replace('.tif', '.jpg', $filename);
+        if(file_exists($thumbnail)){
+            array_push($msg, "Thumbnail: EXISTED");
+            $valid=false;
         }
-        //else array_push($msg, "Database Check: GOOD");
+        else
+            array_push($msg, 'Thumbnail upload: Success');
     }
+    else
+        array_push($msg, "Thumbnail upload: FAIL");
+    //INSERT QUERY
+    //Function parameters: Collection, Library Index, Book ID, Page Type, Page Number, Comments, Needs Review, Filename
+    $retval = $DB->SP_TEMPLATE_INDICES_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['ddlBookID'],
+        $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex']);
+    //Stores the document id from the database to the variable for
+    $data['txtDocID'] = $retval;
+    $comments = "Library Index: ".$data['txtLibraryIndex'];
+    array_push($msg, $retval);
+}
 
 
-    //Check folder, create folder
+
+
+    //Check folder, create folder for indices TIF
     if ($valid == true) {
         if (!is_dir($filenamepath))
             mkdir($filenamepath, 0777);
-        move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $filenamepath . '/' . basename($_FILES["fileUpload"]["name"]));
+        move_uploaded_file($_FILES["file_array"]["tmp_name"], $filenamepath . '/' . basename($_FILES["file_array"]["name"]));
 
-        if ($hasBack == true) {
-            if (!is_dir($filenamebackpath))
-                mkdir($filenamebackpath, 0777);
-            move_uploaded_file($_FILES["fileUploadBack"]["tmp_name"], $filenamebackpath . '/' . basename($_FILES["fileUploadBack"]["name"]));
-        }
-        //script for thumbnail
+        //Script for creation of file and thumbnail
         if (!is_dir('../../' . $config['ThumbnailDir']))
             mkdir('../../' . $config['ThumbnailDir'], 0777);
-
-        $exec1 = "convert " . $filenamepath . '/' . basename($_FILES["fileUpload"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $frontthumbnail;
+        $exec1 = "convert " . $filenamepath . '/' . basename($_FILES["file_array"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $thumbnail;
         exec($exec1, $yaks1);
-        if ($hasBack == true) {
-            $exec2 = "convert " . $filenamebackpath . '/' . basename($_FILES["fileUploadBack"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $backthumbnail;
-            exec($exec2, $yaks2);
-        }
-
-        $backpath = "";
-        if($hasBack == true)
-            $backpath = str_replace($config['StorageDir'],"",$filenamebackpath) . "/" . $filenameback;
-        // INSERT QUERY
-        $retval = $DB->SP_TEMPLATE_MAP_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['txtTitle'], $data['txtSubtitle'],
-            $data['rbIsMap'], $data['txtMapScale'], $data['rbHasNorthArrow'], $data['rbHasStreets'],
-            $data['rbHasPOI'], $data['rbHasCoordinates'], $data['rbHasCoast'], $filename, $filenameback, $data['rbNeedsReview'],
-            $data['txtComments'], $customerID, $startdate, $enddate, $data['txtFieldBookNumber'], $data['txtFieldBookPage'], $data['ddlReadability'],
-            $data['ddlRectifiability'], $companyID, $data['txtType'], $mediumID, $authorID, str_replace($config['StorageDir'],"",$filenamepath) . "/" . $filename,$backpath);
-        $data['txtDocID'] = $retval;
-        $comments = "Library Index: " . $data['txtLibraryIndex'];
     }
-
-
-}
-else if($action == "delete")
-{
-    $errors = 0;
-    $info = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($data["txtCollection"], $data['txtDocID']);
-    $comments = "Library Index: " . $info['LibraryIndex'];
-
-    $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
-    $backScanPath = $config['StorageDir'].$info['FileNameBackPath'];
-
-    //Thumbnail conversion to jpg and path detection
-    //$thumbnailPath = str_replace('/','\\',$config['ThumbnailDir']);
-    $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
-
-    $frontThumbnailPathTIF = $config['ThumbnailDir'].$info['FileName'];
-    $backThumbnailPathTIF = $config['ThumbnailDir'].$info['FileNameBack'];
-
-    $frontThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $frontThumbnailPathTIF);
-    $backThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $backThumbnailPathTIF);
-
-    $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
-
-    if (file_exists($frontScanPath))
-        unlink($frontScanPath);
-    if (file_exists($frontThumbnailPathJPG))
-        unlink($frontThumbnailPathJPG);
-
-    if ($info['FileNameBack'] !== "")
-    {
-        if (file_exists($backScanPath))
-            unlink($backScanPath);
-        if (file_exists($backThumbnailPathJPG))
-            unlink($backThumbnailPathJPG);
-    }
-//        if (file_exists($frontScanPath) || file_exists($frontThumbnailPathJPG) || file_exists($backScanPath) || file_exists($backThumbnailPathJPG))
-//            $errors++;
-}
-
-//REPORT STATUS
-if ($retval == false) {
-    $logstatus = "fail";
-    array_push($msg, "Failed to Submit!");
-} else {
-    $logstatus = "success";
-    array_push($msg, "Success!");
-}
-
-//write log
-$retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus,$comments);
-if(!$retval)
-    array_push($msg, "ERROR: Fail to write log!");
-
-if($retval == false || $valid == false)
-{
-    require '../../Library/ErrorLogger.php';
-    $LOG = new ErrorLogger();
-    if($action == "review")
-        $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
-    else if ($action == "catalog")
-        $LOG->writeErrorLog($session->getUserName(),$collection,basename($_FILES['fileUpload']['name']),$msg,$comments);
-    else if ($action == "delete")
-        $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
-}*/
-echo json_encode($msg);
+echo json_encode($msg);*/

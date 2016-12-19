@@ -183,10 +183,10 @@ session_start();
                     switch(data)
                     {
                         case 'Invalid':
-                            $('#txt_error').html("Username & password are incorrect!");
+                            $('#txt_error').html("Username and/or password is incorrect.");
                             break;
                         case 'Inactive':
-                            $('#txt_error').html("User is inactive!<br>Please contact Administrator!");
+                            $('#txt_error').html("User is inactive.<br>Please contact Administrator.");
                             break;
                         case 'Success':
                             window.location.replace("../Main/");

@@ -19,6 +19,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
      * Return value(s):
      * $result (assoc array) - return a document info in an associative array, or FALSE if failed
      ***********************************************/
+
     function SP_TEMPLATE_INDICES_DOCUMENT_SELECT($collection, $iDocID)
     {
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
@@ -39,6 +40,73 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
         } else return false;
     }
 
+    function SP_TEMPLATE_INDICES_DOCUMENT_INSERT($collection, $iLibraryIndex, $iBookID, $iPageType, $iPageNumber, $iComments, $iNeedsReview, $iFilename)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection));
+        $db = $dbname['DbName'];
+        if ($db != null && $db != ""){
+            $this->getConn()->exec('USE ' . $db);
+        //Prepare Statement
+            if($iPageNumber == "")
+                $iPageNumber = null;
+        $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_INSERT(?,?,?,?,?,?,?)");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+
+        $call->bindParam(1, ($iLibraryIndex), PDO::PARAM_STR, 200);
+        $call->bindParam(2, ($iBookID), PDO::PARAM_INT, 11);
+        $call->bindParam(3, ($iPageType), PDO::PARAM_STR, 18);
+        $call->bindParam(4, ($iPageNumber), PDO::PARAM_INT, 11);
+        $call->bindParam(5, ($iComments), PDO::PARAM_STR, 40);
+        $call->bindParam(6, ($iNeedsReview), PDO::PARAM_INT, 1);
+        $call->bindParam(7, ($iFilename), PDO::PARAM_STR, 200);
+
+        //Execute Statement
+        $ret = $call->execute();
+        if($ret)
+        {
+            $select = $this->getConn()->query('SELECT LAST_INSERT_ID()');
+            $data = $select->fetch(PDO::FETCH_COLUMN);
+            return $data;
+        }
+        else{
+            return false;
+        }
+
+    }
+    else return false;
+
+    }
+
+    function SP_TEMPLATE_INDICES_DOCUMENT_UPDATE($collection, $iDocID, $iLibraryIndex, $iBookID, $iPageType, $iPageNumber, $iComments, $iNeedsReview)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection));
+        $db = $dbname['DbName'];
+        if ($db != null && $db != ""){
+            $this->getConn()->exec('USE ' . $db);
+            //Prepare Statement
+            if($iPageNumber == "")
+                $iPageNumber = null;
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_UPDATE(?,?,?,?,?,?,?)");
+            if (!$call)
+                trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+            $call->bindParam(1, ($iDocID), PDO::PARAM_INT, 11);
+            $call->bindParam(2, ($iLibraryIndex), PDO::PARAM_STR, 200);
+            $call->bindParam(3, ($iBookID), PDO::PARAM_INT, 11);
+            $call->bindParam(4, ($iPageType), PDO::PARAM_STR, 18);
+            $call->bindParam(5, ($iPageNumber), PDO::PARAM_INT, 11);
+            $call->bindParam(6, ($iComments), PDO::PARAM_STR, 40);
+            $call->bindParam(7, ($iNeedsReview), PDO::PARAM_INT, 1);
+            $ret = $call->execute();
+            //Execute Statement
+            if($ret)
+                return true;
+
+            else
+                return print_r($call->errorInfo()[2]);
+        }
+
+    }
 
 
     function GET_INDICES_MAPKIND($collection)
@@ -51,6 +119,22 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             return $result;
     }
 
+    function GET_INDICES_BOOK($collection){
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE '. $dbname);
+        $sth = $this->getConn()->prepare("SELECT * FROM `book`");
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_NUM);
+    }
+
+    function GET_INDICES_INFO($collection, $docID){
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE '. $dbname);
+        $sth = $this->getConn()->prepare("SELECT `libraryindex`, `bookID`, `pagetype`, `pagenumber`, `needsreview` FROM `document` WHERE `documentID` = :docID");
+        $sth->bindParam( ':docID', $docID,PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_NUM);
+    }
 
     public function TRANSCRIPTION_ENTRY_INSERT($collection,$newObject)
     {

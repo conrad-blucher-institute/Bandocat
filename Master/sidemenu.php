@@ -25,7 +25,7 @@
         </ul>
     </div>
     <div class="menu-item">
-        <h4><a href="#">Statistics</a></h4>
+        <h4><a href="../../Forms/Statistics">Statistics</a></h4>
     </div>
 
     <div class="menu-item">
