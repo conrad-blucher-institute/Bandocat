@@ -234,6 +234,31 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: TICKET_UPDATE
+     * Description: UPDATE TICKET ON ADMIN TICKET VIEW
+     * Parameter(s):
+     * $ticketID (in int) - ticket ID
+     * $notes (in string) - $notes
+     * $status (in int) - 0 = open, 1 = close
+     * $solverID (in string) - user ID who submits
+     * Return value(s): true if success, false if fail
+     ***********************************************/
+    function TICKET_UPDATE($ticketID,$notes,$status,$solverID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("UPDATE `ticket` SET `notes` = :note, `status` = :stat,`solverID` = :uID,`solveddate` = NOW() WHERE `ticketID` = :id");
+        if (!$sth)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        $sth->bindParam(':id', $ticketID, PDO::PARAM_INT, 11);
+        $sth->bindParam(':note', $notes, PDO::PARAM_STR);
+        $sth->bindParam(':stat',$status,PDO::PARAM_INT);
+        $sth->bindParam(':uID',$solverID,PDO::PARAM_INT);
+        $ret =$sth->execute();
+        return $ret;
+    }
+
+
+    /**********************************************
      * Under development.
      * Function:
      * Description:
