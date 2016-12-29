@@ -15,7 +15,6 @@ $DB = new IndicesDBHelper();
 $book = $DB->GET_INDICES_BOOK($collection);
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -48,21 +47,18 @@ $date = new DateHelper();
                         <tr>
                             <td id="col1">
                                 <div class="cell">
+                                    <span class="label">Scan of Page:</span>
+                                    <input type="file" name="file_array" id="fileUpload" accept="image/tiff" /></span>
+                                </div>
+                                <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                                     <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required />
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <select class="libraryIndexSelect">
-                                        <option value="0">Select Book Title</option>
                                         <?php
-                                        $books = [];
-                                        $booksObject = $book;
-                                        $length = count($booksObject);
-                                        for ($x = 0; $x <= $length-1; $x++) {
-                                            $bookID[$x] = $booksObject[$x];
-                                            echo "<option value=".$bookID[$x][0].">".$bookID[$x][1]."</option>";
-                                        }
+                                        $Render->GET_DDL($book, "");
                                         ?>
                                     </select>
                                     <input type="hidden" name="ddlBookID" id="ddlBookID" value=""/>
@@ -85,13 +81,6 @@ $date = new DateHelper();
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> </span>Comments:</span>
                                     <textarea cols="35" rows="5" name="txtComments" id="txtComments"></textarea>
-                                </div>
-
-
-
-                                <div class="cell">
-                                    <span class="label">Scan of Page:</span>
-                                    <input type="file" name="file_array" id="fileUpload" accept="image/tiff" /></span>
                                 </div>
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
@@ -145,19 +134,19 @@ $date = new DateHelper();
         librarySZIndex = fileName.split("_");
 
         if (libraryADIndex[2] == "A-D"){
-            $('select.libraryIndexSelect').val(1);
+            $('select.libraryIndexSelect').val("General Index A-D");
             $('#ddlBookID').val(1);
         }
         if (libraryEKIndex[2] == "E-K"){
-            $('select.libraryIndexSelect').val(2);
+            $('select.libraryIndexSelect').val("General Index E-K");
             $('#ddlBookID').val(2);
         }
         if (libraryLRIndex[2] == "L-R"){
-            $('select.libraryIndexSelect').val(3);
+            $('select.libraryIndexSelect').val("General Index L-R");
             $('#ddlBookID').val(3);
         }
         if (librarySZIndex[2] == "S-Z"){
-            $('select.libraryIndexSelect').val(4);
+            $('select.libraryIndexSelect').val("General Index S-Z");
             $('#ddlBookID').val(4);
         }
     }

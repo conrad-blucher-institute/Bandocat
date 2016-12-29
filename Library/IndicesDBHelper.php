@@ -119,12 +119,29 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             return $result;
     }
 
+    //Function that queries the indicesinventory book table and fetches bookname and bookID rows
     function GET_INDICES_BOOK($collection){
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE '. $dbname);
-        $sth = $this->getConn()->prepare("SELECT * FROM `book`");
+        $sth = $this->getConn()->prepare("SELECT `bookname`, `bookID`  FROM `book`");
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_NUM);
+    }
+
+    function SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD($collection, $iLibraryIndex)
+    {
+        $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        if ($db != null && $db != "") {
+            $this->getConn()->exec('USE ' . $db);
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD(?, @oReturnValue)");
+            if (!$call)
+                trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+            $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 200);
+            $call->execute();
+            $select = $this->getConn()->query('SELECT @oReturnValue');
+            $ret = $select->fetch(PDO::FETCH_NUM);
+            return (int)$ret[0];
+        }
     }
 
     function GET_INDICES_INFO($collection, $docID){

@@ -59,14 +59,8 @@ $date = new DateHelper();
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <select class="selectBookTitle">
-                                        <option value="0">Select Book Title</option>
                                         <?php
-                                        $booksObject = $DB->GET_INDICES_BOOK($collection);
-                                        $length = count($booksObject);
-                                        for ($x = 0; $x <= $length-1; $x++) {
-                                            $bookID[$x] = $booksObject[$x];
-                                            echo "<option value=".$bookID[$x][0].">".$bookID[$x][1]."</option>";
-                                        }
+                                        $Render->GET_DDL($book, $document['BookName']);
                                         ?>
                                     </select>
                                     <input type="hidden" name="ddlBookID" id="ddlBookID" value=""/>
@@ -95,14 +89,11 @@ $date = new DateHelper();
                                 <div class="cell">
                                     <span class="label">Scan of Page:</span>
                                     <?php
-                                    $docSubArr = array();
-                                    $subUpperDoc = str_replace(' ', '_',$document['BookName']);
-                                    $bookDoc = explode("_", $subUpperDoc);
-                                    array_push($docSubArr, lcfirst($bookDoc[0]), lcfirst($bookDoc[1]), $bookDoc[2]);
-                                    $docSub = $docSubArr[0]."_".$docSubArr[1]."_".$docSubArr[2];
-                                    echo "<a href=\"download.php?file=$config[StorageDir]$docSub/$document[FileName].tif\">(Click to download)</a><br>";
-                                    echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileName]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . $document['FileName'].'.jpg' . " ' alt = Error /></a>";
-                                    echo "<br>Size: " . round(filesize($config['StorageDir'].$docSub."/". $document['FileName'].'.tif')/1024/1024, 2) . " MB";
+                                    $indicesFolder = $Render->NAME_INDICES_FOLDER($document['BookName'], $book);
+
+                                    echo "<a href=\"download.php?file=$config[StorageDir]$indicesFolder/$document[FileName].tif\">(Click to download)</a><br>";
+                                    echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$indicesFolder/$document[FileName].tif\"><br><img src='" .  '../../' . $config['ThumbnailDir'] .$indicesFolder.'/'. $document['FileName'].'.jpg' . " ' alt = Error /></a>";
+                                    echo "<br>Size: " . round(filesize($config['StorageDir'].$indicesFolder."/". $document['FileName'].'.tif')/1024/1024, 2) . " MB";
                                     ?>
                                 </div>
                                 <div class="cell" style="text-align: center;padding-top:20px">
@@ -139,47 +130,55 @@ $date = new DateHelper();
         $("#txtLibraryIndex").val("<?php echo $document['LibraryIndex']; ?>");
 
         //BOOK TITLE
-        //Book title information retrieved from php, which will be used to select the Book Title option
-        var length = <?php echo $length;?>;
-        var booksJSON = <?php echo json_encode($booksObject);?>;
-        var bookName = '<?php echo $document['BookName']; ?>';
-        console.log(bookName);
+        //Function that converts the Book Title drop down option value, bookName string, to bookID integer//
+        function bookName2bookID(bookTitle) {
+            var booksJSON = <?php echo json_encode($book);?>;
 
-        var valueAD = booksJSON[0][0];
-        var valueEK = booksJSON[1][0];
-        var valueLR = booksJSON[2][0];
-        var valueSZ = booksJSON[3][0];
+            var nameAD = booksJSON[0][0];
+            var nameEK = booksJSON[1][0];
+            var nameLR = booksJSON[2][0];
+            var nameSZ = booksJSON[3][0];
 
-        var nameAD = booksJSON[0][1];
-        var nameEK = booksJSON[1][1];
-        var nameLR = booksJSON[2][1];
-        var nameSZ = booksJSON[3][1];
+            var valueAD = booksJSON[0][1];
+            var valueEK = booksJSON[1][1];
+            var valueLR = booksJSON[2][1];
+            var valueSZ = booksJSON[3][1];
 
-        if(bookName == nameAD){
-            $('select.selectBookTitle').val(valueAD);
-            $('#ddlBookID').val(valueAD);
+            if (bookTitle == nameAD){
+                nameAD = valueAD;
+                var bookID = parseInt(nameAD);
+                return bookID
+            }
+
+            if (bookTitle == nameEK){
+                nameEK = valueEK;
+                var bookID =parseInt(nameEK);
+                return bookID
+            }
+
+            if (bookTitle == nameLR){
+                nameLR = valueLR;
+                var bookID =parseInt(nameLR);
+                return bookID
+            }
+
+            if (bookTitle == nameSZ){
+                nameSZ = valueSZ;
+                var bookID =parseInt(nameSZ);
+                return bookID
+            }
         }
 
-        if(bookName == nameEK){
-            $('select.selectBookTitle').val(valueEK);
-            $('#ddlBookID').val(valueEK);
-        }
+        //The value of the drop down is retrieved and send to the #ddlBookID hidden input for update
+        var elemValue = $('.selectBookTitle').val();
+        $('#ddlBookID').val(bookName2bookID(elemValue));
 
-        if(bookName == nameLR){
-            $('select.selectBookTitle').val(valueLR);
-            $('#ddlBookID').val(valueLR);
-        }
-
-        if(bookName == nameSZ){
-            $('select.selectBookTitle').val(valueSZ);
-            $('#ddlBookID').val(valueSZ);
-        }
-
+        //Eventlistener that on change the new value of the drop down is send to the #ddlBookID hidden input for update
         $('select.selectBookTitle').on('change', function(e){
             var bookValue = e.target.value;
-            $('#ddlBookID').val(bookValue);
-        });
+                $('#ddlBookID').val(bookName2bookID(bookValue));
 
+        });
 
 
 

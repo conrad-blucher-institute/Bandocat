@@ -126,4 +126,24 @@ class ControlsRender
             else echo '<option value="' . $item['name'] . '">' . $item['displayname'] . '</option>';
         }
     }
+
+    //Render the name of the Indices Folder
+    function NAME_INDICES_FOLDER($fileName, $bookArray){
+        $file_name = $fileName;
+        $posSpc = strpos($file_name, ' ');
+        if ($posSpc === false)
+            $char = '_';
+        else
+            $char = ' ';
+        $tempFilename = explode($char, $file_name);
+        $libIndexPfx = $tempFilename[2];
+
+        foreach ($bookArray as $bookname){
+            $exbookname = explode(' ', $bookname[0]);
+            if ($exbookname[2] == $libIndexPfx){
+                $indicesFolder = implode('', $exbookname);
+                return $indicesFolder;
+            }
+        }
+    }
 }
