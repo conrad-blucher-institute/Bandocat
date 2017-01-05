@@ -56,7 +56,7 @@ $date = new DateHelper();
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
-                                    <select class="libraryIndexSelect">
+                                    <select class="libraryIndexSelect" id="ddlBookTitle" name="ddlBookTitle">
                                         <?php
                                         $Render->GET_DDL($book, "");
                                         ?>
@@ -108,6 +108,19 @@ $date = new DateHelper();
 
 </body>
 <script>
+    function setBookID()
+    {
+        var books = <?php echo json_encode($book); ?>;
+        var bookValue = $("#ddlBookTitle :selected").val();
+        for(var i = 0; i < books.length; i++) {
+            if (books[i][0] == bookValue)
+            {
+                $('#ddlBookID').val(books[i][1]);
+                return;
+            }
+        }
+    }
+
     selLibraryIndex = document.querySelector("#txtLibraryIndex");
 
     //Event listener that it is triggered when a document is loaded to the document//
@@ -118,40 +131,43 @@ $date = new DateHelper();
     }
     //Function that is called that handles all the functions that will reshape the document
     function handleFileSelect(e) {
+        var books = <?php echo json_encode($book); ?>;
         if(!e.target.files) return;
 
         var files = e.target.files;
-        var fileName = files[0].name.slice(0,-4);
+        var fileName = files[0].name.replace(".tif","");
         //Library index value is changed to the file name of the document uploaded
         selLibraryIndex.value = fileName;
 
         /*Program that conditionally selects the value of the Book title by splitting the filename with a underscore
          * delimiter and setting the value of the select option if equal to the prefix string value*/
 
-        libraryADIndex = fileName.split("_");
-        libraryEKIndex = fileName.split("_");
-        libraryLRIndex = fileName.split("_");
-        librarySZIndex = fileName.split("_");
+        var fileNameSplit = fileName.split("_");
+        var fileNameNoSpace = "";
+        for(var i = 0; i < fileNameSplit.length - 1; i++)
+        {
+            fileNameNoSpace += fileNameSplit[i].toLowerCase();
+        }
+        for(var i = 0; i < books.length;i++)
+        {
+            if(fileNameNoSpace == books[i][0].replace(/ /g, '').toLowerCase())
+            {
+                $('select.libraryIndexSelect').val(books[i][0]);
+                $('#ddlBookID').val(books[i][1]);
+                return;
+            }
+        }
 
-        if (libraryADIndex[2] == "A-D"){
-            $('select.libraryIndexSelect').val("General Index A-D");
-            $('#ddlBookID').val(1);
-        }
-        if (libraryEKIndex[2] == "E-K"){
-            $('select.libraryIndexSelect').val("General Index E-K");
-            $('#ddlBookID').val(2);
-        }
-        if (libraryLRIndex[2] == "L-R"){
-            $('select.libraryIndexSelect').val("General Index L-R");
-            $('#ddlBookID').val(3);
-        }
-        if (librarySZIndex[2] == "S-Z"){
-            $('select.libraryIndexSelect').val("General Index S-Z");
-            $('#ddlBookID').val(4);
-        }
     }
 
     $( document ).ready(function() {
+        //Eventlistener that on change the new value of the drop down is send to the #ddlBookID hidden input for update
+        $('#ddlBookTitle').on('change', function(e){
+            alert("YEAH");
+            setBookID();
+        });
+
+
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             //console.log(document.getElementsByClassName('dd')))
@@ -172,7 +188,6 @@ $date = new DateHelper();
                 contentType: false,
                 success:function(data){
                     var json = JSON.parse(data);
-                    console.log(json);
                     var msg = "";
                     var result = 0;
                     for(var i = 0; i < json.length; i++)
@@ -181,7 +196,6 @@ $date = new DateHelper();
                     }
                     for (var i = 0; i < json.length; i++){
                         if (json[i].includes("Success")) {
-                            window.close();
                             result = 1;
                         }
                         else if(json[i].includes("FAIL") || json[i].includes("EXISTED"))

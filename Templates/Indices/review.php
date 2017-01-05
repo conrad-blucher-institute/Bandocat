@@ -30,7 +30,7 @@ $date = new DateHelper();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Input Form</title>
+    <title>Review Form</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
@@ -58,7 +58,7 @@ $date = new DateHelper();
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
-                                    <select class="selectBookTitle">
+                                    <select id="ddlBookTitle" name="ddlBookTitle" class="selectBookTitle">
                                         <?php
                                         $Render->GET_DDL($book, $document['BookName']);
                                         ?>
@@ -84,18 +84,28 @@ $date = new DateHelper();
                                     <span class="label"><span style = "color:red;"> </span>Comments:</span>
                                     <textarea cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
                                 </div>
-
+                            </td>
+                            <td id="col2">
 
                                 <div class="cell">
+                                    <table>
+                                        <tr>
+                                            <td>
                                     <span class="label">Scan of Page:</span>
+                                            </td>
                                     <?php
                                     $indicesFolder = $Render->NAME_INDICES_FOLDER($document['BookName'], $book);
 
-                                    echo "<a href=\"download.php?file=$config[StorageDir]$indicesFolder/$document[FileName].tif\">(Click to download)</a><br>";
-                                    echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$indicesFolder/$document[FileName].tif\"><br><img src='" .  '../../' . $config['ThumbnailDir'] .$indicesFolder.'/'. $document['FileName'].'.jpg' . " ' alt = Error /></a>";
-                                    echo "<br>Size: " . round(filesize($config['StorageDir'].$indicesFolder."/". $document['FileName'].'.tif')/1024/1024, 2) . " MB";
+                                    echo "<td><a href=\"download.php?file=$config[StorageDir]$indicesFolder/$document[FileName].tif\">(Click to download)</a><br></td></tr>";
+                                    echo "<tr><td></td><td><a id='download_front' href=\"download.php?file=$config[StorageDir]$indicesFolder/$document[FileName].tif\"><br><img src='" .  '../../' . $config['ThumbnailDir'] .$indicesFolder.'/'. $document['FileName'].'.jpg' . " ' alt = Error /></a>";
+                                    echo "<br>Size: " . round(filesize($config['StorageDir'].$indicesFolder."/". $document['FileName'].'.tif')/1024/1024, 2) . " MB</td></tr>";
                                     ?>
+                                    </table>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID; ?>" />
@@ -108,8 +118,8 @@ $date = new DateHelper();
                                         <div class="bluebtn" id="loader" style="display: none;">
                                         Updating
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
+                                        </span>
                                 </div>
-                                </span>
                             </td>
                         </tr>
                     </form>
@@ -122,62 +132,29 @@ $date = new DateHelper();
 
 </body>
 <script>
+    function setBookID()
+    {
+        var books = <?php echo json_encode($book); ?>;
+        var bookValue = $("#ddlBookTitle :selected").val();
+        for(var i = 0; i < books.length; i++) {
+            if (books[i][0] == bookValue)
+            {
+                $('#ddlBookID').val(books[i][1]);
+                return;
+            }
+        }
+    }
 
     $( document ).ready(function() {
         //LIBRARY INDEX
         /*$document: array object that contains the selection from the bandocat_indicesinventory database, document table*/
         //Library index information retrieved from document array object
         $("#txtLibraryIndex").val("<?php echo $document['LibraryIndex']; ?>");
-
-        //BOOK TITLE
-        //Function that converts the Book Title drop down option value, bookName string, to bookID integer//
-        function bookName2bookID(bookTitle) {
-            var booksJSON = <?php echo json_encode($book);?>;
-
-            var nameAD = booksJSON[0][0];
-            var nameEK = booksJSON[1][0];
-            var nameLR = booksJSON[2][0];
-            var nameSZ = booksJSON[3][0];
-
-            var valueAD = booksJSON[0][1];
-            var valueEK = booksJSON[1][1];
-            var valueLR = booksJSON[2][1];
-            var valueSZ = booksJSON[3][1];
-
-            if (bookTitle == nameAD){
-                nameAD = valueAD;
-                var bookID = parseInt(nameAD);
-                return bookID
-            }
-
-            if (bookTitle == nameEK){
-                nameEK = valueEK;
-                var bookID =parseInt(nameEK);
-                return bookID
-            }
-
-            if (bookTitle == nameLR){
-                nameLR = valueLR;
-                var bookID =parseInt(nameLR);
-                return bookID
-            }
-
-            if (bookTitle == nameSZ){
-                nameSZ = valueSZ;
-                var bookID =parseInt(nameSZ);
-                return bookID
-            }
-        }
-
-        //The value of the drop down is retrieved and send to the #ddlBookID hidden input for update
-        var elemValue = $('.selectBookTitle').val();
-        $('#ddlBookID').val(bookName2bookID(elemValue));
+        setBookID();
 
         //Eventlistener that on change the new value of the drop down is send to the #ddlBookID hidden input for update
-        $('select.selectBookTitle').on('change', function(e){
-            var bookValue = e.target.value;
-                $('#ddlBookID').val(bookName2bookID(bookValue));
-
+        $('#ddlBookTitle').on('change', function(e){
+            setBookID();
         });
 
 
@@ -229,7 +206,6 @@ $date = new DateHelper();
                     }
                     for (var i = 0; i < json.length; i++){
                         if (json[i].includes("Success")) {
-                            window.close();
                             result = 1;
                         }
                         else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
@@ -240,7 +216,7 @@ $date = new DateHelper();
                     }
                     alert(msg);
                     if (result == 1){
-                        window.location.href = "../catalog.php?col=<?php echo $_GET['col']; ?>";
+                        window.location.href = "./list.php?col=<?php echo $_GET['col']; ?>";
                     }
 
                 }
