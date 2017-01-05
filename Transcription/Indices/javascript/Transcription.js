@@ -53,7 +53,7 @@ function drawRectangles(collection,coords)
 	{
 		var entryData; // This may not be in use anymore 
 		//create a rectangle object based on unprojected values of coords
-		//add that reactangle objecet to viewer 
+		//add that rectangle object to viewer
 		var rectangle = L.rectangle([[latlng[j].lat, latlng[j].lng],
 		[latlng2[j].lat, latlng2[j].lng]],{color: "	 #58d68d", weight: 1});
 		rectangleArray.push(rectangle);
@@ -77,7 +77,11 @@ function drawRectangles(collection,coords)
 				rectangleArray[i].setStyle(defaultColor);
 			}
 			
-			this.setStyle(highlight);				
+			this.setStyle(highlight);
+
+			removeTags("Client_Table");
+			removeTags("RelatedPaper_Table");
+			removeTags('JobNumber_Table');
 			
 			//get projected bounds latlng values of clicked rectangle to be used for querying database 
 			point1 = rc.project(this.getBounds()._southWest);
@@ -93,11 +97,202 @@ function drawRectangles(collection,coords)
 					entryData = JSON.parse(data);
 					displayEntryData(entryData);
 				}
-			});	
-		})
+			});
+		});
 		j++;
 	}
 }
+
+//This function takes entryData JSON as parameter and writes values to appropriate HTML form location.
+function displayEntryData(entryData)
+{
+	//write entry data to form
+	document.getElementById("Document_ID").value = entryData[0].documentID;
+	//document.getElementById("File_Name").value = entryData[0].Document;
+	document.getElementById("Entry_Coordinates").value = "SouthWest(" + entryData[0].x1 + ", " + entryData[0].y1 + ")"
+		+ " " + "NorthEast(" + entryData[0].x2 + ", " +  entryData[0].y2 + ")";
+	document.getElementById("Survey_Or_Section").value = entryData[0].surveyorsection;
+	document.getElementById("Block_Or_Tract").value = entryData[0].blockortract;
+	document.getElementById("Lot_Or_Acres").value = entryData[0].lotoracres;
+	document.getElementById("Description").value = entryData[0].description;
+	displayClientTableInfo(entryData[0].client, "Client_Table");
+	displayFieldBookTableInfo(entryData[0].fieldbookinfo, "Field_Book_Table");
+	displayRelatedPaperTableInfo(entryData[0].relatedpapersfileno, "RelatedPaper_Table");
+	displayMapTableInfo(document.getElementById("Collection").value,entryData[0].mapinfo, "Map_Table");
+	//displayDateTableInfo(entryData[0].date, "Date_Table");
+	displayJobNumberTableInfo(entryData[0].jobnumber, "JobNumber_Table");
+
+	//document.getElementById("Field_Book_Info").value = entryData[0].Field_Book_Info;
+	document.getElementById("Related_Papers_Info").value = entryData[0].relatedpapersfileno;
+
+
+	/*document.getElementById("Map_Info").value = entryData[0].Map_Info;
+	document.getElementById("Date").value = entryData[0].month, entryData[0].day, entryData[0].year;
+	document.getElementById("Map_Table_Info").value = entryData[0].mapinfo;
+
+	var Time = entryData[0].date.split("-");
+	if (Time[1] == 00)
+	{
+		document.getElementById("Month").value = "Month";
+	}
+	else
+	{
+		var Month = parseInt(Time[1]);
+		document.getElementById("Month").value = Month;
+	}
+
+	if (Time[2] == 00)
+	{
+		document.getElementById("Day").value = "Day";
+	}
+	else
+	{
+		var Day = parseInt(Time[2]);
+		document.getElementById("Day").value = Day;
+	}
+
+	if (Time[0] == 0000)
+	{
+		document.getElementById("Year").value = "Year";
+	}
+	else
+	{
+		var Year = parseInt(Time[0]);
+		document.getElementById("Year").value = Year;
+	}*/
+
+	document.getElementById("Job_Number").value = entryData[0].jobnumber;
+	document.getElementById("Comments").value = entryData[0].comments;
+
+	//write to hidden forms
+	document.getElementById("x1").value = entryData[0].x1;
+	document.getElementById("y1").value = entryData[0].y1;
+	document.getElementById("x2").value = entryData[0].x2;
+	document.getElementById("y2").value = entryData[0].y2;
+}
+
+function removeTags(id) {
+	var clientsTag = $("#"+id).siblings("#"+id+"_tagsinput").children(".tag");
+		console.log(clientsTag.length);
+		for(var i=0; i < clientsTag.length; i++) {
+			var selecTags = [];
+			selecTags.push($(clientsTag[i]).text().substr(0, $(clientsTag[i]).text().length - 1).trim());
+			console.log(selecTags);
+			$("#" + id).removeTag(selecTags);
+		}
+}
+
+/*************************************************
+ ****** DISPLAY FUNCTIONS ON RECTANGLE CLICK *****
+ *************************************************/
+
+/*************************************************************************
+ * CLIENT
+ * @param string, id;
+ * Results: On rectangle click triggers an event that listens to a div change
+ * that removes any tags in the container and adds the clients stored in that
+ * rectangle as tags.
+ */
+
+function displayClientTableInfo(string, id) {
+	var object = JSON.parse(string);
+	console.log(object.length);
+
+	for(var i = 0 ; i < object.length; i++) {
+		$("#"+id).addTag(object[i].client);
+		console.log(object[i].client);
+	}
+}
+
+/*************************************************************************
+ * FIELD BOOK
+ * @param string, id;
+ * Results: On rectangle click a function is called that deletes the Field
+ * book table's rows, and creates the field book number and page stored in
+ * that rectangle as rows.
+ */
+function displayFieldBookTableInfo(string, id)
+{
+	//creates JSON from JSON string that is passed to it in the "string" parameter
+	object = JSON.parse(string);
+	var table = document.getElementById(id);
+
+	deleteTable(id);
+
+	for(var i = 0 ; i < object.length; i++)
+	{
+		//if the table is already the correct size leave for loop
+		if(table.rows.length-1 == object.length)
+			break;
+
+		//inserts rows and populates cells with values
+		var row = table.insertRow(-1)
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+
+		cell1.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' + object[i].bookNumber + '">';
+		cell2.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' + object[i].pageNumbers + '">';
+	}
+}
+
+/*************************************************************************
+ * RELATED PAPERS
+ * @param string, id;
+ * Results: On rectangle click a function is called that deletes the Related
+ * papers table's rows, and creates new rows with the information of the
+ * related papers input with the related papers' values.
+ */
+function displayRelatedPaperTableInfo(string, id) {
+	var object = JSON.parse(string);
+
+	for(var i = 0 ; i < object.length; i++) {
+		$("#"+id).addTag(object[i].relatedpapersfileno);
+	}
+}
+/*************************************************************************
+ * MAP
+ * @param string, id;
+ * Results: On rectangle click a function is called that deletes the map
+ * table's rows, and creates new rows with the information of the
+ * maps' input values.
+ */
+function displayMapTableInfo(collection,string, id)
+{
+	object = JSON.parse(string);
+	var table = document.getElementById(id);
+
+	deleteTable(id);
+
+//$.get("php/MapKind_Options.php",{collection: collection})
+	for(var i = 0 ; i < object.length; i++)
+	{
+		//if the table is already the correct size leave for loop
+		if(table.rows.length-1 == object.length)
+			break;
+
+		$.ajax({
+			url: 'php/MapKind_Options.php', //This is the current doc
+			type: "POST",
+			//dataType:'json', // add json datatype to get json
+			data: {"collection": collection,"mapKind": object[i].mapKind,"mapNumber": object[i].mapNumber,"id": i},
+			success: function(data) {
+				table.innerHTML += data;
+			}
+		});
+	}
+}
+
+function displayJobNumberTableInfo(string, id) {
+	var object = JSON.parse(string);
+
+	for(var i = 0 ; i < object.length; i++) {
+		$("#"+id).addTag(object[i].jobnumber);
+	}
+}
+
+
+
+
 
 //This function is called when form is submitted performs proccesses to prepare page for next entry.
 function submitEntry(results)
@@ -124,9 +319,12 @@ $(function ()
 			e.preventDefault();
 			return;			
 		}
-
+		getClientTableJSON();
         getFieldBookTableJSON();
         getMapTableJSON();
+		getRelatedPaperTableJSON();
+		getDateJSON();
+		getJobNoJSON();
 
         var entrycoordinates = JSON.parse($("#Entry_Coordinates").val());
          x1 = entrycoordinates.x1;
@@ -143,47 +341,13 @@ $(function ()
         blockOrTract = document.getElementById("Block_Or_Tract").value;
         lotOrAcres = document.getElementById("Lot_Or_Acres").value;
         description = document.getElementById("Description").value ;
-        client = document.getElementById("Client").value ;
+        client = document.getElementById("Client_Info").value ;
         fieldBookInfo = document.getElementById("Field_Book_Info").value ;
-        relatedPapersFileNo = document.getElementById("Related_Papers_File_No").value;
-        //date = document.getElementById("Date").value;
-        jobNumber = document.getElementById("Job_Number").value;
-        mapInfo = document.getElementById("Map_Table_Info").value;
+        relatedPapersFileNo = document.getElementById("Related_Papers_Info").value;
+		mapInfo = document.getElementById("Map_Table_Info").value;
+        date = document.getElementById("Date").value;
+        jobNumber = document.getElementById("Job_Numbers_Info").value;
         comments = document.getElementById("Comments").value;
-
-        /*Conditional statement that allows to update the entry by selecting a value from the Date table, so if the
-         value selected is not a numeric value like; Month, Day, or Year, the value that will be stored in the
-         database will be a 0000 value for a year, or 00 for month and day*/
-        if (document.getElementById("Year").value == "Year")
-        {
-            var Year = "0000";
-        }
-        else
-            Year = document.getElementById("Year").value;
-
-        if(document.getElementById("Month").value == "Month")
-        {
-            var Month = "00"
-        }
-        else if(document.getElementById("Month").value < 10)
-            Month = "0" + document.getElementById("Month").value;
-        else
-            Month = document.getElementById("Month").value;
-
-        if (document.getElementById("Day").value == "Day")
-        {
-            var Day = "00";
-        }
-        else if(document.getElementById("Day").value < 10)
-            Day = "0" + document.getElementById("Day").value;
-        else
-            Day = document.getElementById("Day").value;
-
-        var dateString = Year + "-" + Month + "-" + Day;
-        date = dateString;
-
-        jobNumber = document.getElementById("Job_Number").value;
-
 
         //creates JSON that contains all information from form to update the db
         var newobject = addEntryObject(collection,docID,x1, y1, x2, y2, fileName, surveyOrSection, blockOrTract, lotOrAcres, description, client,
@@ -215,40 +379,6 @@ function getFileName()
 	return fileName;
 }
 
-//This function is used to translate input from date drop down field to a JSON.
-function getDateTableJSON()
-{		
-
-	if (document.getElementById("Year").value == "Year")
-	{
-		var Year = "0000";
-	}
-	else
-		Year = document.getElementById("Year").value;
-		
-	if(document.getElementById("Month").value == "Month")
-	{
-		var Month = "00"
- 	}
-	else if(document.getElementById("Month").value < 10)
-				Month = "0" + document.getElementById("Month").value;
-	else
-		Month = document.getElementById("Month").value;
-			
-	if (document.getElementById("Day").value == "Day")
-	{
-		var Day = "00";
-	}
-	else if(document.getElementById("Day").value < 10)
-		Day = "0" + document.getElementById("Day").value;
-	else
-		Day = document.getElementById("Day").value;
-		
-	dateString = Year + "-" + Month + "-" + Day;
-	document.getElementById("Date").value = dateString;
-		
- }
-
 //This function is binded to the button "Delete Active Rectangle" this deletes the 
 //rectangle in blue that the user has drawn but not submitted. 
 function deletePrevious()
@@ -279,70 +409,6 @@ function deletePrevious()
 		return null;
 }
 
-//This function takes entryData JSON as parameter and writes values to appropriate HTML form location.
-function displayEntryData(entryData)
-{
-	//write entry data to form
-	document.getElementById("Document_ID").value = entryData[0].documentID;
-	//document.getElementById("File_Name").value = entryData[0].Document;
-	document.getElementById("Entry_Coordinates").value = "SouthWest(" + entryData[0].x1 + ", " + entryData[0].y1 + ")" 
-														+ " " + "NorthEast(" + entryData[0].x2 + ", " +  entryData[0].y2 + ")";
-	document.getElementById("Survey_Or_Section").value = entryData[0].surveyorsection;
-	document.getElementById("Block_Or_Tract").value = entryData[0].blockortract;
-	document.getElementById("Lot_Or_Acres").value = entryData[0].lotoracres;
-	document.getElementById("Description").value = entryData[0].description;
-	document.getElementById("Client").value = entryData[0].client;
-	displayFieldBookTableInfo(entryData[0].fieldbookinfo, "Field_Book_Table");
-	displayMapTableInfo(document.getElementById("Collection").value,entryData[0].mapinfo, "Map_Table");
-	
-	//document.getElementById("Field_Book_Info").value = entryData[0].Field_Book_Info;
-	document.getElementById("Related_Papers_File_No").value = entryData[0].relatedpapersfileno;
-
-	
-	//document.getElementById("Map_Info").value = entryData[0].Map_Info;
-	document.getElementById("Date").value = entryData[0].date;
-	document.getElementById("Map_Table_Info").value = entryData[0].mapinfo;
-	
-	var Time = entryData[0].date.split("-");
-	if (Time[1] == 00)
-	{
-		document.getElementById("Month").value = "Month";
-	}
-	else
-	{
-		var Month = parseInt(Time[1]);
-		document.getElementById("Month").value = Month;
-	}
-	
-	if (Time[2] == 00)
-	{
-		document.getElementById("Day").value = "Day";
-	}
-	else
-	{
-		var Day = parseInt(Time[2]);
-		document.getElementById("Day").value = Day;
-	}
-	
-	if (Time[0] == 0000)
-	{
-		document.getElementById("Year").value = "Year";
-	}
-	else
-	{
-		var Year = parseInt(Time[0]);
-		document.getElementById("Year").value = Year;
-	}
-	
-	document.getElementById("Job_Number").value = entryData[0].jobnumber;
-	document.getElementById("Comments").value = entryData[0].comments;
-	
-	//write to hidden forms
-	document.getElementById("x1").value = entryData[0].x1;
-	document.getElementById("y1").value = entryData[0].y1;
-	document.getElementById("x2").value = entryData[0].x2;
-	document.getElementById("y2").value = entryData[0].y2;
-}
 
 //This function creates "updateObject" containing all data from HTML form, 
 //and calls updateEntryData.php to update database with newly created updateObject values.
@@ -353,9 +419,11 @@ function updateEntryData()
 		alert("No rectangled selected");
 		return null;
 	}
-	
+	getClientTableJSON();
 	getFieldBookTableJSON();
 	getMapTableJSON();
+	getRelatedPaperTableJSON();
+	getJobNoJSON();
 	
 	//retrieve values from form and set them to appropriate variables
 	collection = document.getElementById("Collection").value;
@@ -369,18 +437,18 @@ function updateEntryData()
 	blockOrTract = document.getElementById("Block_Or_Tract").value;
 	lotOrAcres = document.getElementById("Lot_Or_Acres").value;
 	description = document.getElementById("Description").value ;
-	client = document.getElementById("Client").value ;
+	client = document.getElementById("Client_Info").value ;
 	fieldBookInfo = document.getElementById("Field_Book_Info").value ;
-	relatedPapersFileNo = document.getElementById("Related_Papers_File_No").value;
-	//date = document.getElementById("Date").value;
-	jobNumber = document.getElementById("Job_Number").value;
+	relatedPapersFileNo = document.getElementById("Related_Papers_Info").value;
+	date = document.getElementById("Date").value;
+	jobNumber = document.getElementById("Job_Numbers_Info").value;
 	mapInfo = document.getElementById("Map_Table_Info").value;
 	comments = document.getElementById("Comments").value;
 	
 	/*Conditional statement that allows to update the entry by selecting a value from the Date table, so if the
 	value selected is not a numeric value like; Month, Day, or Year, the value that will be stored in the 
 	database will be a 0000 value for a year, or 00 for month and day*/
-	if (document.getElementById("Year").value == "Year")
+	/*if (document.getElementById("Year").value == "Year")
 		{
 			var Year = "0000";
 		}
@@ -406,9 +474,8 @@ function updateEntryData()
 			Day = document.getElementById("Day").value;
 		
 		var dateString = Year + "-" + Month + "-" + Day;
-		date = dateString;
+		date = dateString;*/
 
-	jobNumber = document.getElementById("Job_Number").value;
 	
 	
 	//creates JSON that contains all information from form to update the db
@@ -453,66 +520,9 @@ function deleteSelected()
 	});
 }
 
-//This function is an auxillary function to displayEntryData
-//The purpose of this function is to add the functionality to display the JSON for fieldBookInfo as a table.
-function displayFieldBookTableInfo(string, id)
-{	
-	//creates JSON from JSON string that is passed to it in the "string" parameter
-	object = JSON.parse(string);
-	var table = document.getElementById(id);
-	
-	deleteTable(id);
-	
-	for(var i = 0 ; i < object.length; i++)
-	{	
-		//if the table is already the correct size leave for loop
-		if(table.rows.length-1 == object.length)
-			break;
-		
-		//inserts rows and populates cells with values
-		var row = table.insertRow(-1)
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-		
-		cell1.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' + object[i].bookNumber + '">';
-		cell2.innerHTML = '<input type="text" class= "Input_Field"' + 'value = "' + object[i].pageNumbers + '">';
-	}
-}
 
-//same as displayFieldBookTableInfo() but for the mapInfo
-function displayMapTableInfo(collection,string, id)
-{	
-	object = JSON.parse(string);
-	var table = document.getElementById(id);
-	
-	deleteTable(id);
-	
 
-//$.get("php/MapKind_Options.php",{collection: collection})
-	for(var i = 0 ; i < object.length; i++)
-	{
-        //if the table is already the correct size leave for loop
-        if(table.rows.length-1 == object.length)
-            break;
 
-		// var row = table.insertRow(-1);
-		// var cell1 = row.insertCell(0);
-		//table.innerHTML+= '<tr><td><input type="text" class= "Input_Field"' + 'value = "' + object[i].mapNumber + '"></td>';
-
-		$.ajax({
-			url: 'php/MapKind_Options.php', //This is the current doc
-			type: "POST",
-			//dataType:'json', // add json datatype to get json
-			data: {"collection": collection,"mapKind": object[i].mapKind,"mapNumber": object[i].mapNumber,"id": i},
-			success: function(data) {
-                table.innerHTML += data;
-			}
-		});
-	}
-		// if(table.rows.length-1 == object.length)
-		// 	return;
-
-}
 
 //This function is an auxillary function for displayFieldBookTableInfo() and displayMapTableInfo().
 //The purpose of this function is to delete the table completely before the new table is created so avoid having unused rows .
@@ -528,25 +538,106 @@ function deleteTable(id)
 	deleteTable(id);
 }
 
-//creates stringified JSON from values in Field_Book_Table
+/*************************************************
+ ************* SUBMIT JSON CONVERSION ************
+ * 1.CLIENT
+ * 2.FIELD BOOK
+ * 3.RELATED PAPER
+ * 4.MAP
+ * 5.DATE
+ * 6.JOB NUMBER
+ *************************************************/
+
+/*****************************************************************************
+ * 1.CLIENTS
+ *****************************************************************************/
+//Creates stringify JSON from values in Client Table
+function getClientTableJSON() {
+	var clitTag = $("#Client_Table_tagsinput").children(".tag");
+	var tagCliArray = [];
+	//Loop to iterate through each row of the table populating ObjectArray with values
+	for(var i= 0; i < clitTag.length; i++) {
+		var Object = new clientJSON($(clitTag[i]).text().substr(0, $(clitTag[i]).text().length - 1).trim());
+		tagCliArray.push(Object);
+
+	}
+
+	if(clitTag.length == 0) {
+		Object = new clientJSON("");
+		tagCliArray.push(Object);
+	}
+
+	//sets value of form to stringified JSON of clienttArray
+	console.log(JSON.stringify(tagCliArray));		//test
+	document.getElementById("Client_Info").value = JSON.stringify(tagCliArray);
+}
+
+function clientJSON(client) {
+	this.client = client;
+}
+
+/*****************************************************************************
+ * 2.FIELD BOOKS
+ *****************************************************************************/
+
+//creates stringify JSON from values in Field_Book_Table
 function getFieldBookTableJSON()
 {
 	table = document.getElementById("Field_Book_Table");
-	var fieldBookObjectArray = new Array();
+	var fieldBookObjectArray = [];
 	
 	//loop to iterate through each row of table populating fieldBookObjectArray with values 
 	for(var i = 1; i < table.rows.length; i++)
 	{
-		fieldBookObject = addFieldBookObject(document.getElementById("Field_Book_Table").rows[i].cells[0].firstChild.value,
-											document.getElementById("Field_Book_Table").rows[i].cells[1].firstChild.value)
+		fieldBookObject = new fieldBookJSON($('#Field_Book_Table tr:eq('+i+') td:eq(0) input').val(), $('#Field_Book_Table tr:eq('+i+') td:eq(1) input').val());
 		fieldBookObjectArray.push(fieldBookObject);
 	}
-	
+
+
 	//sets value of form to stringified JSON of fieldBookObjectArray
+	console.log(JSON.stringify(fieldBookObjectArray));		//test
 	document.getElementById("Field_Book_Info").value = JSON.stringify(fieldBookObjectArray);
 }
 
-//creates stringified JSON from values in Map_Table
+function fieldBookJSON(bookNumber, pageNumbers)
+{
+	this.bookNumber = bookNumber;
+	this.pageNumbers = pageNumbers;
+}
+
+/*****************************************************************************
+ * 3.RELATED PAPERS
+ *****************************************************************************/
+//Creates stringify JSON from values in Client Table
+function getRelatedPaperTableJSON()
+{
+	var relPapTag = $("#RelatedPaper_Table_tagsinput").children(".tag");
+	var tagRelPapArray = [];
+	//Loop to iterate through each row of the table populating ObjectArray with values
+	for(var i= relPapTag.length; i--;) {
+		var Object = new relatedPaperJSON($(relPapTag[i]).text().substr(0, $(relPapTag[i]).text().length - 1).trim());
+		tagRelPapArray.push(Object);
+
+	}
+
+	if(relPapTag.length == 0) {
+		Object = new relatedPaperJSON("");
+		tagRelPapArray.push(Object);
+	}
+
+	//sets value of form to stringified JSON of clienttArray
+	console.log(JSON.stringify(tagRelPapArray));		//test
+	document.getElementById("Related_Papers_Info").value = JSON.stringify(tagRelPapArray);
+}
+
+function relatedPaperJSON(relatedPapers) {
+	this.relatedpapersfileno = relatedPapers;
+}
+
+/*****************************************************************************
+ * 4.MAPS
+ *****************************************************************************/
+//creates stringify JSON from values in Map_Table
 function getMapTableJSON()
 {
 	table = document.getElementById("Map_Table");
@@ -555,17 +646,92 @@ function getMapTableJSON()
 	for(var i = 1; i < table.rows.length; i++)
 	{
 		mapObject = addMapObject(document.getElementById("Map_Table").rows[i].cells[0].firstChild.value,
-											document.getElementById("Map_Table").rows[i].cells[1].firstChild.value)
+											document.getElementById("Map_Table").rows[i].cells[1].firstChild.value);
 		mapObjectArray.push(mapObject);
 	}
 
+	console.log(JSON.stringify(mapObjectArray));		//Test
 	document.getElementById("Map_Table_Info").value = JSON.stringify(mapObjectArray);
 
 }
 
+function addMapObject(mapNumber, mapKind)
+{
+	var mapObject = new mapObjectConstructor(mapNumber, mapKind);
+	return mapObject;
+}
+
+function mapObjectConstructor(mapNumber, mapKind)
+{
+	this.mapNumber = mapNumber;
+	this.mapKind = mapKind;
+}
+
+/*****************************************************************************
+ * 5.DATE
+ *****************************************************************************/
+function getDateJSON() {
+	var table = document.getElementById("Date_Table");
+	var objectArray = [];
+
+	for(var i = 1; i < table.rows.length; i++)
+	{
+		dateObject = addDateObject($('#Date_Table tr:eq(' + i + ') td:eq(0) option:selected').val(),
+			$('#Date_Table tr:eq(' + i + ') td:eq(1) option:selected').val(),
+			$('#Date_Table tr:eq(' + i + ') td:eq(2) option:selected').val());
+
+		objectArray.push(dateObject);
+	}
+
+	console.log(JSON.stringify(objectArray));		//Test
+	document.getElementById("Date").value = JSON.stringify(objectArray);
+}
+
+function addDateObject(Month, Day, Year)
+{
+	var dateObject = new dateObjectConstructor(Month, Day, Year);
+	return dateObject;
+}
+
+function dateObjectConstructor(Month, Day, Year)
+{
+	this.Month = Month;
+	this.Day = Day;
+	this.Year = Year;
+}
+
+/*****************************************************************************
+ * 6.Job Numbers
+ *****************************************************************************/
+function getJobNoJSON() {
+	var jobNoTag = $("#JobNumber_Table_tagsinput").children(".tag");
+	var tagJobNoArray = [];
+	//Loop to iterate through each row of the table populating ObjectArray with values
+	for(var i= jobNoTag.length; i--;) {
+		var Object = new jobNoObjectConstructor($(jobNoTag[i]).text().substr(0, $(jobNoTag[i]).text().length - 1).trim());
+		tagJobNoArray.push(Object);
+
+	}
+
+	if(jobNoTag.length == 0) {
+		Object = new jobNoObjectConstructor("");
+		tagJobNoArray.push(Object);
+	}
+
+	//sets value of form to stringified JSON of clienttArray
+	console.log(JSON.stringify(tagJobNoArray));		//test
+	document.getElementById("Job_Numbers_Info").value = JSON.stringify(tagJobNoArray);
+}
+
+function jobNoObjectConstructor(jobNo)
+{
+	this.jobnumber = jobNo;
+}
+
+/************************************************************************************/
 function addFieldRow(id)
-{	
-		var table = document.getElementById(id);
+{
+ var table = document.getElementById(id);
 		var row = table.insertRow(-1);
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
@@ -590,8 +756,29 @@ function addMapRow(collection,id)
     });
 }
 
+function addClientRow(id){
+	var table = document.getElementById(id);
+	var row = table.insertRow(-1);
+	var cell1 = row.insertCell(0);
+	cell1.innerHTML = '<input type = "text" id = "Client" name = "Client" style="width: 225%">';
+}
+
+function addRelatedPaperRow(id) {
+	var table = document.getElementById(id);
+	var row = table.insertRow(-1);
+	var cell1 = row.insertCell(0);
+	cell1.innerHTML = '<input type = "text" class= "Input_Field" id = "RelatedPaper" name = "RelatedPaper">';
+}
+
+function addJobNumberRow(id) {
+	var table = document.getElementById(id);
+	var row = table.insertRow(-1);
+	var cell1 = row.insertCell(0);
+	cell1.innerHTML = '<input type="text" class= "Input_Field" id ="Job_Number">'
+}
+
 //functionality for "-" button
-function deleteMapRow(id)
+function deleteTableRow(id)
 {
 	if(id == 'Field_Book_Table')
 	{
@@ -606,6 +793,31 @@ function deleteMapRow(id)
 		if(table1.rows.length == 2)
 			return;
 		table1.deleteRow(-1);
+	}
+	else if(id == 'Client_Table'){
+		var table2 = document.getElementById('Client_Table');
+		if(table2.rows.length == 2)
+			return;
+		table2.deleteRow(-1);
+	}
+	else if(id == 'RelatedPaper_Table'){
+		var table3 = document. getElementById('RelatedPaper_Table');
+		if(table3.rows.length == 2)
+			return;
+		table3.deleteRow(-1);
+	}
+	else if(id == "Date_Table"){
+		var table4 = document.getElementById("Date_Table");
+		if(table4.rows.length == 2)
+			return;
+		table4.deleteRow(-1);
+	}
+
+	else if(id == 'JobNumber_Table') {
+		var table5 = document.getElementById("JobNumber_Table")
+		if(table5.rows.length == 2)
+			return;
+		table5.deleteRow(-1);
 	}
 }
 
@@ -676,34 +888,10 @@ function entryObjectConstructor(collection,docID,x1,y1, x2, y2, fileName,surveyO
 	this.client = client;
 	this.fieldBookInfo = fieldBookInfo;
 	this.relatedPapersFileNo = relatedPapersFileNo;
-	this.mapInfo = mapInfo
+	this.mapInfo = mapInfo;
 	this.entryDate = entryDate;
 	this.jobNumber = jobNumber;
     this.comments = comments;
-}
-
-function addFieldBookObject(bookNumber, pageNumbers)
-{
-	var fieldBookObject = new fieldBookObjectConstructor(bookNumber, pageNumbers);
-	return fieldBookObject;
-}
-
-function fieldBookObjectConstructor(bookNumber, pageNumbers)
-{
-	this.bookNumber = bookNumber;
-	this.pageNumbers = pageNumbers;
-}
-
-function addMapObject(mapNumber, mapKind)
-{
-	var mapObject = new mapObjectConstructor(mapNumber, mapKind);
-	return mapObject;
-}
-
-function mapObjectConstructor(mapNumber, mapKind)
-{
-	this.mapNumber = mapNumber;
-	this.mapKind = mapKind;
 }
 
 function addEntryCoordinateObject(x1,y1, x2, y2)

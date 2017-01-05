@@ -170,12 +170,12 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
         $sth->bindParam(':blockOrTract',$newObject->blockOrTract,PDO::PARAM_STR,100);
         $sth->bindParam(':lotOrAcres',$newObject->lotOrAcres,PDO::PARAM_STR,100);
         $sth->bindParam(':description',$newObject->description,PDO::PARAM_STR,200);
-        $sth->bindParam(':entryclient',$newObject->client,PDO::PARAM_STR,100);
+        $sth->bindParam(':entryclient',$newObject->client,PDO::PARAM_STR,500);
         $sth->bindParam(':fieldBookInfo',$newObject->fieldBookInfo,PDO::PARAM_STR,900);
         $sth->bindParam(':relatedPapersFileNo',$newObject->relatedPapersFileNo,PDO::PARAM_STR,100);
         $sth->bindParam(':mapInfo',$newObject->mapInfo,PDO::PARAM_STR,800);
-        $sth->bindParam(':entrydate',$newObject->entryDate,PDO::PARAM_STR,10);
-        $sth->bindParam(':jobNumber',$newObject->jobNumber,PDO::PARAM_STR,20);
+        $sth->bindParam(':entrydate',$newObject->entryDate,PDO::PARAM_STR,200);
+        $sth->bindParam(':jobNumber',$newObject->jobNumber,PDO::PARAM_STR,200);
         $sth->bindParam(':comments',$newObject->comments,PDO::PARAM_STR,200);
         $ret = $sth->execute();
         return $ret;
@@ -237,7 +237,4 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
         }
         return false;
     }
-
-
-
 }
