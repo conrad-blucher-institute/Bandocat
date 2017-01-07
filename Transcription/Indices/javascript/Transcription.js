@@ -2,14 +2,6 @@
 var rectangleSelected = false;			//boolean keeping track of if the user has an active rectangle placed on the viewer 
 var rectangleArray = new Array();		// array containing all the rectangles drawn by drawRectangles funciton
 
-//This function sets path of image as local storage variable and opens Input_Transcription page.
-function newEntry()
-{
-	localStorage.setItem('fileName', fileName);
-	window.open("Transcription.php");
-	window.close();
-}
-
 //This function calls drawRectanglesLeaflet.php and then calls drawRectangles() with JSON returned by drawRectanglesLeaflet.php as parameter.
 function getRectangleCoords()
 {
@@ -61,7 +53,7 @@ function drawRectangles(collection,coords)
 		
 		//click function that highlights clicked object and calls getEntryData.php 
 		//passes JSON from getEntryData.php as parameter to displayEntryData()
-		rectangle.on('click', function(e)
+		rectangle.on('click', function()
 		{ 
 			// if the user has a marker drawn on the map exit click function early 
 			if(markerCount > 0)
@@ -119,7 +111,7 @@ function displayEntryData(entryData)
 	displayFieldBookTableInfo(entryData[0].fieldbookinfo, "Field_Book_Table");
 	displayRelatedPaperTableInfo(entryData[0].relatedpapersfileno, "RelatedPaper_Table");
 	displayMapTableInfo(document.getElementById("Collection").value,entryData[0].mapinfo, "Map_Table");
-	//displayDateTableInfo(entryData[0].date, "Date_Table");
+	displayDateTableInfo(entryData[0].date, "Date_Table");
 	displayJobNumberTableInfo(entryData[0].jobnumber, "JobNumber_Table");
 
 	//document.getElementById("Field_Book_Info").value = entryData[0].Field_Book_Info;
@@ -280,6 +272,128 @@ function displayMapTableInfo(collection,string, id)
 			}
 		});
 	}
+}
+
+/************************************************************************************
+ * DISPLAY DATE ON CLICK FOR THE FIRST SET OF SELECT ELEMENTS
+ * ***********************************************************************************/
+function displayDateTableInfo(string, id) {
+    var dateJSON = JSON.parse(string);
+
+        for(var i = 0; i < dateJSON.length-1; i++) {
+
+            var dateStr = dateJSON[i].Date;
+            var dateArr = dateStr.split("/");
+            var monthOptions = document.getElementById("Month").childNodes;
+            for(i=0;i<monthOptions.length;i++) {
+				if (monthOptions[i].value == dateArr[0]){
+					monthOptions[i].selected = true;
+				}
+            }
+            var dayOptions = document.getElementById("Day").childNodes;
+            for(i=0;i<dayOptions.length;i++) {
+                if (dayOptions[i].value == dateArr[1]){
+                    dayOptions[i].selected = true;
+                }
+            }
+            var yearOptions = document.getElementById("Year").childNodes;
+            for(i=0;i<yearOptions.length;i++) {
+                if (yearOptions[i].value == dateArr[2]){
+                    yearOptions[i].selected = true;
+                }
+            }
+        }
+    /************************************************************************************
+     * MONTH
+     * ***********************************************************************************/
+        if(dateJSON.length > 1) {
+        for(var i = 1; i < dateJSON.length; i++) {
+            console.log(dateJSON[i].Date);
+            var dateStr = dateJSON[i].Date;
+            var dateArr = dateStr.split("/");
+            console.log(dateArr)
+
+            var table = document.getElementById(id);
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+
+			var ddlmonth = "<select name = 'monthStart' id = 'Month' class='MonthDate' style = 'width:75px;'>"
+			ddlmonth += "<option value='00'>Month</option>";
+			for(var j = 1; j <= 12; j++)
+			{
+				var temp = "";
+				curmonth = j.toString();
+				if(j < 10)
+				{
+					curmonth = '0' + j.toString();
+				}
+				if(curmonth == dateArr[0])
+				{
+                    temp = "<option value='" + curmonth + "' selected>" + curmonth + "</option>";
+				}
+				else temp = "<option value='" + curmonth + "'>" + curmonth + "</option>";
+
+				ddlmonth += temp;
+			}
+			ddlmonth += "</select>";
+
+			/************************************************************************************
+			 * DAY
+			 * ***********************************************************************************/
+
+            var ddlday = "<select name = 'dayStart' id = 'Day' class='DayDate' style = 'width:60px;'>"
+
+			ddlday += "<option value='00'>Day</option>";
+            for(var j = 1; j <= 31; j++)
+            {
+                var temp = "";
+                curday = j.toString();
+                if(j < 10)
+                {
+                    curday = '0' + j.toString();
+                }
+                if(curday == dateArr[1])
+                {
+                    temp = "<option value='" + curday + "' selected>" + curday + "</option>";
+                }
+                else temp = "<option value='" + curday + "'>" + curday + "</option>";
+
+                ddlday += temp;
+            }
+
+            /************************************************************************************
+             * YEAR
+             * ***********************************************************************************/
+            var ddlyear = "<select name = 'yearStart' id = 'Year' class='YearDate' style = 'width:70px;'>"
+			var dYear = new Date();
+            var cYear = dYear.getFullYear();
+            ddlyear += "<option value='00'>Year</option>";
+
+            for(var j = 1750; j <= cYear ; j++)
+            {
+                var temp = "";
+                curyear = j.toString();
+                if(j < 10)
+                {
+                    curyear = '0' + j.toString();
+                }
+                if(curyear == dateArr[2])
+                {
+                    temp = "<option value='" + curyear + "' selected>" + curyear + "</option>";
+                }
+                else temp = "<option value='" + curyear + "'>" + curyear + "</option>";
+
+                ddlyear += temp;
+            }
+
+            //cell1.innerHTML = "<select name = 'monthStart' id = 'Month' class='MonthDate' style = 'width:75px;'></select>";
+            cell1.innerHTML = ddlmonth;
+            cell2.innerHTML = ddlday;
+            cell3.innerHTML = ddlyear;
+        }
+    }
 }
 
 function displayJobNumberTableInfo(string, id) {
@@ -695,9 +809,7 @@ function addDateObject(Month, Day, Year)
 
 function dateObjectConstructor(Month, Day, Year)
 {
-	this.Month = Month;
-	this.Day = Day;
-	this.Year = Year;
+	this.Date = Month + "/" + Day + "/" + Year;
 }
 
 /*****************************************************************************
@@ -754,27 +866,6 @@ function addMapRow(collection,id)
             row.innerHTML += data;
         }
     });
-}
-
-function addClientRow(id){
-	var table = document.getElementById(id);
-	var row = table.insertRow(-1);
-	var cell1 = row.insertCell(0);
-	cell1.innerHTML = '<input type = "text" id = "Client" name = "Client" style="width: 225%">';
-}
-
-function addRelatedPaperRow(id) {
-	var table = document.getElementById(id);
-	var row = table.insertRow(-1);
-	var cell1 = row.insertCell(0);
-	cell1.innerHTML = '<input type = "text" class= "Input_Field" id = "RelatedPaper" name = "RelatedPaper">';
-}
-
-function addJobNumberRow(id) {
-	var table = document.getElementById(id);
-	var row = table.insertRow(-1);
-	var cell1 = row.insertCell(0);
-	cell1.innerHTML = '<input type="text" class= "Input_Field" id ="Job_Number">'
 }
 
 //functionality for "-" button

@@ -132,15 +132,18 @@ else header('Location: ../../');
 		<tr>
 			<td>
 				<select name = "monthStart" id = "Month" style = "width:75px;">
-					<?php $Render->GET_DDL_MONTH('')?>
+                    <?php $Render->GET_DDL_MONTH('')?>
+                </select>
 			</td>
 			<td>
 				<select name = "dayStart" id = "Day" style = "width:60px;">
-					<?php $Render->GET_DDL_DAY('')?>
+                    <?php $Render->GET_DDL_DAY('')?>
+                </select>
 			</td>
 			<td>
-				<select name = "yearStart" id = "Year" style = "width:70px;"> <option >
+				<select name = "yearStart" id = "Year" style = "width:70px;">
 					<?php $Render->GET_DDL_YEAR('')?>
+                </select>
 			</td>
 		</tr>
 	</table>
@@ -340,6 +343,28 @@ else header('Location: ../../');
 
 	//Hadnel on right click functions TODO: MOVE THIS LATER
 	map.on('contextmenu', onMapClick);
+
+    function addDateRow(id) {
+        var table = document.getElementById(id);
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+
+        cell1.innerHTML = "<select name = 'monthStart' id = 'Month' class='MonthDate' style = 'width:75px;'></select>";
+        cell2.innerHTML = "<select name = 'dayStart' id = 'Day' class='DayDate' style = 'width:60px;'></select>";
+        cell3.innerHTML = "<select name = 'yearStart' id = 'Year' class='YearDate' style = 'width:70px;'></select>";
+
+        var month = document.getElementsByClassName('MonthDate');
+        var day = document.getElementsByClassName('DayDate');
+        var year = document.getElementsByClassName('YearDate');
+        for(i = 0; i < month.length; i++) {
+            month[i].innerHTML = '<?php $Render->GET_DDL_MONTH('')?>';
+            day[i].innerHTML = '<?php $Render->GET_DDL_DAY('')?>';
+            year[i].innerHTML = '<?php $Render->GET_DDL_YEAR('')?>';
+        }
+
+    }
 
 
 
