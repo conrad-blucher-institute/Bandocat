@@ -19,10 +19,6 @@ $input = null;
 <body>
 <style>
 
-    footer {
-        position: fixed;
-        min-width: 100%;
-    }
 
     /*Account Stylesheet Adaptation from Collection Name */
     .Account{

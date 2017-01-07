@@ -224,7 +224,6 @@ $date = new DateHelper();
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
                                 </div>
                                 </span>
-                                <div class="cell" style="text-align: center" id="useredit">Last edited by: user</div>
                             </td>
                         </tr>
                     </form>
