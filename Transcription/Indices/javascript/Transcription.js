@@ -165,11 +165,9 @@ function displayEntryData(entryData)
 
 function removeTags(id) {
 	var clientsTag = $("#"+id).siblings("#"+id+"_tagsinput").children(".tag");
-		console.log(clientsTag.length);
 		for(var i=0; i < clientsTag.length; i++) {
 			var selecTags = [];
 			selecTags.push($(clientsTag[i]).text().substr(0, $(clientsTag[i]).text().length - 1).trim());
-			console.log(selecTags);
 			$("#" + id).removeTag(selecTags);
 		}
 }
@@ -188,11 +186,9 @@ function removeTags(id) {
 
 function displayClientTableInfo(string, id) {
 	var object = JSON.parse(string);
-	console.log(object.length);
 
 	for(var i = 0 ; i < object.length; i++) {
 		$("#"+id).addTag(object[i].client);
-		console.log(object[i].client);
 	}
 }
 
@@ -278,40 +274,40 @@ function displayMapTableInfo(collection,string, id)
  * DISPLAY DATE ON CLICK FOR THE FIRST SET OF SELECT ELEMENTS
  * ***********************************************************************************/
 function displayDateTableInfo(string, id) {
+	deleteTable(id);
+
     var dateJSON = JSON.parse(string);
 
-        for(var i = 0; i < dateJSON.length-1; i++) {
-
-            var dateStr = dateJSON[i].Date;
-            var dateArr = dateStr.split("/");
-            var monthOptions = document.getElementById("Month").childNodes;
-            for(i=0;i<monthOptions.length;i++) {
-				if (monthOptions[i].value == dateArr[0]){
-					monthOptions[i].selected = true;
-				}
-            }
-            var dayOptions = document.getElementById("Day").childNodes;
-            for(i=0;i<dayOptions.length;i++) {
-                if (dayOptions[i].value == dateArr[1]){
-                    dayOptions[i].selected = true;
-                }
-            }
-            var yearOptions = document.getElementById("Year").childNodes;
-            for(i=0;i<yearOptions.length;i++) {
-                if (yearOptions[i].value == dateArr[2]){
-                    yearOptions[i].selected = true;
-                }
-            }
-        }
+        // for(var i = 0; i < dateJSON.length-1; i++) {
+        //
+        //     var dateStr = dateJSON[i].Date;
+        //     var dateArr = dateStr.split("/");
+        //     var monthOptions = document.getElementById("Month").childNodes;
+        //     for(i=0;i<monthOptions.length;i++) {
+			// 	if (monthOptions[i].value == dateArr[0]){
+			// 		monthOptions[i].selected = true;
+			// 	}
+        //     }
+        //     var dayOptions = document.getElementById("Day").childNodes;
+        //     for(i=0;i<dayOptions.length;i++) {
+        //         if (dayOptions[i].value == dateArr[1]){
+        //             dayOptions[i].selected = true;
+        //         }
+        //     }
+        //     var yearOptions = document.getElementById("Year").childNodes;
+        //     for(i=0;i<yearOptions.length;i++) {
+        //         if (yearOptions[i].value == dateArr[2]){
+        //             yearOptions[i].selected = true;
+        //         }
+        //     }
+        // }
     /************************************************************************************
      * MONTH
      * ***********************************************************************************/
-        if(dateJSON.length > 1) {
-        for(var i = 1; i < dateJSON.length; i++) {
-            console.log(dateJSON[i].Date);
+       // if(dateJSON.length > 1) {
+        for(var i = 0; i < dateJSON.length; i++) {
             var dateStr = dateJSON[i].Date;
             var dateArr = dateStr.split("/");
-            console.log(dateArr)
 
             var table = document.getElementById(id);
             var row = table.insertRow(-1);
@@ -393,7 +389,7 @@ function displayDateTableInfo(string, id) {
             cell2.innerHTML = ddlday;
             cell3.innerHTML = ddlyear;
         }
-    }
+   // }
 }
 
 function displayJobNumberTableInfo(string, id) {
@@ -403,8 +399,6 @@ function displayJobNumberTableInfo(string, id) {
 		$("#"+id).addTag(object[i].jobnumber);
 	}
 }
-
-
 
 
 
@@ -437,7 +431,7 @@ $(function ()
         getFieldBookTableJSON();
         getMapTableJSON();
 		getRelatedPaperTableJSON();
-		getDateJSON();
+
 		getJobNoJSON();
 
         var entrycoordinates = JSON.parse($("#Entry_Coordinates").val());
@@ -459,7 +453,7 @@ $(function ()
         fieldBookInfo = document.getElementById("Field_Book_Info").value ;
         relatedPapersFileNo = document.getElementById("Related_Papers_Info").value;
 		mapInfo = document.getElementById("Map_Table_Info").value;
-        date = document.getElementById("Date").value;
+		date = getDateJSON();
         jobNumber = document.getElementById("Job_Numbers_Info").value;
         comments = document.getElementById("Comments").value;
 
@@ -554,7 +548,7 @@ function updateEntryData()
 	client = document.getElementById("Client_Info").value ;
 	fieldBookInfo = document.getElementById("Field_Book_Info").value ;
 	relatedPapersFileNo = document.getElementById("Related_Papers_Info").value;
-	date = document.getElementById("Date").value;
+	date = getDateJSON();
 	jobNumber = document.getElementById("Job_Numbers_Info").value;
 	mapInfo = document.getElementById("Map_Table_Info").value;
 	comments = document.getElementById("Comments").value;
@@ -682,7 +676,6 @@ function getClientTableJSON() {
 	}
 
 	//sets value of form to stringified JSON of clienttArray
-	console.log(JSON.stringify(tagCliArray));		//test
 	document.getElementById("Client_Info").value = JSON.stringify(tagCliArray);
 }
 
@@ -709,7 +702,6 @@ function getFieldBookTableJSON()
 
 
 	//sets value of form to stringified JSON of fieldBookObjectArray
-	console.log(JSON.stringify(fieldBookObjectArray));		//test
 	document.getElementById("Field_Book_Info").value = JSON.stringify(fieldBookObjectArray);
 }
 
@@ -740,7 +732,6 @@ function getRelatedPaperTableJSON()
 	}
 
 	//sets value of form to stringified JSON of clienttArray
-	console.log(JSON.stringify(tagRelPapArray));		//test
 	document.getElementById("Related_Papers_Info").value = JSON.stringify(tagRelPapArray);
 }
 
@@ -764,7 +755,6 @@ function getMapTableJSON()
 		mapObjectArray.push(mapObject);
 	}
 
-	console.log(JSON.stringify(mapObjectArray));		//Test
 	document.getElementById("Map_Table_Info").value = JSON.stringify(mapObjectArray);
 
 }
@@ -793,12 +783,10 @@ function getDateJSON() {
 		dateObject = addDateObject($('#Date_Table tr:eq(' + i + ') td:eq(0) option:selected').val(),
 			$('#Date_Table tr:eq(' + i + ') td:eq(1) option:selected').val(),
 			$('#Date_Table tr:eq(' + i + ') td:eq(2) option:selected').val());
-
 		objectArray.push(dateObject);
 	}
+	return JSON.stringify(objectArray);
 
-	console.log(JSON.stringify(objectArray));		//Test
-	document.getElementById("Date").value = JSON.stringify(objectArray);
 }
 
 function addDateObject(Month, Day, Year)
@@ -831,7 +819,6 @@ function getJobNoJSON() {
 	}
 
 	//sets value of form to stringified JSON of clienttArray
-	console.log(JSON.stringify(tagJobNoArray));		//test
 	document.getElementById("Job_Numbers_Info").value = JSON.stringify(tagJobNoArray);
 }
 

@@ -58,35 +58,17 @@ else header('Location: ../../');
 	<input type = "text" class= "Input_Field" id = "Description" name = "Description">
 
 <!--Client-->
-	<p class="fieldSubTitle" style="margin-top: 4%">Client:<span>
+	<p class="fieldSubTitle">Client(s):</p>
 	<table id="Client_Table" name="Client_Table">
 		<tr class="head">
 			<th></th>
 		</tr>
 		<tr>
-			<td><input type = "text" id = "Client" name = "Client" style="width: 225%"></td>
+			<td><input type = "text" id = "Client" name = "Client"></td>
 		</tr>
 	</table>
-
-<!--Field Book Number-->
-	<div id = "Table_Rows">
-		<button type = 'button' onclick = "addFieldRow('Field_Book_Table')" id = "addFieldBookRow">+</button>
-		<button type = 'button' onclick = "deleteTableRow('Field_Book_Table')" id = "deleteFieldBookRow">-</button>
-	</div>
-		
-	<table id = "Field_Book_Table" name = 'Field_Book_Table'>
-		<tr class = 'head'>
-			<th><p class="fieldSubTitle" >Field Book Number:</p></th>
-			<th><p class="fieldSubTitle" >Field Book Pages:</p></th>
-		</tr>
-		<tr>
-			<td><input type="text" class= "Input_Field" id = "Field_Book_Number"></td>
-			<td><input type="text" class= "Input_Field" id = "Field_Book_Page"></td>
-		</tr>
-	</table>
-
-<!--Related Papers-->
-	<p class="fieldSubTitle" style="margin-top: 4%">Related Paper:</p>
+	<!--Related Papers-->
+	<p class="fieldSubTitle">Related Paper(s):</p>
 	<table id="RelatedPaper_Table" name="RelatedPaper_Table">
 		<tr class="head">
 			<th></th>
@@ -96,12 +78,30 @@ else header('Location: ../../');
 		</tr>
 	</table>
 
+<!--Field Book Number-->
+	<br>
+	<div id="Table_Rows">
+		<button type = 'button' onclick = "addFieldRow('Field_Book_Table')" id = "addFieldBookRow">+</button>
+		<button type = 'button' onclick = "deleteTableRow('Field_Book_Table')" id = "deleteFieldBookRow">-</button>
+		</div>
+	<table id = "Field_Book_Table" name = 'Field_Book_Table'>
+		<tr class = 'head'>
+			<th><p class="fieldSubTitle" >Field Book Number:</p></th>
+			<th><p class="fieldSubTitle" >Field Book Pages:</p></th>
+		</tr>
+		<tr>
+			<td><input type="text" class= "Input_Field" id = "Field_Book_Number"></td>
+			<td><input type="text" class= "Input_Field" id = "Field_Book_Page"></td>
+
+		</tr>
+	</table>
+
 <!--Maps-->
-	<div id = "Table_Rows">
+	<br>
+	<div id="Table_Rows">
 		<button type = 'button' onclick = "addMapRow('<?php echo $collection;?>','Map_Table')" id = "addMapTableRow">+</button>
 		<button type = 'button' onclick = "deleteTableRow('Map_Table')" id = "deleteMapTableRow">-</button>
 	</div>
-		
 	<table id = "Map_Table" name = 'Map_Table'>
 		<tr class = 'head'>
 			<th><p class="fieldSubTitle" >Map Number:</p></th>
@@ -116,6 +116,7 @@ else header('Location: ../../');
 					?>
 				</select>
 			</td>
+
 		</tr>
 	</table>
 
@@ -149,7 +150,7 @@ else header('Location: ../../');
 	</table>
 
 <!--Job Number-->
-	<p class="fieldSubTitle" style="margin-top: 4%">Job Number:</p>
+	<p class="fieldSubTitle" style="margin-top: 4%">Job Number(s):</p>
 	<table id="JobNumber_Table" name="JobNumber_Table">
 		<tr class="head">
 			<th></th>
@@ -211,17 +212,19 @@ else header('Location: ../../');
 
     $("#Client_Table").tagsInput({
     	'delimiter':[';'],
-		'defaultText':'add a client'
+		'defaultText':''
+
 	});
 
 	$("#RelatedPaper_Table").tagsInput({
 		'delimiter':[';'],
-		'defaultText':'add a paper file no.'
+		'defaultText':''
+
 	});
 
 	$("#JobNumber_Table").tagsInput({
 		'delimiter':[';'],
-		'defaultText':'add a job no.'
+		'defaultText':''
 	});
 
 
@@ -350,19 +353,76 @@ else header('Location: ../../');
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
+		var ddlmonth = "<select name = 'monthStart' id = 'Month' class='MonthDate' style = 'width:75px;'>"
+		ddlmonth += "<option value='00'>Month</option>";
+		for(var j = 1; j <= 12; j++)
+		{
+			var temp = "";
+			curmonth = j.toString();
+			if(j < 10)
+			{
+				curmonth = '0' + j.toString();
+			}
+			temp = "<option value='" + curmonth + "'>" + curmonth + "</option>";
 
-        cell1.innerHTML = "<select name = 'monthStart' id = 'Month' class='MonthDate' style = 'width:75px;'></select>";
-        cell2.innerHTML = "<select name = 'dayStart' id = 'Day' class='DayDate' style = 'width:60px;'></select>";
-        cell3.innerHTML = "<select name = 'yearStart' id = 'Year' class='YearDate' style = 'width:70px;'></select>";
+			ddlmonth += temp;
+		}
+		ddlmonth += "</select>";
 
-        var month = document.getElementsByClassName('MonthDate');
-        var day = document.getElementsByClassName('DayDate');
-        var year = document.getElementsByClassName('YearDate');
-        for(i = 0; i < month.length; i++) {
-            month[i].innerHTML = '<?php $Render->GET_DDL_MONTH('')?>';
-            day[i].innerHTML = '<?php $Render->GET_DDL_DAY('')?>';
-            year[i].innerHTML = '<?php $Render->GET_DDL_YEAR('')?>';
-        }
+		/************************************************************************************
+		 * DAY
+		 * ***********************************************************************************/
+
+		var ddlday = "<select name = 'dayStart' id = 'Day' class='DayDate' style = 'width:60px;'>"
+
+		ddlday += "<option value='00'>Day</option>";
+		for(var j = 1; j <= 31; j++)
+		{
+			var temp = "";
+			curday = j.toString();
+			if(j < 10)
+			{
+				curday = '0' + j.toString();
+			}
+			temp = "<option value='" + curday + "'>" + curday + "</option>";
+
+			ddlday += temp;
+		}
+
+		/************************************************************************************
+		 * YEAR
+		 * ***********************************************************************************/
+		var ddlyear = "<select name = 'yearStart' id = 'Year' class='YearDate' style = 'width:70px;'>"
+		var dYear = new Date();
+		var cYear = dYear.getFullYear();
+		ddlyear += "<option value='00'>Year</option>";
+
+		for(var j = 1750; j <= cYear ; j++)
+		{
+			var temp = "";
+			curyear = j.toString();
+			if(j < 10)
+			{
+				curyear = '0' + j.toString();
+			}
+
+			temp = "<option value='" + curyear + "'>" + curyear + "</option>";
+
+			ddlyear += temp;
+		}
+
+        cell1.innerHTML = ddlmonth;
+        cell2.innerHTML = ddlday;
+        cell3.innerHTML = ddlyear;
+
+//        var month = document.getElementsByClassName('MonthDate');
+//        var day = document.getElementsByClassName('DayDate');
+//        var year = document.getElementsByClassName('YearDate');
+//        for(i = 0; i < month.length; i++) {
+//            month[i].innerHTML = '<?php //$Render->GET_DDL_MONTH('')?>//';
+//            day[i].innerHTML = '<?php //$Render->GET_DDL_DAY('')?>//';
+//            year[i].innerHTML = '<?php //$Render->GET_DDL_YEAR('')?>//';
+//        }
 
     }
 

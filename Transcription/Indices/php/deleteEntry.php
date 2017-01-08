@@ -10,7 +10,6 @@ our database. It recieves the coordinates of the entry to be deleted from an AJA
 a query to delete the entry that matches those coordinates and fileName in the database.  */
 
 	$updateObject = json_decode($_POST['deleteObject']);
-	var_dump($_POST);
 	//assigning all updateObject data to appropriate variable
     $collection = $updateObject -> collection;
 	$docID = $updateObject -> docID;

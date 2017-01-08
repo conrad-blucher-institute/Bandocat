@@ -12,7 +12,7 @@
 }
 
 #myForm{
-	font-size: 70%;
+	font-size: 0.5em;
 	margin-top: 4%;
 	margin-bottom: 4%;
 }
@@ -172,8 +172,6 @@
 }
 
 .tagsinput{
-    margin: 1% 0 5% 0;
-    width: 95% !important;
-    min-height: 50px !important;
-    height: 80px !important;
+    margin-left:4%;
+    width:94% !important;
 }
