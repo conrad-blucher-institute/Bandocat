@@ -58,7 +58,7 @@ else header('Location: ../../');
 	<input type = "text" class= "Input_Field" id = "Description" name = "Description">
 
 <!--Client-->
-	<p class="fieldSubTitle">Client(s):</p>
+	<span class="tooltip fieldSubTitle"><mark><b>Client(s):</b></mark><p hidden>Use semicolon (;) to separate the values</p></span>
 	<table id="Client_Table" name="Client_Table">
 		<tr class="head">
 			<th></th>
@@ -68,7 +68,7 @@ else header('Location: ../../');
 		</tr>
 	</table>
 	<!--Related Papers-->
-	<p class="fieldSubTitle">Related Paper(s):</p>
+	<span class="tooltip fieldSubTitle"><mark><b>Replated Paper(s):</b></mark><p hidden>Use semicolon (;) to separate the values</p></span>
 	<table id="RelatedPaper_Table" name="RelatedPaper_Table">
 		<tr class="head">
 			<th></th>
@@ -150,7 +150,8 @@ else header('Location: ../../');
 	</table>
 
 <!--Job Number-->
-	<p class="fieldSubTitle" style="margin-top: 4%">Job Number(s):</p>
+	<br>
+	<span class="tooltip fieldSubTitle"><mark><b>Job Number(s):</b></mark><p hidden>Use semicolon (;) to separate the values</p></span>
 	<table id="JobNumber_Table" name="JobNumber_Table">
 		<tr class="head">
 			<th></th>
@@ -432,4 +433,27 @@ else header('Location: ../../');
 </div>
 
 </body>
+<style>
+	mark {
+		background-color: #ccf5ff;
+	}
+	span.tooltip:hover p{
+		z-index: 10;
+		display: inline;
+		position: absolute;
+		border: 1px solid #000000;
+		background: #bfe9ff;
+		font-size: 14px;
+		font-weight: normal;
+		font-style: normal;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px; -o-border-radius: 3px;
+		border-radius: 3px;
+		-webkit-box-shadow: 4px 4px 4px #000000;
+		-moz-box-shadow: 4px 4px 4px #000000;
+		box-shadow: 4px 4px 4px #000000;
+		width: 200px;
+		padding: 10px 10px;
+	}
+</style>
 </html>
