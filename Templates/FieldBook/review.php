@@ -107,8 +107,8 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <div class="cell">
                                     <span class="label">Field Crew Member: </span>
-                                        <input type = "text" name = "fieldcrewmember[]" id = "fieldcrewmember" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
-                                        <span id="crewcell"></span>
+                                    <input type = "text" name = "fieldcrewmember[]" id = "fieldcrewmember" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
+                                    <span id="crewcell"></span>
                                 </div>
                                 <div class="cell">
                                 </div>
@@ -160,7 +160,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
-                                    <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
+                                    <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                                     <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                     <span>
                                     <?php if($session->hasWritePermission())

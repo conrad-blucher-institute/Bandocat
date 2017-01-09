@@ -24,7 +24,7 @@ class FieldBookDBHelper extends DBHelper
         if ($dbname != null && $dbname != "") {
             $this->getConn()->exec('USE ' . $dbname);
             /* PREPARE STATEMENT */
-            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT(?,@oLibraryIndex,@oBookName,@oPageType,@oPageNumber,@oComments,@oNeedsReview,@oFileName,@oTranscribed)");
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT(?,@oLibraryIndex,@oFBCollection,@oBookTitle,@oJobNumber,@oJobTitle,@oAuthor,@oStartDate,@oEndDate,@oComments,@oIndexedPage,@oIsBlankPage,@oIsSketch,@oIsLooseDoc,@oNeedsInput,@oNeedsReview,@oFileNamePath,@oThumbnail)");
             $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
@@ -32,7 +32,7 @@ class FieldBookDBHelper extends DBHelper
             /* EXECUTE STATEMENT */
             $call->execute();
             /* RETURN RESULT */
-            $select = $this->getConn()->query('SELECT @oLibraryIndex AS LibraryIndex,@oBookName AS BookName,@oPageType AS PageType,@oPageNumber AS PageNumber,@oComments AS Comments,@oNeedsReview AS NeedsReview,@oFileName AS FileName,@oTranscribed AS Transcribed');
+            $select = $this->getConn()->query('SELECT @oLibraryIndex AS LibraryIndex,@oFBCollection AS Collection,@oBookTitle AS BookTitle,@oJobNumber As JobNumber,@oJobTitle AS JobTitle,@oAuthor AS Author,@oStartDate AS StartDate,@oEndDate AS EndDate,@oComments AS Comments,@oIndexedPage AS IndexedPage,@oIsBlankPage AS IsBlankPage,@oIsSketch AS IsSketch,@oIsLooseDoc AS IsLooseDoc,@oNeedsInput AS NeedsInput,@oNeedsReview AS NeedsReview,@oFileNamePath AS FileNamePath,@oThumbnail AS Thumbnail');
             $result = $select->fetch(PDO::FETCH_ASSOC);
             return $result;
         } else return false;
@@ -102,42 +102,6 @@ class FieldBookDBHelper extends DBHelper
     }
 
 
-    function GET_FIELDBOOK_MAPKIND($collection)
-    {
-        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        $this->getConn()->exec('USE ' . $dbname);
-        $sth = $this->getConn()->prepare("SELECT `mapkindname` FROM `mapkind` ORDER BY `mapkindname` ASC");
-        $sth->execute();
-        $result = $sth->fetchAll(PDO::FETCH_NUM);
-        return $result;
-    }
-
-    //Function that queries the FIELDBOOKinventory book table and fetches bookname and bookID rows
-    function GET_FIELDBOOK_BOOK($collection){
-        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        $this->getConn()->exec('USE '. $dbname);
-        $sth = $this->getConn()->prepare("SELECT `bookname`, `bookID`  FROM `book`");
-        $sth->execute();
-        return $sth->fetchAll(PDO::FETCH_NUM);
-    }
-
-    function SP_TEMPLATE_FIELDBOOK_DOCUMENT_CHECK_EXIST_RECORD($collection, $iLibraryIndex)
-    {
-        $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        if ($db != null && $db != "") {
-            $this->getConn()->exec('USE ' . $db);
-            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENT_CHECK_EXIST_RECORD(?, @oReturnValue)");
-            if (!$call)
-                trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 200);
-            $call->execute();
-            $select = $this->getConn()->query('SELECT @oReturnValue');
-            $ret = $select->fetch(PDO::FETCH_NUM);
-            return (int)$ret[0];
-        }
-    }
-
-
     public function TEMPLATE_FIELDBOOK_CHECK_EXIST_RECORD_BY_FILENAME($collection, $iFileName)
     {
         $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
@@ -151,4 +115,45 @@ class FieldBookDBHelper extends DBHelper
         }
         else return false;
     }
+
+    function GET_FIELDBOOK_COLLECTION_LIST($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT `fbcollectionname` FROM `fbcollection`");
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        } else return false;
+    }
+
+    function GET_CREW_LIST($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT `crewname` FROM `crew`");
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        } else return false;
+    }
+
+    function GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$iDocID)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "") {
+            $sth = $this->getConn()->prepare("SELECT c.`crewname` FROM `documentcrew` AS dc LEFT JOIN  `crew` AS c ON dc.`crewID` = c.`crewID` WHERE dc.`docID` = ? ");
+            $sth->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            $sth->execute();
+
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        } else return false;
+    }
+
 }
