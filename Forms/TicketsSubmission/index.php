@@ -26,20 +26,20 @@ require '../../Library/DBHelper.php';
 </head>
 
 <body>
-<table id="thetable">
-    <tr class="Top_Row">
-        <th class="menu_left" id="thetable_left"> <?php include '../../Master/header.php'?> </th>
-        <th class="Top" colspan="2"><h2>Error reporting</h2></th>
-    </tr>
-    <tr class="Bottom" style="height: 10px"></tr>
-        <td class="menu_left" id="thetable_left"> <?php include '../../Master/sidemenu.php' ?> </td>
-        <td class="Bottom-right" colspan="2">
+    <div id="wrap">
+        <div id="main">
+            <div id="divleft">
+                <?php include '../../Master/header.php';
+                include '../../Master/sidemenu.php';?>
+            </div>
+            <div id="divright">
+                <h2 id="page_title">Error reporting</h2>
 
-            <div class= "Error_Input" >
+            <div id="divscroller" class= "Error_Input" >
                 <h3>Database Name:</h3>
                 <form name="frm_ticket" id="frm_ticket" method="post">
                 <select name="ddlDBname" id="ddlDBname" required>
-                    <option value="">Select...</option>
+                    <option value="">Select</option>
                     <?php
                         foreach($collection_array as $col)
                             echo "<option value='" . $col['collectionID'] .  "'>$col[displayname]</option>";
@@ -54,15 +54,14 @@ require '../../Library/DBHelper.php';
                 <br><input type = "submit" name = "btnSubmit" value = "Submit" class="bluebtn"/>
                 </form>
             </div>
-        </td>
-    </tr>
-</table>
+            </div>
+        </div>
+    <!--End of new user input form-->
 <?php include '../../Master/footer.php'; ?>
 </body>
 <script>
 
     $( document ).ready(function() {
-
         /* attach a submit handler to the form */
         $('#frm_ticket').submit(function (event) {
             /* stop form from submitting normally */

@@ -179,7 +179,7 @@
       interactive:true,
       defaultText:'add...',
       minChars:0,
-      height:'30px',
+      height:'25px',
       autocomplete: {selectFirst: false },
       hide:true,
       delimiter: ';',
@@ -188,7 +188,7 @@
       placeholderColor:'#ccc',
       autosize: true,
       comfortZone: 20,
-      inputPadding: 3*2
+      inputPadding: 2*2
     },options);
 
     	var uniqueIdCounter = 0;

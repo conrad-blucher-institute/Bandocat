@@ -46,12 +46,12 @@ $primaryKey = 'documentID';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(
-    array( 'db' => '`document`.`documentID`', 'dt' => 0, 'field' => 'documentID' ),
-    array( 'db' => '`document`.`booktitle`', 'dt' => 1,'field' => 'booktitle'),
-    array( 'db' => '`document`.`libraryindex`', 'dt' => 2, 'field' => 'libraryindex'),
-    array( 'db' => '`document`.`jobtitle`', 'dt' => 3,'field' => 'jobtitle'),
-    array( 'db' => '`document`.`needsinput`', 'dt' => 4,'field' => 'needsinput' ),
-    array( 'db' => '`document`.`needsreview`',  'dt' => 5, 'field' => 'needsreview' )
+    array( 'db' => 'documentID', 'dt' => 0),
+    array( 'db' => 'booktitle', 'dt' => 1),
+    array( 'db' => 'libraryindex', 'dt' => 2),
+    array( 'db' => 'jobtitle', 'dt' => 3),
+    array( 'db' => 'needsinput', 'dt' => 4 ),
+    array( 'db' => 'needsreview',  'dt' => 5 )
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -59,12 +59,11 @@ $columns = array(
  * server-side, there is no need to edit below this line.
  */
 
-require('../../Library/sspwithjoin.class.php');
+require('../../Library/ssp.class.php');
 if($action == "catalog")
-    $joinQuery = "FROM `document` WHERE `document`.`needsinput` = 1 ";
-else $joinQuery = "FROM `document` WHERE `document`.`needsinput` = 0 "; //review
-$extraWhere = "";
+    $where = "`document`.`needsinput` = 1";
+else $where = "`document`.`needsinput` = 0"; //review
 
 echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
+    SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, $where )
 );

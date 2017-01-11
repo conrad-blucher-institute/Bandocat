@@ -1,4 +1,7 @@
-<?php include '../../Library/DBHelper.php';
+<?php
+include '../../Library/SessionManager.php';
+include '../../Library/DBHelper.php';
+$session = new SessionManager();
 $UserDB = new DBHelper();
 $user= $_POST['data'];
 $fullname = $user[0];

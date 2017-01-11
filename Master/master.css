@@ -213,6 +213,12 @@ nav {
     text-overflow: ellipsis;
 }
 
+/*Mostly use for asterisk (required field)*/
+.required
+{
+    color: red;
+}
+
 /*end utility classes */
 
 /* _______________________________________________________________________________________  */

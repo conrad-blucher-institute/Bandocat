@@ -1,6 +1,13 @@
-<?php include '../../Library/DBHelper.php';
-require '../../Library/ControlsRender.php';
-$UserDB = new DBHelper();
+<?php
+//for admin use only
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+if($session->isAdmin()) {
+    require('../../Library/DBHelper.php');
+    $DB = new DBHelper();
+}
+else header('Location: ../../');
+require('../../Library/ControlsRender.php');
 $Render = new ControlsRender();
 ?>
 
@@ -90,7 +97,7 @@ $Render = new ControlsRender();
                                     <td style="text-align: center">
                                         <select id="permissionSelect" oninput="dropdownPermission()" required>
                                             <?php
-                                            $userArray = $UserDB->GET_USER_ROLE_FOR_DROPDOWN();
+                                            $userArray = $DB->GET_USER_ROLE_FOR_DROPDOWN();
                                             unset($userArray[1]);
                                             $Render->GET_DDL_ROLE($userArray, $userArray)
                                             ?>
@@ -110,15 +117,15 @@ $Render = new ControlsRender();
                             <!--User permission description-->
                             <div>
                                 <!--Inactive-->
-                                <p class="1" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[0]["description"]); ?></p>
+                                <p class="1" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[0]["description"]); ?></p>
                                 <!--Super Admin-->
-                                <p class="0" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[1]["description"]); ?></p>
+                                <p class="0" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[1]["description"]); ?></p>
                                 <!--Admin-->
-                                <p class="2" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[2]["description"]); ?></p>
+                                <p class="2" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[2]["description"]); ?></p>
                                 <!--Writer-->
-                                <p class="3" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[3]["description"]); ?></p>
+                                <p class="3" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[3]["description"]); ?></p>
                                 <!--Reader-->
-                                <p class="4" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[4]["description"]); ?></p>
+                                <p class="4" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[4]["description"]); ?></p>
                             </div>
 
 

@@ -22,7 +22,7 @@ else header('Location: ../../');
     <title><?php echo $config["DisplayName"]." Menu"; ?></title>
     <link rel = "stylesheet" type = "text/css" href = "CSS/Map_Collection.css" >
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-    <script type="text/javascript" src="ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 
 </head>
 <body>
@@ -62,7 +62,6 @@ else header('Location: ../../');
 </table>
 
 <?php include '../../Master/footer.php'; ?>
-
 </body>
 <style type="text/css">
     .Error_Input{margin-left: 10%; margin-top: 0%; background-color: #f1f1f1; border-radius: 10px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; padding-left: 8%; margin-right: 10%; padding-bottom: 5%; padding-top: 2.5%;}

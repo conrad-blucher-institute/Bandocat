@@ -33,7 +33,8 @@ if($action == "review" || $action == "catalog")
     $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT($collection,$data['txtDocID'],$crew_arrays);
 
     if($retval != false) {
-        $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtFBCollection'], $data['txtBookTitle'], $data['txtJobNumber'], $data['txtJobTitle'], $data['txtBookAuthor'], $startdate, $enddate, $data['txtComments'], $data['txtIndexedPage'], $data['rbBlankPage'], $data['rbSketch'], $data['rbLooseDocument'], 0, $data['rbNeedsReview']);
+        if($action == "catalog")
+            $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtFBCollection'], $data['txtBookTitle'], $data['txtJobNumber'], $data['txtJobTitle'], $data['txtBookAuthor'], $startdate, $enddate, $data['txtComments'], $data['txtIndexedPage'], $data['rbBlankPage'], $data['rbSketch'], $data['rbLooseDocument'], 0, $data['rbNeedsReview']);
         $comments = "Library Index:" . $data['txtLibraryIndex'];
         $valid = true;
     }
@@ -49,17 +50,17 @@ else if($action == "delete")
 
     $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
 
-    $frontThumbnailPath = $config['ThumbnailDir'].$info['Thumbnail'];
+    $frontThumbnailPath = "../../" . $config['ThumbnailDir'].$info['Thumbnail'];
 
     $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
     if($retval)
         $retval = $DB->TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$data['txtDocID']);
-
     if($retval) {
         if (file_exists($frontScanPath))
             unlink($frontScanPath);
-        if (file_exists($frontThumbnailPath))
+        if (file_exists($frontThumbnailPath)) {
             unlink($frontThumbnailPath);
+        }
     }
 }
 

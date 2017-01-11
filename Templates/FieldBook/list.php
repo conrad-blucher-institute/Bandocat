@@ -73,6 +73,7 @@ else header('Location: ../../');
                         "targets": 0
                     },
                     { "searchable": false, "targets": 0 },
+
                     //column : NeedsInput
                     {
                         "render": function ( data, type, row ) {
@@ -122,7 +123,7 @@ else header('Location: ../../');
                 }
             } );
             //resize height of the scroller
-            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 50);
         });
     </script>
 
@@ -140,12 +141,12 @@ else header('Location: ../../');
                 <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
                     <thead>
                     <tr>
-                        <th width="70px"></th>
+                        <th width="50px"></th>
                         <th width="200px">Book Title</th>
                         <th width="150px">Library Index</th>
                         <th>Job Title</th>
-                        <th width="100px">Needs Input</th>
-                        <th width="100px">Needs Review</th>
+                        <th width="50px">Needs Input</th>
+                        <th width="50px">Needs Review</th>
                         <th width="40px"></th>
                     </tr>
                     </thead>
