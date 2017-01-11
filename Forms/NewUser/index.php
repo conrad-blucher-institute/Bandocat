@@ -43,7 +43,7 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             Username:
                                         </label>
                                     </td>
@@ -53,7 +53,7 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             Password:
                                         </label>
                                     </td>
@@ -63,7 +63,7 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             Repeat Password:
                                         </label>
                                     </td>
@@ -83,7 +83,7 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             User Permission:
                                         </label>
                                     </td>
@@ -194,7 +194,7 @@ a procedure in the database that insert the information into the bandocatdb data
                     if (data == "NEW") {
                         console.log(data);
                         alert("New user created successfully.");
-                        window.location.href = "../NewUser/NewUser.php";
+                        location.reload(true);
                     }
                     else {
                         alert("New user created unsuccessfully, user name already exists.");
@@ -227,6 +227,24 @@ a procedure in the database that insert the information into the bandocatdb data
         font-size: 1em;
         padding: 1%;
     }
+
+    #innerRightTable {
+        border:1px solid black;
+        padding:30px;
+        border-radius: 6%;
+        margin: auto;
+        font-size: 1.0em;
+        line-height: 2em;
+    }
+    #innerRightTable td:first-child {
+        padding-right:50px;
+    }
+    input[type=text],input[type=password],select
+    {
+
+        font-size: 1.0em;
+    }
+    .required {color:red;}
 
 </style>
 </html>
