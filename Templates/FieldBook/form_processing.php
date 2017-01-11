@@ -22,35 +22,22 @@ if($action != "delete") {
     $startdate = $date->mergeDate($data['ddlStartMonth'], $data['ddlStartDay'], $data['ddlStartYear']);
     $enddate = $date->mergeDate($data['ddlEndMonth'], $data['ddlEndDay'], $data['ddlEndYear']);
 
-    $DB->SP_TEMPLATE_FIELDBOOK_AUTHOR_GET_ID_FROM_NAME_WITH_INSERT($collection, $data['txtAuthor'], $authorID);
-    $DB->SP_TEMPLATE_FIELDBOOK_COLLECTION_GET_ID_FROM_NAME_WITH_INSERT($collection, $data['txtCollection'], $collectionID);
-    //CREWS
 }
 $valid = false;
 $msg = array();
 $retval = false;
 //review
-if($action == "review")
+if($action == "review" || $action == "catalog")
 {
-    $valid = true;
-    $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection,$data['txtDocID'],$data['txtLibraryIndex'],$data['txtTitle'],$data['txtSubtitle'],
-        $data['rbIsMap'],$data['txtMapScale'],$data['rbHasNorthArrow'],$data['rbHasStreets'],
-        $data['rbHasPOI'],$data['rbHasCoordinates'],$data['rbHasCoast'],$data['rbNeedsReview'],
-        $data['txtComments'],$customerID,$startdate,$enddate,$data['txtFieldBookNumber'],$data['txtFieldBookPage'],$data['ddlReadability'],
-        $data['ddlRectifiability'],$companyID,$data['txtType'],$mediumID,$authorID);
-    $comments = "Library Index:" . $data['txtLibraryIndex'];
-    // array_push($msg,"Update Query: GOOD");
-}
-//catalog (new document)
-else if($action == "catalog") {
-    $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection,$data['txtDocID'],$data['txtLibraryIndex'],$data['txtTitle'],$data['txtSubtitle'],
-        $data['rbIsMap'],$data['txtMapScale'],$data['rbHasNorthArrow'],$data['rbHasStreets'],
-        $data['rbHasPOI'],$data['rbHasCoordinates'],$data['rbHasCoast'],$data['rbNeedsReview'],
-        $data['txtComments'],$customerID,$startdate,$enddate,$data['txtFieldBookNumber'],$data['txtFieldBookPage'],$data['ddlReadability'],
-        $data['ddlRectifiability'],$companyID,$data['txtType'],$mediumID,$authorID);
-    $comments = "Library Index:" . $data['txtLibraryIndex'];
-    // array_push($msg,"Update Query: GOOD");
+    $crew_arrays = json_decode($_POST['crews']);
+    $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT($collection,$data['txtDocID'],$crew_arrays);
 
+    if($retval != false) {
+        $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtFBCollection'], $data['txtBookTitle'], $data['txtJobNumber'], $data['txtJobTitle'], $data['txtBookAuthor'], $startdate, $enddate, $data['txtComments'], $data['txtIndexedPage'], $data['rbBlankPage'], $data['rbSketch'], $data['rbLooseDocument'], 0, $data['rbNeedsReview']);
+        $comments = "Library Index:" . $data['txtLibraryIndex'];
+        $valid = true;
+    }
+    // array_push($msg,"Update Query: GOOD");
 }
 else if($action == "delete")
 {
@@ -60,23 +47,20 @@ else if($action == "delete")
 
     $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
 
-    //Thumbnail conversion to jpg and path detection
-    //$thumbnailPath = str_replace('/','\\',$config['ThumbnailDir']);
     $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
 
-    $frontThumbnailPathTIF = $config['ThumbnailDir'].$info['FileName'];
-
-    $frontThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $frontThumbnailPathTIF);
+    $frontThumbnailPath = $config['ThumbnailDir'].$info['Thumbnail'];
 
     $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
+    if($retval)
+        $retval = $DB->TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$data['txtDocID']);
 
-    if (file_exists($frontScanPath))
-        unlink($frontScanPath);
-    if (file_exists($frontThumbnailPathJPG))
-        unlink($frontThumbnailPathJPG);
-
-//        if (file_exists($frontScanPath) || file_exists($frontThumbnailPathJPG) || file_exists($backScanPath) || file_exists($backThumbnailPathJPG))
-//            $errors++;
+    if($retval) {
+        if (file_exists($frontScanPath))
+            unlink($frontScanPath);
+        if (file_exists($frontThumbnailPath))
+            unlink($frontThumbnailPath);
+    }
 }
 
 //REPORT STATUS
@@ -97,10 +81,8 @@ if($retval == false || $valid == false)
 {
     require '../../Library/ErrorLogger.php';
     $LOG = new ErrorLogger();
-    if($action == "review")
+    if ($action == "catalog" || $action == "review")
         $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
-    else if ($action == "catalog")
-        $LOG->writeErrorLog($session->getUserName(),$collection,basename($_FILES['fileUpload']['name']),$msg,$comments);
     else if ($action == "delete")
         $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
 }

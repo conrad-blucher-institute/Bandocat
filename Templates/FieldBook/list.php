@@ -7,6 +7,9 @@ if(isset($_GET['col']) && isset($_GET['action'])) {
     $DB = new DBHelper();
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     $action = $_GET['action'];
+    if($action == "catalog")
+        $title = "Catalog";
+    else $title = "Review";
 }
 else header('Location: ../../');
 
@@ -20,7 +23,7 @@ else header('Location: ../../');
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Welcome to BandoCat!</title>
+    <title><?php echo $title;?> List</title>
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
@@ -105,7 +108,7 @@ else header('Location: ../../');
             if(action == "catalog")
                 table.column(5).visible(false);
             else table.column(4).visible(false);
-            <?php if($session->isAdmin()){ ?> //table.column(6).visible(true); <?php } ?>
+            <?php if($session->isAdmin()){ ?> table.column(6).visible(true); <?php } ?>
 
 
             // select row on single click

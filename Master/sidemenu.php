@@ -3,8 +3,12 @@
         <h4><a href="../../">Main Menu</a></h4>
     </div>
     <?php
-        //if user is admin, then add Admin section to the menu
-    echo '<div class="menu-item"><h4><a href="../../Form/Admin/">Admin</a></h4></div>';
+        //if user is admin, then add ActivityLog section to the menu
+    echo '<div class="menu-item menu-item_sub3"><h4>Admin</h4><ul>';
+    echo '<li><a href="../../Forms/ActivityLog/"/>Activity Log</li>';
+    echo '<li><a href="../../Forms/NewUser/"/>New User</li>';
+    echo '<li><a href="../../Forms/Ticket/"/>Ticket</li>';
+    echo '</ul></div>';
     ?>
     <div class="menu-item menu-item_sub5">
         <h4><a href="#">Collections</a></h4>

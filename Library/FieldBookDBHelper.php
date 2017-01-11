@@ -71,37 +71,98 @@ class FieldBookDBHelper extends DBHelper
 
     }
 
-    function SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection, $iDocID, $iLibraryIndex, $iBookID, $iPageType, $iPageNumber, $iComments, $iNeedsReview)
+    function SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection, $iDocID, $iLibraryIndex, $iFBCollectionName, $iBookTitle, $iJobNumber,$iJobTitle,$iAuthorName,$iStartDate,$iEndDate,$iComments,$iIndexedPage,$iIsBlankPage,$iIsSketch,$iIsLooseDoc,$iNeedsInput, $iNeedsReview)
     {
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection));
         $db = $dbname['DbName'];
         if ($db != null && $db != ""){
             $this->getConn()->exec('USE ' . $db);
             //Prepare Statement
-            if($iPageNumber == "")
-                $iPageNumber = null;
-            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE(?,?,?,?,?,?,?)");
+            if($iIndexedPage == "")
+                $iIndexedPage = null;
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE(:docID,:lib,:fbcol,:btitle,:jnumber,:jtitle,:author,:sdate,:edate,:comments,:indexed,:blankp,:sketch,:loose,:input,:review)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, ($iDocID), PDO::PARAM_INT, 11);
-            $call->bindParam(2, ($iLibraryIndex), PDO::PARAM_STR, 200);
-            $call->bindParam(3, ($iBookID), PDO::PARAM_INT, 11);
-            $call->bindParam(4, ($iPageType), PDO::PARAM_STR, 18);
-            $call->bindParam(5, ($iPageNumber), PDO::PARAM_INT, 11);
-            $call->bindParam(6, ($iComments), PDO::PARAM_STR, 40);
-            $call->bindParam(7, ($iNeedsReview), PDO::PARAM_INT, 1);
+            $call->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
+            $call->bindParam(':lib', ($iLibraryIndex), PDO::PARAM_STR);
+            $call->bindParam(':fbcol', ($iFBCollectionName), PDO::PARAM_STR);
+            $call->bindParam(':btitle',($iBookTitle), PDO::PARAM_STR);
+            $call->bindParam(':jnumber', ($iJobNumber), PDO::PARAM_STR);
+            $call->bindParam(':jtitle', ($iJobTitle), PDO::PARAM_STR);
+            $call->bindParam(':author', ($iAuthorName), PDO::PARAM_STR);
+            $call->bindParam(':sdate', ($iStartDate), PDO::PARAM_STR);
+            $call->bindParam(':edate', ($iEndDate), PDO::PARAM_STR);
+            $call->bindParam(':comments', ($iComments), PDO::PARAM_STR);
+            $call->bindParam(':indexed', ($iIndexedPage), PDO::PARAM_STR);
+            $call->bindParam(':blankp', ($iIsBlankPage), PDO::PARAM_INT);
+            $call->bindParam(':sketch', ($iIsSketch), PDO::PARAM_INT);
+            $call->bindParam(':loose', ($iIsLooseDoc), PDO::PARAM_INT);
+            $call->bindParam(':input', ($iNeedsInput), PDO::PARAM_INT);
+            $call->bindParam(':review', ($iNeedsReview), PDO::PARAM_INT);
             $ret = $call->execute();
             //Execute Statement
+            //var_dump($call->errorInfo());
             if($ret)
                 return true;
-
-            else
-                return print_r($call->errorInfo()[2]);
+            return false;
         }
 
     }
 
+    function TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$iDocID)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection));
+        $db = $dbname['DbName'];
+        $this->getConn()->exec('USE ' . $db);
+        //DELETE FROM DOCUMENTCREW BEFORE INSERTING
+        $sth = $this->getConn()->prepare("DELETE FROM `documentcrew` WHERE `documentcrew`.`docID` = :docID");
+        $sth->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if($ret)
+            return true;
+        return false;
+    }
 
+    /**********************************************
+     * Function: SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT
+     * Description: GIVEN document ID & array of CrewName, delete from documentcrew first, then call SP to select/insert from crew table, then insert into documentcrew
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * $iDocID (in Integer) - document ID
+     * $iCrewNameArray (in Array) - Array of Crew names
+     * Return value(s):
+     * True if good, False if fail
+     ***********************************************/
+
+    function SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT($collection,$iDocID,$iCrewNameArray)
+    {
+        //DELETE FROM DOCUMENTCREW BEFORE INSERTING
+        $ret = $this->TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$iDocID);
+        if($ret) {
+            $sth = $this->getConn()->prepare("DELETE FROM `documentcrew` WHERE `documentcrew`.`docID` = :docID");
+            $sth->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
+            $ret = $sth->execute();
+            if (!$ret)
+                return false;
+            //INSERT VALUES INTO DOCUMENTCREW, IF VALUE DOES NOT EXIST IN CREW TABLE, INSERT INTO CREW FIRST
+            foreach ($iCrewNameArray as $iCrew) {
+                $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT(:docID,:crew)");
+                if (!$call) {
+                    trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+                    return false;
+                }
+                $call->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
+                $call->bindParam(':crew', ($iCrew), PDO::PARAM_STR);
+                $ret = $call->execute();
+                if ($ret == false)
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    //FileName is unique on document table
     public function TEMPLATE_FIELDBOOK_CHECK_EXIST_RECORD_BY_FILENAME($collection, $iFileName)
     {
         $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];

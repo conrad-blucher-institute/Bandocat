@@ -63,7 +63,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Collection:</span>
-                                    <input type = "text" name = "txtCollection" id = "txtCollection" size="26" value="<?php echo $document['Collection'];?>" required list="lstCollection"/>
+                                    <input type = "text" name = "txtFBCollection" id = "txtFBCollection" size="26" value="<?php echo $document['Collection'];?>" required list="lstCollection"/>
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
@@ -107,7 +107,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <div class="cell">
                                     <span class="label">Field Crew Member: </span>
-                                        <input type = "text" name = "fieldcrewmember[]" id = "fieldcrewmember" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
+                                        <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
                                         <span id="crewcell"></span>
                                 </div>
                                 <div class="cell">
@@ -164,10 +164,10 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                     <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                     <span>
                                     <?php if($session->hasWritePermission())
-                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Upload' class='bluebtn'/>";}
+                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='bluebtn'/>";}
                                     ?>
                                         <div class="bluebtn" id="loader" style="display: none;">
-                                        Uploading
+                                        Updating
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
                                 </div>
                                 </span>
@@ -194,13 +194,21 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
         }
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
+            event.preventDefault();
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
+
+            //Append Crews data to the form
+            var crews = $('[name="txtCrew[]');
+            var array_crews = [];
+            for(var i = 0; i < crews.length; i++)
+                array_crews.push(crews[i].value);
+            formData.append("crews",JSON.stringify(array_crews));
+
             /*jquery that displays the three points loader*/
             $('#btnSubmit').css("display", "none");
             $('#loader').css("display", "inherit");
 
-            event.preventDefault();
             /* Send the data using post */
             $.ajax({
                 type: 'post',
@@ -218,7 +226,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                     }
                     for (var i = 0; i < json.length; i++){
                         if (json[i].includes("Success")) {
-                            window.close();
                             result = 1;
                         }
                         else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
@@ -229,7 +236,8 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                     }
                     alert(msg);
                     if (result == 1){
-                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                        $('#btnSubmit').css("display", "inherit");
+                        $('#loader').css("display", "none");
                     }
 
                 }
@@ -250,9 +258,9 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
         crew_count++;
         var objTo = document.getElementById('crewcell');
         var divtest = document.createElement("div");
-        divtest.innerHTML = '<br><span class="label">Field Crew Member ' + (crew_count+1) + '</span><input type = "text" name = "fieldcrewmember[]" autocomplete="off" id = "fieldcrewmember" size="24" value="' + val + '" list="lstCrew" />';
+        divtest.innerHTML = '<br><span class="label">Field Crew Member ' + (crew_count+1) + '</span><input type = "text" name = "txtCrew[]" autocomplete="off" id = "txtCrew" size="24" value="' + val + '" list="lstCrew" />';
+        objTo.appendChild(divtest);
 
-        objTo.appendChild(divtest)
     }
 </script>
 <style>
