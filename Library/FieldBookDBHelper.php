@@ -139,23 +139,22 @@ class FieldBookDBHelper extends DBHelper
         //DELETE FROM DOCUMENTCREW BEFORE INSERTING
         $ret = $this->TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$iDocID);
         if($ret) {
-            $sth = $this->getConn()->prepare("DELETE FROM `documentcrew` WHERE `documentcrew`.`docID` = :docID");
-            $sth->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
-            $ret = $sth->execute();
             if (!$ret)
                 return false;
             //INSERT VALUES INTO DOCUMENTCREW, IF VALUE DOES NOT EXIST IN CREW TABLE, INSERT INTO CREW FIRST
             foreach ($iCrewNameArray as $iCrew) {
-                $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT(:docID,:crew)");
-                if (!$call) {
-                    trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-                    return false;
+                if($iCrew != "") {
+                    $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT(:docID,:crew)");
+                    if (!$call) {
+                        trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+                        return false;
+                    }
+                    $call->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
+                    $call->bindParam(':crew', ($iCrew), PDO::PARAM_STR);
+                    $ret = $call->execute();
+                    if ($ret == false)
+                        return false;
                 }
-                $call->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
-                $call->bindParam(':crew', ($iCrew), PDO::PARAM_STR);
-                $ret = $call->execute();
-                if ($ret == false)
-                    return false;
             }
             return true;
         }

@@ -110,12 +110,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                     <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
                                     <span id="crewcell"></span>
                                 </div>
-                                <div class="cell">
-                                </div>
-                                <div class="cell">
-                                </div>
-                                <div class="cell">
-                                </div>
 
                             </td>
                             <td id="col2">
@@ -169,8 +163,9 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                         <div class="bluebtn" id="loader" style="display: none;">
                                         Updating
                                         <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
+                                    </span>
                                 </div>
-                                </span>
+
                             </td>
                         </tr>
                     </form>
@@ -237,6 +232,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                     if (result == 1){
                         $('#btnSubmit').css("display", "inherit");
                         $('#loader').css("display", "none");
+                        window.close();
                     }
 
                 }

@@ -47,6 +47,8 @@ body{
     padding-right: 2px;
 }
 
+#col1,#col2 {vertical-align: top;}
+
 
 /* _______________________________________________________________________________________  */
 /*Side menu classes */
