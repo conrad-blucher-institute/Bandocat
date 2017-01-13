@@ -70,6 +70,7 @@ class DBHelper
     //Constructor
     function DBHelper()
     {
+        /*if not currently connected, attempt to connect to DB*/
         if ($this->getConn() == null)
             $this->DB_CONNECT(null);
     }
@@ -89,6 +90,7 @@ class DBHelper
     {
         if ($db == "" || $db == null) //empty parameter = default = bandocatdb
             $db = "bandocatdb";
+        /* assign conn as a PHP Data Object, concat the host, user and pwd */
         $this->conn = new PDO('mysql:host=' . $this->getHost() . ';dbname=' . $db, $this->getUser(), $this->getPwd());
         return 0;
     }
@@ -135,18 +137,21 @@ class DBHelper
      * &$oRole (out ref int) - output User Role if success
      * Return value(s): NONE
      ***********************************************/
+
     function SP_USER_AUTH($iUsername, $iPassword, &$oMessage, &$oUserID, &$oRole)
     {
         /* PREPARE STATEMENT */
+
         $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRole)");
+
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         $call->bindParam(1, $iUsername, PDO::PARAM_STR, 32);
         $call->bindParam(2, md5($iPassword), PDO::PARAM_STR, 64);
 
         /* EXECUTE STATEMENT */
-        $call->execute();
-
+        $test = $call->execute();
+        var_dump($test);
         /* RETURN RESULT */
         $select = $this->getConn()->query('SELECT @oMessage,@oUserID, @oRole');
         $result = $select->fetch(PDO::FETCH_ASSOC);
