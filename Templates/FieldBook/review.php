@@ -26,7 +26,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Catalog Form</title>
+    <title>Edit/View Form</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
@@ -107,9 +107,10 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <div class="cell">
                                     <span class="label">Field Crew Member: </span>
-                                        <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
-                                        <span id="crewcell"></span>
+                                    <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
+                                    <span id="crewcell"></span>
                                 </div>
+
                             </td>
                             <td id="col2">
                                 <div class="cell">
@@ -153,7 +154,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
-                                    <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
+                                    <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                                     <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                     <span>
                                     <?php if($session->hasWritePermission())
@@ -188,7 +189,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
         }
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
-            event.preventDefault();
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
 
@@ -202,7 +202,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
             /*jquery that displays the three points loader*/
             $('#btnSubmit').css("display", "none");
             $('#loader').css("display", "inherit");
-
+            event.preventDefault();
             /* Send the data using post */
             $.ajax({
                 type: 'post',
@@ -238,6 +238,8 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                 }
             });
         });
+        //resize height of the scroller
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
     });
 </script>
 <script>
@@ -251,9 +253,9 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
         crew_count++;
         var objTo = document.getElementById('crewcell');
         var divtest = document.createElement("div");
-        divtest.innerHTML = '<br><span class="label">Field Crew Member ' + (crew_count+1) + '</span><input type = "text" name = "txtCrew[]" autocomplete="off" id = "txtCrew" size="24" value="' + val + '" list="lstCrew" />';
-        objTo.appendChild(divtest);
+        divtest.innerHTML = '<br><span class="label">Field Crew Member ' + (crew_count+1) + '</span><input type = "text" name = "txtCrew[]" autocomplete="off" id = "txtCrew[]" size="24" value="' + val + '" list="lstCrew" />';
 
+        objTo.appendChild(divtest)
     }
 </script>
 <style>

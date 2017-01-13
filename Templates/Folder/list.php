@@ -1,13 +1,18 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col'])) {
+if(isset($_GET['col']) && isset($_GET['action'])) {
     $collection = $_GET['col'];
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+    $action = $_GET['action'];
+    if($action == "catalog")
+        $title = "Catalog";
+    else $title = "Review";
 }
 else header('Location: ../../');
+
 
 ?>
 <!doctype html>
@@ -18,7 +23,7 @@ else header('Location: ../../');
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Welcome to BandoCat!</title>
+    <title><?php echo $title;?> List</title>
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
@@ -47,6 +52,7 @@ else header('Location: ../../');
         }
         $(document).ready(function() {
             var collection_config = <?php echo json_encode($config); ?>;
+            var action = '<?php echo $action; ?>';
             $('#page_title').text(collection_config.DisplayName);
 
             var table = $('#dtable').DataTable( {
@@ -59,18 +65,25 @@ else header('Location: ../../');
                     //column Document Index: Replace with Hyperlink
                     {
                         "render": function ( data, type, row ) {
-                            return "<a target='_blank' href='review.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Edit/View</a>" ;
+                            if(action == "catalog")
+                                var ret = "<a target='_blank' href='catalog.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Catalog</a>" ;
+                            else var ret = "<a target='_blank' href='review.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Edit/View</a>" ;
+                            return ret;
                         },
                         "targets": 0
                     },
                     { "searchable": false, "targets": 0 },
-                    //column : Page Number
+
+                    //column : NeedsInput
                     {
                         "render": function ( data, type, row ) {
-                            return data;
+                            if(data == 1)
+                                return "Yes";
+                            return "No";
                         },
                         "targets": 4
                     },
+                    { "searchable": false, "targets": 4 },
                     //column : NeedsReview
                     {
                         "render": function ( data, type, row ) {
@@ -80,6 +93,7 @@ else header('Location: ../../');
                         },
                         "targets": 5
                     },
+                    { "searchable": false, "targets": 5 },
                     {
                         "render": function ( data, type, row ) {
                             return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
@@ -88,13 +102,16 @@ else header('Location: ../../');
                     },
 
                 ],
-                "ajax": "list_processing.php?col=" + collection_config.Name
+                "ajax": "list_processing.php?col=" + collection_config.Name + "&action=" + '<?php echo $action; ?>'
             } );
 
             //hide first column (DocID)
             table.column(0).visible(true);
             table.column(6).visible(false);
-            <?php if($session->isAdmin()){ ?> //table.column(6).visible(true); <?php } ?>
+            if(action == "catalog")
+                table.column(5).visible(false);
+            else table.column(4).visible(false);
+            <?php if($session->isAdmin()){ ?> table.column(6).visible(true); <?php } ?>
 
 
             // select row on single click
@@ -108,7 +125,7 @@ else header('Location: ../../');
                 }
             } );
             //resize height of the scroller
-            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 50);
         });
     </script>
 
@@ -126,12 +143,12 @@ else header('Location: ../../');
                 <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
                     <thead>
                     <tr>
-                        <th width="70px"></th>
-                        <th width="100px">Page Type</th>
-                        <th>Library Index</th>
-                        <th width="280px">Book Title</th>
-                        <th width="50px">Page Number</th>
-                        <th width="30px">Needs Review</th>
+                        <th width="50px"></th>
+                        <th width="200px">LibraryIndex</th>
+                        <th width="150px">Document Title</th>
+                        <th>Classification</th>
+                        <th width="50px">Needs Input</th>
+                        <th width="50px">Needs Review</th>
                         <th width="40px"></th>
                     </tr>
                     </thead>

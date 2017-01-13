@@ -47,6 +47,8 @@ body{
     padding-right: 2px;
 }
 
+#col1,#col2 {vertical-align: top;}
+
 
 /* _______________________________________________________________________________________  */
 /*Side menu classes */
@@ -211,6 +213,12 @@ nav {
 {
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+/*Mostly use for asterisk (required field)*/
+.required
+{
+    color: red;
 }
 
 /*end utility classes */

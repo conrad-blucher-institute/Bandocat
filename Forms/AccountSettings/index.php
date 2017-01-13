@@ -3,6 +3,7 @@ include '../../Library/SessionManager.php';
 $session = new SessionManager();
 require '../../Library/DBHelper.php';
 $DB = new DBHelper();
+$userinfo = $DB->GET_USER_INFO($session->getUserID());
 ?>
 <!doctype html>
 <html lang="en">
@@ -14,8 +15,7 @@ $DB = new DBHelper();
 
     <title>Account Settings</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-    <script type="text/javascript" src="ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
-
+    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 </head>
 <body>
 <style>
@@ -32,7 +32,6 @@ $DB = new DBHelper();
         box-shadow: 0px 0px 2px;
         margin: auto;
         font-family: verdana;
-        text-align: center;
         vertical-align: middle;
         margin-top: 4%;
         margin-bottom: 9%;
@@ -48,81 +47,77 @@ $DB = new DBHelper();
         width: 50%;
     }
 
-
 </style>
     <script type="text/javascript" src="PasswordMatch.js"></script>
-    <div id="divleft">
+<div id="wrap">
+    <div id="main">
+        <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
-    </div>
+            include '../../Master/sidemenu.php';?>
+        </div>
     <div id="divright">
-            <h2>Account Settings</h2>
+            <h2 id="page_title">Account Settings</h2>
+        <div id="divscroller">
             <table class="Account_Table">
-                <form id="frm_auth" name="frm_auth" method="post" action="Account_Processing.php">
+                <form id="frmChangePassword" name="frmChangePassword">
                 <tr>
-                    <td>
+                    <td colspan="2" style="text-align: center">
                         <h4 class="Account_Title">Change Password</h4>
                     </td>
                 </tr>
                 <tr>
-                    <td><label class="unselectable" for="password">Current Password:</label>
+                    <td><label class="unselectable" for="txtOldPassword"><span class="required">*</span>Current Password:</label>
                     </td>
                     <td>
-                        <input type="password" id="txtPassword" name="oldpassword" >
+                        <input type="password" id="txtOldPassword" name="txtOldPassword" required >
                     </td>
                 </tr>
                 <tr>
-                    <td><label class="unselectable" for="pass1">New Password:</label></td>
+                    <td><label class="unselectable" for="txtPassword"><span class="required">*</span>New Password:</label></td>
                     <td>
-                        <input type="password" name="pass1" id="pass1">
+                        <input type="password" name="txtPassword" id="txtPassword" required>
                     </td>
 
                 </tr>
                 <tr>
-                    <td><label class="unselectable" for="pass2">Confirm Password:</label></td>
+                    <td><label class="unselectable" for="txtRepeatPassword"><span class="required">*</span>Confirm Password:</label></td>
                     <td>
-                        <input type="password" name="pass2" id="pass2" onkeyup="checkPass(); return false;">
+                        <input type="password" required name="txtRepeatPassword" id="txtRepeatPassword" onkeyup="checkPass(); return false;">
                     </td>
                 </tr>
-                <td colspan="2">
+                    <td colspan="2" style="text-align: center">
                     <br>
-                    <input type="submit" name = "login" id="btnSubmit" value="Update" class="bluebtn"/>
+                    <input type="submit" name = "btnSubmitChangePassword" id="btnSubmitChangePassword" value="Update" class="bluebtn"/>
                 </td>
                 </form>
-
-                <form id="frm_info" name="frm_info" method="post" action="dosomething.php">
+                <form id="frmUserInformation" name="frmUserInformation">
                 <tr>
-                    <td>
-                        <h4 class="Account_Title">User Information</h4>
+                    <td colspan="2" style="text-align: center">
+                        <br><br><h4 class="Account_Title">User Information</h4>
                     </td>
                 </tr>
                     <tr>
-                        <td><label class="unselectable" for="Email">Change Email:</label></td>
+                        <td><label class="unselectable" for="txtEmail">Change Email:</label></td>
                         <td>
-                            <input type="text" id="Email" name="Email">
+                            <input type="text" id="txtEmail" name="txtEmail" value="<?php echo $userinfo['email']; ?>">
                         </td>
                     </tr>
                 <tr>
-                    <td><label class="unselectable" for="CheckEmail">Re-enter Email:</label></td>
+                    <td><label class="unselectable" for="txtName"> Change Name:</label></td>
                     <td>
-                        <input type="text" id="CheckEmail" name="CheckEmail" onkeyup="checkEmail(); return false;">
+                        <input type="text" id="txtName" name="txtName" value="<?php echo $userinfo['fullname']; ?>">
                     </td>
                 </tr>
-                <tr>
-                    <td><label class="unselectable" for="ChangeName"> Change Name:</label></td>
-                    <td>
-                        <input type="text" id="ChangeName" name="ChangeName">
-                    </td>
-                </tr>
-                <td colspan="2">
+                <td colspan="2" style="text-align: center">
                     <br>
-                    <input type="submit" name = "login" id="btnSubmit" value="Update" class="bluebtn"/>
+                    <input type="submit" name = "btnSubmitUserInformation" id="btnSubmitUserInformation" value="Update" class="bluebtn"/>
                 </td>
                 </form>
-
             </table>
+            </div>
+        </div>
     </div>
-
+</div>
 <?php include '../../Master/footer.php'; ?>
 
 </body>

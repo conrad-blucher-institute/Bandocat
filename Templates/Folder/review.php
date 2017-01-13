@@ -27,7 +27,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Catalog Form</title>
+    <title>Edit/View Form</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
@@ -43,7 +43,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             include '../../Master/sidemenu.php' ?>
         </div>
         <div id="divright">
-            <h2 id="page_title"><?php echo $config['DisplayName'];?> Catalog Form</h2>
+            <h2 id="page_title"><?php echo $config['DisplayName'];?> Edit/View Form</h2>
             <div id="divscroller">
                 <form id="theform" name="theform" enctype="multipart/form-data" >
                 <table class="Account_Table">
@@ -132,7 +132,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 <div class="cell">
                     <table>
                         <tr>
-                            <td style="text-align: center">
+                            <td style="text-align: center" >
                                 <!--Scan of Front-->
                                 <span class="label" style="text-align: center">Scan of Front</span><br>
                                 <?php
@@ -145,11 +145,11 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                             <td style="text-align: center">
                                 <?php
                                 if($document['FileNameBack'] != '') //has Back Scan
-                                {
-                                    echo '<span class="label" style="text-align: center">Scan of Back</span><br>';
-                                    echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNameBackPath]\"><br><img src='" . '../../' . $config['ThumbnailDir'] . str_replace(".tif", ".jpg", $document['FileNameBack']) . " ' alt = Error /></a>";
-                                    echo "<br>Size: " . round(filesize($config['StorageDir'] . $document['FileNameBackPath']) / 1024 / 1024, 2) . " MB";
-                                    echo "<br><a href=\"download.php?file=$config[StorageDir]$document[FileNameBackPath]\">(Click to download)</a>";
+                                 {
+                                     echo '<span class="label" style="text-align: center">Scan of Back</span><br>';
+                                     echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNameBackPath]\"><br><img src='" . '../../' . $config['ThumbnailDir'] . str_replace(".tif", ".jpg", $document['FileNameBack']) . " ' alt = Error /></a>";
+                                     echo "<br>Size: " . round(filesize($config['StorageDir'] . $document['FileNameBackPath']) / 1024 / 1024, 2) . " MB";
+                                     echo "<br><a href=\"download.php?file=$config[StorageDir]$document[FileNameBackPath]\">(Click to download)</a>";
                                 }
                                 else
                                 {
@@ -157,6 +157,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                 }
                                 ?>
                             </td>
+
                         </tr>
                     </table>
                 </div>
@@ -166,7 +167,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                             <div class="cell" style="text-align: center;padding-top:20px">
                                 <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                 <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
-                                <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
+                                <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                                 <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                 <span>
                                 <?php if($session->hasWritePermission())

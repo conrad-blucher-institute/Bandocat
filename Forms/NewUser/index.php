@@ -1,6 +1,13 @@
-<?php include '../../Library/DBHelper.php';
-require '../../Library/ControlsRender.php';
-$UserDB = new DBHelper();
+<?php
+//for admin use only
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+if($session->isAdmin()) {
+    require('../../Library/DBHelper.php');
+    $DB = new DBHelper();
+}
+else header('Location: ../../');
+require('../../Library/ControlsRender.php');
 $Render = new ControlsRender();
 ?>
 
@@ -43,7 +50,7 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             Username:
                                         </label>
                                     </td>
@@ -53,7 +60,7 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             Password:
                                         </label>
                                     </td>
@@ -63,7 +70,7 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             Repeat Password:
                                         </label>
                                     </td>
@@ -83,14 +90,14 @@ $Render = new ControlsRender();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label>
+                                        <label><span class="required">*</span>
                                             User Permission:
                                         </label>
                                     </td>
                                     <td style="text-align: center">
                                         <select id="permissionSelect" oninput="dropdownPermission()" required>
                                             <?php
-                                            $userArray = $UserDB->GET_USER_ROLE_FOR_DROPDOWN();
+                                            $userArray = $DB->GET_USER_ROLE_FOR_DROPDOWN();
                                             unset($userArray[1]);
                                             $Render->GET_DDL_ROLE($userArray, $userArray)
                                             ?>
@@ -110,15 +117,15 @@ $Render = new ControlsRender();
                             <!--User permission description-->
                             <div>
                                 <!--Inactive-->
-                                <p class="1" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[0]["description"]); ?></p>
+                                <p class="1" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[0]["description"]); ?></p>
                                 <!--Super Admin-->
-                                <p class="0" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[1]["description"]); ?></p>
+                                <p class="0" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[1]["description"]); ?></p>
                                 <!--Admin-->
-                                <p class="2" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[2]["description"]); ?></p>
+                                <p class="2" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[2]["description"]); ?></p>
                                 <!--Writer-->
-                                <p class="3" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[3]["description"]); ?></p>
+                                <p class="3" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[3]["description"]); ?></p>
                                 <!--Reader-->
-                                <p class="4" style="display: none"><?php echo ($UserDB->GET_USER_ROLE_FOR_DROPDOWN()[4]["description"]); ?></p>
+                                <p class="4" style="display: none"><?php echo ($DB->GET_USER_ROLE_FOR_DROPDOWN()[4]["description"]); ?></p>
                             </div>
 
 
@@ -194,7 +201,7 @@ a procedure in the database that insert the information into the bandocatdb data
                     if (data == "NEW") {
                         console.log(data);
                         alert("New user created successfully.");
-                        window.location.href = "../NewUser/NewUser.php";
+                        location.reload(true);
                     }
                     else {
                         alert("New user created unsuccessfully, user name already exists.");
@@ -227,6 +234,24 @@ a procedure in the database that insert the information into the bandocatdb data
         font-size: 1em;
         padding: 1%;
     }
+
+    #innerRightTable {
+        border:1px solid black;
+        padding:30px;
+        border-radius: 6%;
+        margin: auto;
+        font-size: 1.0em;
+        line-height: 2em;
+    }
+    #innerRightTable td:first-child {
+        padding-right:50px;
+    }
+    input[type=text],input[type=password],select
+    {
+
+        font-size: 1.0em;
+    }
+    .required {color:red;}
 
 </style>
 </html>

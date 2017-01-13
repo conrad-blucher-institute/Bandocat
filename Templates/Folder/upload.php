@@ -1,5 +1,15 @@
 <?php
-//Menu
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+if(isset($_GET['col'])) {
+    $collection = $_GET['col'];
+}
+else header('Location: ../../');
+
+require '../../Library/DBHelper.php';
+require '../../Library/FolderDBHelper.php';
+$DB = new FolderDBHelper();
+$config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 ?>
 <!doctype html>
 <html lang="en">
@@ -9,57 +19,59 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Welcome to BandoCat!</title>
-    <link rel = "stylesheet" type = "text/css" href = "CSS/Map_Collection.css" >
+    <title><?php echo $config['DisplayName']; ?> Document Upload</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-    <script type="text/javascript" src="ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 
 </head>
 <body>
 <div id="wrap"></div>
-    <div id="main"></div>
-        <div id = "divleft">
-            <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
-        </div>
-        <div id="divright">
-            <h2>Document Upload</h2>
-            <table class="Collection_Table">
-                <tr>
-                    <td class="Collection_data">
-                        <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept="image/tiff" value="Input Map Information" multiple/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="Collection_data" >
-                        <div id="selectedFilesDiv">
-                            <table >
-                                <thead><span style="font-family: Algerian; font: message-box;">Selected Files</span>
-                                <tr>
-                                    <th>File Name</th>
-                                    <th>File Size</th>
-                                </tr>
-                                </thead>
-                                <tbody id="selectedFilesTable">
-                                    <tr><td>No files selected</td></tr>
-                                </tbody>
-                                <tfoot id="selectedFilesTableFooter" style="background: #007F3E; color: white;"></tfoot>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="Collection_data">
-                        <input type="submit" class="bluebtn" value="Upload files" id="btnUpload"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p style="color:red; font-size: .45em"><br>*Recommended number of files for uploading: 70 files<br>If a file is more than 100MB, upload no more than 5 files simultaneously </p>
-                    </td>
-                </tr>
-            </table>
-        </div>
+<div id="main"></div>
+<div id = "divleft">
+    <?php include '../../Master/header.php';
+    include '../../Master/sidemenu.php' ?>
+</div>
+<div id="divright">
+    <h2><?php echo $config['DisplayName']; ?> Document Upload</h2>
+    <table class="Collection_Table">
+        <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
+        <tr>
+            <td class="Collection_data" style="height:50px">
+                <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept="image/tiff" value="Input Map Information" multiple/>
+            </td>
+        </tr>
+        <tr>
+            <td class="Collection_data" >
+                <div id="selectedFilesDiv">
+                    <table >
+                        <thead><span style="font-family: Algerian; font: message-box;">Selected Files</span>
+                        <tr>
+                            <th>File Name</th>
+                            <th>File Size</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="selectedFilesTable">
+                        <tr><td>No files selected</td></tr>
+                        </tbody>
+                        <tfoot id="selectedFilesTableFooter" style="background: #007F3E; color: white;"></tfoot>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="Collection_data">
+                <input type="submit" class="bluebtn" value="Upload" id="btnUpload"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="color:red; font-size: .45em"><br>*Recommended number of files for uploading: 100 files<br>*Do not upload the back scan of a document without its front scan </p>
+            </td>
+        </tr>
+        </form>
+    </table>
+</div>
 
 
 <script>
@@ -81,27 +93,95 @@
         selTable.innerHTML = "";
 
         var files = e.target.files;
+        var filenames = [];
         for(var i=0; i<files.length; i++) {
             var f = files[i];
+            filenames.push(f.name);
             totalFsize += f.size/1000000;
             total = totalFsize.toFixed(2);
-                var row = selTable.insertRow(i);
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                cell1.innerHTML =  f.name;
-                cell2.innerHTML =  (f.size/1000000).toFixed(2) + " mb"
+            var row = selTable.insertRow(i);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            cell1.innerHTML =  f.name;
+            cell2.innerHTML =  (f.size/1000000).toFixed(2) + " MB";
+            cell3.id = f.name;
+            cell3.innerHTML = "Validating...";
         }
+
+        $.ajax({
+            url: 'upload_validating.php?col=<?php echo $collection; ?>',
+            type: 'POST',
+            data: {fileNames : filenames},
+            success: function (data) {
+                data = JSON.parse(data);
+                for(var i = 0; i < data.length; i++)
+                {
+                    if(data[i] == 0) {
+                        document.getElementById(filenames[i]).innerHTML = "Ready";
+                        document.getElementById(filenames[i]).style.color = "green";
+                    }
+                    else
+                    {
+                        document.getElementById(filenames[i]).style.color = "red";
+                        if (data[i] == 1)
+                            document.getElementById(filenames[i]).innerHTML = "Existed";
+                        else if (data[i] == 2)
+                            document.getElementById(filenames[i]).innerHTML = "No Front";
+                        else document.getElementById(filenames[i]).innerHTML = "Error";
+
+                    }
+                }
+            },
+        });
+
         var tableFooterLength = selTableFooter.rows.length;
         var row = selTableFooter.insertRow(0);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
-        cell1.innerHTML =  "Files ready for upload: " + files.length;
-        cell2.innerHTML += "Total file size upload: " + total+" mb";
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML =  "Total number of files: " + files.length;
+        cell2.innerHTML += "Total file size upload: " + total+" MB";
 
         if (tableFooterLength > 0){
             selTableFooter.deleteRow(1);
         }
     }
+
+    $("#frmUpload").submit(function(event)
+    {
+        $("#btnUpload").val("Uploading...");
+        $("#btnUpload").attr("disabled","true");
+        event.preventDefault();
+        var data = new FormData();
+        jQuery.each(jQuery('#file_array')[0].files, function(i, file) {
+            data.append('file:'+i, file);
+        });
+        $.ajax({
+            url: 'upload_processing.php?col=<?php echo $collection; ?>',
+            type: 'POST',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                data = JSON.parse(data);
+                for(var i = 0; i < data.length; i++)
+                {
+                    document.getElementById(data[i][0]).innerHTML = data[i][1];
+                    if(data[i][1] == "Uploaded")
+                        document.getElementById(data[i][0]).style.color = "green";
+                    else if (data[i][1] == "See Front")
+                        document.getElementById(data[i][0]).style.color = "black";
+                    else document.getElementById(data[i][0]).style.color = "red";
+                }
+                $("#btnUpload").val("Upload");
+                $("#btnUpload").attr("disabled","false");
+                alert("Upload completed!");
+            },
+        });
+
+    });
 
 </script>
 

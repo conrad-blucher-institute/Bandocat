@@ -139,6 +139,43 @@ if ($action == "catalog") {
         exec($exec1, $yaks1);
     }
 }
+//need to implement this
+if($action == "delete")
+{
+//    $errors = 0;
+//    $info = $DB->SP_TEMPLATE_INDICES_DOCUMENT_SELECT($data["txtCollection"], $data['txtDocID']);
+//    $comments = "Library Index: " . $info['LibraryIndex'];
+//
+//    $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
+//
+//    //Thumbnail conversion to jpg and path detection
+//    //$thumbnailPath = str_replace('/','\\',$config['ThumbnailDir']);
+//    $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
+//
+//    $frontThumbnailPathTIF = $config['ThumbnailDir'].$info['FileName'];
+//    $backThumbnailPathTIF = $config['ThumbnailDir'].$info['FileNameBack'];
+//
+//    $frontThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $frontThumbnailPathTIF);
+//    $backThumbnailPathJPG = "../../".str_replace(".tif", ".jpg", $backThumbnailPathTIF);
+//
+//    $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
+//
+//    if (file_exists($frontScanPath))
+//        unlink($frontScanPath);
+//    if (file_exists($frontThumbnailPathJPG))
+//        unlink($frontThumbnailPathJPG);
+//
+//    if ($info['FileNameBack'] !== "")
+//    {
+//        if (file_exists($backScanPath))
+//            unlink($backScanPath);
+//        if (file_exists($backThumbnailPathJPG))
+//            unlink($backThumbnailPathJPG);
+//    }
+
+}
+
+
     //REPORT STATUS
     if ($retval == false) {
         $logstatus = "fail";

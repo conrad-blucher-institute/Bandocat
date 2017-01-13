@@ -156,6 +156,26 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: GET_USER_INFO
+     * Description: GIVEN USERID, RETURN USER INFO - Note: for future modification, do not include password in the output
+     * Parameter(s):
+     * $userID (in int) - user ID
+     * Return value(s):
+     * $result  (associative array) - return associative array of user info
+     ***********************************************/
+    function GET_USER_INFO($userID)
+    {
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        //r.name = role name
+        $sth = $this->getConn()->prepare("SELECT `username`,`fullname`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` WHERE `userID` = :userID LIMIT 1");
+        $sth->bindParam(':userID',$userID,PDO::PARAM_INT);
+        $sth->execute();
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**********************************************
      * Function: GET_COLLECTION_FOR_DROPDOWN
      * Description: GET COLLECTIONS INFO FOR DROPDOWN
      * Parameter(s): NONE
