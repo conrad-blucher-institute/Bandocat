@@ -48,9 +48,6 @@
         </ul>
     </div>
     <div class="menu-item">
-        <h4><a href="../../../" id="sidemenu_logout">BandoCat 1.0</a></h4>
-    </div>
-    <div class="menu-item">
         <h4><a href="../../Forms/Logout/" id="sidemenu_logout">Logout as <?php echo $session->getUsername(); ?></a></h4>
     </div>
 </nav>

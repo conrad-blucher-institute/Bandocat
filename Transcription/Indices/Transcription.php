@@ -68,7 +68,7 @@ else header('Location: ../../');
 		</tr>
 	</table>
 	<!--Related Papers-->
-	<span class="tooltip fieldSubTitle"><mark><b>Replated Paper File No.(s):</b></mark><p hidden>Use semicolon (;) to separate the values</p></span>
+	<span class="tooltip fieldSubTitle"><mark><b>Replated Papers File No.(s):</b></mark><p hidden>Use semicolon (;) to separate the values</p></span>
 	<table id="RelatedPaper_Table" name="RelatedPaper_Table">
 		<tr class="head">
 			<th></th>

@@ -66,7 +66,7 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
         </tr>
         <tr>
             <td>
-                <p style="color:red; font-size: .45em"><br>*Recommended number of files for uploading: 100 files<br>*Do not upload a back document without front </p>
+                <p style="color:red; font-size: .45em"><br>*Recommended number of files for uploading: 100 files<br>*Do not upload the back scan of a document without its front scan </p>
             </td>
         </tr>
         </form>
