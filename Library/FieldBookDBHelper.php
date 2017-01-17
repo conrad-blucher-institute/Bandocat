@@ -25,7 +25,7 @@ class FieldBookDBHelper extends DBHelper
             $this->getConn()->exec('USE ' . $dbname);
             /* PREPARE STATEMENT */
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT(?,@oLibraryIndex,@oFBCollection,@oBookTitle,@oJobNumber,@oJobTitle,@oAuthor,@oStartDate,@oEndDate,@oComments,@oIndexedPage,@oIsBlankPage,@oIsSketch,@oIsLooseDoc,@oNeedsInput,@oNeedsReview,@oFileNamePath,@oThumbnail)");
-            $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            $call->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
 
@@ -208,7 +208,7 @@ class FieldBookDBHelper extends DBHelper
         $this->getConn()->exec('USE ' . $dbname);
         if ($dbname != null && $dbname != "") {
             $sth = $this->getConn()->prepare("SELECT c.`crewname` FROM `documentcrew` AS dc LEFT JOIN  `crew` AS c ON dc.`crewID` = c.`crewID` WHERE dc.`docID` = ? ");
-            $sth->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            $sth->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             $sth->execute();
 
             $result = $sth->fetchAll(PDO::FETCH_NUM);

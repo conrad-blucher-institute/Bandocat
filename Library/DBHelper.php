@@ -68,7 +68,7 @@ class DBHelper
 
 
     //Constructor
-    function DBHelper()
+    function __construct()
     {
         /*if not currently connected, attempt to connect to DB*/
         if ($this->getConn() == null)
@@ -143,15 +143,14 @@ class DBHelper
         /* PREPARE STATEMENT */
 
         $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRole)");
-
+        $iPassword = md5($iPassword);
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         $call->bindParam(1, $iUsername, PDO::PARAM_STR, 32);
-        $call->bindParam(2, md5($iPassword), PDO::PARAM_STR, 64);
+        $call->bindParam(2, $iPassword, PDO::PARAM_STR, 64);
 
         /* EXECUTE STATEMENT */
-        $test = $call->execute();
-        var_dump($test);
+        $call->execute();
         /* RETURN RESULT */
         $select = $this->getConn()->query('SELECT @oMessage,@oUserID, @oRole');
         $result = $select->fetch(PDO::FETCH_ASSOC);
@@ -299,8 +298,9 @@ class DBHelper
         $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,@oMessage)");
         if (!$call)
             trigger_error("SQL failed: ". $this->getConn()->errorCode()."-".$this->conn->erorInfo()[0]);
+        $iPassword = md5($iPassword);
         $call->bindParam(1, $iUsername, PDO::PARAM_STR, strlen($iUsername));
-        $call->bindParam(2, md5($iPassword), PDO::PARAM_STR, strlen($iPassword));
+        $call->bindParam(2, $iPassword, PDO::PARAM_STR, strlen($iPassword));
         $call->bindParam(3, $iFullname, PDO::PARAM_STR, strlen($iFullname));
         $call->bindParam(4, $iEmail, PDO::PARAM_STR, strlen($iEmail));
         $call->bindParam(5, $iRoleID, PDO::PARAM_INT);
@@ -397,7 +397,7 @@ class DBHelper
         $call = $this->getConn()->prepare("CALL SP_ADMIN_TICKET_SELECT(?,@oSubject,@oSubmissionDate,@oSolvedDate,@oPoster,@oCollection,@oDescription,@oNotes,@oSolver,@oStatus)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-        $call->bindParam(1, htmlspecialchars($iTicketID), PDO::PARAM_INT, 11);
+        $call->bindParam(1, $iTicketID, PDO::PARAM_INT);
         /* EXECUTE STATEMENT */
         $call->execute();
         /* RETURN RESULT */
@@ -432,7 +432,7 @@ class DBHelper
         $logsth = $this->getConn()->prepare("SELECT `action`, `user`.`username`, `timestamp` FROM `log` LEFT JOIN `user` ON `user`.`userID`=`log`.`userID` WHERE `docID` = ? AND `collectionID` = ?");
         if (!$logsth)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-        $logsth->bindParam(1, htmlspecialchars($docID), PDO::PARAM_INT, 11);
+        $logsth->bindParam(1, $docID, PDO::PARAM_INT, 11);
         $logsth->bindParam(2, $dbID, PDO::PARAM_INT, 11);
         $logsth->execute();
         $logArray = $logsth->fetchAll();
@@ -573,7 +573,7 @@ class DBHelper
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_SELECT(?,@oLibraryIndex,@oTitle,@oSubtitle,@oIsMap,@oMapScale,@oHasNorthArrow,@oHasStreets,@oHasPOI,@oHasCoordinates,@oHasCoast,@oFileName,@oFileNameBack,@oNeedsReview,@oComments,@oCustomerName,@oStartDate,@oEndDate,@oFieldBookNumber,@oFieldBookPage,@oReadability,@oRectifiability,@oCompanyName,@oType,@oMedium,@oAuthorName,@oFileNamePath,@oFileNameBackPath)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            $call->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             /* EXECUTE STATEMENT */
             $call->execute();
             /* RETURN RESULT */
@@ -596,30 +596,30 @@ class DBHelper
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_UPDATE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
-            $call->bindParam(2, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 40);
-            $call->bindParam(3, htmlspecialchars($iTitle), PDO::PARAM_STR, 200);
-            $call->bindParam(4, htmlspecialchars($iSubtitle), PDO::PARAM_STR, 300);
-            $call->bindParam(5, htmlspecialchars($iIsMap), PDO::PARAM_INT, 1);
-            $call->bindParam(6, htmlspecialchars($iMapScale), PDO::PARAM_STR, 1);
-            $call->bindParam(7, htmlspecialchars($iHasNorthArrow), PDO::PARAM_INT, 1);
-            $call->bindParam(8, htmlspecialchars($iHasStreets), PDO::PARAM_INT, 1);
-            $call->bindParam(9, htmlspecialchars($iHasPOI), PDO::PARAM_INT, 1);
-            $call->bindParam(10, htmlspecialchars($iHasCoordinates), PDO::PARAM_INT, 1);
-            $call->bindParam(11, htmlspecialchars($iHasCoast), PDO::PARAM_INT, 1);
-            $call->bindParam(12, htmlspecialchars($iNeedsReview), PDO::PARAM_INT, 1);
-            $call->bindParam(13, htmlspecialchars($iComments), PDO::PARAM_LOB);
-            $call->bindParam(14, htmlspecialchars($iCustomerID), PDO::PARAM_INT, 11);
-            $call->bindParam(15, htmlspecialchars($iStartDate), PDO::PARAM_STR, 10);
-            $call->bindParam(16, htmlspecialchars($iEndDate), PDO::PARAM_STR, 10);
-            $call->bindParam(17, htmlspecialchars($iFieldBookNumber), PDO::PARAM_INT, 5);
-            $call->bindParam(18, htmlspecialchars($iFieldBookPage), PDO::PARAM_STR, 10);
-            $call->bindParam(19, htmlspecialchars($iReadability), PDO::PARAM_STR, 10);
-            $call->bindParam(20, htmlspecialchars($iRectifiability), PDO::PARAM_STR, 10);
-            $call->bindParam(21, htmlspecialchars($iCompanyID), PDO::PARAM_INT, 11);
-            $call->bindParam(22, htmlspecialchars($iType), PDO::PARAM_STR, 200);
-            $call->bindParam(23, htmlspecialchars($iMedium), PDO::PARAM_INT, 11);
-            $call->bindParam(24, htmlspecialchars($iAuthorID), PDO::PARAM_INT, 11);
+            $call->bindParam(1, $iDocID, PDO::PARAM_INT);
+            $call->bindParam(2, $iLibraryIndex, PDO::PARAM_STR);
+            $call->bindParam(3, $iTitle, PDO::PARAM_STR);
+            $call->bindParam(4, $iSubtitle, PDO::PARAM_STR);
+            $call->bindParam(5, $iIsMap, PDO::PARAM_INT);
+            $call->bindParam(6, $iMapScale, PDO::PARAM_STR);
+            $call->bindParam(7, $iHasNorthArrow, PDO::PARAM_INT);
+            $call->bindParam(8, $iHasStreets, PDO::PARAM_INT);
+            $call->bindParam(9, $iHasPOI, PDO::PARAM_INT);
+            $call->bindParam(10, $iHasCoordinates, PDO::PARAM_INT);
+            $call->bindParam(11, $iHasCoast, PDO::PARAM_INT);
+            $call->bindParam(12, $iNeedsReview, PDO::PARAM_INT);
+            $call->bindParam(13, $iComments, PDO::PARAM_STR);
+            $call->bindParam(14, $iCustomerID, PDO::PARAM_INT);
+            $call->bindParam(15, $iStartDate, PDO::PARAM_STR);
+            $call->bindParam(16, $iEndDate, PDO::PARAM_STR);
+            $call->bindParam(17, $iFieldBookNumber, PDO::PARAM_INT);
+            $call->bindParam(18, $iFieldBookPage, PDO::PARAM_STR);
+            $call->bindParam(19, $iReadability, PDO::PARAM_STR);
+            $call->bindParam(20, $iRectifiability, PDO::PARAM_STR);
+            $call->bindParam(21, $iCompanyID, PDO::PARAM_INT);
+            $call->bindParam(22, $iType, PDO::PARAM_STR);
+            $call->bindParam(23, $iMedium, PDO::PARAM_INT);
+            $call->bindParam(24, $iAuthorID, PDO::PARAM_INT);
 
             /* EXECUTE STATEMENT */
             return $call->execute();
@@ -639,33 +639,33 @@ class DBHelper
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 40);
-            $call->bindParam(2, htmlspecialchars($iTitle), PDO::PARAM_STR, 200);
-            $call->bindParam(3, htmlspecialchars($iSubtitle), PDO::PARAM_STR, 300);
-            $call->bindParam(4, htmlspecialchars($iIsMap), PDO::PARAM_INT, 1);
-            $call->bindParam(5, htmlspecialchars($iMapScale), PDO::PARAM_STR, 1);
-            $call->bindParam(6, htmlspecialchars($iHasNorthArrow), PDO::PARAM_INT, 1);
-            $call->bindParam(7, htmlspecialchars($iHasStreets), PDO::PARAM_INT, 1);
-            $call->bindParam(8, htmlspecialchars($iHasPOI), PDO::PARAM_INT, 1);
-            $call->bindParam(9, htmlspecialchars($iHasCoordinates), PDO::PARAM_INT, 1);
-            $call->bindParam(10, htmlspecialchars($iHasCoast), PDO::PARAM_INT, 1);
-            $call->bindParam(11, htmlspecialchars($iFileName), PDO::PARAM_STR, 50);
-            $call->bindParam(12, htmlspecialchars($iFileNameBack), PDO::PARAM_STR, 50);
-            $call->bindParam(13, htmlspecialchars($iNeedsReview), PDO::PARAM_INT, 1);
-            $call->bindParam(14, htmlspecialchars($iComments), PDO::PARAM_LOB);
-            $call->bindParam(15, htmlspecialchars($iCustomerID), PDO::PARAM_INT, 11);
-            $call->bindParam(16, htmlspecialchars($iStartDate), PDO::PARAM_STR, 10);
-            $call->bindParam(17, htmlspecialchars($iEndDate), PDO::PARAM_STR, 10);
-            $call->bindParam(18, htmlspecialchars($iFieldBookNumber), PDO::PARAM_INT, 5);
-            $call->bindParam(19, htmlspecialchars($iFieldBookPage), PDO::PARAM_STR, 10);
-            $call->bindParam(20, htmlspecialchars($iReadability), PDO::PARAM_STR, 10);
-            $call->bindParam(21, htmlspecialchars($iRectifiability), PDO::PARAM_STR, 10);
-            $call->bindParam(22, htmlspecialchars($iCompanyID), PDO::PARAM_INT, 11);
-            $call->bindParam(23, htmlspecialchars($iType), PDO::PARAM_STR, 200);
-            $call->bindParam(24, htmlspecialchars($iMedium), PDO::PARAM_INT, 11);
-            $call->bindParam(25, htmlspecialchars($iAuthorID), PDO::PARAM_INT, 11);
-            $call->bindParam(26, htmlspecialchars($iFileNamePath), PDO::PARAM_STR, 200);
-            $call->bindParam(27, htmlspecialchars($iFileNameBackPath), PDO::PARAM_STR, 200);
+            $call->bindParam(1, $iLibraryIndex, PDO::PARAM_STR);
+            $call->bindParam(2, $iTitle, PDO::PARAM_STR);
+            $call->bindParam(3, $iSubtitle, PDO::PARAM_STR);
+            $call->bindParam(4, $iIsMap, PDO::PARAM_INT);
+            $call->bindParam(5, $iMapScale, PDO::PARAM_STR);
+            $call->bindParam(6, $iHasNorthArrow, PDO::PARAM_INT);
+            $call->bindParam(7, $iHasStreets, PDO::PARAM_INT);
+            $call->bindParam(8, $iHasPOI, PDO::PARAM_INT);
+            $call->bindParam(9, $iHasCoordinates, PDO::PARAM_INT);
+            $call->bindParam(10, $iHasCoast, PDO::PARAM_INT);
+            $call->bindParam(11, $iFileName, PDO::PARAM_STR);
+            $call->bindParam(12, $iFileNameBack, PDO::PARAM_STR);
+            $call->bindParam(13, $iNeedsReview, PDO::PARAM_INT);
+            $call->bindParam(14, $iComments, PDO::PARAM_STR);
+            $call->bindParam(15, $iCustomerID, PDO::PARAM_INT);
+            $call->bindParam(16, $iStartDate, PDO::PARAM_STR);
+            $call->bindParam(17, $iEndDate, PDO::PARAM_STR);
+            $call->bindParam(18, $iFieldBookNumber, PDO::PARAM_INT);
+            $call->bindParam(19, $iFieldBookPage, PDO::PARAM_STR);
+            $call->bindParam(20, $iReadability, PDO::PARAM_STR);
+            $call->bindParam(21, $iRectifiability, PDO::PARAM_STR);
+            $call->bindParam(22, $iCompanyID, PDO::PARAM_INT);
+            $call->bindParam(23, $iType, PDO::PARAM_STR);
+            $call->bindParam(24, $iMedium, PDO::PARAM_INT);
+            $call->bindParam(25, $iAuthorID, PDO::PARAM_INT);
+            $call->bindParam(26, $iFileNamePath, PDO::PARAM_STR);
+            $call->bindParam(27, $iFileNameBackPath, PDO::PARAM_STR);
 
             /* EXECUTE STATEMENT */
             $ret = $call->execute();
@@ -688,7 +688,7 @@ class DBHelper
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_CHECK_EXIST_RECORD(?,@oReturnValue)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 40);
+            $call->bindParam(1, $iLibraryIndex, PDO::PARAM_STR);
             /* EXECUTE STATEMENT */
             $call->execute();
             /* RETURN RESULT */

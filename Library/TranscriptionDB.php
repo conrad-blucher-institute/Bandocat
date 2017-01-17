@@ -56,7 +56,7 @@ trait TranscriptionTrait
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD(?,@oReturnValue)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->getConn()->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 40);
+            $call->bindParam(1, $iLibraryIndex, PDO::PARAM_STR, 40);
             /* EXECUTE STATEMENT */
             $call->execute();
             /* RETURN RESULT */
