@@ -94,7 +94,7 @@ class FolderDBHelper extends DBHelper
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FOLDER_DOCUMENT_SELECT(?,@oLibraryIndex,@oTitle,@oInSubfolder,@oSubfolderComment,@oClassification,@oClassificationComment,@oFileName,@oFileNameBack,@oNeedsInput,@oNeedsReview,@oFileNamePath,@oFileNameBackPath,@oComments,@oStartDate,@oEndDate)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            $call->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             /* EXECUTE STATEMENT */
             $call->execute();
             /* RETURN RESULT */

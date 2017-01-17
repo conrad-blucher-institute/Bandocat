@@ -27,7 +27,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             $this->getConn()->exec('USE ' . $dbname);
             /* PREPARE STATEMENT */
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_SELECT(?,@oLibraryIndex,@oBookName,@oPageType,@oPageNumber,@oComments,@oNeedsReview,@oFileName,@oTranscribed)");
-            $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            $call->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
 
@@ -136,7 +136,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD(?, @oReturnValue)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iLibraryIndex), PDO::PARAM_STR, 200);
+            $call->bindParam(1, $iLibraryIndex, PDO::PARAM_STR, 200);
             $call->execute();
             $select = $this->getConn()->query('SELECT @oReturnValue');
             $ret = $select->fetch(PDO::FETCH_NUM);
