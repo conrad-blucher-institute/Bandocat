@@ -4,6 +4,7 @@
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -16,9 +17,10 @@
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="Greetings.js"></script>
 </head>
+<!-- HTML BODY -->
 <body>
 
-
+<!-- TABLE FOR LAYOUT OF PAGE -->
 <table id="thetable">
     <tr>
         <th class="menu_left" id="thetable_left">
@@ -39,7 +41,7 @@
 
 <?php include '../../Master/footer.php'; ?>
 </body>
-
+<!-- Funny Greeting -->
 <script>
     /*Program that will get the time in hours from the Date function. Then, a conditional statement will determine what
     time of the day it is; morning or afternoon*/
@@ -62,7 +64,7 @@
         document.getElementById("Greetings").innerHTML = Greetings[Integer];
 
 </script>
-
+<!-- Page Style -->
 <style>
 
     #lblUsername{

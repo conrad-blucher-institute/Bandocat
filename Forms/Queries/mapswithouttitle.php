@@ -51,7 +51,7 @@ $Render = new ControlsRender();
                                 <th width="120px">Library Index</th>
                                 <th>Document Title</th>
                                 <th width="40px">Needs Review</th>
-
+                                <th></th>
                             </tr>
                             </thead>
                         </table>
@@ -103,7 +103,15 @@ $Render = new ControlsRender();
                         return "No";
                     },
                     "targets": 3
-                },],
+                },
+                {
+                    "render": function ( data, type, row ) {
+                        if(data == 1)
+                            return "Yes";
+                        return "No";
+                    },
+                    "targets": 4
+                },{ "searchable": false, "targets": 4, "visible": false }],
             "ajax": "mapswithouttitle_processing.php?col=" + collection
         } );
 
