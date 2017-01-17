@@ -88,7 +88,7 @@ function format_size($size) {
                         <table><tr>
                                 <td style="vertical-align: top">
                                     <h3>Monthly Performance <span class="spanYear"></span></h3>
-                                    <canvas id="chartMonthlyReport" height="470" width="600"/>
+                                    <div id="divMonthlyCanvasHolder"></div>
                                 </td>
                                 <td style="padding-left:60px;vertical-align: top">
                                         <h3 id="titleDocumentCount">Total Maps/Documents per Collection </h3>
@@ -113,7 +113,7 @@ function format_size($size) {
                             <tr>
                                 <td colspan="2">
                                     <h3>Weekly Performance <span class="spanYear"></span></h3>
-                                    <canvas id="chartWeeklyReport" height="500" width="1000"></canvas>
+                                    <div id="divWeeklyCanvasHolder"></div>
                                 </td>
                             </tr>
                         </table>
@@ -165,6 +165,10 @@ function format_size($size) {
     //weekly
         $("#ddlYear").change(function()
             {
+                //reset canvas
+                $('#chartWeeklyReport').remove();
+                $('#divWeeklyCanvasHolder').append('<canvas id="chartWeeklyReport" height="500" width="1000"><canvas>');
+
                 var year = $("#ddlYear").val();
                 if(year != "") {
                     $(".spanYear").text(year);
@@ -200,11 +204,7 @@ function format_size($size) {
                             var ctx = canvas.getContext("2d");
                             var LineChart = new Chart(ctx,{ type: "line",
                                                             data: dat,
-                                                            options: {scales: {
-                                                                yAxes: [{
-                                                                    stacked: true
-                                                                }]
-                                                            },responsive:true}
+                                                            options: {responsive:true}
                             });
                         }
                     });
@@ -214,6 +214,10 @@ function format_size($size) {
         //monthly
             $("#ddlYear").change(function()
             {
+                //reset canvas
+                $('#chartMonthlyReport').remove();
+                $('#divMonthlyCanvasHolder').append('<canvas id="chartMonthlyReport" height="470" width="600"><canvas>');
+
                 var year = $("#ddlYear").val();
                 if(year != "") {
                     $.ajax({
@@ -248,11 +252,7 @@ function format_size($size) {
                             var ctx2 = canvas2.getContext("2d");
                             var LineChart2 = new Chart(ctx2,{ type: "line",
                                 data: dat2,
-                                options: {scales: {
-                                    yAxes: [{
-                                        stacked: true,
-                                    }]
-                                },responsive:true}
+                                options: {responsive:true}
                             });
                         }
                     });
