@@ -38,7 +38,10 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
     <div id="main">
         <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
+                include '../../Master/sidemenu.php';
+                if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
+                    $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
+            ?>
         </div>
         <div id="divright">
             <h2><?php echo $config['DisplayName'];?> Catalog Form</h2>

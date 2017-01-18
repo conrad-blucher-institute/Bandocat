@@ -124,8 +124,6 @@ class DBHelper
         $result["Name"] = htmlspecialchars($iName);
         return $result;
     }
-
-
     /**********************************************
      * Function: SP_USER_AUTH
      * Description: USER LOGIN AUTHENTICATION

@@ -63,18 +63,6 @@ function format_size($size) {
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/Chart.js"></script>
-    <style>
-        .graph-legend li span{
-            display: inline-block;
-            width: 1em;
-            height: 1.2em;
-            font-size: 1.2em;
-            margin-right: 5px;
-        }
-
-        .graph-legend li{list-style-type: none;}
-
-    </style>
 </head>
 <body>
 <div id="wrap">
@@ -100,13 +88,12 @@ function format_size($size) {
                         <table><tr>
                                 <td style="vertical-align: top">
                                     <h3>Monthly Performance <span class="spanYear"></span></h3>
-                                    <canvas id="chartMonthlyReport" height="400" width="500"></canvas>
-                                    <div class="graph-legend" id="legendMonthlyReport"></div>
+                                    <div id="divMonthlyCanvasHolder"></div>
                                 </td>
-                                <td style="padding-left:80px;vertical-align: top">
+                                <td style="padding-left:60px;vertical-align: top">
                                         <h3 id="titleDocumentCount">Total Maps/Documents per Collection </h3>
-                                            <canvas id="chartDocumentCount" height="300" width="300"></canvas>
-                                            <div class="graph-legend" id="legendDocumentCount"></div>
+                                            <canvas id="chartDocumentCount" height="350" width="350"></canvas>
+                                        <div style="text-align: center;font-weight: bold;margin-top:15px">Total: <span id="spanTotalCount"></span> documents  </div>
                                     <div id="storage_capacity">
                                         <h3>Storage Capacity</h3>
                                         <?php
@@ -126,8 +113,7 @@ function format_size($size) {
                             <tr>
                                 <td colspan="2">
                                     <h3>Weekly Performance <span class="spanYear"></span></h3>
-                                    <canvas id="chartWeeklyReport" height="400" width="1000"></canvas>
-                                    <div class="graph-legend" id="legendWeeklyReport"></div>
+                                    <div id="divWeeklyCanvasHolder"></div>
                                 </td>
                             </tr>
                         </table>
@@ -141,8 +127,8 @@ function format_size($size) {
 </body>
 <script>
     var collections = <?php echo json_encode($collections); ?>;
-    var collection_color = ['#0067C5','#00BC65','#FFAA2A','#FFFF00','#787878','#00000'];
-    var collection_highlight = ['#FF5A5E','#7FFF55','#007FFF','#244400','#D4D4FF'];
+    var collection_color = ['#0067C5','#00BC65','#FFAA2A','#26A6D0','#787878','#00000'];
+    var collection_highlight = ['#FF5A5E','#7FFF55','#3e3e3e','#26A6D0','#244400','#D4D4FF'];
     function getCollectionCount() {
         $('#divDocumentCount').show();
         $.ajax({
@@ -152,25 +138,37 @@ function format_size($size) {
                 var JSONdata = JSON.parse(data);
                 //generate total chart
                 var pieData = [];
+                var pieLabels = [];
                 for (var i = 0; i < JSONdata.length; i++) {
-                    var array = {
-                        value: JSONdata[i].count,
-                        color: collection_color[i],
-                        highlight: collection_highlight[i],
-                        label: JSONdata[i].collection
-                    };
-
-                    pieData.push(array);
+                    pieData.push(JSONdata[i].count);
+                    pieLabels.push(JSONdata[i].collection);
                 }
-                var ctx1 = document.getElementById("chartDocumentCount").getContext("2d");
-                window.MyPieChart = new Chart(ctx1).Pie(pieData);
-                document.getElementById("legendDocumentCount").innerHTML = MyPieChart.generateLegend();
+                var canvasPie = document.getElementById("chartDocumentCount");
+                var ctx1 = canvasPie.getContext("2d");
+                var PieChart = new Chart(ctx1,{ type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: pieData,
+                            backgroundColor: collection_color,
+                            hoverBackgroundColor: collection_highlight,
+                            label: "Total Maps/Documents per Collection"
+                        }],
+                        labels: pieLabels
+                    },
+                    options: { responsive:true}
+                });
+                //calculate total counts of all collections = SUM of pieData array
+                $("#spanTotalCount").html(pieData.reduce(function(prev,curr){return parseInt(prev)+ parseInt(curr);}));
             }
         });
     }
     //weekly
         $("#ddlYear").change(function()
             {
+                //reset canvas
+                $('#chartWeeklyReport').remove();
+                $('#divWeeklyCanvasHolder').append('<canvas id="chartWeeklyReport" height="500" width="1000"><canvas>');
+
                 var year = $("#ddlYear").val();
                 if(year != "") {
                     $(".spanYear").text(year);
@@ -184,12 +182,13 @@ function format_size($size) {
                             for (var i = 0; i < collections.length; i++) {
                                 var array = {
                                     label: collections[i].displayname,
-                                    fillColor: "transparent",
-                                    strokeColor: collection_color[i],
+                                    backgroundColor: "transparent",
+                                    borderColor: collection_color[i],
                                     pointColor: collection_color[i],
-                                    pointStrokeColor: collection_color[i],
-                                    pointHighlightFill: collection_highlight[i],
-                                    pointHighlightStroke: "rgba(151,187,205,1)",
+                                    strokeColor: collection_color[i],
+                                    borderWidth: 2,
+                                    hoverBackgroundColor : collection_highlight[i],
+                                    hoverBorderColor: "rgba(151,187,205,1)",
                                     data: JSONdata.datasets[i]
                                 };
                                 weeklyData.push(array);
@@ -199,12 +198,14 @@ function format_size($size) {
                             var dat = {
                                 labels: JSONdata.labels,
                                 datasets: weeklyData,
-                                options: {
-                                    responsive: false
-                                }
                             };
-                            var ctx = new Chart(document.getElementById("chartWeeklyReport").getContext("2d")).Line(dat);
-//                            document.getElementById("legendWeeklyreport").innerHTML = ctx.generateLegend();
+                            //var ctx = new Chart(document.getElementById("chartWeeklyReport").getContext("2d")).Line(dat);
+                            var canvas = document.getElementById("chartWeeklyReport");
+                            var ctx = canvas.getContext("2d");
+                            var LineChart = new Chart(ctx,{ type: "line",
+                                                            data: dat,
+                                                            options: {responsive:true}
+                            });
                         }
                     });
                 }
@@ -213,6 +214,10 @@ function format_size($size) {
         //monthly
             $("#ddlYear").change(function()
             {
+                //reset canvas
+                $('#chartMonthlyReport').remove();
+                $('#divMonthlyCanvasHolder').append('<canvas id="chartMonthlyReport" height="470" width="600"><canvas>');
+
                 var year = $("#ddlYear").val();
                 if(year != "") {
                     $.ajax({
@@ -225,27 +230,30 @@ function format_size($size) {
                             for (var i = 0; i < collections.length; i++) {
                                 var array = {
                                     label: collections[i].displayname,
-                                    fillColor: "transparent",
-                                    strokeColor: collection_color[i],
+                                    backgroundColor: "transparent",
+                                    borderColor: collection_color[i],
                                     pointColor: collection_color[i],
-                                    pointStrokeColor: collection_color[i],
-                                    pointHighlightFill: collection_highlight[i],
-                                    pointHighlightStroke: "rgba(151,187,205,1)",
+                                    strokeColor: collection_color[i],
+                                    borderWidth: 2,
+                                    hoverBackgroundColor : collection_highlight[i],
+                                    hoverBorderColor: "rgba(151,187,205,1)",
                                     data: JSONdata[i][0]
                                 };
                                 monthlyData.push(array);
                                 array = null;
                             }
-                            //generate weekly input chart
-                            var dat = {
+                            //generate monthly input chart
+                            var dat2 = {
                                 labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
                                 datasets: monthlyData,
-                                options: {
-                                    responsive: false
-                                }
                             };
-                            var ctx = new Chart(document.getElementById("chartMonthlyReport").getContext("2d")).Line(dat);
-                            document.getElementById("legendMonthlyReport").innerHTML = ctx.generateLegend();
+
+                            var canvas2 = document.getElementById("chartMonthlyReport");
+                            var ctx2 = canvas2.getContext("2d");
+                            var LineChart2 = new Chart(ctx2,{ type: "line",
+                                data: dat2,
+                                options: {responsive:true}
+                            });
                         }
                     });
                 }
