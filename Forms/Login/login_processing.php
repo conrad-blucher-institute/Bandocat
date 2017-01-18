@@ -28,7 +28,13 @@
  *******************************************/
     $db = new DBHelper();
     $db->SP_USER_AUTH($username,$pwd,$msg,$uID,$role);
-
+/******************************************
+ * Assuming the returned &msg parameter from
+ * SP_USER_AUTH will dictate what case is
+ * selected in the following switch statement
+ * if the case is Successful we update the
+ * current session with the user's information
+ ******************************************/
     switch($msg)
     {
         case "Invalid":
