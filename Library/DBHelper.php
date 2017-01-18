@@ -141,19 +141,24 @@ class DBHelper
     function SP_USER_AUTH($iUsername, $iPassword, &$oMessage, &$oUserID, &$oRole)
     {
         /* PREPARE STATEMENT */
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
 
         $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRole)");
         $iPassword = md5($iPassword);
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        /* bindParam is used to attach variables to the SQL query */
         $call->bindParam(1, $iUsername, PDO::PARAM_STR, 32);
         $call->bindParam(2, $iPassword, PDO::PARAM_STR, 64);
 
         /* EXECUTE STATEMENT */
         $call->execute();
         /* RETURN RESULT */
+        /* selecting the DB message, userid, and roll */
         $select = $this->getConn()->query('SELECT @oMessage,@oUserID, @oRole');
+        /* returning the selected data */
         $result = $select->fetch(PDO::FETCH_ASSOC);
+        /*store data into variables */
         $oMessage = $result['@oMessage'];
         $oUserID = $result['@oUserID'];
         $oRole = $result['@oRole'];

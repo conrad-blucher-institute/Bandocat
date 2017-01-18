@@ -1,4 +1,5 @@
 <?php
+/*Ensures the col variable is not null then assigns to the $collection variable */
 if(isset($_GET['col']))
     $collection = htmlspecialchars($_GET['col']);
 else header('Location: ../../');
@@ -51,7 +52,8 @@ $columns = array(
     array( 'db' => '`document`.`documentID`', 'dt' => 0, 'field' => 'documentID' ),
     array( 'db' => '`document`.`libraryindex`', 'dt' => 1,'field' => 'libraryindex'),
     array( 'db' => '`document`.`title`', 'dt' => 2,'field' => 'title' ),
-    array( 'db' => '`document`.`needsreview`', 'dt' => 3,'field' => 'needsreview')
+    array( 'db' => '`document`.`needsreview`', 'dt' => 3,'field' => 'needsreview'),
+    array( 'db' => '`document`.`hascoast`', 'dt' => 4,'field' => 'hascoast')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -61,8 +63,8 @@ $columns = array(
 
 require('../../Library/sspwithjoin.class.php');
 
-$joinQuery = "FROM `document` WHERE `hascoast` = 1";
-$extraWhere = "";
+$joinQuery = " FROM `document` ";
+$extraWhere = " `hascoast` = 1 ";
 echo json_encode(
     SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere)
 );
