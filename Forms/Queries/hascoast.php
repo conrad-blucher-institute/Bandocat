@@ -93,7 +93,8 @@ $Render = new ControlsRender();
                     document.getElementById("txt_counter").innerHTML = this.responseText;
                 }
             };
-            xmlhttp.open("GET", "StatisticsHelper.php?q=" + Query + "_Coast", true);
+            var Action = "Coast";
+            xmlhttp.open("GET", "StatisticsHelper.php?col=" + Query + "&action=" + Action, true);
             xmlhttp.send();
         }
         //HMM

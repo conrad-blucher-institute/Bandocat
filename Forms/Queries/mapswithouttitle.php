@@ -82,19 +82,23 @@ $Render = new ControlsRender();
      * txt_counter
      * ************************************/
     function Calculate(Query) {
-        if (Query.length == 0) {
+        if (Query.length == 0)
+        {
             document.getElementById("txt_counter").innerHTML = "";
             return;
-        } else {
+        }
+        else
+            {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("txt_counter").innerHTML = this.responseText;
                 }
             };
-            xmlhttp.open("GET", "StatisticsHelper.php?q=" + Query + "_Title", true);
+            var Action = "Title";
+            xmlhttp.open("GET", "StatisticsHelper.php?col=" + Query + "&action=" + Action , true);
             xmlhttp.send();
-        }
+             }
     }
 </script>
 <script>
