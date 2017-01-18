@@ -493,3 +493,19 @@ footer a:hover
     position:relative;
     top:1px;
 }
+
+
+/* Styles for jqueryUI dialog box showing on the bottom left of review page on Admin View */
+/*******************************************/
+#documentHistory table { border-collapse: collapse; text-align: left; width: 100%;padding-left:2px; }
+#documentHistory {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+#documentHistory table td, #documentHistory table th { padding: 3px 10px; }
+#documentHistory table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
+#documentHistory table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; }
+#documentHistory table tbody tr:hover { background-color: #bce1ff; }
+div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
+#timeStamp{
+    font-size: 12px;
+}
+
+/*******************************************/
