@@ -33,8 +33,7 @@ if($action == "review" || $action == "catalog")
     $retval = $DB->SP_TEMPLATE_FOLDER_DOCUMENTAUTHOR_INSERT($collection,$data['txtDocID'],$author_arrays);
 
     if($retval != false) {
-        if($action == "catalog")
-            $retval = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtTitle'], $data['rbInASubfolder'], $data['txtSubfolderComments'], $data['ddlClassification'], $data['txtClassificationComments'],0,$data['rbNeedsReview'],$data['txtComments'],$startdate, $enddate);
+        $retval = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtTitle'], $data['rbInASubfolder'], $data['txtSubfolderComments'], $data['ddlClassification'], $data['txtClassificationComments'],0,$data['rbNeedsReview'],$data['txtComments'],$startdate, $enddate);
         $comments = "Library Index:" . $data['txtLibraryIndex'];
         $valid = true;
     }
