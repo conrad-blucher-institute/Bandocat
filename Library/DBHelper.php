@@ -78,7 +78,7 @@ class DBHelper
     //IMPORTANT: Default Host, username, password can be changed here!
     /**********************************************
      * Function: DB_CONNECT
-     * Description: Connect to XAMPP db. All functions connect to db using this.
+     * Description: Connect to XAMPP db. localhost/phpadmin All functions connect to db using this.
      * Parameter(s):
      * $db (string) - name of database to be connected to
      * Return value(s):
@@ -101,31 +101,35 @@ class DBHelper
     }
 
     /**********************************************
-     * Function: SP_GET_COLLECTION_CONFIG
-     * Description: GET COLLECTION CONFIGURATION
+     * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
+     * Description: Pulls the data associated with the collection name passed in.
      * Parameter(s):
      * $iName (in string) - input DB Name
      * Return value(s):
      * $result (assoc array) - return above values in an assoc array
      ***********************************************/
     function SP_GET_COLLECTION_CONFIG($iName)
-    {
+    {   //USE is sql for changing to the database supplied after the concat.
         $this->getConn()->exec('USE ' . DBHelper::$maindb);
         /* PREPARE STATEMENT */
+        //CALL is sql for telling the db to execute the function following call.
+        //The ? in the functions parameter list is a variable that we bind a few lines down
         $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oCollectionID)");
+        //ERROR HANDLING
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        //Bind the database name ($iName) into the prepared call statement from above.
         $call->bindParam(1, $iName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
         /* EXECUTE STATEMENT */
         $call->execute();
         /* RETURN RESULT */
+        //returned after successful call statement. Need to tell the db what data we want selected.
         $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oCollectionID as CollectionID');
+        //Database now has the appropriate data selected. We now need to ask the DB to fetch the values for us
         $result = $select->fetch(PDO::FETCH_ASSOC);
         $result["Name"] = htmlspecialchars($iName);
         return $result;
     }
-
-
     /**********************************************
      * Function: SP_USER_AUTH
      * Description: USER LOGIN AUTHENTICATION
@@ -142,9 +146,11 @@ class DBHelper
     {
         /* PREPARE STATEMENT */
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
-
+        //The ? in the functions parameter list is a variable that we bind a few lines down.
         $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRole)");
+        //Encrypts the password using built in function md5. Uses md5 Hash.
         $iPassword = md5($iPassword);
+        //ERROR HANDLEING
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         /* bindParam is used to attach variables to the SQL query */
@@ -154,7 +160,7 @@ class DBHelper
         /* EXECUTE STATEMENT */
         $call->execute();
         /* RETURN RESULT */
-        /* selecting the DB message, userid, and roll */
+        //returned after successful call statement. Need to tell the db what data we want selected.
         $select = $this->getConn()->query('SELECT @oMessage,@oUserID, @oRole');
         /* returning the selected data */
         $result = $select->fetch(PDO::FETCH_ASSOC);
@@ -174,11 +180,16 @@ class DBHelper
      ***********************************************/
     function GET_USER_INFO($userID)
     {
+        //USE is sql for changing to the database supplied after the concat.
         $this->getConn()->exec('USE' . DBHelper::$maindb);
         //r.name = role name
+        //Select all relevant data to the supplied userID excluding password
         $sth = $this->getConn()->prepare("SELECT `username`,`fullname`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` WHERE `userID` = :userID LIMIT 1");
+        //Bind the supplied userID into the select statement above.
         $sth->bindParam(':userID',$userID,PDO::PARAM_INT);
+        //Execute SQL statement
         $sth->execute();
+        //Retrieve results from executed statement
         $result = $sth->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -186,10 +197,10 @@ class DBHelper
 
     /**********************************************
      * Function: GET_COLLECTION_FOR_DROPDOWN
-     * Description: GET COLLECTIONS INFO FOR DROPDOWN
+     * Description: Retrieves the collection names from the database to be used as items in a drop down list
      * Parameter(s): NONE
      * Return value(s):
-     * $result  (associative array) - return associative array of collection info
+     * $result  (associative array) - return associative array of collection info names
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {

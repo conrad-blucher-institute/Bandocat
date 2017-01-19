@@ -1,45 +1,33 @@
 <?php
-$array_db_value = ["","greenmaps","bluchermaps"];
-if(isset($_GET['q'])) {
-    $queryvar = $_GET['q'];
-    $queryinspection = substr($queryvar, -5);
-    $querycollection= substr($queryvar,0,-6);
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+
+if(isset($_GET['col']) && isset($_GET['action'])) {
     require('../../Library/DBHelper.php');
+    //Get passed variables, use htmlspecialchars to verify col
+    $collection = htmlspecialchars($_GET['col']);
+    $action = $_GET['action'];
+    //create new instance of DBHelper
     $DB = new DBHelper();
-//HMM
-    if($querycollection == 'bluchermaps'){
-        $collection= $array_db_value[2];
-        $collstat = "Blucher Maps Collection";
-        if($queryinspection == 'Coast'){
-            $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-            $count = $DB->GET_DOCUMENT_COUNT($collection);
-            $countfilter =$DB->GET_DOCUMENT_FILTEREDCOAST_COUNT($collection);
-            $pagestat ="that Have Coasts,";
-        }
-        elseif ($queryinspection == 'Title'){
-            $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-            $count = $DB->GET_DOCUMENT_COUNT($collection);
-            $countfilter =$DB->GET_DOCUMENT_FILTEREDTITLE_COUNT($collection);
-            $pagestat ="Without Titles,";
-        }
-    }
-    if($querycollection == 'greenmaps'){
-        $collection= $array_db_value[1];
-        $collstat = "Green Maps Collection";
-        if($queryinspection == 'Coast'){
-            $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-            $count = $DB->GET_DOCUMENT_COUNT($collection);
-            $countfilter =$DB->GET_DOCUMENT_FILTEREDCOAST_COUNT($collection);
-            $pagestat ="that Have Coasts,";
-        }
-        elseif ($queryinspection == 'Title'){
-            $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
-            $count = $DB->GET_DOCUMENT_COUNT($collection);
-            $countfilter =$DB->GET_DOCUMENT_FILTEREDTITLE_COUNT($collection);
-            $pagestat ="Without Titles,";
-        }
-    }
-    $percentage = round((($countfilter/$count)*100),2);
+    //Selects appropriate database, and counts the number of columns to return an accurate count.
+    $count = $DB->GET_DOCUMENT_COUNT($collection);
+    //Switch statement for "action" parameter to determine which document we are counting
 }
+else header('Location: ../../');
+        switch ($action)
+        {
+            case 'Coast':
+                $countfilter = $DB->GET_DOCUMENT_FILTEREDCOAST_COUNT($collection);
+                $pagestat = "that Have Coasts,";
+                break;
+            case 'Title':
+                $countfilter = $DB->GET_DOCUMENT_FILTEREDTITLE_COUNT($collection);
+                $pagestat = "Without Titles,";
+                break;
+            default:
+                break;
+        }
+        //calculates the percentage of the total
+        $percentage = round((($countfilter/$count)*100),2);
 echo "There are $countfilter Maps $pagestat out of a Total $count ($percentage%)";
 ?>
