@@ -14,7 +14,10 @@
     <title>Welcome to BandoCat!</title>
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
+    <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
+
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="Greetings.js"></script>
 </head>
 <!-- HTML BODY -->
@@ -35,7 +38,11 @@
             <?php include '../../Master/sidemenu.php' ?>
         </td>
         <td class="tg-zhyu"><h2>BandoCat</h2></td>
-        <td class="tg-0za1"><h2>Announcements</h2></td>
+        <td class="tg-0za1"><h2>Announcements</h2>
+            <input class="bluebtn" type="button" onclick="crAnno()" value="CREATE ANNOUNCMENT" style="margin-left: 18%; font-size: 0.775vw;">
+            <input class="bluebtn" type="button" onclick="crMeet()" value="CREATE MEETING" style="margin-left: 25%; font-size: 0.775vw;">
+            <div id="post"></div>
+        </td>
     </tr>
 </table>
 
@@ -62,6 +69,35 @@
         var Generic_Number = Random * (Greetings.length);
         var Integer = parseInt(Generic_Number);
         document.getElementById("Greetings").innerHTML = Greetings[Integer];
+
+        /*Create announcement on button click
+        create a div
+        get the length of divs inside the post div*/
+    identifier = [];
+        function crAnno() {
+            annoLenght = $("#post > div").length;
+            console.log(annoLenght);
+            if(annoLenght < 1) {
+                $("#post").append("<div class='anno'>" +
+                    "<h2>Announcement</h2>" +
+                    "<textarea style='height: 100px; width: 180px'></textarea>"+
+                    "</div>");
+            }
+        }
+
+        function crMeet() {
+            meetLenght = $("#post > div").length;
+            if(meetLenght < 1) {
+                $("#post").append("<div class='meet'>" +
+                    "<h2>Meeting</h2>" +
+                    "<p>Date: <input type='text' id='date'></p>"+
+                    "</div>");
+            }
+
+            $(function () {
+                $("#date").datepicker();
+            });
+        }
 
 </script>
 <!-- Page Style -->
@@ -98,6 +134,29 @@
     #thetable .tg-yw4l{vertical-align:top; border-style: none}
     #thetable .tg-zhyu{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; width: 55%}
     a:hover {color: white !important; decoration: underline}
+
+    .anno {
+         text-align: center;
+         background-color: white;
+         width: 80% !important;
+         height: 150px !important;
+         margin-top: 5%;
+         margin-left: 10%;
+         border-radius: 5%;
+         box-shadow: 0px 0px 8px 1px;
+     }
+
+    .meet {
+        text-align: center;
+        background-color: white;
+        width: 80% !important;
+        height: 150px !important;
+        margin-top: 5%;
+        margin-left: 10%;
+        border-radius: 5%;
+        box-shadow: 0px 0px 8px 1px;
+    }
+
 </style>
 
 </html>
