@@ -39,7 +39,7 @@
         </td>
         <td class="tg-zhyu"><h2>BandoCat</h2></td>
         <td class="tg-0za1"><h2>Announcements</h2>
-            <input class="bluebtn" type="button" onclick="crAnno()" value="CREATE ANNOUNCMENT" style="margin-left: 18%; font-size: 0.775vw;">
+            <input class="bluebtn" type="button" onclick="crAnno()" value="CREATE ANNOUNCEMENT" style="margin-left: 18%; font-size: 0.775vw;">
             <input class="bluebtn" type="button" onclick="crMeet()" value="CREATE MEETING" style="margin-left: 25%; font-size: 0.775vw;">
             <div id="post"></div>
         </td>
