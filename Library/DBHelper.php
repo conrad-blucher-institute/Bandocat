@@ -620,31 +620,6 @@ class DBHelper
     /**********************QUERIES FUNCTIONS************************/
     /***************************************************************/
 
-//    /**********************************************
-//     * Function: GET_DOCUMENT_FILTEREDCOUNT
-//     * Description: function responsible for returning all documents that have a coastline
-//     * Parameter(s):
-//     * $collection (in String) - Name of the collection
-//     * Return value(s):
-//     * $result  (array) - true if success, otherwise, false
-//     ***********************************************/
-//
-//
-//    function GET_DOCUMENT_FILTEREDCOUNT($collection)
-//    {
-//        //get appropriate db
-//        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-//        $this->getConn()->exec('USE ' . $dbname);
-//        if ($dbname != null && $dbname != "")
-//        {
-//            //select all documentID's that have values "hascoast = 1"
-//            $sth = $this->getConn()->prepare("SELECT COUNT(`documentID`) FROM `document` WHERE `hascoast`='1'");
-//            $sth->execute();
-//            //return the result
-//            $result = $sth->fetchColumn();
-//            return $result;
-//        } else return false;
-//    }
     /**********************************************
      * Function: GET_DOCUMENT_FILTEREDCOAST_COUNT
      * Description: function responsible for returning all documents that have a coastline
