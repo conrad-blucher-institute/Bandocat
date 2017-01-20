@@ -232,7 +232,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                     if (result == 1){
                         $('#btnSubmit').css("display", "inherit");
                         $('#loader').css("display", "none");
-                        window.close();
+                        self.close();
                     }
 
                 }
