@@ -1208,4 +1208,33 @@ class DBHelper
         $ret = $sth->execute();
         return $ret;
     }
+
+    //email and name
+    function USER_UPDATE_INFO($iUserID,$iEmail,$iName)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("UPDATE `user` SET `email` = :email,`fullname` = :name WHERE `userID` = :uID LIMIT 1");
+        $sth->bindParam(':email',$iEmail,PDO::PARAM_STR);
+        $sth->bindParam(':name',$iName,PDO::PARAM_STR);
+        $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        return $ret;
+    }
+
+    //may consider use stored procedure???
+    //update user password when userID and the input old password match on the database
+    function USER_UPDATE_PASSWORD($iUserID,$iOldPassword,$iNewPassword)
+    {
+        $iOldPassword = md5($iOldPassword);
+        $iNewPassword = md5($iNewPassword);
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("UPDATE `user` SET `password` = :newpwd WHERE `userID` = :uID AND `password` = :oldpwd LIMIT 1");
+        $sth->bindParam(':oldpwd',$iOldPassword,PDO::PARAM_STR);
+        $sth->bindParam(':newpwd',$iNewPassword,PDO::PARAM_STR);
+        $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if($ret)
+            $ret = $sth->rowCount(); //return number of rows affected (must be 1 or 0)
+        return $ret;
+    }
 }

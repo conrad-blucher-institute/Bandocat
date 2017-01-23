@@ -219,7 +219,7 @@ $date = new DateHelper();
                     }
                     alert(msg);
                     if (result == 1){
-                        window.location.href = "./list.php?col=<?php echo $_GET['col']; ?>";
+                        self.close();
                     }
 
                 }
