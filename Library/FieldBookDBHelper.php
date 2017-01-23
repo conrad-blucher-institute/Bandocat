@@ -110,7 +110,7 @@ class FieldBookDBHelper extends DBHelper
      * $iAuthorName (in string) - specifies the the authors name
      * $iStartDate (in string) - specifies the job start date
      * $iEndDate (in string) - specifies the job end date
-     * $iComments (in string) - commentss
+     * $iComments (in string) - comments
      * $iIndexedPage (in string) - specifies the string if the page is indexed
      * $iIsBlankPage (in int) - specifies the flag if the page is blank
      * $iIsSketch (in int) - specifies the flag if the page is a sketch
@@ -262,7 +262,7 @@ class FieldBookDBHelper extends DBHelper
     }
     /**********************************************
      * Function: GET_FIELDBOOK_COLLECTION_LIST
-     * Description: attempts to get the list of fieldbook
+     * Description: attempts to get the list of fieldbook collection names
      * Parameter(s):
      * $collection (in string) - name of the collection
      * Return value(s):
@@ -278,17 +278,27 @@ class FieldBookDBHelper extends DBHelper
             //selects the fieldbook collection names from the fieldbook collection
             $sth = $this->getConn()->prepare("SELECT `fbcollectionname` FROM `fbcollection`");
             $sth->execute();
-
+            //return the collection names
             $result = $sth->fetchAll(PDO::FETCH_NUM);
             return $result;
         } else return false;
     }
-
+    /**********************************************
+     * Function: GET_CREW_LIST
+     * Description: gets the names of the crew members
+     * Parameter(s):
+     * $collection (in string) - name of the collection
+     * Return value(s):
+     * True if good, False if fail
+     ***********************************************/
     function GET_CREW_LIST($collection)
     {
+        //get appropriate db
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
-        if ($dbname != null && $dbname != "") {
+        if ($dbname != null && $dbname != "")
+        {
+            //prepare select statement to return all crewnames from the crew table
             $sth = $this->getConn()->prepare("SELECT `crewname` FROM `crew`");
             $sth->execute();
 
@@ -296,16 +306,28 @@ class FieldBookDBHelper extends DBHelper
             return $result;
         } else return false;
     }
-
+    /**********************************************
+     * Function: GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID
+     * Description: gets the names of the crew members in the collection by document
+     * Parameter(s):
+     * $collection (in string) - name of the collection
+     * $iDocID (in Int) - docoument crew member is associated with
+     * Return value(s):
+     * Array of possible values if success
+     ***********************************************/
     function GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$iDocID)
     {
+        //get appropriate db
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
-        if ($dbname != null && $dbname != "") {
+        if ($dbname != null && $dbname != "")
+        {
+            //prepares a select statement to select crew names from documentcrew (matches crew names from crew to the documentid's of document_
             $sth = $this->getConn()->prepare("SELECT c.`crewname` FROM `documentcrew` AS dc LEFT JOIN  `crew` AS c ON dc.`crewID` = c.`crewID` WHERE dc.`docID` = ? ");
+            //binds the variables to the prepares sql statement above
             $sth->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             $sth->execute();
-
+            // return all matches
             $result = $sth->fetchAll(PDO::FETCH_NUM);
             return $result;
         } else return false;
