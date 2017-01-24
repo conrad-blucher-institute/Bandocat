@@ -1155,6 +1155,9 @@ class DBHelper
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+
+    //DEPRECATED: SEE GET_MONTHLYREPORT2($iYear,$iCollectionID)
     /**********************************************
      * Function: GET_MONTHLYREPORT
      * Description: attempts to return the monthlyreport from the db of the requested parameters
@@ -1190,6 +1193,29 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: GET_MONTHLYREPORT2
+     * Description: attempts to return the monthlyreport from the db of the requested parameters
+     *              has better performance than GET_MONTHLYREPORT (this query only searches on the table one time)
+     * Parameter(s):
+     * $iYear (in int) - year
+     * $iCollectionID (in int) - specifies the collection id to search
+     * Return value(s): return array if success, false if fail
+     ***********************************************/
+    function GET_MONTHLYREPORT2($iYear,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+        // sql statement CALL calls the function pointed to in the db
+        $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLYREPORT_COUNT(:iYear,:iColID)");
+        //bind variables to the above sql statement
+        $call->bindParam(':iYear',$iYear,PDO::PARAM_INT);
+        $call->bindParam(':iColID',$iCollectionID,PDO::PARAM_INT);
+        $call->execute();
+        return $call->fetchAll(PDO::FETCH_NUM);
+    }
+
+
+    /**********************************************
      * Function: SET_DOCUMENT_TRANSCRIBED
      * Description: attempts to set the document transcribed flag in the specified document
      * Parameter(s):
@@ -1209,7 +1235,15 @@ class DBHelper
         return $ret;
     }
 
-    //email and name
+    /**********************************************
+     * Function: USER_UPDATE_INFO
+     * Description: attempts to UPDATE user's email and fullname in the specified UserID
+     * Parameter(s):
+     * $iUserID (in int) - specifies the user id to update
+     * $iEmail (in string) - specifies new email value to update
+     * $iName (in string) - specifies the new fullname value to update
+     * Return value(s): true if success, false if fail
+     ***********************************************/
     function USER_UPDATE_INFO($iUserID,$iEmail,$iName)
     {
         $this->getConn()->exec('USE ' . DBHelper::$maindb);
@@ -1223,6 +1257,7 @@ class DBHelper
 
     //may consider use stored procedure???
     //update user password when userID and the input old password match on the database
+
     function USER_UPDATE_PASSWORD($iUserID,$iOldPassword,$iNewPassword)
     {
         $iOldPassword = md5($iOldPassword);
