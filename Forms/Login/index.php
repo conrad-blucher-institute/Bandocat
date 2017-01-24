@@ -202,6 +202,7 @@ session_start();
             event.preventDefault();
 
             /* Send the data to login_processing.php using post */
+            /* the return value from login_processing.php is stored in data */
             $.ajax({
                 type: 'post',
                 url: 'login_processing.php',

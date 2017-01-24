@@ -1,15 +1,12 @@
 <?php
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+/*Ensures the col variable is not null then assigns to the $collection variable */
 if(isset($_GET['col']))
     $collection = htmlspecialchars($_GET['col']);
 else header('Location: ../../');
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
-
-$array_collection = ["Green Maps","Blucher Maps"];
-$array_col_name = ["greenmaps","bluchermaps"];
-$array_dir = ["GreenCollection","MapsDB"];
-
-
 
 // SQL server connection information
 $sql_details = array(
@@ -47,11 +44,13 @@ $primaryKey = 'documentID';
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
+//DB is the bandocat database that holds the documents
 $columns = array(
     array( 'db' => '`document`.`documentID`', 'dt' => 0, 'field' => 'documentID' ),
     array( 'db' => '`document`.`libraryindex`', 'dt' => 1,'field' => 'libraryindex'),
     array( 'db' => '`document`.`title`', 'dt' => 2,'field' => 'title' ),
-    array( 'db' => '`document`.`needsreview`', 'dt' => 3,'field' => 'needsreview')
+    array( 'db' => '`document`.`needsreview`', 'dt' => 3,'field' => 'needsreview'),
+    array( 'db' => '`document`.`hascoast`', 'dt' => 4,'field' => 'hascoast')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -60,9 +59,10 @@ $columns = array(
  */
 
 require('../../Library/sspwithjoin.class.php');
-
-$joinQuery = "FROM `document` WHERE `hascoast` = 1";
-$extraWhere = "";
+//document is the name of the db
+$joinQuery = " FROM `document` ";
+//extra where parameter to search with
+$extraWhere = " `hascoast` = 1 ";
 echo json_encode(
     SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere)
 );

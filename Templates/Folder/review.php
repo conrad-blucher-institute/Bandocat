@@ -32,6 +32,8 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
+    <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
 
 </head>
 
@@ -40,7 +42,10 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <div id="main">
         <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
+            include '../../Master/sidemenu.php';
+            if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
+                $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
+            ?>
         </div>
         <div id="divright">
             <h2 id="page_title"><?php echo $config['DisplayName'];?> Edit/View Form</h2>

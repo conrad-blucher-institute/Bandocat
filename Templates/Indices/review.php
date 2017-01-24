@@ -42,7 +42,10 @@ $date = new DateHelper();
     <div id="main">
         <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
+            include '../../Master/sidemenu.php' ;
+            if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
+                $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
+            ?>
         </div>
         <div id="divright">
             <h2><?php echo $config['DisplayName'];?> Review Form</h2>
@@ -216,7 +219,7 @@ $date = new DateHelper();
                     }
                     alert(msg);
                     if (result == 1){
-                        window.location.href = "./list.php?col=<?php echo $_GET['col']; ?>";
+                        self.close();
                     }
 
                 }

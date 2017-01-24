@@ -2,6 +2,7 @@
     <div class="menu-item alpha">
         <h4><a href="../../">Main Menu</a></h4>
     </div>
+    <!-- Add admin section to side menu -->
     <?php
     //if user is admin, then add Admin section to the menu
     if($session->isAdmin())
@@ -11,6 +12,7 @@
             <li><a href="../../Forms/NewUser/">Create New User</a></li></ul>
         </div>';
     ?>
+    <!-- Collections Tab -->
     <div class="menu-item menu-item_sub5">
         <h4><a href="#">Collections</a></h4>
         <ul>
@@ -21,9 +23,11 @@
             <li><a href="../../Templates/Folder/index.php?col=jobfolder">Job Folder</a></li>
         </ul>
     </div>
+    <!-- Indices Transcription Tab -->
     <div class="menu-item">
         <h4><a href="../../Transcription/Indices/list.php?col=mapindices">Indices Transcription</a></h4>
     </div>
+    <!-- Queries Tab -->
     <div class="menu-item menu-item_sub3">
         <h4><a href="#">Queries</a></h4>
         <ul>
@@ -33,12 +37,15 @@
             <li><a href="#">Supplied Title Procedure</a></li>
         </ul>
     </div>
+    <!-- Statistics Tab -->
     <div class="menu-item">
         <h4><a href="../../Forms/Statistics/">Statistics</a></h4>
     </div>
+    <!-- My Account Tab -->
     <div class="menu-item">
         <h4><a href="../../Forms/AccountSettings/">My Account</a></h4>
     </div>
+    <!-- Help Tab -->
     <div class="menu-item menu-item_sub3">
         <h4><a href="#">Help</a></h4>
         <ul>
@@ -47,8 +54,8 @@
             <li><a href="#">Support Software</a></li>
         </ul>
     </div>
+    <!-- Logout Tab -->
     <div class="menu-item">
         <h4><a href="../../Forms/Logout/" id="sidemenu_logout">Logout as <?php echo $session->getUsername(); ?></a></h4>
     </div>
-</nav>
 </nav>

@@ -105,7 +105,7 @@ $Render = new ControlsRender();
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" style="text-align: center">
+                                    <td colspan="2" style="text-align: center;padding-right:0 !important">
                                         <!--Submit form-->
                                         <input type="submit" value="Register" class="bluebtn"/>
                                     </td>

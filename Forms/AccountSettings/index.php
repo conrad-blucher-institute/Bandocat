@@ -48,7 +48,6 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
     }
 
 </style>
-    <script type="text/javascript" src="PasswordMatch.js"></script>
 <div id="wrap">
     <div id="main">
         <div id="divleft">
@@ -59,7 +58,7 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
             <h2 id="page_title">Account Settings</h2>
         <div id="divscroller">
             <table class="Account_Table">
-                <form id="frmChangePassword" name="frmChangePassword">
+                <form id="frmChangePassword" name="frmChangePassword" method="post" enctype="multipart/form-data">
                 <tr>
                     <td colspan="2" style="text-align: center">
                         <h4 class="Account_Title">Change Password</h4>
@@ -90,16 +89,16 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
                     <input type="submit" name = "btnSubmitChangePassword" id="btnSubmitChangePassword" value="Update" class="bluebtn"/>
                 </td>
                 </form>
-                <form id="frmUserInformation" name="frmUserInformation">
+                <form id="frmUserInformation" name="frmUserInformation" method="post" enctype="multipart/form-data">
                 <tr>
                     <td colspan="2" style="text-align: center">
                         <br><br><h4 class="Account_Title">User Information</h4>
                     </td>
                 </tr>
                     <tr>
-                        <td><label class="unselectable" for="txtEmail">Change Email:</label></td>
+                        <td><label class="unselectable" for="txtEmail" required>Change Email:</label></td>
                         <td>
-                            <input type="text" id="txtEmail" name="txtEmail" value="<?php echo $userinfo['email']; ?>">
+                            <input type="text" id="txtEmail" name="txtEmail" required value="<?php echo $userinfo['email']; ?>">
                         </td>
                     </tr>
                 <tr>
@@ -121,4 +120,66 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
 <?php include '../../Master/footer.php'; ?>
 
 </body>
+<script>
+    $(document).ready(function(){
+
+    });
+
+    //update user Info
+    $("#frmUserInformation").submit(function(event){
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "index_processing.php?action=updateUserInfo",
+            data: {txtEmail: $("#txtEmail").val(),txtName: $("#txtName").val()},
+            success: function (data) {
+                alert(data);
+            }
+        });
+    });
+
+    //update password
+    $("#frmChangePassword").submit(function(event){
+        event.preventDefault();
+        if(checkPass() == false) {
+            alert("Passwords must match!");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "index_processing.php?action=updatePassword",
+            data: {txtOldPassword: $("#txtOldPassword").val(),txtPassword: $("#txtPassword").val()},
+            success: function (data) {
+                    switch(data)
+                    {
+                        case "1":
+                            alert("Success!");
+                            break;
+                        case "0":
+                            alert("Fail to update password.\nPlease make sure your old password is correct.");
+                            break;
+                        default:
+                            alert("Fail to connect to database!\n Please contact administrator");
+                            break;
+                    }
+            }
+        });
+
+    });
+
+    function checkPass() {
+        var pass1 = document.getElementById('txtPassword');
+        var pass2 = document.getElementById('txtRepeatPassword');
+        var goodColor = "#66cc66";
+        var badColor = "red";
+
+        if (pass1.value == pass2.value) {
+            pass2.style.backgroundColor = goodColor;
+            return true;
+        } else {
+            pass2.style.backgroundColor = badColor;
+            return false;
+        }
+    }
+</script>
 </html>

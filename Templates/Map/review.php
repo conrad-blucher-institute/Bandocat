@@ -10,7 +10,6 @@ if(isset($_GET['col']) && isset($_GET['doc'])) {
     $DB = new DBHelper();
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     $document = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($collection,$docID);
-    $logInfo = $DB->GET_LOG_INFO($collection, $docID);
     //var_dump($document);
 }
 else header('Location: ../../');
@@ -29,8 +28,10 @@ $date = new DateHelper();
     <title>Review Form</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+
+    <script type="text/javascript" src="../../Master/master.js"></script>
 
 </head>
 <body>
@@ -38,33 +39,10 @@ $date = new DateHelper();
     <div id="main">
         <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
-            <div style="padding-left:3px"><input type="checkbox" id="historyCheck"><span id="historyText">Document History</span></div>
-            <div id="documentHistory" class="ui-widget-content" style="text-align: center">
-                <p>Document History</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Action</th>
-                            <th>Username</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php
-                        $user = [];
-                        $length = count($logInfo);
-                        for ($x = 0; $x <= $length-1; $x++) {
-                            $action[$x] = $logInfo[$x][0];
-                            $user[$x] = $logInfo[$x][1];
-                            $time[$x] = $logInfo[$x][2];
-                            echo "<tr><td>$action[$x]</td><td>$user[$x]</td><td id='timeStamp'>$time[$x]</td></tr>";
-                            }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+            include '../../Master/sidemenu.php';
+                        if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
+                            $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
+            ?>
         </div>
         <div id="divright">
             <h2><?php echo $config['DisplayName'];?> Review Form</h2>
@@ -323,18 +301,6 @@ $date = new DateHelper();
 
 </body>
 <style>
-
-    #documentHistory table { border-collapse: collapse; text-align: left; width: 100%;padding-left:2px; }
-    #documentHistory {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
-    #documentHistory table td, #documentHistory table th { padding: 3px 10px; }
-    #documentHistory table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
-    #documentHistory table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; }
-    #documentHistory table tbody tr:hover { background-color: #bce1ff; }
-    div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
-    #timeStamp{
-        font-size: 12px;
-    }
-
     #table2{
         width:100%;
         background-color: white;
@@ -346,7 +312,6 @@ $date = new DateHelper();
         text-align: left;
         margin-top: 10px;
         margin-bottom: 50px;
-
     }
     #table2 td,tr{line-height:42px;}
 
@@ -425,7 +390,7 @@ $date = new DateHelper();
                     alert(msg);
 
                     if (result == 1){
-                        window.location.href = "./list.php?col=<?php echo $_GET['col'];?>";
+                        self.close();
                     }
                 }
             })
@@ -433,32 +398,6 @@ $date = new DateHelper();
 
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
-
-        //Condition that determines if the user has Admin permission to view the document history//
-        var admin = <?php $admin = $session->isAdmin(); echo json_encode($admin); ?>;
-        if (admin)
-            $('#historyCheck').css('display', 'inline');
-        else{
-            $('#historyCheck').css('display', 'none');
-            $('#historyText').text(" ");
-        }
-
-        //jQuery that allows the visibility of the draggable element if checked
-        $('#documentHistory').css('display', 'none');
-        $('#historyCheck').change(function () {
-            if($("#historyCheck").is(':checked')){
-                $("#documentHistory").css('display', 'block');  // checked
-            }
-
-            else{
-                $("#documentHistory").css('display', 'none');  // checked
-            }
-
-        });
-        //jQuery function that drags the draggable element
-        $( function() {
-            $( "#documentHistory" ).draggable({helper:'clone'});
-        } );
     });
 
 

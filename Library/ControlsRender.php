@@ -127,6 +127,29 @@ class ControlsRender
         }
     }
 
+    /*Function: DISPLAY_LOG_INFO
+     *Description: Receive an array of logs of a document as the parameter and render html element on the web page
+     *              This function is only used for review.php of every Template
+     *             Note: jQuery and jQueryUI javascript libraries are needed in your review.php page
+     *Parameter(s): $arrayLogInfo (array) - array of logs (array([0] -> action, [1]->username, [2]->timestamp)
+     *Return value(s): None
+    */
+    function DISPLAY_LOG_INFO($arrayLogInfo)
+    {
+        echo '<div id="documentHistory" class="ui-widget-content" style="text-align: center">';
+            echo "<p>Document History</p><table><thead><tr><th>Action</th><th>Username</th> <th>Timestamp</th></tr></thead><tbody>";
+
+                        $user = [];
+                        $length = count($arrayLogInfo);
+                        for ($x = 0; $x < $length; $x++) {
+                            $action[$x] = $arrayLogInfo[$x][0];
+                            $user[$x] = $arrayLogInfo[$x][1];
+                            $time[$x] = $arrayLogInfo[$x][2];
+                            echo "<tr><td>$action[$x]</td><td>$user[$x]</td><td id='timeStamp'>$time[$x]</td></tr>";
+                        }
+                        echo "</tbody></table></div>";
+    }
+
     //Render the name of the Indices Folder
     function NAME_INDICES_FOLDER($fileName, $bookArray){
         $file_name = $fileName;
