@@ -1,7 +1,9 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['doc'])) {
+//get collection name from passed variables col and doc
+if(isset($_GET['col']) && isset($_GET['doc']))
+{
     $collection = $_GET['col'];
     $docID = $_GET['doc'];
 }
@@ -13,9 +15,12 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new FieldBookDBHelper();
+//get appropriate DB
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+//select fieldbook documents
 $document = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT($collection, $docID);
 $date = new DateHelper();
+//select crew by document
 $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 ?>
 <!doctype html>
@@ -53,12 +58,12 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             <datalist id="lstCollection">
                                 <?php $Render->getDataList($DB->GET_FIELDBOOK_COLLECTION_LIST($collection)); ?>
                             </datalist>
-                            <datalist id="lstCrew">
+                            <datalist  id="lstCrew">
                                 <?php $Render->getDataList($DB->GET_CREW_LIST($collection)); ?>
                             </datalist>
                             <td id="col1">
                                 <div class="cell">
-                                    <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
+                                    <span  class="label"><span style = "color:red;"> * </span>Library Index:</span>
                                     <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex'];?>" required />
                                 </div>
                                 <div class="cell">

@@ -1,7 +1,9 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col'])) {
+//get collection name from passed variable col
+if(isset($_GET['col']))
+{
     $collection = $_GET['col'];
 }
 else header('Location: ../../');
@@ -13,6 +15,7 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -24,6 +27,7 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 
 </head>
+<!-- HTML BODY -->
 <body>
 <div id="wrap"></div>
 <div id="main"></div>
@@ -32,6 +36,7 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     include '../../Master/sidemenu.php' ?>
 </div>
 <div id="divright">
+    <!-- Title of Page -->
     <h2><?php echo $config['DisplayName']; ?> Document Upload</h2>
     <table class="Collection_Table">
         <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
@@ -145,14 +150,17 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
             selTableFooter.deleteRow(1);
         }
     }
-
+    //frmUpload is the form that holds the btn submit
     $("#frmUpload").submit(function(event)
     {
+        //Change button to uploading, then disable it
         $("#btnUpload").val("Uploading...");
         $("#btnUpload").attr("disabled","true");
         event.preventDefault();
         var data = new FormData();
-        jQuery.each(jQuery('#file_array')[0].files, function(i, file) {
+        //Javascript FormData sent to upload_processing via ajax
+        jQuery.each(jQuery('#file_array')[0].files, function(i, file)
+        {
             data.append('file:'+i, file);
         });
         $.ajax({
@@ -162,10 +170,12 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
             cache: false,
             contentType: false,
             processData: false,
-            success: function (data) {
+            success: function (data)
+            {
                 data = JSON.parse(data);
                 for(var i = 0; i < data.length; i++)
                 {
+
                     document.getElementById(data[i][0]).innerHTML = data[i][1];
                     if(data[i][1] == "Uploaded")
                         document.getElementById(data[i][0]).style.color = "green";
