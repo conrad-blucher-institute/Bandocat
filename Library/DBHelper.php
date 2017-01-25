@@ -667,6 +667,7 @@ class DBHelper
         } else return false;
     }
 
+
     /**********************MAP FUNCTIONS************************/
 
     /**********************************************
@@ -1270,6 +1271,24 @@ class DBHelper
         $ret = $sth->execute();
         if($ret)
             $ret = $sth->rowCount(); //return number of rows affected (must be 1 or 0)
+        return $ret;
+    }
+
+    //Under development
+    /**********************************************
+     * Function: GET_DOCUMENT_LISTS
+     * Description: attemps to get list of document ID, library index, title of all maps in the specified collection
+     * Parameter(s):
+     * $collection (in string) - specifies the collection where the document resides
+     * Return value(s): an associative array of document for the given collection
+     ***********************************************/
+    function GET_DOCUMENT_LISTS($collection)
+    {
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        $sth = $this->getConn()->prepare("SELECT `documentID`,`libraryindex`,`title` FROM `document` ORDER BY `libraryindex`");
+        $sth->execute();
+        $ret = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $ret;
     }
 }
