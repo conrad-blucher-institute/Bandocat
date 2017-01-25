@@ -59,4 +59,3 @@
         <h4><a href="../../Forms/Logout/" id="sidemenu_logout">Logout as <?php echo $session->getUsername(); ?></a></h4>
     </div>
 </nav>
-</nav>

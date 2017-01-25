@@ -509,3 +509,13 @@ div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
 }
 
 /*******************************************/
+/*Notification (facebook notification)*/
+.notification{
+    min-width:20px;
+    min-height:20px;
+    padding:3px;
+    border-radius:10px;
+    background-color: red;
+    vertical-align: sub;
+
+}

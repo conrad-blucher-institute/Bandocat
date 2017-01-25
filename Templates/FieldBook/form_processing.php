@@ -33,8 +33,7 @@ if($action == "review" || $action == "catalog")
     $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT($collection,$data['txtDocID'],$crew_arrays);
 
     if($retval != false) {
-        if($action == "catalog")
-            $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtFBCollection'], $data['txtBookTitle'], $data['txtJobNumber'], $data['txtJobTitle'], $data['txtBookAuthor'], $startdate, $enddate, $data['txtComments'], $data['txtIndexedPage'], $data['rbBlankPage'], $data['rbSketch'], $data['rbLooseDocument'], 0, $data['rbNeedsReview']);
+        $retval = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtFBCollection'], $data['txtBookTitle'], $data['txtJobNumber'], $data['txtJobTitle'], $data['txtBookAuthor'], $startdate, $enddate, $data['txtComments'], $data['txtIndexedPage'], $data['rbBlankPage'], $data['rbSketch'], $data['rbLooseDocument'], 0, $data['rbNeedsReview']);
         $comments = "Library Index:" . $data['txtLibraryIndex'];
         $valid = true;
     }
