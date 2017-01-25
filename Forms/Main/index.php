@@ -19,7 +19,6 @@
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="Greetings.js"></script>
-    <script type="text/javascript" src="Announcements.js"></script>
 </head>
 <!-- HTML BODY -->
 <body>
