@@ -39,7 +39,7 @@
         </td>
         <td class="tg-zhyu"><h2>BandoCat</h2></td>
         <td class="tg-0za1"><h2>Announcements</h2>
-            <input class="bluebtn" type="button" onclick="crAnno()" value="CREATE ANNOUNCMENT" style="margin-left: 18%; font-size: 0.775vw;">
+            <input class="bluebtn" type="button" onclick="crAnno()" value="CREATE ANNOUNCEMENT" style="margin-left: 18%; font-size: 0.775vw;">
             <input class="bluebtn" type="button" onclick="crMeet()" value="CREATE MEETING" style="margin-left: 25%; font-size: 0.775vw;">
             <div id="post"></div>
         </td>
@@ -73,19 +73,30 @@
         /*Create announcement on button click
         create a div
         get the length of divs inside the post div*/
-    identifier = [];
-        function crAnno() {
+    var annoText = $("<textarea id='annoText' style='height: 85px; width: 85%'></textarea>");
+    var annoTitle = $("<input type='text' id='annoTitle'>");
+
+    function crAnno() {
             annoLenght = $("#post > div").length;
             console.log(annoLenght);
-            if(annoLenght < 1) {
+            if(annoLenght < 4) {
                 $("#post").append("<div class='anno'>" +
                     "<h2>Announcement</h2>" +
-                    "<textarea style='height: 100px; width: 180px'></textarea>"+
+                        "<form id='announcement'>" +
+                        "</form>" +
                     "</div>");
+                var closeImg = $("<img src='../../Images/Close_Button.png' height='20' width='20' class='closeAnno' style='margin: 1% -50% -6% 50%; position: inherit;'>");
+                var postButton = $("<input id='postAnno' type='button' value='Post' style='position:relative;'>");
+                $(".anno").append(closeImg);
+                closeImg.click(closeAnno);
+                $(".anno").append(postButton);
+                postButton.click(postAnno);
+                $("#announcement").append(annoTitle);
+                $("#announcement").append(annoText);
             }
         }
 
-        function crMeet() {
+    function crMeet() {
             meetLenght = $("#post > div").length;
             if(meetLenght < 1) {
                 $("#post").append("<div class='meet'>" +
@@ -98,6 +109,21 @@
                 $("#date").datepicker();
             });
         }
+
+        function closeAnno() {
+            $('.anno').remove();
+            $(".closeAnno").remove();
+        }
+
+       function postAnno() {
+           $('.anno').remove();
+           $(".closeAnno").remove();
+           $.ajax({
+               url: "announcement_store.php",
+               data: {"announcement": [{"title": annoTitle.val(), "text": annoText.val(), "meeting":"", "action":"", "timestamp":"" }]}
+           });
+       }
+
 
 </script>
 <!-- Page Style -->
@@ -139,7 +165,7 @@
          text-align: center;
          background-color: white;
          width: 80% !important;
-         height: 150px !important;
+         height: 200px !important;
          margin-top: 5%;
          margin-left: 10%;
          border-radius: 5%;

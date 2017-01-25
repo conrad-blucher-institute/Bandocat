@@ -67,32 +67,33 @@ else header('Location: ../../');
 			<td><input type = "text" id = "Client" name = "Client"></td>
 		</tr>
 	</table>
+
+    <!--Field Book Number-->
+    <br>
+    <div id="Table_Rows">
+        <button type = 'button' onclick = "addFieldRow('Field_Book_Table')" id = "addFieldBookRow">+</button>
+        <button type = 'button' onclick = "deleteTableRow('Field_Book_Table')" id = "deleteFieldBookRow">-</button>
+    </div>
+    <table id = "Field_Book_Table" name = 'Field_Book_Table'>
+        <tr class = 'head'>
+            <th><p class="fieldSubTitle" >Field Book Number:</p></th>
+            <th><p class="fieldSubTitle" >Field Book Pages:</p></th>
+        </tr>
+        <tr>
+            <td><input type="text" class= "Input_Field" id = "Field_Book_Number"></td>
+            <td><input type="text" class= "Input_Field" id = "Field_Book_Page"></td>
+
+        </tr>
+    </table>
+
 	<!--Related Papers-->
-	<span class="tooltip fieldSubTitle"><mark><b>Replated Papers File No.(s):</b></mark><p hidden>Use semicolon (;) to separate the values</p></span>
+	<span class="tooltip fieldSubTitle"><mark><b>Related Papers File No.(s):</b></mark><p hidden>Use semicolon (;) to separate the values</p></span>
 	<table id="RelatedPaper_Table" name="RelatedPaper_Table">
 		<tr class="head">
 			<th></th>
 		</tr>
 		<tr>
 			<td><input type = "text" class= "Input_Field" id = "RelatedPaper" name = "RelatedPaper"></td>
-		</tr>
-	</table>
-
-<!--Field Book Number-->
-	<br>
-	<div id="Table_Rows">
-		<button type = 'button' onclick = "addFieldRow('Field_Book_Table')" id = "addFieldBookRow">+</button>
-		<button type = 'button' onclick = "deleteTableRow('Field_Book_Table')" id = "deleteFieldBookRow">-</button>
-		</div>
-	<table id = "Field_Book_Table" name = 'Field_Book_Table'>
-		<tr class = 'head'>
-			<th><p class="fieldSubTitle" >Field Book Number:</p></th>
-			<th><p class="fieldSubTitle" >Field Book Pages:</p></th>
-		</tr>
-		<tr>
-			<td><input type="text" class= "Input_Field" id = "Field_Book_Number"></td>
-			<td><input type="text" class= "Input_Field" id = "Field_Book_Page"></td>
-
 		</tr>
 	</table>
 
