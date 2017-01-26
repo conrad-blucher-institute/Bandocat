@@ -10,58 +10,12 @@ if(isset($_POST['submit'])){
         //As output of $_POST['Collection'] is an array we have to use foreach Loop to generate a CSV for each Selected Collection
         foreach ($_POST['Collection'] as $collection)
         {
-            //Set variables based on the Collection
-            $name = "";
-            $dbname = "";
-            $tblname = "";
-            $indexfield = "";
-            $titlefield = "";
-            switch($collection)
-            {
-                case "bluchermaps":
-                    $name = "Blucher Maps";
-                    $dbname = "bandocat_bluchermapsinventory";
-                    $tblname = "document";
-                    $indexfield = "libraryindex";
-                    $titlefield = "title";
-                    break;
-                case "greenmaps":
-                    $name = "Green Maps";
-                    $dbname = "bandocat_greenmapsinventory";
-                    $tblname = "document";
-                    $indexfield = "libraryindex";
-                    $titlefield = "title";
-                    break;
-                case "jobfolder":
-                    $name = "Job Folder";
-                    $dbname = "bandocat_jobfolderinventory";
-                    $tblname = "mapinformation";
-                    $indexfield = "library_index";
-                    $titlefield = "title";
-                    break;
-                case "mapindices":
-                    $name = "Map Indices";
-                    $dbname = "bandocat_indiceslinventory";
-                    $tblname = "mapinformation";
-                    $indexfield = "library_index";
-                    $titlefield = "title";
-                    break;
-                case "blucherfieldbook":
-                    $name = "Blucher Field Book";
-                    $dbname = "bandocat_fieldbookinventory";
-                    $tblname = "mapinformation";
-                    $indexfield = "library_index";
-                    $titlefield = "title";
-                    break;
-
-                default: break;
-            }
+            //Set Name for CSV Document based on the Collection
+            $name = $DB->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DisplayName'];
 
             //Retrieve the Index and Document Title for the selected collections
             $list = $DB->GET_DOCUMENT_LISTS($collection);
 
-            $juan = json_encode($list);
-            //print_r($juan);
 
             // Create CSV Filename based on the Collection
             $filename = $collection . "_" . date('Ymd') . ".csv";
@@ -73,12 +27,13 @@ if(isset($_POST['submit'])){
             $delimiter = "\t";
             $current = "";
 
+            //Generate First Line of Document specifying the collection
             fputcsv($out, array("Library Index"=>strtoupper($name) . " COLLECTION","Document Title" => ""),$delimiter);
             foreach ($list as $line)
             {
-                //fputcsv($out,$line,'\t');
-               // fputcsv($out, array("Library Index"=>strtoupper($name) . " COLLECTION","Document Title" => ""),$delimiter);
+
                 $temp = $line['libraryindex'];
+                //
                 $folder = explode('-',$temp)[0];
                 if(strcmp($folder,$current) != 0)
                 {
@@ -98,6 +53,7 @@ if(isset($_POST['submit'])){
 
         }
     }
+    //No Collection Selected, prompt message
     else { echo "Please Select a Collection.";}
 }
 ?>
