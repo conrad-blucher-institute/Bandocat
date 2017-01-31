@@ -57,7 +57,7 @@ $date = new DateHelper();
                             <td id="col1">
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required />
+                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='' required />
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>

@@ -59,11 +59,11 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             <td id="col1">
                 <div class="cell">
                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex'];?>" required />
+                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex'];?>' required />
                 </div>
                 <div class="cell">
                     <span class="label"><span style = "color:red;"> * </span>Document Title:</span>
-                    <input type = "text" name = "txtTitle" id = "txtTitle" size="26" required="true" value="<?php echo $document['Title'];?>" />
+                    <input type = "text" name = "txtTitle" id = "txtTitle" size="26" required="true" value='<?php echo $document['Title'];?>' />
                 </div>
                 <div class="cell">
                     <span class="labelradio" >

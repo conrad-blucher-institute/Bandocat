@@ -55,7 +55,7 @@ $date = new DateHelper();
                                 <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                         </td>
                         <td>
-                                <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex']; ?>" required="true" />
+                                <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex']; ?>' required="true" />
                         </td>
                         <td>
                             <span class="label">Customer Name:</span>
@@ -68,7 +68,7 @@ $date = new DateHelper();
                         </td>
                         <tr>
                             <td> <span class="label"><span style = "color:red;"> * </span>Document Title:</span></td>
-                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value="<?php echo $document['Title']; ?>" required />
+                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value='<?php echo $document['Title']; ?>' required />
                             </td>
                             <td>
                                 <span class="label">Document Start Date:</span>
@@ -90,7 +90,7 @@ $date = new DateHelper();
                                 <span class="label">Document Subtitle:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value="<?php echo $document['Subtitle']; ?>" />
+                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value='<?php echo $document['Subtitle']; ?>' />
                             </td>
                             <td>
                                 <span class="label">Document End Date:</span>

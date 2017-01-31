@@ -324,7 +324,6 @@ $date = new DateHelper();
                     }
                     for (var i = 0; i < json.length; i++){
                         if (json[i].includes("Success")) {
-                            window.close();
                             result = 1;
                         }
                         else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
