@@ -7,7 +7,6 @@ Return value(s):
  ***********************************************/
 class FieldBookDBHelper extends DBHelper
 {
-
     /**********************************************
      * Function: SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT
      * Description: GIVEN collection name & document ID, RETURN INFORMATION ABOUT Document
@@ -163,31 +162,6 @@ class FieldBookDBHelper extends DBHelper
     }
 
     /**********************************************
-     * Function: TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW
-     * Description: deletes the fieldbook documentcrew from the db
-     * Parameter(s):
-     * $collection (in string) - name of the collection
-     * $iDocID (in int ) - document id
-     * Return value(s):
-     * $result (assoc array) - true if success, or FALSE if failed
-     ***********************************************/
-    function TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$iDocID)
-    {
-        //get the appropriate db
-        $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection)['DbName']);
-        $this->getConn()->exec('USE ' . $db);
-
-        //prepares a sql statement that deletes documentcrew from the db
-        $sth = $this->getConn()->prepare("DELETE FROM `documentcrew` WHERE `documentcrew`.`docID` = :docID");
-        //bind variables to the sql statement above
-        $sth->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
-        $ret = $sth->execute();
-        if($ret)
-            return true;
-        return false;
-    }
-
-    /**********************************************
      * Function: SP_TEMPLATE_FIELDBOOK_DOCUMENTCREW_INSERT
      * Description: GIVEN document ID & array of CrewName, delete from documentcrew first, then call SP to select/insert from crew table, then insert into documentcrew
      * Parameter(s):
@@ -234,6 +208,31 @@ class FieldBookDBHelper extends DBHelper
     }
 
     /**********************************************
+     * Function: TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW
+     * Description: deletes the fieldbook documentcrew from the db
+     * Parameter(s):
+     * $collection (in string) - name of the collection
+     * $iDocID (in int ) - document id
+     * Return value(s):
+     * $result (assoc array) - true if success, or FALSE if failed
+     ***********************************************/
+    function TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$iDocID)
+    {
+        //get the appropriate db
+        $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection)['DbName']);
+        $this->getConn()->exec('USE ' . $db);
+
+        //prepares a sql statement that deletes documentcrew from the db
+        $sth = $this->getConn()->prepare("DELETE FROM `documentcrew` WHERE `documentcrew`.`docID` = :docID");
+        //bind variables to the sql statement above
+        $sth->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if($ret)
+            return true;
+        return false;
+    }
+
+    /**********************************************
      * Function: TEMPLATE_FIELDBOOK_CHECK_EXIST_RECORD_BY_FILENAME
      * Description: checks to see if the specified filename exists in the db
      * Parameter(s):
@@ -243,6 +242,7 @@ class FieldBookDBHelper extends DBHelper
      * True if good, False if fail
      ***********************************************/
     //FileName is unique on document table
+
     public function TEMPLATE_FIELDBOOK_CHECK_EXIST_RECORD_BY_FILENAME($collection, $iFileName)
     {
         //get appropriate db

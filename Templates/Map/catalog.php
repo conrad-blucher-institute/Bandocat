@@ -5,12 +5,12 @@ if(isset($_GET['col'])) {
     $collection = $_GET['col'];
 }
 else header('Location: ../../');
-
 require '../../Library/DBHelper.php';
+require '../../Library/MapDBHelper.php';
 require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
-$DB = new DBHelper();
+$DB = new MapDBHelper();
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
 

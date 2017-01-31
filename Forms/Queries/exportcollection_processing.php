@@ -16,7 +16,6 @@ if(isset($_POST['submit'])){
             //Retrieve the Index and Document Title for the selected collections
             $list = $DB->GET_DOCUMENT_LISTS($collection);
 
-
             // Create CSV Filename based on the Collection
             $filename = $collection . "_" . date('Ymd') . ".csv";
             header("Content-Disposition: attachment; filename=\"$filename\"");

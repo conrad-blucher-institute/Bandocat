@@ -6,8 +6,9 @@ if(isset($_GET['col']) && isset($_GET['doc'])) {
     $docID = $_GET['doc'];
     require('../../Library/ControlsRender.php');
     $Render = new ControlsRender();
-    require('../../Library/DBHelper.php');
-    $DB = new DBHelper();
+    require '../../Library/DBHelper.php';
+    require('../../Library/MapDBHelper.php');
+    $DB = new MapDBHelper();
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     $document = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($collection,$docID);
     //var_dump($document);

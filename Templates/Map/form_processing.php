@@ -5,9 +5,9 @@ $session = new SessionManager();
     //prevent accessing directly
     if(!isset($_POST))
         header('Location: index.php');
-
     require '../../Library/DBHelper.php';
-    $DB = new DBHelper();
+    require '../../Library/MapDBHelper.php';
+    $DB = new MapDBHelper();
     $data = $_POST;
     $action = htmlspecialchars($data['txtAction']);
     $collection = htmlspecialchars($data['txtCollection']);
