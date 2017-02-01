@@ -59,6 +59,7 @@ foreach($_FILES as $f)
         exec($exec1, $yaks1);
 
         $ret = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_INSERT($_GET['col'],str_replace(".tif","",$f['name']),(int)$folder,$filenamepath,$filename,$thumbnail);
+        //error checking for image
         if($ret != false)
             array_push($rets,array($f['name'],"Uploaded"));
         else array_push($rets,array($f['name'],"Error"));
