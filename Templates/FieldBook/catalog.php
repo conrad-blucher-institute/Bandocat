@@ -222,7 +222,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
     var crew_count = 0;
     function add_fields(val)
     {
-
         if(val == null)
             val = "";
         if(crew_count >= max)
