@@ -1,7 +1,9 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col'])) {
+//Get collection name and action
+if(isset($_GET['col']))
+{
     $collection = $_GET['col'];
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
@@ -12,6 +14,7 @@ else header('Location: ../../');
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -25,6 +28,15 @@ else header('Location: ../../');
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
+        /**********************************************
+         * Function:  DeleteDocument
+         * Description: deletes the document from the database
+         * Parameter(s):
+         * col (in string) - name of the collection
+         * id (in Int) - document id
+         * Return value(s):
+         * $result true if success, false if failed
+         ***********************************************/
         function DeleteDocument(col,id)
         {
             $response = confirm('Are you sure you want to delete this document?');
@@ -45,7 +57,9 @@ else header('Location: ../../');
                 });
             }
         }
-        $(document).ready(function() {
+        //When the document is ready, begin the rendering of the datatable
+        $(document).ready(function()
+        {
             var collection_config = <?php echo json_encode($config); ?>;
             $('#page_title').text(collection_config.DisplayName);
 
@@ -113,6 +127,7 @@ else header('Location: ../../');
     </script>
 
 </head>
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">

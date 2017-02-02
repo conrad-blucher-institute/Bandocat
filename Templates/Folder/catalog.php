@@ -1,7 +1,9 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['doc'])) {
+//get collection name from passed variables col and doc
+if(isset($_GET['col']) && isset($_GET['doc']))
+{
     $collection = $_GET['col'];
     $docID = $_GET['doc'];
 }
@@ -13,14 +15,18 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new FolderDBHelper();
+//get appropriate DB
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+//select fieldbook document
 $document = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_SELECT($collection, $docID);
 $date = new DateHelper();
+//select authors by document
 $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 ?>
 
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -34,8 +40,9 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
 
 </head>
-
+<!-- END HTML HEADER -->
 <body>
+<!--  HTML BODY -->
 <div id="wrap">
     <div id="main">
         <div id="divleft">
@@ -48,19 +55,23 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 <form id="theform" name="theform" enctype="multipart/form-data" >
                 <table class="Account_Table">
                     <tr>
+                        <!-- Populates the control with data -->
                             <datalist id="lstAuthor">
                                 <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                             </datalist>
             <td id="col1">
                 <div class="cell">
+                    <!-- LIBRARY INDEX -->
                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                     <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex'];?>' required />
                 </div>
                 <div class="cell">
+                    <!-- TITLE -->
                     <span class="label"><span style = "color:red;"> * </span>Document Title:</span>
                     <input type = "text" name = "txtTitle" id = "txtTitle" size="26" required="true" value='<?php echo $document['Title'];?>' />
                 </div>
                 <div class="cell">
+                    <!-- NEEDS REVIEW -->
                     <span class="labelradio" >
                         <mark>Needs Review:</mark>
                         <p hidden><b></b>This is to signal if a review is needed</p>
@@ -69,6 +80,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?>  />No
                 </div>
                 <div class="cell">
+                    <!-- SUB FOLDER -->
                     <span class="labelradio" >
                         <mark>In A Subfolder:</mark>
                         <p hidden><b></b>This document belongs in a subfolder</p>
@@ -77,10 +89,12 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <input type = "radio" name = "rbInASubfolder" id = "rbInASubfolder_no" size="26" value="0" <?php if($document['InSubfolder'] == 0) echo "checked"; ?> />No
                 </div>
                 <div class="cell">
+                    <!-- SUBFOLDER COMMENTS -->
                     <span class="label">Subfolder Comments:</span>
                     <textarea cols = "35" name="txtSubfolderComments" id="txtSubfolderComments"/><?php echo $document['SubfolderComment']; ?></textarea>
                 </div>
                 <div class="cell">
+                    <!-- CLASSIFICATION -->
                     <span class="label">Classification:</span>
                     <select id="ddlClassification" name="ddlClassification" style="width:215px">
                         <?php
@@ -89,35 +103,43 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     </select>
                 </div>
                 <div class="cell">
+                    <!-- CLASSIFICATION COMMENTS-->
                     <span class="label">Classification Comments:</span>
                     <textarea rows = "2" cols = "35" id="txtClassificationComments" name="txtClassificationComments"/><?php echo $document['ClassificationComment']; ?></textarea>
                 </div>
                 <div class="cell">
+                    <!-- GET START DDL MONTH -->
                     <select name="ddlStartMonth" id="ddlStartMonth" style="width:60px">
                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
                     </select>
                     <span class="label">Document Start Date:</span>
+                    <!-- GET START DDL DAY -->
                     <select name="ddlStartDay" id="ddlStartDay" style="width:60px">
                         <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
                     </select>
+                    <!-- GET START DDL YEAR -->
                     <select id="ddlStartYear" name="ddlStartYear" style="width:85px">
                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
                     </select>
 
                 </div>
                 <div class="cell">
+                    <!-- GET END DDL MONTH -->
                     <select name="ddlEndMonth" id="ddlEndMonth" style="width:60px">
                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
                     </select>
                     <span class="label">Document End Date:</span>
+                    <!-- GET END DDL DAY -->
                     <select name="ddlEndDay" id="ddlEndDay" style="width:60px">
                         <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
                     </select>
+                    <!-- GET END DDL YEAR -->
                     <select name="ddlEndYear" id="ddlEndYear" style="width:85px">
                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
                     </select>
                 </div>
                 <div class="cell">
+                    <!-- DOCUMENT AUTHOR -->
                     <span class="label">Document Author:</span>
                     <input type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo $authors[0][0];} ?>"/><span style="padding-right:5px"></span><input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
                     <span id="authorcell"></span>
@@ -126,6 +148,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             <td id="col2" style="padding-left:40px">
                 <div class="cell">
                     <span class="label">Comments:</span>
+                    <!-- COMMENTS-->
                     <textarea rows = "4" cols = "35" id="txtComments" name="txtComments"/><?php echo $document['Comments']; ?></textarea>
                     <br><br><br>
                 </div>
@@ -133,7 +156,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <table>
                         <tr>
                             <td style="text-align: center">
-                                <!--Scan of Front-->
+                                <!--SCAN OF FRONT-->
                                 <span class="label" style="text-align: center">Scan of Front</span><br>
                                 <?php
                                 echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . str_replace(".tif",".jpg",$document['FileName']) . " ' alt = Error /></a>";
@@ -143,9 +166,11 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                             </td>
                             <td style="padding-right:20px"></td>
                             <td style="text-align: center">
+                                <!--SCAN OF BACK-->
                                 <?php
                                 if($document['FileNameBack'] != '') //has Back Scan
                                 {
+
                                     echo '<span class="label" style="text-align: center">Scan of Back</span><br>';
                                     echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNameBackPath]\"><br><img src='" . '../../' . $config['ThumbnailDir'] . str_replace(".tif", ".jpg", $document['FileNameBack']) . " ' alt = Error /></a>";
                                     echo "<br>Size: " . round(filesize($config['StorageDir'] . $document['FileNameBackPath']) / 1024 / 1024, 2) . " MB";
@@ -164,6 +189,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <tr>
                         <td colspan="2">
                             <div class="cell" style="text-align: center;padding-top:20px">
+                                <!-- Hidden inputs that are passed when the update button is hit -->
                                 <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                 <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
                                 <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
@@ -188,7 +214,16 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 
 <?php include '../../Master/footer.php'; ?>
 </body>
+<!-- END HTML BODY -->
 <script>
+    /**********************************************
+     * Function: add_fields
+     * Description: adds more fields for authors
+     * Parameter(s):
+     * val (in String ) - name of the author
+     * Return value(s):
+     * $result (assoc array) - return a document info in an associative array, or FALSE if failed
+     ***********************************************/
     var max = 5;
     var author_count = 0;
     function add_fields(val) {
@@ -206,16 +241,18 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     $( document ).ready(function() {
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
-
+        //Parse out the authors read in to the add_fields function
         var authors = <?php echo json_encode($authors); ?>;
         for(var i = 1; i < authors.length; i++)
         {
             add_fields(authors[i][0]);
         }
         /* attach a submit handler to the form */
-        $('#theform').submit(function (event) {
+        $('#theform').submit(function (event)
+        {
             event.preventDefault();
             /* stop form from submitting normally */
+            //This attaches the entire "#theform" in addition to the crews to the post
             var formData = new FormData($(this)[0]);
 
             //Append Authors data to the form

@@ -1,7 +1,9 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['action'])) {
+//Get collection name and action
+if(isset($_GET['col']) && isset($_GET['action']))
+{
     $collection = $_GET['col'];
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
@@ -17,6 +19,7 @@ else header('Location: ../../');
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -30,11 +33,21 @@ else header('Location: ../../');
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
+        /**********************************************
+         * Function:  DeleteDocument
+         * Description: deletes the document from the database
+         * Parameter(s):
+         * col (in string) - name of the collection
+         * id (in Int) - document id
+         * Return value(s):
+         * $result true if success, false if failed
+         ***********************************************/
         function DeleteDocument(col,id)
         {
             $response = confirm('Are you sure you want to delete this document?');
             if($response)
             {
+                //send to form_processing the information in the data: folder
                 $.ajax({
                     type: 'post',
                     url: 'form_processing.php',
@@ -50,6 +63,7 @@ else header('Location: ../../');
                 });
             }
         }
+        //When the document is ready, begin the rendering of the datatable
         $(document).ready(function() {
             var collection_config = <?php echo json_encode($config); ?>;
             var action = '<?php echo $action; ?>';
@@ -64,7 +78,8 @@ else header('Location: ../../');
                 "columnDefs": [
                     //column Document Index: Replace with Hyperlink
                     {
-                        "render": function ( data, type, row ) {
+                        "render": function ( data, type, row )
+                        {
                             if(action == "catalog")
                                 var ret = "<a target='_blank' href='catalog.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Catalog</a>" ;
                             else var ret = "<a target='_blank' href='review.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Edit/View</a>" ;
@@ -76,7 +91,8 @@ else header('Location: ../../');
 
                     //column : NeedsInput
                     {
-                        "render": function ( data, type, row ) {
+                        "render": function ( data, type, row )
+                        {
                             if(data == 1)
                                 return "Yes";
                             return "No";
@@ -86,7 +102,8 @@ else header('Location: ../../');
                     { "searchable": false, "targets": 4 },
                     //column : NeedsReview
                     {
-                        "render": function ( data, type, row ) {
+                        "render": function ( data, type, row )
+                        {
                             if(data == 1)
                                 return "Yes";
                             return "No";
@@ -95,7 +112,8 @@ else header('Location: ../../');
                     },
                     { "searchable": false, "targets": 5 },
                     {
-                        "render": function ( data, type, row ) {
+                        "render": function ( data, type, row )
+                        {
                             return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
                         },
                         "targets": 6
@@ -130,6 +148,7 @@ else header('Location: ../../');
     </script>
 
 </head>
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">

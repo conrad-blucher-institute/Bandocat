@@ -1,47 +1,56 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col'])) {
+if(isset($_GET['col']))
+{
+    //get collection name passed in from side menu
     $collection = $_GET['col'];
+    require '../../Library/DBHelper.php';
+    require '../../Library/FolderDBHelper.php';
+    $DB = new FolderDBHelper();
+    //get appropriate DB
+    $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 }
 else header('Location: ../../');
-
-require '../../Library/DBHelper.php';
-require '../../Library/FolderDBHelper.php';
-$DB = new FolderDBHelper();
-$config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 ?>
+
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <!-- The title of the page -->
     <title><?php echo $config['DisplayName']; ?> Document Upload</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 
 </head>
+<!-- HTML BODY -->
 <body>
 <div id="wrap"></div>
 <div id="main"></div>
+<!-- Draw the header and Side Menu -->
 <div id = "divleft">
     <?php include '../../Master/header.php';
     include '../../Master/sidemenu.php' ?>
 </div>
 <div id="divright">
+    <!-- Title Displayed in Green style in master.css -->
     <h2><?php echo $config['DisplayName']; ?> Document Upload</h2>
     <div id="divscroller">
     <table class="Collection_Table">
         <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
         <tr>
             <td class="Collection_data" style="height:50px">
+                <!-- Upload Documents Button, Php code sends the collection name to upload.php -->
                 <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept="image/tiff" value="Input Map Information" multiple/>
             </td>
         </tr>
         <tr>
+            <!-- table for displaying selected files -->
             <td class="Collection_data" >
                 <div id="selectedFilesDiv">
                     <table >
@@ -82,15 +91,28 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     });
 
     var totalFsize = 0;
-
+    // listener for when the document is loaded
     document.addEventListener("DOMContentLoaded", init, false);
-
-    function init() {
+    /**********************************************
+     * Function: init
+     * Description: responsible for initializing the handlefileselect function when the content is loaded
+     * Parameter(s):
+     * Return value(s):
+     ***********************************************/
+    function init()
+    {
+        //add listener to the choose files button and attach handlefileselect to the listener
         document.querySelector('#file_array').addEventListener('change', handleFileSelect, false);
         selTable = document.querySelector("#selectedFilesTable");
         selTableFooter = document.querySelector("#selectedFilesTableFooter");
     }
-
+    /**********************************************
+     * Function: handleFileSelect
+     * Description: handles the selcected files
+     * Parameter(s):
+     * e (in files) - selected files
+     * Return value(s):
+     ***********************************************/
     function handleFileSelect(e) {
         var total = 0;
         totalFsize = 0;
@@ -100,6 +122,7 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 
         var files = e.target.files;
         var filenames = [];
+        /* If there are more than 1 file, add more cells */
         for(var i=0; i<files.length; i++) {
             var f = files[i];
             filenames.push(f.name);
@@ -116,10 +139,12 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
         }
 
         $.ajax({
+            //Checks if the filenames already exist in the DB
             url: 'upload_validating.php?col=<?php echo $collection; ?>',
             type: 'POST',
             data: {fileNames : filenames},
-            success: function (data) {
+            success: function (data)
+            {
                 data = JSON.parse(data);
                 for(var i = 0; i < data.length; i++)
                 {
@@ -140,7 +165,7 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
                 }
             },
         });
-
+        //add rows and cells to table displaying file names
         var tableFooterLength = selTableFooter.rows.length;
         var row = selTableFooter.insertRow(0);
         var cell1 = row.insertCell(0);
@@ -153,14 +178,17 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
             selTableFooter.deleteRow(1);
         }
     }
-
+    //frmUpload is the form that holds the btn submit
     $("#frmUpload").submit(function(event)
     {
+        //Change button to uploading, then disable it
         $("#btnUpload").val("Uploading...");
         $("#btnUpload").attr("disabled","true");
         event.preventDefault();
         var data = new FormData();
-        jQuery.each(jQuery('#file_array')[0].files, function(i, file) {
+        //Javascript FormData sent to upload_processing via ajax
+        jQuery.each(jQuery('#file_array')[0].files, function(i, file)
+        {
             data.append('file:'+i, file);
         });
         $.ajax({

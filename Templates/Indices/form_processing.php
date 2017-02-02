@@ -12,20 +12,27 @@ require '../../Library/ControlsRender.php';
 
 $Render = new ControlsRender();
 $DB = new IndicesDBHelper();
+//store passed info into data variable
 $data = $_POST;
+//check for special characters in passed variables
 $action = htmlspecialchars($data['txtAction']);
 $collection = htmlspecialchars($data['txtCollection']);
+//get appropriate DB
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+//store book indicies
 $book = $DB->GET_INDICES_BOOK($collection);
+//check if indicies exists 0 is return false 1 is true (found not found)
 $entry = $DB->SP_TEMPLATE_INDICES_DOCUMENT_CHECK_EXIST_RECORD($collection, $data['txtLibraryIndex']);
 $comments = null;
 $valid = false;
 $msg = array();
 $retval = false;
 
+//if we are reviewing the indices
 if($action == "review")
 {
     $valid = true;
+    //update the DB with the new reviewed information
     $retval = $DB->SP_TEMPLATE_INDICES_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['ddlBookID'],
         $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex']);
     $comments = "Library Index:" . $data['txtLibraryIndex'];
@@ -36,9 +43,11 @@ if($action == "review")
         array_push($msg, "Update Query: Fail", $retval);
 }
 
-
-if ($action == "catalog") {
+//if we are cataloging
+if ($action == "catalog")
+{
     $valid = true;
+    //get the file names from the POST
     $file_name = $_FILES['file_array']['name'];
     $indicesFolder = $Render->NAME_INDICES_FOLDER($file_name, $book);
 
@@ -53,7 +62,8 @@ if ($action == "catalog") {
     //Indices Thumbnail file error check//      5
 
     //1
-    if($entry > 0){
+    if($entry > 0)
+    {
         $valid = false;
         array_push($msg, "Entry existence validation: FAIL");
     }
@@ -81,7 +91,8 @@ if ($action == "catalog") {
        // array_push($msg, "Thumbnail file existence validation: Success");
 
     //4
-    if ($_FILES['file_array']['error'] == 0) {
+    if ($_FILES['file_array']['error'] == 0)
+    {
         $filename = $_FILES['file_array']['name'];
         //array_push($msg, "Indices File error check: Success");
     } else {
@@ -91,7 +102,8 @@ if ($action == "catalog") {
 
 
     //5
-    if ($_FILES['file_array']['error'] == 0) {
+    if ($_FILES['file_array']['error'] == 0)
+    {
         $thumbnail = $config['ThumbnailDir'] . str_replace('.tif', '.jpg', $file_name);
         //array_push($msg, 'Indices Thumbnail File error check: Success');
     }
@@ -101,12 +113,9 @@ if ($action == "catalog") {
     }
 
 
-//INSERT QUERY
-
-    //Document Insert function parameters: Collection, Library Index, Book ID, Page Type, Page Number, Comments, Needs Review, Filename
-    //Function that inserts the new entries into the database.
-    //Comments is a dialog that is used to define which entry was processed.
-    if( $valid == true){
+    //assuming all of the above error checking passes. we can proceed to insert
+    if( $valid == true)
+    {
         $retval = $DB->SP_TEMPLATE_INDICES_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['ddlBookID'],
             $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex']);
 
@@ -115,7 +124,8 @@ if ($action == "catalog") {
         $comments = "Library Index: " . $data['txtLibraryIndex'];
         if($valid == true && $retval != false)
             array_push($msg, "Entry upload: Successful");
-        if($retval == false){
+        if($retval == false)
+        {
             $valid = false;
             array_push($msg, "Upload: FAIL");
         }
@@ -124,13 +134,14 @@ if ($action == "catalog") {
     else
         array_push($msg, "Upload: FAIL");
 
-//Check folder, create folder for indices TIF
-    if ($valid == true) {
+        //Check folder, create folder for indices TIF
+    if ($valid == true)
+    {
         if (!is_dir($filenamepath))
             mkdir($filenamepath, 0777);
         move_uploaded_file($_FILES["file_array"]["tmp_name"], $filenamepath . '/' . basename($file_name));
 
-//Script for creation of file and thumbnail
+        //Script for creation of file and thumbnail
         $thumbnailExtTIFF = $file_name;
         $thumbnailExtJPG = str_replace('.tif', '.jpg', $thumbnailExtTIFF);
         if (!is_dir('../../' . $thumbFilenamepath))
