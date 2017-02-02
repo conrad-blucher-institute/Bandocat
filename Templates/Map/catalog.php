@@ -5,12 +5,12 @@ if(isset($_GET['col'])) {
     $collection = $_GET['col'];
 }
 else header('Location: ../../');
-
 require '../../Library/DBHelper.php';
+require '../../Library/MapDBHelper.php';
 require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
-$DB = new DBHelper();
+$DB = new MapDBHelper();
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
 
@@ -324,7 +324,6 @@ $date = new DateHelper();
                     }
                     for (var i = 0; i < json.length; i++){
                         if (json[i].includes("Success")) {
-                            window.close();
                             result = 1;
                         }
                         else if(json[i].includes("Fail") || json[i].includes("EXISTED"))

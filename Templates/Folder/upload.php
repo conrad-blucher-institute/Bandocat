@@ -33,6 +33,7 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 </div>
 <div id="divright">
     <h2><?php echo $config['DisplayName']; ?> Document Upload</h2>
+    <div id="divscroller">
     <table class="Collection_Table">
         <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
         <tr>
@@ -71,10 +72,15 @@ $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
         </tr>
         </form>
     </table>
+    </div>
 </div>
 
 
 <script>
+    $(document).ready(function(event){
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+    });
+
     var totalFsize = 0;
 
     document.addEventListener("DOMContentLoaded", init, false);

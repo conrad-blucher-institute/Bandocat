@@ -62,15 +62,15 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             <td id="col1">
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex'];?>" required />
+                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex'];?>' required />
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Collection:</span>
-                                    <input type = "text" name = "txtFBCollection" id = "txtFBCollection" size="26" value="<?php echo $document['Collection'];?>" required list="lstCollection"/>
+                                    <input type = "text" name = "txtFBCollection" id = "txtFBCollection" size="26" value='<?php echo $document['Collection'];?>' required list="lstCollection"/>
                                 </div>
                                 <div class="cell">
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
-                                    <input type = "text" name = "txtBookTitle" id = "txtBookTitle" size="26" value="<?php echo $document['BookTitle'];?>" />
+                                    <input type = "text" name = "txtBookTitle" id = "txtBookTitle" size="26" value='<?php echo $document['BookTitle'];?>' />
                                 </div>
                                 <div class="cell">
                                     <span class="label">Job Number:</span>
@@ -78,11 +78,11 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <div class="cell">
                                     <span class="label">Job Title:</span>
-                                    <input type = "text" name = "txtJobTitle" id = "txtJobTitle" size="26" value="<?php echo $document['JobTitle'];?>"  />
+                                    <input type = "text" name = "txtJobTitle" id = "txtJobTitle" size="26" value='<?php echo $document['JobTitle'];?>'  />
                                 </div>
                                 <div class="cell">
                                     <span class="label">Indexed Page:</span>
-                                    <input type = "text" name = "txtIndexedPage" id = "txtIndexedPage" size="26" value="<?php echo $document['IndexedPage'];?>"  />
+                                    <input type = "text" name = "txtIndexedPage" id = "txtIndexedPage" size="26" value='<?php echo $document['IndexedPage'];?>'  />
                                 </div>
                                 <div class="cell">
                                     <span class="labelradio"><mark>Blank Page:</mark><p hidden><b></b>This is to signal if it is a Blank Page</p></span>

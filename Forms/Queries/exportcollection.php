@@ -3,7 +3,8 @@ include '../../Library/SessionManager.php';
 $session = new SessionManager();
 require '../../Library/DBHelper.php';
 $DB = new DBHelper();
-$userinfo = $DB->GET_USER_INFO($session->getUserID());
+require('../../Library/ControlsRender.php');
+$Render = new ControlsRender();
 ?>
 <!doctype html>
 <html lang="en">
@@ -57,8 +58,8 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
         </div>
         <div id="divright">
             <h2 id="page_title">Export Index</h2>
-            <div id="divscroller">
-                <table class="Account_Table">
+            <div id="divscroller" >
+                <table class="Account_Table" style ="background-color: #e6e6e6">
                     <form method="post" action="exportcollection_processing.php">
                         <tr>
                             <td colspan="2" style="text-align: center">
@@ -69,9 +70,7 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
                             <td>
                                 <!---------Select Option Fields starts here------>
                                 <select name="Collection[]" multiple style="width: 250px">
-                                    <option value="bluchermaps">Blucher Maps</option>
-                                    <option value="greenmaps"> Green Maps</option>
-                                    <option value="jobfolder"> Job Folder</option>
+                                    <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN(),null);?>
                                 </select><br/><br/>
                                 <hr/>
                             </td>
