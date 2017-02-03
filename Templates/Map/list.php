@@ -1,10 +1,12 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-    if(isset($_GET['col'])) {
+    if(isset($_GET['col']))
+    {
         $collection = $_GET['col'];
         require('../../Library/DBHelper.php');
         $DB = new DBHelper();
+        //get appropriate db
         $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     }
     else header('Location: ../../');
@@ -12,6 +14,7 @@ $session = new SessionManager();
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -25,6 +28,15 @@ $session = new SessionManager();
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
+        /**********************************************
+         * Function:  DeleteDocument
+         * Description: deletes the document from the database
+         * Parameter(s):
+         * col (in string) - name of the collection
+         * id (in Int) - document id
+         * Return value(s):
+         * $result true if success, false if failed
+         ***********************************************/
         function DeleteDocument(col,id)
         {
             $response = confirm('Are you sure you want to delete this document?');
@@ -45,7 +57,9 @@ $session = new SessionManager();
                 });
             }
         }
-        $(document).ready(function() {
+        //When the document is ready, begin the rendering of the datatable
+        $(document).ready(function()
+        {
             var collection_config = <?php echo json_encode($config); ?>;
             $('#page_title').text(collection_config.DisplayName);
 
@@ -123,6 +137,7 @@ $session = new SessionManager();
 
             //hide first column (DocID)
             table.column(0).visible(true);
+            //hides the columns responsible for need's input
             table.column(8).visible(false);
             <?php if($session->isAdmin()){ ?> table.column(8).visible(true); <?php } ?>
             // show or hide subtitle
@@ -151,6 +166,7 @@ $session = new SessionManager();
     </script>
 
 </head>
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">

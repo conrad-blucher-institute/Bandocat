@@ -8,12 +8,18 @@ $session = new SessionManager();
     require '../../Library/DBHelper.php';
     require '../../Library/MapDBHelper.php';
     $DB = new MapDBHelper();
+    //store passed info into data variable)
     $data = $_POST;
+    //check for special characters in passed variables
     $action = htmlspecialchars($data['txtAction']);
     $collection = htmlspecialchars($data['txtCollection']);
+    //get appropriate db
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     $comments = null;
-    if($action != "delete") {
+
+    //if the action is not delete
+    if($action != "delete")
+    {
         //data pre-processing
         //Date
         require '../../Library/DateHelper.php';
@@ -29,7 +35,7 @@ $session = new SessionManager();
     $valid = false;
     $msg = array();
     $retval = false;
-    //review
+    //if the action is review
     if($action == "review")
     {
         $valid = true;
@@ -42,7 +48,8 @@ $session = new SessionManager();
        // array_push($msg,"Update Query: GOOD");
     }
     //catalog (new document)
-    else if($action == "catalog") {
+    else if($action == "catalog")
+    {
         $filename = "";
         $filenameback = "";
         $filenamepath = "";
