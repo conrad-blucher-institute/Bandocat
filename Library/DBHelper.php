@@ -628,6 +628,37 @@ class DBHelper
      * Return value(s):
      * $result  (array) - true if success, otherwise, false
      ***********************************************/
+    function GET_ADMIN_OPENTICKET_COUNT()
+    {
+        //switch to correct db
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        /* PREPARE STATEMENT */
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+        // sql statement CALL calls the function pointed to in the db
+        $call = $this->getConn()->prepare("SELECT COUNT(`ticketID`) FROM `ticket` WHERE `status`='0'");
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        /* RETURN RESULT */
+        //return the result
+        $result = $call->fetchColumn();
+        return $result;
+
+//
+    }
+
+
+
+    /**********************************************
+     * Function: GET_DOCUMENT_FILTEREDCOAST_COUNT
+     * Description: function responsible for returning all documents that have a coastline
+     * Parameter(s):
+     * $collection (in String) - Name of the collection
+     * Return value(s):
+     * $result  (array) - true if success, otherwise, false
+     ***********************************************/
     function GET_DOCUMENT_FILTEREDCOAST_COUNT($collection)
     {
         //get appropriate db

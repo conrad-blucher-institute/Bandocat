@@ -7,6 +7,7 @@ if(isset($_GET['col']) && isset($_GET['action']))
     $collection = $_GET['col'];
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
+    //get appropriate db
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     $action = $_GET['action'];
     if($action == "catalog")

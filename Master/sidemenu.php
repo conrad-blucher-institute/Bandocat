@@ -4,13 +4,22 @@
     </div>
     <!-- Add admin section to side menu -->
     <?php
+    require_once '../../Library/DBHelper.php';
+    $DB1 = new DBHelper();
     //if user is admin, then add Admin section to the menu
     if($session->isAdmin())
-        echo '<div class="menu-item menu-item_sub3"><h4><a href="">Admin</a></h4><ul>
+        $tester = $DB1->GET_ADMIN_OPENTICKET_COUNT();
+        echo '<div class="menu-item menu-item_sub3">
+            <h4 ><a class="badge1" data-badge='.$tester.' id=admintest href="">Admin</a></h4>    
+             <div   ></div>
+            <ul>           
             <li><a href="../../Forms/ActivityLog/index.php">Activity Log</a></li>
             <li><a href="../../Forms/Ticket/">View Tickets</a></li>
-            <li><a href="../../Forms/NewUser/">Create New User</a></li></ul>
+            <li><a href="../../Forms/NewUser/">Create New User</a></li>
+            </ul>
         </div>';
+
+
     ?>
     <!-- Collections Tab -->
     <div class="menu-item menu-item_sub5">
@@ -56,6 +65,10 @@
     </div>
     <!-- Logout Tab -->
     <div class="menu-item">
-        <h4><a href="../../Forms/Logout/" id="sidemenu_logout">Logout as <?php echo $session->getUsername(); ?></a></h4>
+        <h4><a href="../../Forms/Logout/" id="sidemenu_logout">Logout as </a></h4>
     </div>
+
+    <script>
+
+    </script>
 </nav>

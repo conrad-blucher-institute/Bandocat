@@ -174,9 +174,8 @@ class FieldBookDBHelper extends DBHelper
     function TEMPLATE_FIELDBOOK_DELETE_DOCUMENTCREW($collection,$iDocID)
     {
         //get the appropriate db
-        $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection)['DbName']);
+        $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $db);
-
         //prepares a sql statement that deletes documentcrew from the db
         $sth = $this->getConn()->prepare("DELETE FROM `documentcrew` WHERE `documentcrew`.`docID` = :docID");
         //bind variables to the sql statement above
