@@ -66,7 +66,7 @@ $date = new DateHelper();
                                 <div class="cell">
                                     <!-- LIBRARY INDEX -->
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required />
+                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='' required />
                                 </div>
                                 <div class="cell">
                                     <!-- BOOK TITLE -->

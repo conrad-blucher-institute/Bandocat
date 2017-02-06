@@ -7,7 +7,8 @@ if(isset($_GET['col']) && isset($_GET['doc']))
     $docID = $_GET['doc'];
     require('../../Library/ControlsRender.php');
     $Render = new ControlsRender();
-    require('../../Library/DBHelper.php');
+    require '../../Library/DBHelper.php';
+    require('../../Library/MapDBHelper.php');
     $DB = new DBHelper();
     //get appropriate DB
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
@@ -61,7 +62,7 @@ $date = new DateHelper();
                         </td>
                         <td>
                             <!-- LIBRARY INDEX -->
-                            <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex']; ?>" required="true" />
+                            <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex']; ?>' required="true" />
                         </td>
                         <td>
                             <span class="label">Customer Name:</span>
@@ -77,7 +78,7 @@ $date = new DateHelper();
                         <tr>
                              <!-- DOCUMENT TITLE-->
                             <td> <span class="label"><span style = "color:red;"> * </span>Document Title:</span></td>
-                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value="<?php echo $document['Title']; ?>" required />
+                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value='<?php echo $document['Title']; ?>' required />
                             </td>
                             <td>
                                 <!-- DOCUMENT START DATE -->
@@ -104,7 +105,7 @@ $date = new DateHelper();
                                 <span class="label">Document Subtitle:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value="<?php echo $document['Subtitle']; ?>" />
+                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value='<?php echo $document['Subtitle']; ?>' />
                             </td>
                             <td>
                                 <!-- DOCUMENT END DATE -->

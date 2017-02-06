@@ -6,24 +6,53 @@ $DB = new DBHelper();
 
 if(isset($_POST['submit'])){
     if(!empty($_POST['Collection'])) {
-        echo "<span>You have selected :</span><br/>";
 
-        //As output of $_POST['Color'] is an array we have to use foreach Loop to display individual value
-        foreach ($_POST['Collection'] as $select)
+        //As output of $_POST['Collection'] is an array we have to use foreach Loop to generate a CSV for each Selected Collection
+        foreach ($_POST['Collection'] as $collection)
         {
-            echo $select;
+            //Set Name for CSV Document based on the Collection
+            $name = $DB->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DisplayName'];
 
-        }
-        $config = $DB->SP_GET_COLLECTION_CONFIG($select);
+            //Retrieve the Index and Document Title for the selected collections
+            $list = $DB->GET_DOCUMENT_LISTS($collection);
 
-        if($select == "bluchermaps"){
-            $name = "Blucher Maps";
-            $dbname = "bandocat_bluchermapsinventory";
-            $tblname = "document";
-            $indexfield = "libraryindex";
-            $titlefield = "title";
+            // Create CSV Filename based on the Collection
+            $filename = $collection . "_" . date('Ymd') . ".csv";
+            header("Content-Disposition: attachment; filename=\"$filename\"");
+            header("Content-Type: application/vnd.ms-excel");
+
+            $out = fopen("php://output", 'w');
+            fwrite($out, "sep=\t".PHP_EOL);
+            $delimiter = "\t";
+            $current = "";
+
+            //Generate First Line of Document specifying the collection
+            fputcsv($out, array("Library Index"=>strtoupper($name) . " COLLECTION","Document Title" => ""),$delimiter);
+            foreach ($list as $line)
+            {
+
+                $temp = $line['libraryindex'];
+                //
+                $folder = explode('-',$temp)[0];
+                if(strcmp($folder,$current) != 0)
+                {
+                    $current = $folder;
+                    fputcsv($out, array("Library Index"=>"","Document Title" => ""),$delimiter);
+                    fputcsv($out, array("Library Index"=>"","Document Title" => ""),$delimiter);
+                    fputcsv($out, array("Library Index"=>"Library Index","Document Title" => "Document Title"),$delimiter);
+                }
+
+                $title = $line['title'];
+                if(strpos($line['title'],'"') >= 0) ;
+                else $title = '="' . $line['title'] . '"';
+                fputcsv($out, array("Library Index"=>'="' . $line['libraryindex'] . '"',"Document Title" => $title),$delimiter);
+            }
+
+            fclose($out);
+
         }
     }
-    else { echo "Please Select Atleast One Collection.";}
+    //No Collection Selected, prompt message
+    else { echo "Please Select a Collection.";}
 }
 ?>

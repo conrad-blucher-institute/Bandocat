@@ -40,6 +40,7 @@ else header('Location: ../../');
 <div id="divright">
     <!-- Title Displayed in Green style in master.css -->
     <h2><?php echo $config['DisplayName']; ?> Document Upload</h2>
+    <div id="divscroller">
     <table class="Collection_Table">
         <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
         <tr>
@@ -80,10 +81,15 @@ else header('Location: ../../');
         </tr>
         </form>
     </table>
+    </div>
 </div>
 
 
 <script>
+    $(document).ready(function(event){
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+    });
+
     var totalFsize = 0;
     // listener for when the document is loaded
     document.addEventListener("DOMContentLoaded", init, false);

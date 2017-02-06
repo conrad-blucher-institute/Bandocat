@@ -5,9 +5,9 @@ $session = new SessionManager();
     //prevent accessing directly
     if(!isset($_POST))
         header('Location: index.php');
-
     require '../../Library/DBHelper.php';
-    $DB = new DBHelper();
+    require '../../Library/MapDBHelper.php';
+    $DB = new MapDBHelper();
     //store passed info into data variable)
     $data = $_POST;
     //check for special characters in passed variables
