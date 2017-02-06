@@ -1,7 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['doc'])) {
+if(isset($_GET['col']) && isset($_GET['doc']))
+{
     $collection = $_GET['col'];
     $docID = $_GET['doc'];
 }
@@ -15,15 +16,20 @@ require '../../Library/ControlsRender.php';
 
 $Render = new ControlsRender();
 $DB = new IndicesDBHelper();
+//get appropriate db
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+//select template indices document
 $document = $DB->SP_TEMPLATE_INDICES_DOCUMENT_SELECT($collection, $docID);
+//get the indices book
 $book = $DB->GET_INDICES_BOOK($collection);
+//get indices info
 $info = $DB->GET_INDICES_INFO($collection, $docID);
 $date = new DateHelper();
 ?>
 
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -37,6 +43,8 @@ $date = new DateHelper();
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
 
 </head>
+<!-- END HTML HEADER -->
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">
@@ -56,10 +64,12 @@ $date = new DateHelper();
                         <tr>
                             <td id="col1">
                                 <div class="cell">
+                                    <!-- LIBRARY INDEX -->
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                                     <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='' required />
                                 </div>
                                 <div class="cell">
+                                    <!-- BOOK TITLE -->
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <select id="ddlBookTitle" name="ddlBookTitle" class="selectBookTitle">
                                         <?php
@@ -70,26 +80,30 @@ $date = new DateHelper();
                                 </div>
 
                                 <div class="cell" id="pageType">
+                                    <!-- PAGE TYPE -->
                                     <span class="labelradio"><mark>Page Type:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
                                     <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="General Index" checked="true"/>General Index
                                     <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="Table of Contents"/>Table of Contents
                                 </div>
                                 <div class="cell">
+                                    <!-- PAGE NUMBER -->
                                     <span class="label"><span style = "color:red;"> * </span>Page Number:</span>
                                     <input type="text" name="txtPageNumber" id="txtPageNumber" value="<?php echo $document['PageNumber']?>"/>
                                 </div>
                                 <div class="cell" >
+                                    <!-- NEEDS REVIEW -->
                                     <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" checked="true"/>Yes
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" />No
                                 </div>
                                 <div class="cell">
+                                    <!--COMMENTS -->
                                     <span class="label"><span style = "color:red;"> </span>Comments:</span>
                                     <textarea cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
                                 </div>
                             </td>
                             <td id="col2">
-
+                                <!-- SCAN OF PAGE -->
                                 <div class="cell">
                                     <table>
                                         <tr>
@@ -109,6 +123,7 @@ $date = new DateHelper();
                         </tr>
                         <tr>
                             <td colspan="2">
+                                <!-- Hidden inputs that are passed when the update button is hit -->
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID; ?>" />
@@ -135,6 +150,13 @@ $date = new DateHelper();
 
 </body>
 <script>
+    /**********************************************
+     * Function: setBookID
+     * Description: Populates the DDL with books
+     * Parameter(s):
+     * Return value(s):
+     * $result (assoc array) -
+     ***********************************************/
     function setBookID()
     {
         var books = <?php echo json_encode($book); ?>;
@@ -148,7 +170,8 @@ $date = new DateHelper();
         }
     }
 
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
         //LIBRARY INDEX
         /*$document: array object that contains the selection from the bandocat_indicesinventory database, document table*/
         //Library index information retrieved from document array object

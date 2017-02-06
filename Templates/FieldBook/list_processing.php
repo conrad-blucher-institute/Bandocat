@@ -1,7 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['action'])) {
+if(isset($_GET['col']) && isset($_GET['action']))
+{
     $collection = htmlspecialchars($_GET['col']);
     $action = htmlspecialchars($_GET['action']);
 }

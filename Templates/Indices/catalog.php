@@ -1,7 +1,9 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col'])) {
+//get collection name from passed variables col and doc
+if(isset($_GET['col']))
+{
     $collection = $_GET['col'];
 }
 else header('Location: ../../');
@@ -12,12 +14,15 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new IndicesDBHelper();
+//get indices
 $book = $DB->GET_INDICES_BOOK($collection);
+//get appropriate DB
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -31,7 +36,9 @@ $date = new DateHelper();
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
 
 </head>
+<!-- END HTML HEADER -->
 <body>
+<!--  HTML BODY -->
 <div id="wrap">
     <div id="main">
         <div id="divleft">
@@ -47,14 +54,17 @@ $date = new DateHelper();
                         <tr>
                             <td id="col1">
                                 <div class="cell">
+                                    <!-- File  -->
                                     <span class="label">Scan of Page:</span>
                                     <input type="file" name="file_array" id="fileUpload" accept="image/tiff" /></span>
                                 </div>
                                 <div class="cell">
+                                    <!-- LIBRARY INDEX -->
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                                     <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required />
                                 </div>
                                 <div class="cell">
+                                    <!-- BOOK TITLE -->
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <select class="libraryIndexSelect" id="ddlBookTitle" name="ddlBookTitle">
                                         <?php
@@ -65,23 +75,28 @@ $date = new DateHelper();
                                 </div>
 
                                 <div class="cell">
+                                    <!-- PAGE TYPE -->
                                     <span class="labelradio"><mark>Page Type:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
                                     <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="General Index" checked="true"/>General Index
                                     <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="Table of Contents"/>Table of Contents
                                 </div>
                                 <div class="cell">
+                                    <!-- PAGE NUMBER -->
                                     <span class="label"><span style = "color:red;"></span>Page Number:</span>
                                     <input type="text" name="txtPageNumber" id="txtPageNumber"/>
                                 </div>
                                 <div class="cell" >
+                                    <!-- NEEDS REVIEW -->
                                     <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" checked="true"/>Yes
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" />No
                                 </div>
                                 <div class="cell">
+                                    <!-- COMMENTS -->
                                     <span class="label"><span style = "color:red;"> </span>Comments:</span>
                                     <textarea cols="35" rows="5" name="txtComments" id="txtComments"></textarea>
                                 </div>
+                                <!-- Hidden inputs that are passed when the update button is hit -->
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
@@ -108,6 +123,13 @@ $date = new DateHelper();
 
 </body>
 <script>
+    /**********************************************
+     * Function: setBookID
+     * Description: Populates the DDL with books
+     * Parameter(s):
+     * Return value(s):
+     * $result (assoc array) -
+     ***********************************************/
     function setBookID()
     {
         var books = <?php echo json_encode($book); ?>;
@@ -122,15 +144,29 @@ $date = new DateHelper();
     }
 
     selLibraryIndex = document.querySelector("#txtLibraryIndex");
-
     //Event listener that it is triggered when a document is loaded to the document//
     document.addEventListener("DOMContentLoaded", init, false);
-    //Initial function that selects the elements in which the event will take place
-    function init() {
+
+    /**********************************************
+     * Function: init
+     * Description: responsible for initializing the handlefileselect function when the content is loaded
+     * Parameter(s):
+     * Return value(s):
+     ***********************************************/
+    function init()
+    {
         document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
+
     }
-    //Function that is called that handles all the functions that will reshape the document
-    function handleFileSelect(e) {
+    /**********************************************
+     * Function: handleFileSelect
+     * Description: handles the selcected files
+     * Parameter(s):
+     * e (in files) - selected files
+     * Return value(s):
+     ***********************************************/
+    function handleFileSelect(e)
+    {
         var books = <?php echo json_encode($book); ?>;
         if(!e.target.files) return;
 
@@ -160,10 +196,13 @@ $date = new DateHelper();
 
     }
 
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
+        //resize height of the scroller
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         //Eventlistener that on change the new value of the drop down is send to the #ddlBookID hidden input for update
-        $('#ddlBookTitle').on('change', function(e){
-            alert("YEAH");
+        $('#ddlBookTitle').on('change', function(e)
+        {
             setBookID();
         });
 
@@ -212,8 +251,7 @@ $date = new DateHelper();
                 }
             });
         });
-        //resize height of the scroller
-        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+
     });
 
 

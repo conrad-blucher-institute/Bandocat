@@ -1,7 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['doc'])) {
+if(isset($_GET['col']) && isset($_GET['doc']))
+{
     $collection = $_GET['col'];
     $docID = $_GET['doc'];
 }
@@ -13,13 +14,17 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new FieldBookDBHelper();
+//get appropriate db
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+//select template fieldbook document
 $document = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT($collection, $docID);
 $date = new DateHelper();
+//get fieldbook crews by document id
 $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -33,6 +38,8 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
 
 </head>
+<!-- END HTML HEADER -->
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">
@@ -51,64 +58,79 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                     <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
                         <tr>
                             <datalist id="lstAuthor">
+                                <!-- Populates the control with data -->
                                 <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                             </datalist>
                             <datalist id="lstCollection">
+                                <!-- Populates the control with data -->
                                 <?php $Render->getDataList($DB->GET_FIELDBOOK_COLLECTION_LIST($collection)); ?>
                             </datalist>
                             <datalist id="lstCrew">
+                                <!-- Populates the control with data -->
                                 <?php $Render->getDataList($DB->GET_CREW_LIST($collection)); ?>
                             </datalist>
                             <td id="col1">
                                 <div class="cell">
+                                    <!-- LIBRARY INDEX -->
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                                     <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex'];?>' required />
                                 </div>
                                 <div class="cell">
+                                    <!-- COLLECTION -->
                                     <span class="label"><span style = "color:red;"> * </span>Collection:</span>
                                     <input type = "text" name = "txtFBCollection" id = "txtFBCollection" size="26" value='<?php echo $document['Collection'];?>' required list="lstCollection"/>
                                 </div>
                                 <div class="cell">
+                                    <!-- BOOK TITLE -->
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <input type = "text" name = "txtBookTitle" id = "txtBookTitle" size="26" value='<?php echo $document['BookTitle'];?>' />
                                 </div>
                                 <div class="cell">
+                                    <!-- JOB NUMBER -->
                                     <span class="label">Job Number:</span>
-                                    <input type = "text" name = "txtJobNumber" id = "txtJobNumber" size="26" value="<?php echo $document['JobNumber'];?>"  />
+                                    <input type = "text" name = "txtJobNumber" id = "txtJobNumber" size="26" value='<?php echo $document['JobNumber'];?>'  />
                                 </div>
                                 <div class="cell">
+                                    <!-- JOB TITLE -->
                                     <span class="label">Job Title:</span>
                                     <input type = "text" name = "txtJobTitle" id = "txtJobTitle" size="26" value='<?php echo $document['JobTitle'];?>'  />
                                 </div>
                                 <div class="cell">
+                                    <!-- INDEXED PAGE -->
                                     <span class="label">Indexed Page:</span>
                                     <input type = "text" name = "txtIndexedPage" id = "txtIndexedPage" size="26" value='<?php echo $document['IndexedPage'];?>'  />
                                 </div>
                                 <div class="cell">
+                                    <!-- BLANK PAGE -->
                                     <span class="labelradio"><mark>Blank Page:</mark><p hidden><b></b>This is to signal if it is a Blank Page</p></span>
                                     <input type = "radio" name = "rbBlankPage" id = "rbBlankPage_yes" size="26" value="1" <?php if($document['IsBlankPage'] == 1) echo "checked"; ?>/>Yes
                                     <input type = "radio" name = "rbBlankPage" id = "rbBlankPage_no" size="26" value="0"  <?php if($document['IsBlankPage'] == 0) echo "checked"; ?>/>No
                                 </div>
                                 <div class="cell" >
+                                    <!-- SKETCH -->
                                     <span class="labelradio" ><mark>Sketch:</mark><p hidden><b></b>This is to signal if a Sketch is present</p></span>
                                     <input type = "radio" name = "rbSketch" id = "rbSketch_yes" size="26" value="1" <?php if($document['IsSketch'] == 1) echo "checked"; ?>/>Yes
                                     <input type = "radio" name = "rbSketch" id = "rbSketch_no" size="26" value="0" <?php if($document['IsSketch'] == 0) echo "checked"; ?>/>No
                                 </div>
                                 <div class="cell">
+                                    <!-- LOOSE DOCUMENT -->
                                     <span class="labelradio"><mark>Loose Document:</mark><p hidden><b></b>This is to signal if it is a Loose Document</p></span>
                                     <input type = "radio" name = "rbLooseDocument" id = "rbLooseDocument_yes" size="26" value="1" <?php if($document['IsLooseDoc'] == 1) echo "checked"; ?>/>Yes
                                     <input type = "radio" name = "rbLooseDocument" id = "rbLooseDocument_no" size="26" value="0" <?php if($document['IsLooseDoc'] == 0) echo "checked"; ?> />No
                                 </div>
                                 <div class="cell">
+                                    <!-- NEEDS REVIEW -->
                                     <span class="labelradio"><mark>Needs Review:</mark><p hidden><b></b>This is to signal if the Page needs to be reviewed by admin</p></span>
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" <?php if($document['NeedsReview'] == 1) echo "checked"; ?> />Yes
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?> />No
                                 </div>
                                 <div class="cell">
+                                    <!-- FIELD BOOK AUTHOR -->
                                     <span class="label">Field Book Author:</span>
-                                    <input type = "text" name = "txtBookAuthor" id = "txtBookAuthor" size="26" list="lstAuthor" value="<?php echo $document['Author'];?>"  />
+                                    <input type = "text" name = "txtBookAuthor" id = "txtBookAuthor" size="26" list="lstAuthor" value='<?php echo $document['Author'];?>'  />
                                 </div>
                                 <div class="cell">
+                                    <!-- FIELD CREW MEMBER -->
                                     <span class="label">Field Crew Member: </span>
                                     <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
                                     <span id="crewcell"></span>
@@ -117,37 +139,45 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             </td>
                             <td id="col2">
                                 <div class="cell">
+                                    <!-- GET START DDL MONTH -->
                                     <select name="ddlStartMonth" id="ddlStartMonth" style="width:60px">
                                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
                                     </select>
                                     <span class="label">Document Start Date:</span>
+                                    <!-- GET START DDL DAY -->
                                     <select name="ddlStartDay" id="ddlStartDay" style="width:60px">
                                         <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
                                     </select>
+                                    <!-- GET START DDL YEAR -->
                                     <select id="ddlStartYear" name="ddlStartYear" style="width:85px">
                                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
                                     </select>
 
                                 </div>
                                 <div class="cell">
+                                    <!-- GET END DDL MONTH -->
                                     <select name="ddlEndMonth" id="ddlEndMonth" style="width:60px">
                                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
                                     </select>
                                     <span class="label">Document End Date:</span>
+                                    <!-- GET END DDL DAY -->
                                     <select name="ddlEndDay" id="ddlEndDay" style="width:60px">
                                         <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
                                     </select>
+                                    <!-- GET END DDL YEAR -->
                                     <select name="ddlEndYear" id="ddlEndYear" style="width:85px">
                                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
                                     </select>
                                 </div>
                                 <div class="cell">
+                                    <!-- COMMENTS  -->
                                     <span class="label">Comments:</span>
                                     <textarea cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
                                 </div>
                                 <div class="cell">
                                     <span class="label">Scan of Page:</span>
                                 </div>
+                                <!-- THUMBNAIL -->
                                 <div class='cell' style='text-align:center'>
                                     <?php echo "<a href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\">(Click to download)</a><br>";
                                     echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . $document['Thumbnail'] . " ' alt = Error /></a>";
@@ -155,6 +185,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                     ?>
                                 </div>
                                 <div class="cell" style="text-align: center;padding-top:20px">
+                                    <!-- Hidden inputs that are passed when the update button is hit -->
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
                                     <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
@@ -179,9 +210,35 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 </div>
 <?php include '../../Master/footer.php'; ?>
 </body>
-
+<!-- END HTML BODY -->
 <script>
-    $( document ).ready(function() {
+    /**********************************************
+     * Function: add_fields
+     * Description: adds more fields for the crew members
+     * Parameter(s):
+     * val (in String ) - name of the crew
+     * Return value(s):
+     * $result (assoc array) - return a document info in an associative array, or FALSE if failed
+     ***********************************************/
+    var max = 5;
+    var crew_count = 0;
+    function add_fields(val)
+    {
+        if(val == null)
+            val = "";
+        if(crew_count >= max)
+            return false;
+        crew_count++;
+        var objTo = document.getElementById('crewcell');
+        var divtest = document.createElement("div");
+        divtest.innerHTML = '<br><span class="label">Field Crew Member ' + (crew_count+1) + '</span><input type = "text" name = "txtCrew[]" autocomplete="off" id = "txtCrew[]" size="24" value="' + val + '" list="lstCrew" />';
+
+        objTo.appendChild(divtest)
+    }
+</script>
+<script>
+    $( document ).ready(function()
+    {
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
 
@@ -245,22 +302,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
     });
 </script>
-<script>
-    var max = 5;
-    var crew_count = 0;
-    function add_fields(val) {
-        if(val == null)
-            val = "";
-        if(crew_count >= max)
-            return false;
-        crew_count++;
-        var objTo = document.getElementById('crewcell');
-        var divtest = document.createElement("div");
-        divtest.innerHTML = '<br><span class="label">Field Crew Member ' + (crew_count+1) + '</span><input type = "text" name = "txtCrew[]" autocomplete="off" id = "txtCrew[]" size="24" value="' + val + '" list="lstCrew" />';
 
-        objTo.appendChild(divtest)
-    }
-</script>
 <style>
 
     /*Account Stylesheet Adaptation from Collection Name */

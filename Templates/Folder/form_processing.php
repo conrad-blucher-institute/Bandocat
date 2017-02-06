@@ -9,12 +9,16 @@ if(!isset($_POST))
 require '../../Library/DBHelper.php';
 require '../../Library/FolderDBHelper.php';
 $DB = new FolderDBHelper();
+//store passed info into data variable (txtAction: "delete", "txtCollection": collection, "txtDocID": documentID)
 $data = $_POST;
 $action = htmlspecialchars($data['txtAction']);
 $collection = htmlspecialchars($data['txtCollection']);
+//get appropriate db
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $comments = null;
-if($action != "delete") {
+//if the action is not delete
+if($action != "delete")
+{
     //data pre-processing
     //Date
     require '../../Library/DateHelper.php';
@@ -26,37 +30,48 @@ if($action != "delete") {
 $valid = false;
 $msg = array();
 $retval = false;
-//review
+//if the action is review or catalog
 if($action == "review" || $action == "catalog")
 {
+    //grab authors that were in the _POST
     $author_arrays = json_decode($_POST['authors']);
+    //attempt to insert authors into db
     $retval = $DB->SP_TEMPLATE_FOLDER_DOCUMENTAUTHOR_INSERT($collection,$data['txtDocID'],$author_arrays);
 
-    if($retval != false) {
+    if($retval != false)
+    {
+        //insert retval is true, update the fieldbook document
         $retval = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_UPDATE($collection, $data['txtDocID'], $data['txtLibraryIndex'], $data['txtTitle'], $data['rbInASubfolder'], $data['txtSubfolderComments'], $data['ddlClassification'], $data['txtClassificationComments'],0,$data['rbNeedsReview'],$data['txtComments'],$startdate, $enddate);
         $comments = "Library Index:" . $data['txtLibraryIndex'];
         $valid = true;
     }
     // array_push($msg,"Update Query: GOOD");
 }
+//if the action is delete
 else if($action == "delete")
 {
     $errors = 0;
+    //select the folder document template from the supplied collection, and docid
     $info = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_SELECT($data["txtCollection"], $data['txtDocID']);
+    //store the library index into comments
     $comments = "Library Index: " . $info['LibraryIndex'];
-
+    //store the filenamepath into frontscanpath
     $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
+    //store the filenamepath into backscanpath
     $backScanPath = $config['StorageDir'].$info['FileNameBackPath'];
-
+    //store the directory
     $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
-
+    //store the thumbnailpath
     $frontThumbnailPath = "../../" . $config['ThumbnailDir'] . str_replace(".tif",".jpg",$info['FileName']);
     $backThumbnailPath = "../../" . $config['ThumbnailDir']. str_replace(".tif",".jpg",$info['FileNameBack']);
-
+    //call the delete document function passing in the collection, and the documentId
     $retval = $DB->DELETE_DOCUMENT($collection,$data['txtDocID']);
     if($retval)
+        //If document was deleted, delete the documents author
         $retval = $DB->TEMPLATE_FOLDER_DELETE_DOCUMENTAUTHOR($collection,$data['txtDocID']);
-    if($retval) {
+    //If document was deleted, unlink all filepaths
+    if($retval)
+    {
         if (file_exists($frontScanPath))
             unlink($frontScanPath);
         if (file_exists($frontThumbnailPath)) {
@@ -79,7 +94,7 @@ if ($retval == false) {
     array_push($msg, "Success!");
 }
 
-//write log
+//write log passing what happened to the db
 $retval = $DB->SP_LOG_WRITE($action,$config['CollectionID'],$data['txtDocID'],$session->getUserID(),$logstatus,$comments);
 if(!$retval)
     array_push($msg, "ERROR: Fail to write log!");
