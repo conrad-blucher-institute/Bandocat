@@ -15,11 +15,15 @@ body{
 #header_logo{
     padding-bottom:10px;
 }
+/* Define how each icon button should look like */
 
 #thetable
 {
     width:100%;
+
 }
+#thetable td{padding-top: 11px; padding-left: 1px}
+
 #thetable_left
 {
     width: 230px;
@@ -511,11 +515,27 @@ div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
 /*******************************************/
 /*Notification (facebook notification)*/
 .notification{
+
+
+}
+.badge1 {
+
     min-width:20px;
     min-height:20px;
     padding:3px;
     border-radius:10px;
-    background-color: red;
     vertical-align: sub;
+}
+.badge1[data-badge]:after {
+    content:attr(data-badge);
+    position:absolute;
 
+    font-size:.7em;
+    background:red;
+    color:white;
+    width:18px;height:18px;
+    text-align:center;
+    line-height:18px;
+    border-radius:50%;
+    box-shadow:0 0 1px #333;
 }
