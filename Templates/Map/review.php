@@ -9,7 +9,7 @@ if(isset($_GET['col']) && isset($_GET['doc']))
     $Render = new ControlsRender();
     require '../../Library/DBHelper.php';
     require('../../Library/MapDBHelper.php');
-    $DB = new DBHelper();
+    $DB = new MapDBHelper();
     //get appropriate DB
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     //find the document by passing collection and docid
