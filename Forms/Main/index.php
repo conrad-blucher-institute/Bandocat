@@ -8,6 +8,7 @@ require '../../Library/AnnouncementDBHelper.php';
     $announcementLenght = count($announcementData);
     $announcementJSON = json_encode($announcementData);
     $userID = $session->getUserID();
+    $admin = $session->isAdmin();
 ?>
 <!doctype html>
 <html lang="en">
@@ -47,7 +48,6 @@ require '../../Library/AnnouncementDBHelper.php';
         <td class="tg-zhyu"><h2>BandoCat</h2></td>
         <td class="tg-0za1"><h2>Announcements</h2>
             <div id="divscroller">
-            <input class="bluebtn" id="announcer" type="button" onclick="createAnnouncement()" value="CREATE ANNOUNCEMENT" style="margin-left: 18%; font-size: 0.775vw;">
             <div id="post"></div>
             </div>
         </td>
@@ -78,9 +78,17 @@ require '../../Library/AnnouncementDBHelper.php';
         var Integer = parseInt(Generic_Number);
         document.getElementById("Greetings").innerHTML = Greetings[Integer];
 
-        /***********************
-         * Constant Elements
-         ***********************/
+
+
+        //Prepends an announcement button to the scrolling div if the user has admin privileges
+        var admin = '<?php echo $admin; ?>';
+        if(admin == 1) {
+            $('#divscroller').prepend('<input class="bluebtn" id="announcer" type="button" onclick="createAnnouncement()" value="CREATE ANNOUNCEMENT" style="margin-left: 18%; font-size: 0.775vw;">')
+        }
+
+    /***********************
+     * Constant Elements
+     ***********************/
     //Announcement text element
     var annoText = $("<textarea id='annoText' style='height: 85px; width: 85%'></textarea>");
     //Announcement title element
@@ -102,7 +110,6 @@ require '../../Library/AnnouncementDBHelper.php';
         if(announcementLength > 0) {
             for(i = 0; i < announcementLength; i++) {
                 $("#post").append("<div id = 'post" + i + "' class='anno'><h2 id ='title" + i + "'></h2><p id='message" + i + "'></p></div> ");
-                $("#post" + i).append(closeImg);
                 $("#title" + i).text(post[i].title);
                 $("#message" + i).text(post[i].message);
             }
@@ -120,8 +127,9 @@ require '../../Library/AnnouncementDBHelper.php';
      * Return value(s): NONE
      ***********************************************/
     function createAnnouncement() {
-        annoLenght = $("div[id*='annoPost']").length;
-        console.log(annoLenght);
+        if(admin == 1) {
+            var annoLenght = $("div[id*='annoPost']").length;
+            console.log(annoLenght);
             if(annoLenght < 1){
                 console.log(annoLenght);
                 $("#post").prepend("<div id='annoPost' class='anno'>" +
@@ -146,6 +154,8 @@ require '../../Library/AnnouncementDBHelper.php';
                     $("#deleteDate").datepicker();
                 });
             }
+        }
+
     }
 
     /**********************************************
@@ -189,6 +199,11 @@ require '../../Library/AnnouncementDBHelper.php';
             dataType: "json"
         });
     };
+
+    //Edit announced post
+    var values = $('#post p').val();
+    console.log(values);
+
 
 </script>
 
