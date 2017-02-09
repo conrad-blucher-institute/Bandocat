@@ -53,6 +53,31 @@ class AnnouncementDBHelper extends DBHelper
 
     }
 
+    function SP_ANNOUNCEMENT_UPDATE($iTitle, $iMessage, $iEndtime, $iUser, $iAnnouncementID)
+    {
+        $call = $this->getConn()->prepare("CALL SP_ANNOUNCEMENT_UPDATE(?,?,?,?,?)");
+
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+
+        $call->bindParam(1, $iTitle, PDO::PARAM_STR, strlen($iTitle));
+        $call->bindParam(2, $iMessage, PDO::PARAM_STR, strlen($iMessage));
+        $call->bindParam(3, $iEndtime, PDO::PARAM_STR, strlen($iEndtime));
+        $call->bindParam(4, $iUser, PDO::PARAM_INT, 11);
+        $call->bindParam(5, $iAnnouncementID, PDO::PARAM_INT, 11);
+
+        $call->execute();
+        if ($call){
+            $sth = $this->getConn()->prepare("SELECT `announcementID`,`title`,`message`, `endtime`, `posttime`, `posterID` FROM `announcement` WHERE `announcementID` = $iAnnouncementID");
+            //Execute SQL statement
+            $sth->execute();
+            //Retrieve results from executed statement
+            $result = $sth->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        return false;
+    }
+
     function GET_ANNOUNCEMENT_DATA()
     {
         //Select all relevant data where the expiration date is greater than the current date

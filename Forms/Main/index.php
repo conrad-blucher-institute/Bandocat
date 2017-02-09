@@ -90,13 +90,13 @@ require '../../Library/AnnouncementDBHelper.php';
      * Constant Elements
      ***********************/
     //Announcement text element
-    var annoText = $("<textarea id='annoText' style='height: 85px; width: 85%'></textarea>");
+    var annoText = $("<textarea id='annoText' style='height: 85px; width: 85%' required></textarea>");
     //Announcement title element
-    var annoTitle = $("<input type='text' id='annoTitle'>");
+    var annoTitle = $("<input type='text' id='annoTitle' required>");
     //Image that it is used to trigger a close function
     var closeImg = $("<img src='../../Images/Close_Button.png' height='20' width='20' class='closeAnno' style='margin: 1% -50% -4% 50%; position: inherit;'>");
     //Post announcement
-    var postButton = $("<input id='postAnno' class='bluebtn' type='button' value='Post' onclick='postAnno()' style='position:relative; padding: 2%;'>");
+    var postButton = $("<input id='postAnno' class='bluebtn' type='submit' value='Post' onclick='postAnno("+1+")' style='position:relative; padding: 2%;'>");
 
 
     /**********************************************
@@ -105,8 +105,6 @@ require '../../Library/AnnouncementDBHelper.php';
      * Parameter(s): NONE
      * Return value(s): NONE
      ***********************************************/
-    //Single Quotes Array
-    var sQuo = [];
     $( window ).load(function loadAnnouncement()
         //resize height of the scroller
     {$("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#trTop").outerHeight() - $("#h2Announcement").outerHeight() - 60);
@@ -115,12 +113,10 @@ require '../../Library/AnnouncementDBHelper.php';
         //Length of the JSON object to know how many announcements should be posted
         var announcementLength = '<?php echo $announcementLenght ?>';
         var post = JSON.parse(announcementPost);
-        var strTitle = 0;
-        var strMessage = 1;
         if(announcementLength > 0) {
             //A div is appended to a div id = post with a title header and message
             for(i = 0; i < announcementLength; i++) {
-                $("#post").append("<div id = 'post-" + i + "' class='anno'><h2 id ='title-" + i + "' ondblclick='editAnnouncement(" + strTitle + ")'></h2><p id='message-" + i + "' ondblclick='editAnnouncement(" + strMessage + ")'></p></div> ");
+                $("#post").append("<div id = 'post-" + i + "' class='anno'><h2 id ='title-" + i + "' ondblclick='editAnnouncement(" + 0 + ")'></h2><p id='message-" + i + "' ondblclick='editAnnouncement(" + 1 + ")' style='padding: 5%;'></p></div> ");
                 $("#title-" + i).html(post[i].title);
                 $("#message-" + i).html(post[i].message);
             }
@@ -137,28 +133,32 @@ require '../../Library/AnnouncementDBHelper.php';
      ***********************************************/
     function createAnnouncement() {
         if(admin == 1) {
-            var annoLenght = $("div[id*='annoPost']").length;
-            console.log(annoLenght);
+            //The number of elements with the id = annoCreate is retrieved
+            var annoLenght = $("div[id*='annoCreate']").length;
+            //If the number of id = annoCreate is greater than one a new announcement won't be created
+            //Prevents the creation of two new announcement containers
             if(annoLenght < 1){
                 console.log(annoLenght);
-                $("#post").prepend("<div id='annoPost' class='anno'>" +
+                //Prepends to the div id = post the create announcement container id = annoCreate with all of its elements
+                $("#post").prepend("<div id='annoCreate' class='anno'>" +
                     "<h2 id='h2Announcement'>Announcement</h2>" +
                     "<form id='announcement'>" +
                     "<input type='text' id='annoTitle' value='Title'>"+
-                    "<textarea id='annoText' style='height: 50px; width: 85%' value='Message' maxlength='800'></textarea>"+
+                    "<textarea id='annoText' style='height: 50px; width: 85%' maxlength='800'></textarea>"+
                     "<p style='margin: 2%;'>Expiration Date: <input type='text' id='deleteDate' required></p>"+
                     "</form>" +
                     "</div>");
 
-                //Elements that are appended to the div id = anno
-                $("#annoPost").append(closeImg);
-                $("#annoPost").append(postButton);
+                //Additional elements that are appended to the div id = annoCreate
+                $("#annoCreate").append(closeImg);
+                $("#annoCreate").append(postButton);
 
 
                 //Event listeners that call the functions to close and post  the announcement
                 closeImg.click(closeAnno);
                 postButton.click(postAnno);
 
+                //jQueryUI function that displays a dynamic calendar for user input
                 $(function () {
                     $("#deleteDate").datepicker();
                 });
@@ -169,12 +169,12 @@ require '../../Library/AnnouncementDBHelper.php';
 
     /**********************************************
      * Function: closeAnno
-     * Description: Function that closes the announcement div.
+     * Description: Function that closes the create announcement div.
      * Parameter(s): NONE
      * Return value(s): NONE
      ***********************************************/
         function closeAnno() {
-            $('#annoPost').remove();
+            $('#annoCreate').remove();
             $(".closeAnno").remove();
         }
 
@@ -185,22 +185,26 @@ require '../../Library/AnnouncementDBHelper.php';
      * Parameter(s): NONE
      * Return value(s): NONE
      ***********************************************/
-    function postAnno() {
+    function postAnno(action) {
+        //The data for post is retrieved
         var title = $('#annoTitle').val();
         var message = $('#annoText').val();
         var date = $('#deleteDate').val();
         var user = '<?php echo $userID ?>';
-
-           $('#annoPost').remove();
+        //The create announcement container and closing image are removed
+           $('#annoCreate').remove();
            $(".closeAnno").remove();
 
+           //Data stored in a JSON format for post
           var announcementData = {
               "title": title,
               "message": message,
               "endDate": date,
-              "user": user
+              "user": user,
+              "action": action
           };
 
+          //Data posted to announcement_processing.php to be inserted to the database
         $.ajax({
             type: 'post',
             url: "announcement_processing.php",
@@ -210,41 +214,112 @@ require '../../Library/AnnouncementDBHelper.php';
     }
 
     /**********************************************
+     * Function: getPostIndex
+     * Description: Function that gets the index of the post from its attribute id
+     * Posts' parent and children id name format: {id name}-{id index}
+     * Parameter(s): target, the target element of the event; event.target
+     * Return value(s): postIndex, integer of the post from which the event was triggered
+     ***********************************************/
+    function getPostIndex(target) {
+        var elemEvent = target;
+        //Retrieves the element attribute id
+        var elemID = $(elemEvent).attr('id');
+        //Splits the id string by a '-' character
+        var splitElem = elemID.split('-');
+        //Parse the last index, of the split method, into an integer
+        var postIndex = parseInt(splitElem[1]);
+        return postIndex;
+    }
+
+    /**********************************************
      * Function: editAnno
      * Description: Function that edits the announcement already posted
      * Parameter(s): element type; p message or h2 title
      * Return value(s): NONE
      ***********************************************/
+    var announcementPost = '<?php echo $announcementJSON ?>';
+    var post = JSON.parse(announcementPost);
     function editAnnouncement(element){
-        var announcementPost = '<?php echo $announcementJSON ?>';
-        var post = JSON.parse(announcementPost);
+        console.log(post);
+        var postIndex =getPostIndex(event.target);
         var elemEvent = event.target;
         var elemID = $(elemEvent).attr('id');
         var elemParent = $(elemEvent).parent().attr('id');
-        var splitElem = elemID.split('-');
-        var postIndex = parseInt(splitElem[1]);
         var message = post[postIndex].message;
         var title = post[postIndex].title;
-        //var date = $('#deleteDate').val();
-        var user = '<?php echo $userID ?>';
+        var date = post[postIndex].endtime;
 
         if(element == 1){
             $('#'+elemID).remove();
-            $('#'+elemParent).append("<textarea id='editMessage' class='edit' style='height: 50px; width: 85%' maxlength='800'></textarea>");
-            $('#editMessage').text(message);
+            $('#'+elemParent).append("<textarea id='editMessage-"+ postIndex +"' class='edit' style='height: 50px; width: 85%' maxlength='800'></textarea>");
+            $('#editMessage-' + postIndex).text(message);
         }
         if(element == 0){
             $('#'+elemID).remove();
-            $('#'+elemParent).prepend("<h2><input id='editTitle' class='edit'></h2>");
-            $('#editTitle').val(title);
+            $('#'+elemParent).prepend("<h2><input id='editTitle-"+ postIndex +"' class='edit'></h2>");
+            $('#editTitle-'+postIndex).val(title);
         }
 
-            var editLength = $("#updateAnnouncement").length;
+            var editLength = $("#updateAnnouncement-"+postIndex).length;
+        console.log(editLength);
             if(editLength <= 0) {
-                $('#'+elemParent).append("<input id = 'updateAnnouncement' type ='button' onclick='updateAnnouncement()' value='Edit' style='margin-top: 5%'>");
+                $('#'+elemParent).append("<input id='editDeleteDate-"+ postIndex +"' value=" + date + ">" +
+                        //Action 0 update; action 1 insert
+                    "<input id = 'updateAnnouncement-"+ postIndex +"' type ='submit' onclick='updateAnnouncement(" + 2 + ")' value='Edit' style='margin-top: 5%'>");
+                $(function () {
+                    $("#editDeleteDate-"+postIndex).datepicker();
+                });
             }
-            console.log(editLength);
+    }
 
+    /**********************************************
+     * Function: editAnno
+     * Description: Function that edits the announcement already posted
+     * Parameter(s): element type; p message or h2 title
+     * Return value(s): NONE
+     ***********************************************/
+    function updateAnnouncement(action) {
+        var postIndex = getPostIndex(event.target);
+
+        titleEdit = $('#title-'+postIndex).attr('id');
+
+        //Title is in h2 tag
+        if(titleEdit == "title-"+postIndex)
+            var title = $('#title-' + postIndex).text();
+
+        //Title is in input tag for editing
+        else
+            var title = $('#editTitle-'+postIndex).val();
+
+        if($('#message-'+postIndex).is('p'))
+            var message = $('#message-' + postIndex).val();
+        else
+            var message = $('#editMessage-' + postIndex).val();
+
+        var date = $('#editDeleteDate-' + postIndex).val();
+        var user = '<?php echo $userID ?>';
+        var announcementID = post[postIndex].announcementID;
+
+
+        var announcementDataEdit = {
+            "title": title,
+            "message": message,
+            "endDate": date,
+            "user": user,
+            "announcementID": announcementID,
+            "action": action
+        };
+
+        $.ajax({
+            type: 'post',
+            url: "announcement_processing.php",
+            data: announcementDataEdit,
+            dataType: "json",
+            success: function (data) {
+                $('#editTitle-'+postIndex).remove();
+                $('#editMessage-'+postIndex).remove();
+            }
+        });
     }
 
 </script>
@@ -278,7 +353,7 @@ require '../../Library/AnnouncementDBHelper.php';
     .tg  {border-collapse:collapse;border-spacing:0; width: 100%}
     #thetable td{font-family:Arial, sans-serif;font-size:14px; padding-top: 0px; padding-left: 0px; overflow:hidden;word-break:normal;}
     #thetable th{width: 1%}
-    #thetable .tg-chpy{font-size:20px;font-family:serif !important;;text-align:right;vertical-align:top; width: 77%; background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c;}
+    #thetable .tg-chpy{font-size:20px;font-family:serif !important;;text-align:center;vertical-align:middle; width: 77%; background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c;}
     #thetable .tg-0za1{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c;
         overflow: auto}
     #thetable .tg-yw4l{vertical-align:top; border-style: none}
