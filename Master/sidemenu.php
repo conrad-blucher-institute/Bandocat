@@ -9,11 +9,12 @@
     $DB1 = new DBHelper();
     //if user is admin, then add Admin section to the menu
     if($session->isAdmin())
+    {
         //queries the database for the number of tickets currently active
         $ticketCount = $DB1->GET_ADMIN_OPENTICKET_COUNT();
         echo '<div class="menu-item menu-item_sub3">
             <!--class for the visuals, data-badge to pass the number of tickets to the text in the badge -->
-            <h4 ><a class="notificationBadge" data-badge='.$ticketCount.' id=adminNotificationBadge href="">Admin</a></h4>    
+            <h4 ><a class="notificationBadge" data-badge='.$ticketCount.' id="adminNotificationBadge" href="">Admin</a></h4>    
              <div   ></div>
             <ul>           
             <li><a href="../../Forms/ActivityLog/index.php">Activity Log</a></li>
@@ -21,8 +22,7 @@
             <li><a href="../../Forms/NewUser/">Create New User</a></li>
             </ul>
         </div>';
-
-
+    }
     ?>
     <!-- Collections Tab -->
     <div class="menu-item menu-item_sub5">
@@ -72,6 +72,7 @@
     </div>
 
     <script>
+
         $( document ).ready(function()
         {
             //grab ticketCount variable from above PHP function
@@ -82,11 +83,9 @@
                 document.getElementById("adminNotificationBadge").className = "notificationBadge";
 
             }else
-                {
-                    document.getElementById("adminNotificationBadge").className = "";
-                }
-
-
+            {
+                document.getElementById("adminNotificationBadge").className = "";
+            }
 
         });
     </script>
