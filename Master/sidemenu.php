@@ -4,13 +4,16 @@
     </div>
     <!-- Add admin section to side menu -->
     <?php
+    //create a new unique instance of DBheler so we can use it for tickets
     require_once '../../Library/DBHelper.php';
     $DB1 = new DBHelper();
     //if user is admin, then add Admin section to the menu
     if($session->isAdmin())
-        $tester = $DB1->GET_ADMIN_OPENTICKET_COUNT();
+        //queries the database for the number of tickets currently active
+        $ticketCount = $DB1->GET_ADMIN_OPENTICKET_COUNT();
         echo '<div class="menu-item menu-item_sub3">
-            <h4 ><a class="badge1" data-badge='.$tester.' id=admintest href="">Admin</a></h4>    
+            <!--class for the visuals, data-badge to pass the number of tickets to the text in the badge -->
+            <h4 ><a class="notificationBadge" data-badge='.$ticketCount.' id=adminNotificationBadge href="">Admin</a></h4>    
              <div   ></div>
             <ul>           
             <li><a href="../../Forms/ActivityLog/index.php">Activity Log</a></li>
@@ -65,10 +68,26 @@
     </div>
     <!-- Logout Tab -->
     <div class="menu-item">
-        <h4><a href="../../Forms/Logout/" id="sidemenu_logout">Logout as </a></h4>
+        <h4><a href="../../Forms/Logout/" id="sidemenu_logout">Logout as <?php echo $session->getUsername(); ?></a></h4>
     </div>
 
     <script>
+        $( document ).ready(function()
+        {
+            //grab ticketCount variable from above PHP function
+            var count = '<?php echo $ticketCount; ?>';
+            //if we have more than 0 tickets with the status of "open"
+            if(count > 0)
+            {
+                document.getElementById("adminNotificationBadge").className = "notificationBadge";
 
+            }else
+                {
+                    document.getElementById("adminNotificationBadge").className = "";
+                }
+
+
+
+        });
     </script>
 </nav>

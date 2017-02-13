@@ -40,8 +40,9 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 
 </head>
 <!-- END HTML HEADER -->
-<body>
 <!--  HTML BODY -->
+<body>
+
 <div id="wrap">
     <div id="main">
         <div id="divleft">
