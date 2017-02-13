@@ -176,6 +176,9 @@ nav {
 .menu-item:hover ul {
     height:auto;
 }
+.menu-item_sub2:hover ul {
+    height:65px !important;
+}
 .menu-item_sub3:hover ul {
     height:95px !important;
 }

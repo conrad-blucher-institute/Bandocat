@@ -39,6 +39,13 @@
     <div class="menu-item">
         <h4><a href="../../Transcription/Indices/list.php?col=mapindices">Indices Transcription</a></h4>
     </div>
+    <div class="menu-item menu-item_sub2">
+        <h4><a href="#">GeoRectification</a></h4>
+        <ul>
+            <li><a href="../../GeoRec/Map/index.php?col=bluchermaps">Blucher Maps</a></li>
+            <li><a href="../../GeoRec/Map/index.php?col=greenmaps">Green Maps</a></li>
+        </ul>
+    </div>
     <!-- Queries Tab -->
     <div class="menu-item menu-item_sub3">
         <h4><a href="#">Queries</a></h4>
