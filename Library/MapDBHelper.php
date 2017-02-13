@@ -5,8 +5,10 @@ Description:
 Parameter(s):
 Return value(s):
  ***********************************************/
+require_once 'GeoRectificationDB.php';
 class MapDBHelper extends DBHelper
 {
+    use GeoRectificationTrait;
     /**********************MAP FUNCTIONS************************/
 
     /**********************************************

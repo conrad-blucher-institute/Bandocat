@@ -452,7 +452,7 @@ class DBHelper
         /* PREPARE STATEMENT */
         //CALL is sql for telling the db to execute the function following call.
         //The ? in the functions parameter list is a variable that we bind a few lines down
-        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oCollectionID)");
+        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oGeorecDir,@oCollectionID)");
         //ERROR HANDLING
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
@@ -462,7 +462,7 @@ class DBHelper
         $call->execute();
         /* RETURN RESULT */
         //returned after successful call statement. Need to tell the db what data we want selected.
-        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oCollectionID as CollectionID');
+        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oGeorecDir as GeoRecDir,@oCollectionID as CollectionID');
         //Database now has the appropriate data selected. We now need to ask the DB to fetch the values for us
         $result = $select->fetch(PDO::FETCH_ASSOC);
         $result["Name"] = htmlspecialchars($iName);
