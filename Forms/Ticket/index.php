@@ -34,7 +34,7 @@ else header('Location: ../../');
                     //column Ticket Index: Replace with Hyperlink
                     {
                         "render": function ( data, type, row ) {
-                            return "<a href='ticketview.php?id=" + data + "'>View</a>" ;
+                            return "<a href='ticketview.php?id=" + data + "' target='_blank' >View</a>" ;
                         },
                         "targets": 0
                     },
