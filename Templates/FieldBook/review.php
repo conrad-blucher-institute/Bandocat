@@ -220,7 +220,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
      * Return value(s):
      * $result (assoc array) - return a document info in an associative array, or FALSE if failed
      ***********************************************/
-    var max = 5;
+    var max = 9;
     var crew_count = 0;
     function add_fields(val)
     {

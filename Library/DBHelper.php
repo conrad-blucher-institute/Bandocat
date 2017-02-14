@@ -200,6 +200,19 @@ class DBHelper
     }
 
     /**********************************************
+
+     ***********************************************/
+    function GET_ACTION_UNIQUE()
+    {
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT DISTINCT `action` FROM `log`");
+        $sth->execute();
+
+        $result = $sth->fetchAll(PDO::FETCH_NUM);
+        return $result;
+    }
+
+    /**********************************************
      * Function: GET_COLLECTION_TABLE
      * Description: Gets the table in the db that points to all available databases.
      * Parameter(s): NONE
@@ -266,6 +279,36 @@ class DBHelper
             $ret = $sth->rowCount(); //return number of rows affected (must be 1 or 0)
         return $ret;
     }
+    /**********************************************
+     * Function: GET_USER_ROLE_FOR_DROPDOWN
+     * Description: GET USERS ROLE INFO FOR DROPDOWN CONTROL
+     * Parameter(s): NONE
+     * Return value(s):
+     * $result  (associative array) - return associative array of role info
+     ***********************************************/
+    function USER_SELECT($bActive)
+    {
+        //select only active USERs
+        if($bActive == true)
+        {
+            $this->getConn()->exec('USE' . DBHelper::$maindb);
+            $call = $this->getConn()->prepare("SELECT `userID`,`username` FROM `user` WHERE `roleID` != 0");
+            $call->execute();
+
+            $role = $call->fetchAll(PDO::FETCH_ASSOC);
+            return $role;
+        }else
+        {
+            $this->getConn()->exec('USE' . DBHelper::$maindb);
+            $call = $this->getConn()->prepare("SELECT `userID`,`username` FROM `user`");
+            $call->execute();
+
+            $role = $call->fetchAll(PDO::FETCH_ASSOC);
+            return $role;
+        }
+
+    }
+
     /**********************************************
      * Function: SP_TICKET_INSERT
      * Description: Inserts a ticket into the DB when a user submits a ticket
@@ -500,7 +543,7 @@ class DBHelper
         /* PREPARE STATEMENT */
         //CALL is sql for telling the db to execute the function following call.
         //The ? in the functions parameter list is a variable that we bind a few lines down
-        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oCollectionID)");
+        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oGeorecDir,@oCollectionID)");
         //ERROR HANDLING
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
@@ -510,7 +553,7 @@ class DBHelper
         $call->execute();
         /* RETURN RESULT */
         //returned after successful call statement. Need to tell the db what data we want selected.
-        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oCollectionID as CollectionID');
+        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oGeorecDir as GeoRecDir,@oCollectionID as CollectionID');
         //Database now has the appropriate data selected. We now need to ask the DB to fetch the values for us
         $result = $select->fetch(PDO::FETCH_ASSOC);
         $result["Name"] = htmlspecialchars($iName);
@@ -673,12 +716,11 @@ class DBHelper
     /***************************************************************/
 
     /**********************************************
-     * Function: GET_DOCUMENT_FILTEREDCOAST_COUNT
-     * Description: function responsible for returning all documents that have a coastline
+     * Function: GET_ADMIN_OPENTICKET_COUNT
+     * Description: function query's the db selecting all tickets who have a status of 0
      * Parameter(s):
-     * $collection (in String) - Name of the collection
      * Return value(s):
-     * $result  (array) - true if success, otherwise, false
+     * $result  (int) - number of tickets
      ***********************************************/
     function GET_ADMIN_OPENTICKET_COUNT()
     {
@@ -803,44 +845,124 @@ class DBHelper
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
-
-    //DEPRECATED: SEE GET_MONTHLYREPORT2($iYear,$iCollectionID)
     /**********************************************
-     * Function: GET_MONTHLYREPORT
-     * Description: attempts to return the monthlyreport from the db of the requested parameters
+     * Function: GET_WEEKLY_TRANSCRIPTION_REPORT
+     * Description: calls the SP_LOG_WEEKLYTRANSCRIPTIONREPORT_COUNT function in phpadmin
      * Parameter(s):
      * $iYear (in int) - year
      * $iCollectionID (in int) - specifies the collection id to search
      * Return value(s): return array if success, false if fail
      ***********************************************/
-    function GET_MONTHLYREPORT($iYear,$iCollectionID)
+    function GET_WEEKLY_TRANSCRIPTION_REPORT($iYear,$iCollectionID)
+    {
+        //get appropriate db
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+        // selects the weeks from weeklyreport db that satisfy the year and collection id parameters
+        $call = $this->getConn()->prepare("CALL SP_LOG_WEEKLYTRANSCRIPTIONREPORT_COUNT(:iYear,:iColID)");
+        //bind variables to the above sql statement
+        $call->bindParam(':iYear',$iYear,PDO::PARAM_INT);
+        $call->bindParam(':iColID',$iCollectionID,PDO::PARAM_INT);
+        $call->execute();
+        return $call->fetchAll(PDO::FETCH_NUM);
+    }
+
+    /**********************************************
+     * Function: SELECT_USER_PERFORMANCE_BY_MONTH
+     * Description: selects all usernames in the passed year, month and action, then counts them returning a number of actions
+     * Parameter(s):
+     * $iYear (in int) - year
+     * $iCollectionID (in int) - specifies the collection id to search
+     * Return value(s): return array if success, false if fail
+     ***********************************************/
+    function SELECT_USER_PERFORMANCE_BY_MONTH($iYear,$iMonth,$iUserID, $iAction)
+    {
+        //get appropriate db
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+        // selects the weeks from weeklyreport db that satisfy the year and collection id parameters
+        $call = $this->getConn()->prepare("SELECT COUNT(*), u1.`username` FROM `log` LEFT JOIN `user` AS u1 ON `log`.`userID` = u1.`userID` WHERE MONTH(`log`.`timestamp`) = :iMonth AND YEAR(`log`.`timestamp`) = :iYear AND `log`.`action`= :iAction AND `log`.`status` = 'success' AND `log`.`userID` = :iUserID");
+
+           //bind variables to the above sql statement
+        //bind variables to the above sql statement
+        $call->bindParam(':iYear',$iYear,PDO::PARAM_INT);
+        $call->bindParam(':iMonth',$iMonth,PDO::PARAM_INT);
+        $call->bindParam(':iUserID',$iUserID,PDO::PARAM_INT);
+        $call->bindParam(':iAction',$iAction,PDO::PARAM_STR);
+        $call->execute();
+        return $call->fetch(PDO::FETCH_NUM);
+    }
+    function GET_ACTION_COUNT($iYear,$iCollectionID,$iUserID)
+    {
+        //get appropriate db
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+        // selects the weeks from weeklyreport db that satisfy the year and collection id parameters
+        $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLY_USERCATALOG_COUNT(:iYear,:iColID,:iUserID)");
+        //bind variables to the above sql statement
+        $call->bindParam(':iYear',$iYear,PDO::PARAM_INT);
+        $call->bindParam(':iColID',$iCollectionID,PDO::PARAM_INT);
+        $call->bindParam(':iUserID',$iUserID,PDO::PARAM_INT);
+        $call->execute();
+
+        return $call->fetch(PDO::FETCH_NUM);
+    }
+
+//    //DEPRECATED: SEE GET_MONTHLYREPORT2($iYear,$iCollectionID)
+//    /**********************************************
+//     * Function: GET_MONTHLYREPORT
+//     * Description: attempts to return the monthlyreport from the db of the requested parameters
+//     * Parameter(s):
+//     * $iYear (in int) - year
+//     * $iCollectionID (in int) - specifies the collection id to search
+//     * Return value(s): return array if success, false if fail
+//     ***********************************************/
+//    function GET_MONTHLYREPORT($iYear,$iCollectionID)
+//    {
+//        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+//        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+//        // selects the weeks from monthlyreport db that satisfy the year, month, and collection id satisfy the parameters
+//        $sth = $this->getConn()->prepare("SELECT
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 1 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 2 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 3 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 4 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 5 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 6 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 7 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 8 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 9 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 10 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 11 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success'),
+//            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 12 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='transcribe' AND `log`.`status` = 'success')");
+//            //bind variables to the above sql statement
+//            $sth->bindParam(':y',$iYear,PDO::PARAM_INT);
+//            $sth->bindParam(':collection',$iCollectionID,PDO::PARAM_INT);
+//
+//            $sth->execute();
+//            return $sth->fetchAll(PDO::FETCH_NUM);
+//    }
+    /**********************************************
+     * Function: GET_MONTHLY_TRANSCRIPTION_REPORT
+     * Description: attempts to return the monthlyreport from the db of the requested parameters
+     *              has better performance than GET_MONTHLYREPORT (this query only searches on the table one time)
+     * Parameter(s):
+     * $iYear (in int) - year
+     * $iCollectionID (in int) - specifies the collection id to search
+     * Return value(s): return array if success, false if fail
+     ***********************************************/
+    function GET_MONTHLY_TRANSCRIPTION_REPORT($iYear,$iCollectionID)
     {
         $this->getConn()->exec('USE ' . DBHelper::$maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
-        // selects the weeks from monthlyreport db that satisfy the year, month, and collection id satisfy the parameters
-        $sth = $this->getConn()->prepare("SELECT 
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 1 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 1 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 2 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 2 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 3 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 3 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 4 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 4 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 5 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 5 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 6 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 6 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 7 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 7 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 8 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 8 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 9 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 9 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 10 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 10 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 11 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 11 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success'),
-            (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 12 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='catalog' AND `log`.`status` = 'success') - (SELECT COUNT(*) FROM `log` WHERE MONTH(`log`.`timestamp`) = 12 AND YEAR(`log`.`timestamp`) = :y AND `log`.`collectionID`= :collection AND `log`.`action`='delete' AND `log`.`status` = 'success')");
-            //bind variables to the above sql statement
-            $sth->bindParam(':y',$iYear,PDO::PARAM_INT);
-            $sth->bindParam(':collection',$iCollectionID,PDO::PARAM_INT);
-
-            $sth->execute();
-            return $sth->fetchAll(PDO::FETCH_NUM);
+        // sql statement CALL calls the function pointed to in the db
+        $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLYTRANSCRIPTIONREPORT_COUNT(:iYear,:iColID)");
+        //bind variables to the above sql statement
+        $call->bindParam(':iYear',$iYear,PDO::PARAM_INT);
+        $call->bindParam(':iColID',$iCollectionID,PDO::PARAM_INT);
+        $call->execute();
+        return $call->fetchAll(PDO::FETCH_NUM);
     }
-
     /**********************************************
      * Function: GET_MONTHLYREPORT2
      * Description: attempts to return the monthlyreport from the db of the requested parameters

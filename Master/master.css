@@ -176,6 +176,9 @@ nav {
 .menu-item:hover ul {
     height:auto;
 }
+.menu-item_sub2:hover ul {
+    height:65px !important;
+}
 .menu-item_sub3:hover ul {
     height:95px !important;
 }
@@ -512,13 +515,8 @@ div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
     font-size: 12px;
 }
 
-/*******************************************/
-/*Notification (facebook notification)*/
-.notification{
 
-
-}
-.badge1 {
+.notificationBadge {
 
     min-width:20px;
     min-height:20px;
@@ -526,7 +524,7 @@ div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
     border-radius:10px;
     vertical-align: sub;
 }
-.badge1[data-badge]:after {
+.notificationBadge[data-badge]:after {
     content:attr(data-badge);
     position:absolute;
 
@@ -538,4 +536,45 @@ div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
     line-height:18px;
     border-radius:50%;
     box-shadow:0 0 1px #333;
+}
+/*********Tabs for the statistics page*************************/
+
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: left;}
+
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
 }

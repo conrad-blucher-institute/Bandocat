@@ -1,0 +1,50 @@
+#title {
+    position: relative;
+    width: 453px;
+    top: 4%;
+    color: #0099FF;
+    text-align: center;
+    font-family: "DigifaceWide";
+    font-weight: bold;
+    font-size: 40px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+	}
+	
+img.Right{
+    max-width: 150%;
+	}
+
+	
+#Directional_Image_Right{
+	position: fixed;
+    right: 5%;
+    width: 2%;
+    height: auto;
+	}
+	
+	
+img.Left{
+	max-width: 150%;;
+	}
+	
+#Directional_Image_Left{
+	position: fixed;
+    left: 5%;
+    width: 2%;
+    transform: rotate(180deg);
+    height: auto
+	}
+	
+.Input_Image{position:relative;
+	max-width: 100%;}
+
+.Slide{
+	position: absolute;
+    font-size: 2.5vw;
+    text-align: -webkit-center;
+    width: 70%;
+    left: 15%;
+    right: 15%;
+    top: 12%;
+}
