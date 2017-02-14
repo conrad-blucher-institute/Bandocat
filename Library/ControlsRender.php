@@ -166,7 +166,16 @@ class ControlsRender
             else echo '<option value="' . $item['name'] . '">' . $item['displayname'] . '</option>';
         }
     }
-
+    //Render User dropdown
+    function GET_DDL_USER($array,$selected)
+    {
+        echo '<option value="">Select User:</option>';
+        foreach ($array as $item) {
+            if ($selected == $item)
+                echo '<option value="' . $item['userID'] . '" selected>' . $item['username']. '</option>';
+            else echo '<option value="' . $item['userID'] . '">' . $item['username']. '</option>';
+        }
+    }
     /*Function: DISPLAY_LOG_INFO
      *Description: Receive an array of logs of a document as the parameter and render html element on the web page
      *              This function is only used for review.php of every Template
