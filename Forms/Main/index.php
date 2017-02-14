@@ -47,7 +47,7 @@ require '../../Library/AnnouncementDBHelper.php';
         </td>
         <td class="tg-zhyu"><h2>BandoCat</h2></td>
         <td class="tg-0za1"><h2>Announcements</h2>
-            <div id="divscroller">
+            <div id="divscroller" style="text-align: center">
             <div id="post"></div>
             </div>
         </td>
@@ -83,7 +83,7 @@ require '../../Library/AnnouncementDBHelper.php';
         //Prepends an announcement button to the scrolling div if the user has admin privileges
         var admin = '<?php echo $admin; ?>';
         if(admin == 1) {
-            $('#divscroller').prepend('<input class="bluebtn" id="announcer" type="button" onclick="createAnnouncement()" value="CREATE ANNOUNCEMENT" style="margin-left: 18%; font-size: 0.775vw;">')
+            $('#divscroller').prepend('<input class="bluebtn" id="announcer" type="button" onclick="createAnnouncement()" value="CREATE ANNOUNCEMENT" style="font-size: 0.775vw;">')
         }
 
     /***********************
