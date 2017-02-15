@@ -139,7 +139,6 @@ require '../../Library/AnnouncementDBHelper.php';
             //If the number of id = annoCreate is greater than one a new announcement won't be created
             //Prevents the creation of two new announcement containers
             if(annoLenght < 1){
-                console.log(annoLenght);
                 //Prepends to the div id = post the create announcement container id = annoCreate with all of its elements
                 $("#post").prepend("<div id='annoCreate' class='anno'>" +
                     "<h2 id='h2Announcement'>Announcement</h2>" +
@@ -181,8 +180,8 @@ require '../../Library/AnnouncementDBHelper.php';
 
     /**********************************************
      * Function: postAnno
-     * Description: Function that closes the announcement container and requests, and posts, announcmentData to
-     * "announcement_processing.php" for database insertion.
+     * Description: Function that closes the announcement container and requests, and posts announcementData to
+     * announcement_processing.php for database insertion.
      * Parameter(s): NONE
      * Return value(s): NONE
      ***********************************************/
@@ -239,14 +238,13 @@ require '../../Library/AnnouncementDBHelper.php';
 
     /**********************************************
      * Function: editAnno
-     * Description: Function that edits the announcement already posted
+     * Description: Function that edits the announcement already posted on a double click event
      * Parameter(s): element type; p message or h2 title
      * Return value(s): NONE
      ***********************************************/
     var announcementPost = '<?php echo $announcementJSON ?>';
     var post = JSON.parse(announcementPost);
     function editAnnouncement(element){
-        console.log(post);
         var postIndex =getPostIndex(event.target);
         var elemEvent = event.target;
         var elemID = $(elemEvent).attr('id');
@@ -267,10 +265,9 @@ require '../../Library/AnnouncementDBHelper.php';
         }
 
             var editLength = $("#updateAnnouncement-"+postIndex).length;
-        console.log(editLength);
             if(editLength <= 0) {
                 $('#'+elemParent).append("<p id = 'textEdit-"+ postIndex +"' style='margin: 3% 2% -4% 2%;'>Expiration Date: <input id='editDeleteDate-"+ postIndex +"' style='width: 40%; text-align: center' value=" + date + "></p>" + "<br>" +
-                    "<input id = 'updateAnnouncement-"+ postIndex +"' class='bluebtn' type ='submit' onclick='updateAnnouncement()' value='Edit' style='margin-top: 5%'>" +
+                    "<input id = 'updateAnnouncement-"+ postIndex +"' class='bluebtn' type ='submit' onclick='updateAnnouncement("+ postIndex +")' value='Edit' style='margin-top: 5%'>" +
                 "<input id = 'cancelEdit-" + postIndex + "' class='bluebtn' type='button' onclick='dismissEdit(event.target, post[" + postIndex + "].title, post[" + postIndex + "].message)' value='Cancel'>");
                 $(function () {
                     $("#editDeleteDate-"+postIndex).datepicker();
@@ -285,22 +282,26 @@ require '../../Library/AnnouncementDBHelper.php';
      * Parameter(s): action, update or insert.
      * Return value(s): NONE
      ***********************************************/
-    function updateAnnouncement() {
+    function updateAnnouncement(parent) {
+        childrens = $('#post-' + parent).children();
         var target = event.target;
         var postIndex = getPostIndex(target);
 
-        titleEdit = $('#title-'+postIndex).attr('id');
+        titleID = childrens[0].id;
+        messageID = childrens[1].id;
+
 
         //Title is in h2 tag
-        if(titleEdit == "title-"+postIndex)
+        if(titleID == "title-"+postIndex)
             var title = $('#title-' + postIndex).text();
 
         //Title is in input tag for editing
         else
             var title = $('#editTitle-'+postIndex).val();
 
-        if($('#message-'+postIndex).is('p'))
-            var message = $('#message-' + postIndex).val();
+        if(messageID == "message-"+postIndex)
+        {var message = $('#message-' + postIndex).text();
+           }
         else
             var message = $('#editMessage-' + postIndex).val();
 
@@ -329,7 +330,6 @@ require '../../Library/AnnouncementDBHelper.php';
     }
 
     function dismissCreate(i, title, message){
-        console.log(postDivs);
         $("#post").append("<div id = 'post-" + i + "' class='anno'><h2 id ='title-" + i + "' ondblclick='editAnnouncement(" + 0 + ")'></h2><p id='message-" + i + "' ondblclick='editAnnouncement(" + 1 + ")' style='padding: 5%;'></p></div> ");
         $("#title-" + i).html(title);
         $("#message-" + i).html(message);
@@ -347,15 +347,10 @@ require '../../Library/AnnouncementDBHelper.php';
         $('#title-' + postIndex).remove();
         $('#message-' + postIndex).remove();
 
-        var announcementPost = '<?php echo $announcementJSON ?>';
-        //Length of the JSON object to know how many announcements should be posted
-        var post = JSON.parse(announcementPost);
             //A div is appended to a div id = post with a title header and message
                 $("#post-"+postIndex).prepend("<h2 id ='title-" + postIndex + "' ondblclick='editAnnouncement(" + 0 + ")'></h2><p id='message-" + postIndex + "' ondblclick='editAnnouncement(" + 1 + ")' style='padding: 5%;'></p></div> ");
                 $("#title-" + postIndex).html(title);
                 $("#message-" + postIndex).html(message);
-
-        console.log($("#post-"+postIndex));
     }
 
 
