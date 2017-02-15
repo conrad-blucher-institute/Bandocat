@@ -93,7 +93,9 @@ function format_size($size) {
                                     <ul class="tab">
                                         <li><a href="javascript:void(0)" class="tablinks" id="idMonthlyPerformance" onclick="openTab(event, 'MonthlyPerformance')"> Cataloging Performance</a></li>
                                         <li><a href="javascript:void(0)" class="tablinks" id="idTranscriptionPerformance" onclick="openTab(event, 'Transcription')">Transcription Performance</a></li>
-                                        <li><a href="javascript:void(0)" class="tablinks" id="idIndividualPerformance" onclick="openTab(event, 'IndividualPerformance')">Individual Performance</a></li>
+                                        <?php if($session->isAdmin()) {
+                                            echo '<li ><a href = "javascript:void(0)" class="tablinks" id = "idIndividualPerformance" onclick = "openTab(event,' .  "'IndividualPerformance')" . '"> Individual Performance </a ></li >';
+                                        };?>
                                     </ul>
                                     <div id="MonthlyPerformance" class="tabcontent">
                                         <h3>Cataloging Monthly Performance <span class="spanYear"></span></h3>

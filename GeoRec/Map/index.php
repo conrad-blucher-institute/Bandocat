@@ -113,6 +113,21 @@ else header('Location: ../../');
                         },
                         "targets": 9
                     },
+                    {
+                        "render": function ( data, type, row ) {
+                            if(row[8] == "")
+                                return "";
+                            switch(data)
+                            {
+                                case "0": return "<span>Not Rectified</span>";
+                                case "1": return "<span style='color:#00BC65'>Rectified</span>";
+                                case "2": return "<span style='color:red'>Not Rectifiable</span>";
+                                case "3": return "<span style='color:darkkhaki'>Needs Review</span>";
+                                default: return "<span>Unknown</span>";
+                            }
+                        },
+                        "targets": 10
+                    },
                     //columnn georectify
                     {
                         "render": function ( data, type, row ) {
@@ -128,7 +143,7 @@ else header('Location: ../../');
                                     return "<a href='' id='aRecFront' onclick='makeTiles(" + '"' + collection_config['Name'] + '"' + "," + row[0] + "," + '"' + type1 + '"' + ");event.preventDefault();'>Front</a>";
                             }
                         },
-                        "targets": 10
+                        "targets": 11
                     }
 
 
@@ -198,7 +213,8 @@ else header('Location: ../../');
                         <th width="40px">Has Coast</th>
                         <th>Front Map</th>
                         <th>Back Map</th>
-                        <th width="95px">GeoRec Status</th>
+                        <th width="95px">GeoRec Front Status</th>
+                        <th width="95px">GeoRec Back Status</th>
                         <th width="60px">GeoRectify</th>
                     </tr>
                     </thead>

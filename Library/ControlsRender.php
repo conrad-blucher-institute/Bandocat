@@ -185,7 +185,7 @@ class ControlsRender
     */
     function DISPLAY_LOG_INFO($arrayLogInfo)
     {
-        echo '<div id="documentHistory" class="ui-widget-content" style="text-align: center">';
+        echo '<div id="documentHistory" class="ui-widget-content" style="text-align: center;max-height:350px;overflow:auto">';
             echo "<p>Document History</p><table><thead><tr><th>Action</th><th>Username</th> <th>Timestamp</th></tr></thead><tbody>";
 
                         $user = [];

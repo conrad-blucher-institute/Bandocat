@@ -105,5 +105,4 @@ if($retval == false || $valid == false)
     else if ($action == "delete")
         $LOG->writeErrorLog($session->getUserName(),$collection,$data['txtDocID'],$msg,$comments);
 }
-var_dump($msg);
 echo json_encode($msg);
