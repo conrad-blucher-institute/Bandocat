@@ -53,8 +53,10 @@ $columns = array(
     array( 'db' => '`document`.`hascoast`', 'dt' => 6, 'field' => 'hascoast'),
     array( 'db' => '`document`.`filename`', 'dt' => 7,'field' => 'filename'),
     array( 'db' => '`document`.`filenameback`', 'dt' => 8,'field' => 'filenameback'),
-    array( 'db' => '`document`.`georecFrontStatus`', 'dt' => 9,'field' => 'georecFrontStatus'),
-    array( 'db' => '`document`.`georecBackStatus`', 'dt' => 10,'field' => 'georecBackStatus')
+    array( 'db' => '`document`.`hasPOI`', 'dt' => 9,'field' => 'hasPOI'),
+    array( 'db' => '`document`.`rectifiability`', 'dt' => 10,'field' => 'rectifiability'),
+    array( 'db' => '`document`.`georecFrontStatus`', 'dt' => 11,'field' => 'georecFrontStatus'),
+    array( 'db' => '`document`.`georecBackStatus`', 'dt' => 12,'field' => 'georecBackStatus')
 
 );
 
