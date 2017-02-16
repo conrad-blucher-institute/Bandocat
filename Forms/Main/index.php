@@ -86,6 +86,13 @@ require '../../Library/AnnouncementDBHelper.php';
             $('#divscroller').prepend('<input class="bluebtn" id="announcer" type="button" onclick="createAnnouncement()" value="CREATE ANNOUNCEMENT" style="font-size: 0.775vw;">')
         }
 
+    /***************************************************
+     * <A    N   N   O   U   N   C   E   M   E   N   T>
+     ***************************************************/
+    //Announcement information for post in a JSON object
+    var announcementPost = '<?php echo $announcementJSON ?>';
+    var post = JSON.parse(announcementPost);
+
     /***********************
      * Constant Elements
      ***********************/
@@ -101,27 +108,32 @@ require '../../Library/AnnouncementDBHelper.php';
 
     /**********************************************
      * Function: loadAnnouncement
-     * Description: Function that will display an announcement if the date condition is true
+     * Description: Function that will retrieve and display an announcement from the database if the date condition is true
      * Parameter(s): NONE
      * Return value(s): NONE
      ***********************************************/
+    /***********************
+     * Post Announcement
+     * -Post element id = {post}-{post index}
+     * Components
+     * 1. Title element id = {title}-{post index}
+     * 2. Message element id = {message}-{post index}
+     ***********************/
     function loadAnnouncement()
     //resize height of the scroller
     {$("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#trTop").outerHeight() - $("#h2Announcement").outerHeight() - 60);
-        //Announcement information stored in a JSON format
-        var announcementPost = '<?php echo $announcementJSON ?>';
         //Length of the JSON object to know how many announcements should be posted
         var announcementLength = '<?php echo $announcementLenght ?>';
-        var post = JSON.parse(announcementPost);
         if(announcementLength > 0) {
-            //A div is appended to a div id = post with a title header and message
             for(i = 0; i < announcementLength; i++) {
+                //Post element and components appended to the post div with information obtained from the database
                 $("#post").append("<div id = 'post-" + i + "' class='anno'><h2 id ='title-" + i + "' ondblclick='editAnnouncement(" + 0 + ")'></h2><p id='message-" + i + "' ondblclick='editAnnouncement(" + 1 + ")' style='padding: 5%;'></p></div> ");
                 $("#title-" + i).html(post[i].title);
                 $("#message-" + i).html(post[i].message);
             }
         }
     }
+    //Post announcement when window loads
     $( window ).load(loadAnnouncement);
 
     /**********************************************
@@ -237,13 +249,11 @@ require '../../Library/AnnouncementDBHelper.php';
     }
 
     /**********************************************
-     * Function: editAnno
+     * Function: editAnnouncement
      * Description: Function that edits the announcement already posted on a double click event
-     * Parameter(s): element type; p message or h2 title
+     * Parameter(s): int, title = 0
      * Return value(s): NONE
      ***********************************************/
-    var announcementPost = '<?php echo $announcementJSON ?>';
-    var post = JSON.parse(announcementPost);
     function editAnnouncement(element){
         var postIndex =getPostIndex(event.target);
         var elemEvent = event.target;
@@ -277,16 +287,18 @@ require '../../Library/AnnouncementDBHelper.php';
 
     /**********************************************
      * Function: updateAnnouncement
-     * Description: Function that is triggered when the element is double clicked and allows the information
-     * to be modified.
-     * Parameter(s): action, update or insert.
+     * Description: Function that is triggered when the Edit submit button is clicked, which sets the new announcement information
+     * Parameter(s): parent int, post index of the targeted element
      * Return value(s): NONE
      ***********************************************/
     function updateAnnouncement(parent) {
+        //Array of childrens, or components, elements of the post container
+
         childrens = $('#post-' + parent).children();
         var target = event.target;
         var postIndex = getPostIndex(target);
 
+        //Identify which elements are in editing mode by obtaining their ids.
         titleID = childrens[0].id;
         messageID = childrens[1].id;
 
@@ -299,14 +311,18 @@ require '../../Library/AnnouncementDBHelper.php';
         else
             var title = $('#editTitle-'+postIndex).val();
 
+        //Message is in p tag
         if(messageID == "message-"+postIndex)
-        {var message = $('#message-' + postIndex).text();
-           }
+            var message = $('#message-' + postIndex).text();
+        //Message is in textarea tag for editing
         else
             var message = $('#editMessage-' + postIndex).val();
 
+        //Expiration date value
         var date = $('#editDeleteDate-' + postIndex).val();
+        //User id value
         var user = '<?php echo $userID ?>';
+        //Announcement ID value
         var announcementID = post[postIndex].announcementID;
 
 //Posted JSON object
@@ -329,12 +345,25 @@ require '../../Library/AnnouncementDBHelper.php';
         });
     }
 
+    /**********************************************
+     * Function: dismissCreate
+     * Description: Function that is triggered when a new announcement has been submitted for post it appends the post
+     * announcement with the new submitted announcement information.
+     * Parameter(s): i int, title string, message string; i: post index, title: title of the post, message: message of the post
+     * Return value(s): NONE
+     ***********************************************/
     function dismissCreate(i, title, message){
         $("#post").append("<div id = 'post-" + i + "' class='anno'><h2 id ='title-" + i + "' ondblclick='editAnnouncement(" + 0 + ")'></h2><p id='message-" + i + "' ondblclick='editAnnouncement(" + 1 + ")' style='padding: 5%;'></p></div> ");
         $("#title-" + i).html(title);
         $("#message-" + i).html(message);
     }
-
+    /**********************************************
+     * Function: dismissEdit
+     * Description: Function that is triggered when a new announcement has been edited it appends the post
+     * announcement with the new edited announcement information.
+     * Parameter(s): (target) element object, (title) string, (message) string; target: targeted element of the event, title: title of the post, message: message of the post
+     * Return value(s): NONE
+     ***********************************************/
     function dismissEdit(target, title, message) {
         var postIndex = getPostIndex(target);
         $('#annoCreate').remove();
@@ -353,9 +382,9 @@ require '../../Library/AnnouncementDBHelper.php';
                 $("#message-" + postIndex).html(message);
     }
 
-
-
-
+    /***************************************************
+     * </A    N   N   O   U   N   C   E   M   E   N   T>
+     ***************************************************/
 </script>
 
 <!-- Page Style -->
