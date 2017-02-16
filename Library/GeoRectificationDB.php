@@ -4,7 +4,7 @@ interface GeoRectificationDB
 {
 
 }
-//Functions belong to trait can be used for transcription of different templates
+//Functions belong to trait can be used for georectification of different templates
 trait GeoRectificationTrait
 {
 
