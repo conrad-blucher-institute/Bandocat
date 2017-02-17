@@ -98,8 +98,33 @@ else header('Location: ../../');
                     },
                     { "searchable": false, "targets": 7 }, //disable search for file name
                     { "searchable": false, "targets": 8 }, //disable search for file name back
+                    //column : HasPOI
+                    {
+                        "render": function ( data, type, row ) {
+                            if(data == 1)
+                                return "Yes";
+                            return "No";
+                        },
+                        "targets": 9
+                    },
+                    //column : Rectifiability
+                    {
+                        "render": function ( data, type, row ) {
+                            switch(data)
+                            {
+                                case "POOR":
+                                    return "<span style='color:lightgray'>" + data + "</span>";
+                                case "GOOD":
+                                    return "<span style='color:'>" + data + "</span>";
+                                case "EXCELLENT":
+                                    return "<span style='color:#00BC65'>" + data + "</span>";
+                                default: return data;
+                            }
+                        },
+                        "targets": 10
+                    },
                     //column georec status
-                    //This column translates the GeoRec Status from int value to string value
+                    //This column translates the GeoRec Front Status from int value to string value
                     {
                         "render": function ( data, type, row ) {
                             switch(data)
@@ -111,8 +136,9 @@ else header('Location: ../../');
                                 default: return "<span>Unknown</span>";
                             }
                         },
-                        "targets": 9
+                        "targets": 11
                     },
+                    //This column translates the GeoRec Back Status from int value to string value
                     {
                         "render": function ( data, type, row ) {
                             if(row[8] == "")
@@ -126,7 +152,7 @@ else header('Location: ../../');
                                 default: return "<span>Unknown</span>";
                             }
                         },
-                        "targets": 10
+                        "targets": 12
                     },
                     //columnn georectify
                     {
@@ -143,7 +169,7 @@ else header('Location: ../../');
                                     return "<a href='' id='aRecFront' onclick='makeTiles(" + '"' + collection_config['Name'] + '"' + "," + row[0] + "," + '"' + type1 + '"' + ");event.preventDefault();'>Front</a>";
                             }
                         },
-                        "targets": 11
+                        "targets": 13
                     }
 
 
@@ -208,11 +234,13 @@ else header('Location: ../../');
                         <th width="100px">Library Index</th>
                         <th>Document Title</th>
                         <th width="280px">Document Subtitle</th>
-                        <th width="200px">Customer</th>
+                        <th width="150px">Customer</th>
                         <th width="70px">End Date</th>
                         <th width="40px">Has Coast</th>
                         <th>Front Map</th>
                         <th>Back Map</th>
+                        <th>Has POI</th>
+                        <th>Rectifiability</th>
                         <th width="95px">GeoRec Front Status</th>
                         <th width="95px">GeoRec Back Status</th>
                         <th width="60px">GeoRectify</th>
@@ -237,7 +265,7 @@ else header('Location: ../../');
             type: "POST",
             dataType: 'json',
             url: "php/tileCreator.php",
-            data: {collection: collection,docID: docID,type: type},
+            data: {"collection": collection,"docID": docID,"type": type},
             success:function(data) {
            window.localStorage.setItem("imageInfo", JSON.stringify(data));
                 closeModal(3);
