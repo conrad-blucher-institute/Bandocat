@@ -169,7 +169,6 @@ class ControlsRender
     //Render User dropdown
     function GET_DDL_USER($array,$selected)
     {
-        echo '<option value="">Select User:</option>';
         foreach ($array as $item) {
             if ($selected == $item)
                 echo '<option value="' . $item['userID'] . '" selected>' . $item['username']. '</option>';

@@ -177,7 +177,7 @@ class DBHelper
     function GET_USER_TABLE()
     {
         $this->getConn()->exec('USE' . DBHelper::$maindb);
-        $sth = $this->getConn()->prepare("SELECT `username`,`userID`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID`");
+        $sth = $this->getConn()->prepare("SELECT `username`,`userID`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` ORDER BY `username` ASC ");
         $sth->execute();
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -245,22 +245,8 @@ class DBHelper
         $role = $call->fetchAll(PDO::FETCH_ASSOC);
         return $role;
     }
-    /**********************************************
-     * Function: USER_ROLE_SELECT
-     * Description: Selects the name of the user role by looking at a users roleID and matching it to the corresponding role name in the 'role' table
-     * Parameter(s): NONE
-     * Return value(s):
-     * $result  (associative array) - return associative array of role info
-     ***********************************************/
-    function USER_ROLE_SELECT($iUserID)
-    {
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
-        $call = $this->getConn()->prepare("SELECT `roleID`,`name` FROM `role` AS rol INNER JOIN `user` AS use ON rol.`use` = use.`roleID` WHERE `userID` = :uID ");
-        $call->bindParam(':uID',$iUserID,PDO::PARAM_INT);
-        $call->execute();
-        $role = $call->fetchAll(PDO::FETCH_ASSOC);
-        return $role;
-    }
+
+
     /**********************************************
      * Function: USER_ROLE_UPDATE
      * Description: UPDATES THE USERS ROLE
