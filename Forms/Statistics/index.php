@@ -139,7 +139,7 @@ function format_size($size) {
                                         <table id="dptable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
                                             <thead>
                                             <tr>
-                                                <th width="50px">Catalogs</th>
+                                                <th width="50px">Count</th>
                                                 <th width="50px">User</th>
                                             </tr>
                                             </thead>
