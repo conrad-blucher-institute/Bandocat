@@ -28,7 +28,7 @@
 
 #buttons{
     position: absolute;
-    bottom: 16%;
+    bottom: 18%;
     width: 98%;
     height: 8%;
 	left: 1%;
@@ -37,7 +37,7 @@
 
 #buttons button
 {
-    font-size:22px;
+    font-size:1.23vw;
     width:250px;
     border-radius:20px;
 }
@@ -71,7 +71,7 @@
  width: 5%;
  z-index:1;
 }
-#Table_Container { overflow:auto; font-size: 2.5vw; width: 99.5%; height:15.2%; bottom: .25%; position: absolute; align:center; left: .25%; right: .25% border: solid 3px #339933}
+#Table_Container { overflow:auto; font-size: 2.5vw; width: 99.5%; height:20%; bottom: .25%; position: absolute; align:center; left: .25%; right: .25% border: solid 3px #339933}
 #table{width: 100%; height:23%; bottom: 0;}
 tbody{align-items: center}
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
