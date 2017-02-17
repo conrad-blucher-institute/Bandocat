@@ -41,3 +41,6 @@
 2017-01-31 12:45:41pmsnguyen1 @blucherfieldbook - documentID:20636: Failed to Submit!,
 2017-01-31 12:47:05pmsnguyen1 @blucherfieldbook - documentID:20908: Failed to Submit!,
 2017-01-31 12:51:18pmsnguyen1 @blucherfieldbook - documentID:20636: Failed to Submit!,
+2017-02-14 12:16:13pmjlister @bluchermaps - documentID:Test-001.tif: Database Check: EXISTED,Failed to Submit!,
+2017-02-14 12:17:10pmjlister @bluchermaps - documentID:7692: Success!,
+2017-02-14 12:51:24pmjlister @bluchermaps - documentID:Test-001.tif: Front Map: EXISTED,Failed to Submit!,
