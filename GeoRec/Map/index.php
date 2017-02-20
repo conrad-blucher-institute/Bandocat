@@ -174,7 +174,67 @@ else header('Location: ../../');
 
 
                 ],
-                "ajax": "list_processing.php?col=" + collection_config.Name
+                "ajax": "list_processing.php?col=" + collection_config.Name,
+                "initComplete": function() {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        switch(column[0][0]) //column number
+                        {
+                            //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                            case 6: //column needsreview
+                            case 9:
+                                //column completed?
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                            //case: column only have boolean value (Yes/No or 1/0)
+                            case 10: //column page type
+                            case 11: //column book title
+                            case 12: //column book title
+                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+
+                                column.data().unique().sort().each( function ( d, j ) {
+                                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                                } );
+                                break;
+                            case 1:
+                            case 2:
+                            case 4:
+                            case 5:
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'keyup change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                        }
+                    } );
+                },
             } );
 
             //hide first column (DocID)
@@ -246,6 +306,25 @@ else header('Location: ../../');
                         <th width="60px">GeoRectify</th>
                     </tr>
                     </thead>
+                    <tfoot>
+                    <tr>
+                        <th></th>
+                        <th width="100px">Library Index</th>
+                        <th>Document Title</th>
+                        <th width="280px">Document Subtitle</th>
+                        <th width="150px">Customer</th>
+                        <th width="70px">End Date</th>
+                        <th width="40px">Has Coast</th>
+                        <th>Front Map</th>
+                        <th>Back Map</th>
+                        <th>Has POI</th>
+                        <th>Rectifiability</th>
+                        <th width="95px">GeoRec Front Status</th>
+                        <th width="95px">GeoRec Back Status</th>
+
+                    </tr>
+
+                    </tfoot>
                 </table>
             </div>
         </div>
