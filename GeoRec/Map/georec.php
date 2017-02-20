@@ -137,40 +137,56 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     var gcpList = [];							// array of JSON that contains latlng and index of gcp from both map and raster
     var UTM = "+proj=utm +zone=14 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 
-    map.setView([27.73725068372226, -97.43062019348145], 12)
+    map.setView([27.73725068372226, -97.43062019348145], 12);
 
     //executes on click of map
     map.addEventListener("click", function(event)
     {
         //sets marker color and style
         Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
-        if(!mapSelected)
-        {
+        if(!mapSelected) {
             //creates new object of gcpList
-            addGCP(count, event.latlng.lat, event.latlng.lng,rasterCoords[rasterCount-1].rlat, rasterCoords[rasterCount-1].rlong, rasterCoords[rasterCount-1].x, rasterCoords[rasterCount-1].y);
+            addGCP(count, event.latlng.lat, event.latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
             //creates marker and popup
-            marker = L.marker(event.latlng, {icon:icon});
-            marker.bindPopup("" + count + "").openPopup().closePopup;
+            marker = L.marker(event.latlng, {icon: icon});
+            marker.bindPopup("Edit").openPopup().closePopup;
             markerArray.push(marker);
             map.addLayer(marker);
 
-            markerArray[count].on('click', function(e)
-            {
-                this.closePopup();
-
-                var popup = this.getPopup();
+            var markerIndex = marker.on('click', function clickIndex(event) {
+                for (i = 0; i < gcpList.length; i++) {
+                    if (gcpList[i].lat == event.latlng.lat) {
+                        markerIndex = i;
+                        console.log(markerIndex);
+                    }
+                }
+                event.target.dragging.enable();
+                return markerIndex;
             });
+
+            marker.on('dragend', function (event) {
+                var marker = event.target;
+                var position = marker.getLatLng();
+                var latitude = marker._latlng.lat;
+                gcpList[markerIndex].lat = latitude;
+                var longitude = marker._latlng.lng;
+                gcpList[markerIndex].lng = longitude;
+
+            });
+
+
             //alert(colorCount);
             colorCount++;
-            if(colorCount > 11)
+            if (colorCount > 11)
                 alert("Maximum amount of points reached");
+
             count++;
             rasterSelected = false;
             mapSelected = true;
 
             //creates table
             var table = document.getElementById("table");
-            var row = table.insertRow(count+1);
+            var row = table.insertRow(count + 1);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
@@ -178,22 +194,20 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
             var cell7 = row.insertCell(6);
-            cell1.innerHTML =  "<button id = 'zoomToMarker' onclick = 'zoomToMarker(" + count + ")' style = 'background-color:" + markerColors[colorCount-1] + "'>" + count + "</button>";
-            cell2.innerHTML = gcpList[count-1].lat;
-            cell3.innerHTML = gcpList[count-1].lng;
-            cell4.innerHTML = gcpList[count-1].rlat;
-            cell5.innerHTML = gcpList[count-1].rlong;
-            cell6.innerHTML = gcpList[count-1].x;
-            cell7.innerHTML = gcpList[count-1].y;
+            cell1.innerHTML = "<button id = 'zoomToMarker' onclick = 'zoomToMarker(" + count + ")' style = 'background-color:" + markerColors[colorCount - 1] + "'>" + count + "</button>";
+            cell2.innerHTML = gcpList[count - 1].lat;
+            cell3.innerHTML = gcpList[count - 1].lng;
+            cell4.innerHTML = gcpList[count - 1].rlat;
+            cell5.innerHTML = gcpList[count - 1].rlong;
+            cell6.innerHTML = gcpList[count - 1].x;
+            cell7.innerHTML = gcpList[count - 1].y;
             //hide column raster lat and raster long
-            cell3.style.display = "none";
             cell4.style.display = "none";
-        }
-        else
-        {
+            cell5.style.display = "none";
+        }else {
             alert("Select point from raster");
-        };
-    });
+        }
+    })
 
 </script>
 <!-- Raster Display and Functionality -->
