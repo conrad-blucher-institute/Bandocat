@@ -390,6 +390,8 @@ require '../../Library/AnnouncementDBHelper.php';
 <!-- Page Style -->
 <style>
 
+    #thetable {min-height:100% !important;}
+
     #lblUsername{
         text-decoration: underline;
     }

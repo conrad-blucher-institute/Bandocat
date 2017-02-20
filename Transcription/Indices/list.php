@@ -92,26 +92,65 @@ else header('Location: ../../');
                     },
                 ],
                 "ajax": "list_processing.php?col=" + collection_config.Name,
-            } );
+                "initComplete": function() {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        switch(column[0][0]) //column number
+                        {
+                            //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                            case 5: //column needsreview
+                            case 6: //column completed?
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
 
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                            //case: column only have boolean value (Yes/No or 1/0)
+                            case 1: //column page type
+                            case 3: //column book title
+                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
 
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
 
-            // Setup - add a text input to each footer cell
-            $('#dtable tfoot th').each( function () {
-                var title = $(this).text();
-                $(this).html( '<input type="text" placeholder="Search '+title+'" class="txtDTSearch" />' );
-            } );
-            // Apply the search
-            table.columns().every( function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that
-                                .search(this.value)
-                                .draw();
+                                column.data().unique().sort().each( function ( d, j ) {
+                                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                                } );
+                                break;
+                            case 2:
+                            case 4:
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'keyup change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
                         }
-                    });
+                    } );
+                    },
             } );
+
+
 
             table.column(0).visible(true);
 
@@ -159,8 +198,8 @@ else header('Location: ../../');
                     <th width="200px">Library Index</th>
                     <th width="100px">Book Title</th>
                     <th width="30px">Page #</th>
-                    <th width="50px">Needs Review</th>
-                    <th width="50px">Completed?</th>
+                    <th width="50px" class="thBoolean">Needs Review</th>
+                    <th width="50px" class="thBoolean">Completed?</th>
                     <th width="40px"></th>
                 </tr>
                 </tfoot>
