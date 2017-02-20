@@ -98,8 +98,8 @@ L.Control.GeoSearch = L.Control.extend({
 			
 			if(!mapSelected)
 			{	
-				var lat = window.prompt("Enter Latitude");
-				var lng = window.prompt("Enter Longitude");
+				var lat = window.prompt("Enter Latitude. Format, Decimal degrees; example: 27.758488");
+				var lng = window.prompt("Enter Longitude. Format, Decimal degrees; example: -97.433644");
 
 				if(lat == null | lng == null | lat == "" | lng == "")
 				{
