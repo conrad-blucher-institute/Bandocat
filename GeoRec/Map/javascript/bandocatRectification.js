@@ -39,43 +39,6 @@ function deletePrevious()
 	}
 }
 
-//Called when "Switch Map Style" button is pressed. The purpose of this function is
-//to change the mapType variable and reload the page so that the change can take affect.
-function switchMapType(mapType)
-{
-	if(rasterCount > 0)
-	{
-		var choice = confirm("Are you sure? Switching the map style will reset all currently placed GCPs");
-		if(choice)
-		{
-			if(mapType == "streets")
-			{
-				window.localStorage.setItem("mapType", "satellite");
-				location.reload();
-			}
-			else
-			{
-				window.localStorage.setItem("mapType", "streets");
-				location.reload();
-			}
-		}
-		else
-		return null;
-	}
-	else
-	{
-		if(mapType == "streets")
-		{
-			window.localStorage.setItem("mapType", "satellite");
-			location.reload();
-		}
-		else
-		{
-			window.localStorage.setItem("mapType", "streets");
-			location.reload();
-		}
-	}
-}
 
 //NEEDS FURTHER IMPLEMENTATION
 function openCatalog()
@@ -139,7 +102,7 @@ function rectify()
         }
 
 		$.post("php/submitRectification.php", { jsonData: JSON.stringify(scriptObject),pointEntries: JSON.stringify(pointEntries)}, function(results){
-			alert(results),closeModal(1),document.getElementById("divUpdateGeoRecStatus").style.visibility = "visible";});
+			alert(results),closeModal(1),window.close()});
 	}
 }
 

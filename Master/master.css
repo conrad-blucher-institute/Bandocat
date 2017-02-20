@@ -20,9 +20,9 @@ body{
 #thetable
 {
     width:100%;
-
+    min-height:800px;
 }
-#thetable td{padding-top: 11px; padding-left: 1px}
+#thetable td{padding-top: 11px; padding-left: 1px;}
 
 #thetable_left
 {
@@ -152,7 +152,7 @@ nav {
 }
 
 .menu-item li:hover {
-    background: #eee;
+    background: #00BC65;
 }
 
 /*ul Styles*/

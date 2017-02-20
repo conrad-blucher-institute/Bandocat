@@ -4,7 +4,7 @@ interface GeoRectificationDB
 {
 
 }
-//Functions belong to trait can be used for transcription of different templates
+//Functions belong to trait can be used for georectification of different templates
 trait GeoRectificationTrait
 {
 
@@ -115,12 +115,15 @@ trait GeoRectificationTrait
     Description: Update status of geoRecStatus field in document table
     Parameter(s):
      * $docID (int) - update info of row that has documentID = $docID on document table
+     * $isback (int) - Identify the type of map (true == back, false == front)
      * $iStatusCode(tinyint) - (0 = not rectified, 1 = rectified, 2 = not rectifiable, 3 = needs review)
     Return value(s): return false if fail
      ***********************************************/
-    public function DOCUMENT_GEORECSTATUS_UPDATE($docID,$iStatusCode)
+    public function DOCUMENT_GEORECSTATUS_UPDATE($docID,$isback,$iStatusCode)
     {
-        $sth = $this->getConn()->prepare("UPDATE `document` SET `geoRecStatus` = :statuscode WHERE `documentID` = :docID");
+        if($isback)
+            $sth = $this->getConn()->prepare("UPDATE `document` SET `geoRecBackStatus` = :statuscode WHERE `documentID` = :docID");
+        else $sth = $this->getConn()->prepare("UPDATE `document` SET `geoRecFrontStatus` = :statuscode WHERE `documentID` = :docID");
         $sth->bindParam(":docID",$docID,PDO::PARAM_INT);
         $sth->bindParam(":statuscode",$iStatusCode,PDO::PARAM_INT);
         $ret = $sth->execute();
@@ -131,11 +134,14 @@ trait GeoRectificationTrait
     Description: GET status of geoRecStatus field in document table
     Parameter(s):
      * $docID (int) - GET info of row that has documentID = $docID on document table
+     * $isback (int) - Identify the type of map (true == back, false == front)
     Return value(s): false if error occurs, else return geo rec status number  (0 = not rectified, 1 = rectified, 2 = not rectifiable, 3 = needs review)
      ***********************************************/
-    public function DOCUMENT_GEORECSTATUS_SELECT($docID)
+    public function DOCUMENT_GEORECSTATUS_SELECT($docID,$isback)
     {
-        $sth = $this->getConn()->prepare("SELECT `geoRecStatus` FROM `document` WHERE `documentID` = :docID");
+        if($isback)
+            $sth = $this->getConn()->prepare("SELECT `geoRecBackStatus` FROM `document` WHERE `documentID` = :docID");
+        else $sth = $this->getConn()->prepare("SELECT `geoRecFrontStatus` FROM `document` WHERE `documentID` = :docID");
         $sth->bindParam(":docID",$docID,PDO::PARAM_INT);
         $ret = $sth->execute();
         if(!$ret)

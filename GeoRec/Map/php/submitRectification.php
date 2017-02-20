@@ -111,6 +111,26 @@ $DB = new MapDBHelper();
 				break;
 		}
 	}
+
+	//check errors
+	if(!$ret)
+		$error_flag = true;
+	else
+	{
+		//update rectification status
+        switch($imageInfo['type'])
+        {
+            case "front":
+                $ret = $DB->DOCUMENT_GEORECSTATUS_UPDATE($imageInfo['docID'],false,1);
+                break;
+            case "back":
+                $ret = $DB->DOCUMENT_GEORECPATHS_UPDATE($imageInfo['docID'],true,1);
+                break;
+            default: $error_flag = true;
+                break;
+        }
+	}
+
 	//check errors
 	if(!$ret)
 		$error_flag = true;
@@ -121,12 +141,15 @@ $DB = new MapDBHelper();
     }
 	else echo "\nDATABASE UPDATE SUCCESS";
 
+
+
 	//delete Tiles and translated image from temporary workspace
 	A::deleteDir("../Temp/Tiles/" . $imageInfo['tempSubDirectory']);
 	unlink($outputTranslatePath);
 
+
 	//write log
 	if($error_flag == false) //no error
-		$ret = $DB->SP_LOG_WRITE("rectify", $collection_info['CollectionID'], $imageInfo['docID'], $session->getUserID(),"success","");
+		$ret = $DB->SP_LOG_WRITE("rectify", $collection_info['CollectionID'], $imageInfo['docID'], $session->getUserID(),"success",$imageInfo['type'] . " scan");
 	else $ret = $DB->SP_LOG_WRITE("rectify", $collection_info['CollectionID'], $imageInfo['docID'], $session->getUserID(),"fail",$error_str); //error: status = fail
 ?>

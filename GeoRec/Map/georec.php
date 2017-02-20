@@ -23,7 +23,7 @@ $isBack = $_GET['type'] == "back" ? true : false; //identify if this map is a fr
 //get georec information for this map from georectification table
 $georec_entries = $DB->GEOREC_ENTRIES_SELECT($_GET['docID'],$isBack);
 //get georec status for this map from document table
-$georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
+$georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 ?>
 <!DOCTYPE html>
 <html>
@@ -79,7 +79,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
 <div id="fade_2"></div>
 <div id="modal_2">
     <img id="loader_2" src="../../Images/loading.gif" />
-    <div>Cancelling...</div>
+    <div>Cleaning Temporary Workspace...</div>
 </div>
 
 <!--Buttons and Button Functionality-->
@@ -89,7 +89,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
 
 <div id = 'buttons'>
     <button onclick = "deletePrevious()" id = 'deletePrevious' name="deletePrevious" class="bluebtn">Delete Previous</button>
-    <button onclick="document.getElementById('divUpdateGeoRecStatus').style.visibility = 'visible';" class="bluebtn"> Update Status </button>
+    <button onclick="document.getElementById('divUpdateGeoRecStatus').style.visibility = 'visible';" class="bluebtn"> Set Status </button>
     <button onclick = "rectify()" id = "rectify" class="bluebtn"> Rectify / Update </button>
     <button onclick = "cancel()" id = "cancel" class="bluebtn"> Cancel </button>
 
@@ -185,6 +185,9 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
             cell5.innerHTML = gcpList[count-1].rlong;
             cell6.innerHTML = gcpList[count-1].x;
             cell7.innerHTML = gcpList[count-1].y;
+            //hide column raster lat and raster long
+            cell3.style.display = "none";
+            cell4.style.display = "none";
         }
         else
         {
@@ -200,7 +203,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
         //retrieve relevant raster information from index page
         file_data = window.localStorage.getItem("imageInfo");									//retrieves name of file from local storage set by index page
         rasterJSON = JSON.parse(file_data);													//parses and assigns to variable stringifiied JSON also set by index page
-        document.getElementById("fileName").innerHTML = "file name: " + rasterJSON.fileName;	// writes name of file to top of raster viewer
+        document.getElementById("fileName").innerHTML = "File name: <a target='_blank' href='../../Templates/Map/review.php?col=" + rasterJSON.collection + "&doc=" + rasterJSON.docID + "'>" + rasterJSON.fileName + "</a>";	// writes name of file to top of raster viewer
 
         var rasterCount = 0;							//counter that increments every time a point is placed on raster viewer
         var rasterSelected = false;					//boolean that keeps track of if the raster viewer was most recently selected
@@ -276,8 +279,8 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
             <th>Point Number</th>
             <th>Latitude</th>
             <th>Longitude</th>
-            <th>Raster Latitude</th>
-            <th>Raster Longitude</th>
+            <th style="display: none">Raster Latitude</th>
+            <th style="display: none">Raster Longitude</th>
             <th>Raster X</th>
             <th>Raster Y</th>
         <tr/>
@@ -290,7 +293,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
                 <td width="300px">Update GeoRec Status</td>
                 <td><select style="height: 2.5em" id="ddlGeoStatus" name="ddlGeoStatus" required>
                         <?php
-                            $arrGeoStatus = array(array(0,"Not Rectified"),array(1,"Rectified"),array(2,"Not Rectifiable"),array(3,"Request Review"));
+                            $arrGeoStatus = array(array(0,"Not Rectified"),array(2,"Not Rectifiable"));
                             $Render->GET_DDL3($arrGeoStatus,$georec_status);
                         ?>
                         ?>
@@ -308,8 +311,9 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
 </div>
 </body>
 <script>
-    //need to clean stuff here on closing tab or open a popup to remind user to use cancel button instead of closing the tab on the browser
+    //this will be fired when the tab is reloaded/redirected or close
     window.onbeforeunload = function (e) {
+
     };
 
     $(document).ready(function(){
@@ -332,12 +336,12 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID']);
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: "php/updateGeoStatus_processing.php?col=" + rasterJSON.collection,
+            url: "php/updateGeoStatus_processing.php?col=" + rasterJSON.collection + "&type=" + '<?php echo $_GET['type']; ?>',
             data: $("#frmUpdateStatus").serializeArray(),
             success: function (data) {
                 if(data == 1){ //success
                     alert("Status updated successfully!");
-                    window.close();
+                    cancel();
                 }
 
             }

@@ -68,9 +68,9 @@
     <div class="menu-item menu-item_sub3">
         <h4><a href="#">Help</a></h4>
         <ul>
-            <li><a href="#">Procedures</a></li>
+            <li><a href="../../Procedures/Documents">Procedures</a></li>
             <li><a href="../../Forms/TicketsSubmission/" target="_blank">Submit Ticket</a></li>
-            <li><a href="#">Support Software</a></li>
+            <li><a href="../../Procedures/Utilities">Support Software</a></li>
         </ul>
     </div>
     <!-- Logout Tab -->

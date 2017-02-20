@@ -166,7 +166,22 @@ class DBHelper
         $result = $sth->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
+//IN PROGRESS
+    /**********************************************
+     * Function: GET_USER_TABLE
+     * Description: Gets a table of users.
+     * Parameter(s): NONE
+     * Return value(s):
+     * $result  (associative array) - return associative array of Users
+     ***********************************************/
+    function GET_USER_TABLE()
+    {
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT `username`,`userID`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` ORDER BY `username` ASC ");
+        $sth->execute();
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     /**********************************************
      * Function: GET_COLLECTION_FOR_DROPDOWN
      * Description: Retrieves the collection names from the database to be used as items in a drop down list
@@ -281,6 +296,25 @@ class DBHelper
         return $role;
     }
 
+
+    /**********************************************
+     * Function: USER_ROLE_UPDATE
+     * Description: UPDATES THE USERS ROLE
+     * Parameter(s): NONE
+     * Return value(s):
+     * $result  (associative array) - return associative array of role info
+     ***********************************************/
+    function USER_ROLE_UPDATE($iUserID,$iNewRole)
+    {
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("UPDATE `user` SET `roleID` = :newrole WHERE `userID` = :uID LIMIT 1");
+        $sth->bindParam(':newrole',$iNewRole,PDO::PARAM_STR);
+        $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);
+        $ret=$sth->execute();
+        if($ret)
+            $ret = $sth->rowCount(); //return number of rows affected (must be 1 or 0)
+        return $ret;
+    }
     /**********************************************
      * Function: GET_USER_ROLE_FOR_DROPDOWN
      * Description: GET USERS ROLE INFO FOR DROPDOWN CONTROL
@@ -1077,6 +1111,24 @@ class DBHelper
         return $ret;
     }
 
+    /**********************************************
+     * Function: USER_UPDATE_ADMIN_RESET_PASSWORD
+     * Description: updates the password for a selected user, with a random generated string
+     * Parameter(s): $iUserID,$iNewPassword
+     * Return value(s): True or False value, "1" it worked, "0" it failed
+     ***********************************************/
+    function USER_UPDATE_ADMIN_RESET_PASSWORD($iUserID,$iNewPassword)
+    {
+        $iNewPassword = md5($iNewPassword);
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("UPDATE `user` SET `password` = :newpwd WHERE `userID` = :uID LIMIT 1");
+        $sth->bindParam(':newpwd',$iNewPassword,PDO::PARAM_STR);
+        $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if($ret)
+            $ret = $sth->rowCount(); //return number of rows affected (must be 1 or 0)
+        return $ret;
+    }
     //Under development
     /**********************************************
      * Function: GET_DOCUMENT_LISTS
