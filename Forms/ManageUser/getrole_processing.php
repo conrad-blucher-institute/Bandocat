@@ -7,5 +7,7 @@ if($session->isAdmin() == false) {
 }
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
-$ret = $DB->USER_ROLE_UPDATE($_POST['ddl_user']);
+$us =$_GET['user'];
+$ret = $DB->GET_USER_ROLE($us);
+
 echo $ret;

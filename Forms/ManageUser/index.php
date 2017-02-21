@@ -66,22 +66,14 @@ $Render = new ControlsRender();
             <td><input type="radio" name="rd_Role" id="rd_Role_ru" value="3"/><label>Regular</label></td>
                 <td><input type="radio" name="rd_Role" id="rd_Role_inactive" value="0"/><label>Inactive</label></td></tr>
             <br>
-            <p style="font-size:1.2em;color:#00BC65;" hidden id="txtPrompt">User's Temporary password is <span style="font-size:1.2em;font-weight:bold;color:#2e6da4" id="txtNewPassword"></span><br>Please notify the user to change the password once they're logged in.</p>
+
     </form></table>
+                <p style="font-size:0.8em;color:#00BC65;" hidden id="txtPrompt">User's Temporary password is <span style="font-size:0.8em;font-weight:bold;color:#2e6da4" id="txtNewPassword"></span><br>Please notify the user to change the password once they're logged in.</p>
+
 </div>
 <?php include '../../Master/footer.php'; ?>
 </body>
 <script>
-    $( document ).ready(function() {
-        $("#txtPrompt").hide();
-        $("#txtNewPassword").text("");
-    });
-
-    $("#ddl_user").change(function(event){
-        event.preventDefault();
-        $("#txtPrompt").hide();
-        $("#txtNewPassword").text("");
-    });
 
     $("#btnUpdateRole").click(function(event){
         $("#txtPrompt").hide();
@@ -93,23 +85,7 @@ $Render = new ControlsRender();
                 url: "updaterole_processing.php",
                 data: $("#frm_user").serializeArray()
             }).success(function (data) {
-                var ret = JSON.parse(data);
-                switch(ret)
-                {
-                    case "Admin":
-                        $("#rd_Role_admin").prop("checked",true);
-                        break;
-                    case "Regular User":
-                        $("#rd_Role_ru").prop("checked",true);
-                        break;
-                    case "Reader":
-                        $("#rd_Role_reader").prop("checked",true);
-                        break;
-                    case "Inactive":
-                        $("#rd_Role_inactive").prop("checked",true);
-                        break;
-                    default: break;
-                }
+
                 alert($("#ddl_user :selected").text() + "'s role has been updated!");
                 location.reload();
             });
@@ -130,16 +106,16 @@ $Render = new ControlsRender();
                 $("#txtPrompt").show();
             });
     });
-/*
+
     $("#ddl_user").change(function(event){
         $("#txtPrompt").hide();
         event.preventDefault();
         $.ajax({
             type: 'post',
-            url: "getrole_processing.php",
+            url: "getrole_processing.php?user=" + $("#ddl_user :selected").val() ,
             data: {userID: $("#ddl_user :selected").val() },
         }).success(function (data) {
-            var ret = JSON.parse(data);
+            var ret = data;
             switch(ret)
             {
                 case "Admin":
@@ -154,12 +130,15 @@ $Render = new ControlsRender();
                 case "Inactive":
                     $("#rd_Role_inactive").prop("checked",true);
                     break;
+                case "Super Admin":
+                    $("#rd_Role_admin").prop("checked",true);
+                    $("#btnUpdateRole").prop("disabled",true);
+                    break;
                 default: break;
             }
-
         });
  });
-        */
+
 
 
 </script>
