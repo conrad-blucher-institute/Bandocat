@@ -116,6 +116,7 @@ $Render = new ControlsRender();
             data: {userID: $("#ddl_user :selected").val() },
         }).success(function (data) {
             var ret = data;
+            $("#btnUpdateRole").prop("disabled",false);
             switch(ret)
             {
                 case "Admin":
@@ -131,7 +132,6 @@ $Render = new ControlsRender();
                     $("#rd_Role_inactive").prop("checked",true);
                     break;
                 case "Super Admin":
-                    $("#rd_Role_admin").prop("checked",true);
                     $("#btnUpdateRole").prop("disabled",true);
                     break;
                 default: break;
