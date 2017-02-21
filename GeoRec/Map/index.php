@@ -62,7 +62,7 @@ else header('Location: ../../');
                         },
                         "targets": 3
                     },
-                    { "searchable": false, "targets": 3 }, //disable searching by subtitle
+                    //{ "searchable": false, "targets": 3 }, //disable searching by subtitle
                     //column : Date
                     {
                         "render": function ( data, type, row ) {
@@ -81,7 +81,7 @@ else header('Location: ../../');
                         },
                         "targets": 6
                     },
-                    { "searchable": false, "targets": 6 },
+                   // { "searchable": false, "targets": 6 },
                     //column : Filename of Front Scan (hidden)
                     {
                         "render": function ( data, type, row ) {
@@ -181,9 +181,8 @@ else header('Location: ../../');
                         switch(column[0][0]) //column number
                         {
                             //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
-                            case 6: //column needsreview
-                            case 9:
-                                //column completed?
+                            case 6: //column hascoast
+                            case 9: //column POI
                                 var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
@@ -196,10 +195,23 @@ else header('Location: ../../');
                                             .draw();
                                     } );
                                 break;
-                            //case: column only have boolean value (Yes/No or 1/0)
-                            case 10: //column page type
-                            case 11: //column book title
-                            case 12: //column book title
+                            //case: GeoRec Front/Back status columns
+                            case 11: //column GeoRec Front Status
+                            case 12: //column GeoRec Back Status
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Not Rectified</option><option value="1">Rectified</option><option value="2">Not Rectifiable</option><option value="3">Needs Review</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                            //case: columns have limited unique values
+                            case 10:
                                 var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
@@ -218,6 +230,7 @@ else header('Location: ../../');
                                 break;
                             case 1:
                             case 2:
+                            case 3:
                             case 4:
                             case 5:
                                 var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
@@ -299,7 +312,7 @@ else header('Location: ../../');
                         <th width="40px">Has Coast</th>
                         <th>Front Map</th>
                         <th>Back Map</th>
-                        <th>Has POI</th>
+                        <th width="40px">Has POI</th>
                         <th>Rectifiability</th>
                         <th width="95px">GeoRec Front Status</th>
                         <th width="95px">GeoRec Back Status</th>
