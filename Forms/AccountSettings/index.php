@@ -35,6 +35,7 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
         vertical-align: middle;
         margin-top: 4%;
         margin-bottom: 9%;
+        background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c;
     }
 
     .Account_Table .Account_Title{

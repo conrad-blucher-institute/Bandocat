@@ -7,12 +7,12 @@ if(isset($_GET['col']))
 else header('Location: ../../');
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
-
+$iTemplateID = 1;
 // SQL server connection information
 $sql_details = array(
     'user' => $DB->getUser(),
     'pass' => $DB->getPwd(),
-    'db'   => $DB->SP_GET_COLLECTION_CONFIG($collection)['DbName'],
+    'db'   => $DB->SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID($collection,$iTemplateID)['DbName'],
     'host' => $DB->getHost()
 );
 
@@ -45,6 +45,7 @@ $primaryKey = 'documentID';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 //DB is the bandocat database that holds the documents
+
 $columns = array(
     array( 'db' => '`document`.`documentID`', 'dt' => 0, 'field' => 'documentID' ),
     array( 'db' => '`document`.`libraryindex`', 'dt' => 1,'field' => 'libraryindex'),

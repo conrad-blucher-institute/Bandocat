@@ -31,7 +31,7 @@ $Render = new ControlsRender();
         <!-- HTML Header and Side Menu -->
         <div id="divleft">
                     <?php include '../../Master/header.php';
-                    include '../../Master/sidemenu.php' ?>
+                    include '../../Master/sidemenu.php';?>
         </div>
         <div id="divright">
                     <h2 id="page_title">Maps With Coast</h2>
@@ -44,7 +44,7 @@ $Render = new ControlsRender();
                                     Select Collection:
                                     <select name="ddlCollection" id="ddlCollection" onchange="Calculate(this.value)">
                                         <!-- Renders the Dropdownlist with the collections -->
-                                        <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN(),null);?>
+                                        <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(1),true),null);?>
                                     </select>
                                 </form>
                                 <!-- Displays the count of maps -->
@@ -122,17 +122,20 @@ $Render = new ControlsRender();
             //it will be destroyed and replaced with the new table
             "destroy": true,
             //Allows you to assign specific options to columns in the table
-            "columnDefs": [
+            "columnDefs":
+                [
                 //column Document Index: Replace with Hyperlink
                 {
-                    "render": function ( data, type, row ) {
+                    "render": function ( data, type, row )
+                    {
                         return "<a target='_blank'  href='../../index.php?doc=" + data + "&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>" ;
                     },
                     "targets": 0
                 },
                 //column needs review
                 {
-                    "render": function ( data, type, row ) {
+                    "render": function ( data, type, row )
+                    {
                         if(data == 1)
                             return "Yes";
                         return "No";
@@ -140,13 +143,15 @@ $Render = new ControlsRender();
                     "targets": 3
                 },
                 {
-                    "render": function ( data, type, row ) {
+                    "render": function ( data, type, row )
+                    {
                     if(data == 1)
                         return "Yes";
                     return "No";
                 },
                     "targets": 4
-                },{ "searchable": false, "targets": 4, "visible": false }],
+                },{ "searchable": false, "targets": 4, "visible": false }
+                ],
             //Use ajax to pass data to the table. collection contains the db info
             "ajax": "hascoast_processing.php?col=" + collection
         } );
@@ -175,6 +180,9 @@ $Render = new ControlsRender();
         $( "#ddlCollection" ).change(function() {
             switch ($("#ddlCollection").val())
             {
+
+
+
                 case "": break;
                 default: SSP_DataTable($("#ddlCollection").val());
 

@@ -44,7 +44,7 @@ $Render = new ControlsRender();
                                     Select Collection:
                                     <select name="ddlCollection" id="ddlCollection" onchange="Calculate(this.value)">
                                         <!-- Renders the Dropdownlist with the collections -->
-                                        <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN(),null);?>
+                                        <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(1,2),true),null);?>
                                     </select>
                                 </form>
                                 <!-- Displays the count of maps -->
