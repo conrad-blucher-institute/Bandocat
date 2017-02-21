@@ -92,7 +92,6 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     <button onclick="document.getElementById('divUpdateGeoRecStatus').style.visibility = 'visible';" class="bluebtn"> Set Status </button>
     <button onclick = "rectify()" id = "rectify" class="bluebtn"> Rectify / Update </button>
     <button onclick = "cancel()" id = "cancel" class="bluebtn"> Cancel </button>
-
 </div>
 
 <!-- Map Display and Functionality -->
@@ -157,7 +156,6 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                 for (i = 0; i < gcpList.length; i++) {
                     if (gcpList[i].lat == event.latlng.lat) {
                         markerIndex = i;
-                        console.log(markerIndex);
                     }
                 }
                 event.target.dragging.enable();
@@ -166,12 +164,12 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
             marker.on('dragend', function (event) {
                 var marker = event.target;
-                var position = marker.getLatLng();
                 var latitude = marker._latlng.lat;
                 gcpList[markerIndex].lat = latitude;
                 var longitude = marker._latlng.lng;
                 gcpList[markerIndex].lng = longitude;
-
+                $('#markerLat-' + markerIndex).text(gcpList[markerIndex].lat);
+                $('#markerLong-' + markerIndex).text(gcpList[markerIndex].lng);
             });
 
 
@@ -188,12 +186,19 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
             var table = document.getElementById("table");
             var row = table.insertRow(count + 1);
             var cell1 = row.insertCell(0);
+            $(cell1).attr('id', 'marker-'+gcpList[count-1].id);
             var cell2 = row.insertCell(1);
+            $(cell2).attr('id', 'markerLat-'+gcpList[count-1].id);
             var cell3 = row.insertCell(2);
+            $(cell3).attr('id', 'markerLong-'+gcpList[count-1].id);
             var cell4 = row.insertCell(3);
+            $(cell4).attr('id', 'rasterLat-'+gcpList[count-1].id);
             var cell5 = row.insertCell(4);
+            $(cell5).attr('id', 'rasterLong-'+gcpList[count-1].id);
             var cell6 = row.insertCell(5);
+            $(cell6).attr('id', 'rasterX-'+gcpList[count-1].id);
             var cell7 = row.insertCell(6);
+            $(cell7).attr('id', 'rasterY-'+gcpList[count-1].id);
             cell1.innerHTML = "<button id = 'zoomToMarker' onclick = 'zoomToMarker(" + count + ")' style = 'background-color:" + markerColors[colorCount - 1] + "'>" + count + "</button>";
             cell2.innerHTML = gcpList[count - 1].lat;
             cell3.innerHTML = gcpList[count - 1].lng;
@@ -269,7 +274,44 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                 var rasterMarker = L.marker(rc.unproject(coords), {icon: icon})
                 rasterMarkerArray.push(rasterMarker);
                 raster.addLayer(rasterMarker);
-                rasterMarker.bindPopup("Point Number: " + (rasterCount + 1)).openPopup;
+                rasterMarker.bindPopup("Edit").openPopup;
+
+
+                var rastermarkerIndex = rasterMarker.on('click', function clickIndex(event) {
+                    for (i = 0; i < gcpList.length; i++) {
+                        if (gcpList[i].rlat == event.latlng.lat) {
+                            rastermarkerIndex = i;
+                        }
+                    }
+                    var layerPoint = map.latLngToLayerPoint([event.latlng.lat, event.latlng.lng]);
+                    console.log(gcpList[rastermarkerIndex]);
+                    console.log('Layer Point: '+layerPoint);
+                    event.target.dragging.enable();
+                    return rastermarkerIndex;
+                });
+                //console.log(gcpList);
+                rasterMarker.on('dragend', function (event) {
+                    console.log(event);
+                    var marker = event.target;
+                    //var latitude = marker._latlng.lat;
+
+
+                    gcpList[rastermarkerIndex].rlat = marker._latlng.lat;
+                    //var longitude = marker._latlng.lng;
+                    gcpList[rastermarkerIndex].rlong = marker._latlng.lng;
+                    var X = marker.dragging._draggable._newPos.x;
+                    gcpList[rastermarkerIndex].x = X;
+                    var Y = marker.dragging._draggable._newPos.y;
+                    console.log(marker.dragging);
+                    gcpList[rastermarkerIndex].y = Y;
+                //console.log(gcpList[rastermarkerIndex]);
+                    //console.log(marker);
+                    $('#rasterX-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].x);
+                    $('#rasterY-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].y);
+                    $('#rasterLat-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].rlat);
+                    $('#rasterLong' + rastermarkerIndex).text(gcpList[rastermarkerIndex].rlong);
+                });
+
                 //increment counters and adjust booleans
                 rasterCount++;
                 rasterSelected = true;
