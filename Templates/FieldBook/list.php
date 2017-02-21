@@ -129,6 +129,7 @@ else header('Location: ../../');
                             switch(column[0][0]) //column number
                             {
                                 //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                                case 4: //needs input
                                 case 5: //column needsreview
                                     var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
                                         .appendTo( $(column.footer()).empty() )
@@ -142,26 +143,9 @@ else header('Location: ../../');
                                                 .draw();
                                         } );
                                     break;
-                                //case: column only have boolean value (Yes/No or 1/0)
-                                case 1: //column page type
-                                case 2: //column book title
-                                    var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
-                                        .appendTo( $(column.footer()).empty() )
-                                        .on( 'change', function () {
-                                            var val = $.fn.dataTable.util.escapeRegex(
-                                                $(this).val()
-                                            );
-
-                                            column
-                                                .search(val)
-                                                .draw();
-                                        } );
-
-                                    column.data().unique().sort().each( function ( d, j ) {
-                                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                                    } );
-                                    break;
-
+                                    //search text box
+                                case 1:
+                                case 2:
                                 case 3:
                                     var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
                                         .appendTo( $(column.footer()).empty() )

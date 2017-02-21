@@ -112,10 +112,9 @@ else header('Location: ../../');
                                             .draw();
                                     } );
                                 break;
-                            //case: columns that have a set of unique values
+                            //case: dropdown table of contents/general index
                             case 1: //column page type
-                            case 3: //column book title
-                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="Table of Contents">Table of Contents</option><option value="General Index">General Index</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
                                         var val = $.fn.dataTable.util.escapeRegex(
@@ -126,12 +125,9 @@ else header('Location: ../../');
                                             .search(val)
                                             .draw();
                                     } );
-
-                                column.data().unique().sort().each( function ( d, j ) {
-                                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                                } );
                                 break;
                             case 2:
+                            case 3:
                             case 4:
                                 var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
                                     .appendTo( $(column.footer()).empty() )

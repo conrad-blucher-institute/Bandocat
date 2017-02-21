@@ -94,7 +94,7 @@ $session = new SessionManager();
                         },
                         "targets": 3
                     },
-                    { "searchable": false, "targets": 3 },
+                    //{ "searchable": false, "targets": 3 },
                     //column : Date
                     {
                         "render": function ( data, type, row ) {
@@ -113,7 +113,7 @@ $session = new SessionManager();
                         },
                         "targets": 6
                     },
-                    { "searchable": false, "targets": 6 },
+                   // { "searchable": false, "targets": 6 },
                     //column : NeedsReview
                     {
                         "render": function ( data, type, row ) {
@@ -123,7 +123,7 @@ $session = new SessionManager();
                         },
                         "targets": 7
                     },
-                    { "searchable": false, "targets": 7 },
+                   // { "searchable": false, "targets": 7 },
                     {
                         "render": function ( data, type, row ) {
                         return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
@@ -140,8 +140,8 @@ $session = new SessionManager();
                         switch(column[0][0]) //column number
                         {
                             //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
-                            case 6: //column needsreview
-                            case 7: //column completed?
+                            case 6: //column hascoast
+                            case 7: //column needsreview
                                 var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
@@ -155,27 +155,28 @@ $session = new SessionManager();
                                     } );
                                 break;
                             //case: DROP DOWN LIST
+//                            case ?:
+//                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+//                                    .appendTo( $(column.footer()).empty() )
+//                                    .on( 'change', function () {
+//                                        var val = $.fn.dataTable.util.escapeRegex(
+//                                            $(this).val()
+//                                        );
+//
+//                                        column
+//                                            .search(val)
+//                                            .draw();
+//                                    } );
+//
+//                                column.data().unique().sort().each( function ( d, j ) {
+//                                    select.append( '<option value="'+d+'">'+d+'</option>' )
+//                                } );
+//                                break;
+                            case 1: //lib index
+                            case 2: //title
+                            case 3: //subtitle
                             case 4: //customer
-                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
-                                    .appendTo( $(column.footer()).empty() )
-                                    .on( 'change', function () {
-                                        var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                        );
-
-                                        column
-                                            .search(val)
-                                            .draw();
-                                    } );
-
-                                column.data().unique().sort().each( function ( d, j ) {
-                                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                                } );
-                                break;
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 5:
+                            case 5: //end date
                                 var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'keyup change', function () {
