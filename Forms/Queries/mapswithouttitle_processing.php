@@ -49,8 +49,7 @@ $columns = array(
     array( 'db' => '`document`.`documentID`', 'dt' => 0, 'field' => 'documentID' ),
     array( 'db' => '`document`.`libraryindex`', 'dt' => 1,'field' => 'libraryindex'),
     array( 'db' => '`document`.`title`', 'dt' => 2,'field' => 'title' ),
-    array( 'db' => '`document`.`needsreview`', 'dt' => 3,'field' => 'needsreview'),
-    array( 'db' => '`document`.`hascoast`', 'dt' => 4,'field' => 'hascoast')
+    array( 'db' => '`document`.`needsreview`', 'dt' => 3,'field' => 'needsreview')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

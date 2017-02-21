@@ -37,6 +37,7 @@ session_start();
             margin:0 auto;
             width:400px;
             line-height:40px;
+            background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c;
         }
         /*formatting  the padding and sizes between the username,password and their respective fields*/
         table{width:100%;}

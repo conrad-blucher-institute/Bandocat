@@ -19,10 +19,10 @@ Return value(s):
 class DBHelper
 {
     //Members
-    static private $host = "localhost";
-    static private $user = "root";
-    static private $pwd = "notroot";
-    static private $maindb = 'bandocatdb';
+    static protected $host = "localhost";
+    static protected $user = "root";
+    static protected $pwd = "notroot";
+    static protected $maindb = 'bandocatdb';
     protected $conn;
 
     //Getter and setters
@@ -199,6 +199,56 @@ class DBHelper
         return $result;
     }
 
+    /**********************************************
+     * Function: GET_COLLECTION_FOR_DROPDOWN
+     * Description: Retrieves the collection names from the database to be used as items in a drop down list
+     * Parameter(s): NONE
+     * Return value(s):
+     * $result  (associative array) - return associative array of collection info names
+     ***********************************************/
+    function GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID($iATemplateID, $iSwitch)
+    {
+
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+//        if($iSwitch == null)
+//        {
+//            //if the user failed to supply an indicator supply true to find exact what is passed
+//            $iSwitch = true;
+//        }
+        $original = "SELECT `collectionID`,`name`,`displayname` FROM `collection` WHERE ";
+        $count = 0;
+        for($i = 1; $i <= count($iATemplateID); $i++)
+        {
+            $count++;
+            if($iSwitch == true)
+            {
+                $original = $original . "templateID = ? ";
+                if($i != count($iATemplateID))
+                {
+                    $original = $original . " OR ";
+                }
+            }
+            if($iSwitch == false)
+                {
+                    $original = $original . "templateID != ? ";
+                    if($i != count($iATemplateID))
+                    {
+                        $original = $original . " OR ";
+                    }
+                }
+        }
+        $sth = $this->getConn()->prepare($original);
+        for($i = 1; $i <= $count; $i++)
+        {
+            $sth->bindParam($i,$iATemplateID[$i - 1], PDO::PARAM_INT);
+        }
+
+        $sth->execute();
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**********************************************
     /**********************************************
 
      ***********************************************/
@@ -535,6 +585,37 @@ class DBHelper
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         //Bind the database name ($iName) into the prepared call statement from above.
         $call->bindParam(1, $iName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        /* RETURN RESULT */
+        //returned after successful call statement. Need to tell the db what data we want selected.
+        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oGeorecDir as GeoRecDir,@oCollectionID as CollectionID');
+        //Database now has the appropriate data selected. We now need to ask the DB to fetch the values for us
+        $result = $select->fetch(PDO::FETCH_ASSOC);
+        $result["Name"] = htmlspecialchars($iName);
+        return $result;
+    }
+    /**********************************************
+     * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
+     * Description: Pulls the data associated with the collection name passed in.
+     * Parameter(s):
+     * $iName (in string) - input DB Name
+     * Return value(s):
+     * $result (assoc array) - return above values in an assoc array
+     ***********************************************/
+    function SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID($iName, $iTemplateID)
+    {   //USE is sql for changing to the database supplied after the concat.
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        /* PREPARE STATEMENT */
+        //CALL is sql for telling the db to execute the function following call.
+        //The ? in the functions parameter list is a variable that we bind a few lines down
+        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID(?,?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oGeorecDir,@oCollectionID)");
+        //ERROR HANDLING
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        //Bind the database name ($iName) into the prepared call statement from above.
+        $call->bindParam(1, $iName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+        $call->bindParam(2, $iTemplateID, PDO::PARAM_INT, 11);
         /* EXECUTE STATEMENT */
         $call->execute();
         /* RETURN RESULT */

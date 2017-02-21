@@ -132,7 +132,65 @@ $session = new SessionManager();
                     },
 
                 ],
-                "ajax": "list_processing.php?col=" + collection_config.Name
+                "ajax": "list_processing.php?col=" + collection_config.Name,
+                "initComplete": function()
+                {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        switch(column[0][0]) //column number
+                        {
+                            //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                            case 6: //column needsreview
+                            case 7: //column completed?
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                            //case: DROP DOWN LIST
+                            case 4: //customer
+                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+
+                                column.data().unique().sort().each( function ( d, j ) {
+                                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                                } );
+                                break;
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 5:
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'keyup change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                        }
+                    } );
+                },
             } );
 
             //hide first column (DocID)
@@ -196,6 +254,19 @@ $session = new SessionManager();
                     <th></th>
                 </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th width="100px">Library Index</th>
+                <th>Document Title</th>
+                <th width="280px">Document Subtitle</th>
+                <th width="200px">Customer</th>
+                <th width="70px">End Date</th>
+                <th width="40px">Has Coast</th>
+                <th width="30px">Needs Review</th>
+                <th></th>
+            </tr>
+            </tfoot>
         </table>
         </div>
         </div>

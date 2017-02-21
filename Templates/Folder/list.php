@@ -120,7 +120,64 @@ else header('Location: ../../');
                     },
 
                 ],
-                "ajax": "list_processing.php?col=" + collection_config.Name + "&action=" + '<?php echo $action; ?>'
+                "ajax": "list_processing.php?col=" + collection_config.Name + "&action=" + '<?php echo $action; ?>',
+                "initComplete": function() {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        switch(column[0][0]) //column number
+                        {
+                            //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                            case 5: //column needsreview
+                                    //column completed?
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                            //case: column only have boolean value (Yes/No or 1/0)
+                            case 1: //column page type
+                            case 3: //column book title
+                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+
+                                column.data().unique().sort().each( function ( d, j ) {
+                                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                                } );
+                                break;
+                            case 2:
+                            case 4:
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'keyup change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                        }
+                    } );
+                },
+
             } );
 
             //hide first column (DocID)
@@ -171,6 +228,18 @@ else header('Location: ../../');
                         <th width="40px"></th>
                     </tr>
                     </thead>
+                    <tfoot>
+                    <tr>
+                        <th width="50px"></th>
+                        <th width="200px">LibraryIndex</th>
+                        <th width="150px">Document Title</th>
+                        <th>Classification</th>
+                        <th width="50px">Needs Input</th>
+                        <th width="50px">Needs Review</th>
+                        <th width="40px"></th>
+                    </tr>
+                    </tfoot>
+
                 </table>
             </div>
         </div>
