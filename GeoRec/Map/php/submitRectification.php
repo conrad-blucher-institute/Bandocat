@@ -124,7 +124,7 @@ $DB = new MapDBHelper();
                 $ret = $DB->DOCUMENT_GEORECSTATUS_UPDATE($imageInfo['docID'],false,1);
                 break;
             case "back":
-                $ret = $DB->DOCUMENT_GEORECPATHS_UPDATE($imageInfo['docID'],true,1);
+                $ret = $DB->DOCUMENT_GEORECSTATUS_UPDATE($imageInfo['docID'],true,1);
                 break;
             default: $error_flag = true;
                 break;

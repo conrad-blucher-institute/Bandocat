@@ -112,7 +112,7 @@ else header('Location: ../../');
                                             .draw();
                                     } );
                                 break;
-                            //case: column only have boolean value (Yes/No or 1/0)
+                            //case: columns that have a set of unique values
                             case 1: //column page type
                             case 3: //column book title
                                 var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
