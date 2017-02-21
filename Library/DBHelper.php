@@ -19,10 +19,10 @@ Return value(s):
 class DBHelper
 {
     //Members
-    static private $host = "localhost";
-    static private $user = "root";
-    static private $pwd = "notroot";
-    static private $maindb = 'bandocatdb';
+    static protected $host = "localhost";
+    static protected $user = "root";
+    static protected $pwd = "notroot";
+    static protected $maindb = 'bandocatdb';
     protected $conn;
 
     //Getter and setters
