@@ -160,7 +160,8 @@ else header('Location: ../../');
                     $(this).addClass('selected');
                 }
             } );
-
+            //resize height of the scroller
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         });
     </script>
 </head>

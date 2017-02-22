@@ -110,6 +110,14 @@ class SessionManager
         return false;
     }
 
+    //Super admin
+    public function isSuperAdmin()
+    {
+        if($this->getRole() == 'Super Admin')
+            return true;
+        return false;
+    }
+
     //can write/edit review documents
     public function hasWritePermission()
     {
