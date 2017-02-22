@@ -21,7 +21,7 @@ else header('Location: ../../');
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Welcome to BandoCat!</title>
+    <title><?php echo $config['DisplayName']; ?></title>
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
@@ -77,7 +77,7 @@ else header('Location: ../../');
                         },
                         "targets": 0
                     },
-                    { "searchable": false, "targets": 0 },
+                   // { "searchable": false, "targets": 0 },
                     //column : Page Number
                     {
                         "render": function ( data, type, row ) {
@@ -123,10 +123,9 @@ else header('Location: ../../');
                                             .draw();
                                     } );
                                 break;
-                            //case: column only have boolean value (Yes/No or 1/0)
+                            //case: dropdown table of contents/general index
                             case 1: //column page type
-                            case 3: //column book title
-                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="Table of Contents">Table of Contents</option><option value="General Index">General Index</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
                                         var val = $.fn.dataTable.util.escapeRegex(
@@ -137,12 +136,10 @@ else header('Location: ../../');
                                             .search(val)
                                             .draw();
                                     } );
-
-                                column.data().unique().sort().each( function ( d, j ) {
-                                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                                } );
                                 break;
+                                //search text box
                             case 2:
+                            case 3:
                             case 4:
                                 var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
                                     .appendTo( $(column.footer()).empty() )

@@ -88,7 +88,7 @@ $date = new DateHelper();
                                 <div class="cell">
                                     <!-- PAGE NUMBER -->
                                     <span class="label"><span style = "color:red;"> * </span>Page Number:</span>
-                                    <input type="text" name="txtPageNumber" id="txtPageNumber" value="<?php echo $document['PageNumber']?>"/>
+                                    <input type="text" name="txtPageNumber" id="txtPageNumber" value="<?php echo htmlspecialchars($document['PageNumber'],ENT_QUOTES);?>"/>
                                 </div>
                                 <div class="cell" >
                                     <!-- NEEDS REVIEW -->

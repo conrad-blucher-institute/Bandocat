@@ -141,26 +141,10 @@ else header('Location: ../../');
                                             .draw();
                                     } );
                                 break;
-                            //case: column only have boolean value (Yes/No or 1/0)
-                            case 1: //column page type
-                            case 3: //column book title
-                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
-                                    .appendTo( $(column.footer()).empty() )
-                                    .on( 'change', function () {
-                                        var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                        );
-
-                                        column
-                                            .search(val)
-                                            .draw();
-                                    } );
-
-                                column.data().unique().sort().each( function ( d, j ) {
-                                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                                } );
-                                break;
+                                //search text box
+                            case 1:
                             case 2:
+                            case 3:
                             case 4:
                                 var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
                                     .appendTo( $(column.footer()).empty() )
@@ -200,7 +184,7 @@ else header('Location: ../../');
                 }
             } );
             //resize height of the scroller
-            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 50);
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         });
     </script>
 
