@@ -15,6 +15,7 @@ $DB = new MapDBHelper();
 	ini_set("allow_url_fopen", 1);
 	include('class.php');
 	$script = json_decode( $_POST['jsonData']);
+
 	$imageInfo = get_object_vars($script->fileName);
 
 	//get collection information and stored them in array $collection_info for later use
@@ -54,8 +55,10 @@ $DB = new MapDBHelper();
     }
 
     //run KML superoverlay script on CLI
-	if(exec("gdal_translate -of KMLSUPEROVERLAY " . $GeoTIFFsPath . " ../Temp/GeoTIFFs/" . $imageInfo['KMZname'] .  " -co FORMAT=JPEG"))
-	echo "\nKMLSUPEROVERLAY SUCCESS";
+	if(exec("gdal_translate -of KMLSUPEROVERLAY " . $GeoTIFFsPath . " ../Temp/GeoTIFFs/" . $imageInfo['KMZname'] .  " -co FORMAT=JPEG")){
+        echo "\nKMLSUPEROVERLAY SUCCESS";
+	}
+
 	else {
         echo "\nKMLSUPEROVERLAY FAILED";
         $error_str .= "KMLSUPEROVERLAY FAILED";

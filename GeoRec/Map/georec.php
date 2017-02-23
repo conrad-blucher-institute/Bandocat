@@ -269,13 +269,13 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
             if(!rasterSelected) {
                 //pushes data from click into appropriate arrays
                 var coords = rc.project(event.latlng);
-                rasterCoords.push({rlat:event.latlng.lat,rlong:event.latlng.lng,x:event.layerPoint.x,y:event.layerPoint.y});
+                //rasterCoords.push({rlat:event.latlng.lat,rlong:event.latlng.lng,x:rasterCoords[rasterCount-1].x,y:event.layerPoint.y});
+                rasterCoords.push(rc.project(event.latlng));
                 //creates marker and popup
                 var rasterMarker = L.marker(rc.unproject(coords), {icon: icon})
                 rasterMarkerArray.push(rasterMarker);
                 raster.addLayer(rasterMarker);
                 rasterMarker.bindPopup("Edit").openPopup;
-
 
                 var rastermarkerIndex = rasterMarker.on('click', function clickIndex(event) {
                     for (i = 0; i < gcpList.length; i++) {
@@ -284,14 +284,10 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                         }
                     }
                     var layerPoint = map.latLngToLayerPoint([event.latlng.lat, event.latlng.lng]);
-                    console.log(gcpList[rastermarkerIndex]);
-                    console.log('Layer Point: '+layerPoint);
                     event.target.dragging.enable();
                     return rastermarkerIndex;
                 });
-                //console.log(gcpList);
                 rasterMarker.on('dragend', function (event) {
-                    console.log(event);
                     var marker = event.target;
                     //var latitude = marker._latlng.lat;
 
@@ -302,10 +298,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                     var X = marker.dragging._draggable._newPos.x;
                     gcpList[rastermarkerIndex].x = X;
                     var Y = marker.dragging._draggable._newPos.y;
-                    console.log(marker.dragging);
                     gcpList[rastermarkerIndex].y = Y;
-                //console.log(gcpList[rastermarkerIndex]);
-                    //console.log(marker);
                     $('#rasterX-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].x);
                     $('#rasterY-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].y);
                     $('#rasterLat-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].rlat);
@@ -376,7 +369,6 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
             //load the points into the map and raster if there is any
             var entries = <?php echo json_encode($georec_entries); ?>;
-
             for(var i = 0; i < entries.length; i++)
             {
                 var rasterlatlng = L.latLng(entries[i][3],entries[i][4]);
