@@ -5,7 +5,8 @@ $session = new SessionManager();
 if($session->isAdmin() == false) {
     header('Location: ../../');
 }
-require('../../Library/DBHelper.php');
+include '../../Library/DBHelper.php';
 $DB = new DBHelper();
-$ret = $DB->USER_ROLE_UPDATE($_POST['ddl_user']);
+
+$ret = $DB->USER_ROLE_UPDATE($_POST['ddl_user'],$_POST['rd_Role']);
 echo $ret;
