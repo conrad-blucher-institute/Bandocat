@@ -296,7 +296,28 @@ class DBHelper
         return $role;
     }
 
-
+    /**********************************************
+     * Function: GET_USER_ROLE
+     * Description: GIVEN USERID, RETURN USER ROLE - Note: for future modification, do not include password in the output
+     * Parameter(s):
+     * $userID (in int) - user ID
+     * Return value(s):
+     * $result  (associative array) - return associative array of user info
+     ***********************************************/
+    function GET_USER_ROLE($userID)
+    {
+        //USE is sql for changing to the database supplied after the concat.
+        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        //Select all relevant data to the supplied userID excluding password
+        $sth = $this->getConn()->prepare("SELECT `user`.`userID`,`user`.`roleID`, `role`.`name` FROM `user` INNER JOIN `role` ON `user`.`roleID` = `role`.`roleID` WHERE `userID` = :userID");
+        //Bind the supplied userID into the select statement above.
+        $sth->bindParam(':userID',$userID,PDO::PARAM_INT);
+        //Execute SQL statement
+        $sth->execute();
+        //Retrieve results from executed statement
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        return $result['name'];
+    }
     /**********************************************
      * Function: USER_ROLE_UPDATE
      * Description: UPDATES THE USERS ROLE

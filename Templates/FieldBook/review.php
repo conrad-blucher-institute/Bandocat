@@ -73,32 +73,32 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 <div class="cell">
                                     <!-- LIBRARY INDEX -->
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex'];?>' required />
+                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>' required />
                                 </div>
                                 <div class="cell">
                                     <!-- COLLECTION -->
                                     <span class="label"><span style = "color:red;"> * </span>Collection:</span>
-                                    <input type = "text" name = "txtFBCollection" id = "txtFBCollection" size="26" value='<?php echo $document['Collection'];?>' required list="lstCollection"/>
+                                    <input type = "text" name = "txtFBCollection" id = "txtFBCollection" size="26" value='<?php echo htmlspecialchars($document['Collection'],ENT_QUOTES);?>' required list="lstCollection"/>
                                 </div>
                                 <div class="cell">
                                     <!-- BOOK TITLE -->
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
-                                    <input type = "text" name = "txtBookTitle" id = "txtBookTitle" size="26" value='<?php echo $document['BookTitle'];?>' />
+                                    <input type = "text" name = "txtBookTitle" id = "txtBookTitle" size="26" value='<?php echo htmlspecialchars($document['BookTitle'],ENT_QUOTES);?>' />
                                 </div>
                                 <div class="cell">
                                     <!-- JOB NUMBER -->
                                     <span class="label">Job Number:</span>
-                                    <input type = "text" name = "txtJobNumber" id = "txtJobNumber" size="26" value='<?php echo $document['JobNumber'];?>'  />
+                                    <input type = "text" name = "txtJobNumber" id = "txtJobNumber" size="26" value='<?php echo htmlspecialchars($document['JobNumber'],ENT_QUOTES);?>'  />
                                 </div>
                                 <div class="cell">
                                     <!-- JOB TITLE -->
                                     <span class="label">Job Title:</span>
-                                    <input type = "text" name = "txtJobTitle" id = "txtJobTitle" size="26" value='<?php echo $document['JobTitle'];?>'  />
+                                    <input type = "text" name = "txtJobTitle" id = "txtJobTitle" size="26" value='<?php echo htmlspecialchars($document['JobTitle'],ENT_QUOTES);?>'  />
                                 </div>
                                 <div class="cell">
                                     <!-- INDEXED PAGE -->
                                     <span class="label">Indexed Page:</span>
-                                    <input type = "text" name = "txtIndexedPage" id = "txtIndexedPage" size="26" value='<?php echo $document['IndexedPage'];?>'  />
+                                    <input type = "text" name = "txtIndexedPage" id = "txtIndexedPage" size="26" value='<?php echo htmlspecialchars($document['IndexedPage'],ENT_QUOTES);?>'  />
                                 </div>
                                 <div class="cell">
                                     <!-- BLANK PAGE -->
@@ -127,12 +127,12 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 <div class="cell">
                                     <!-- FIELD BOOK AUTHOR -->
                                     <span class="label">Field Book Author:</span>
-                                    <input type = "text" name = "txtBookAuthor" id = "txtBookAuthor" size="26" list="lstAuthor" value='<?php echo $document['Author'];?>'  />
+                                    <input type = "text" name = "txtBookAuthor" id = "txtBookAuthor" size="26" list="lstAuthor" value='<?php echo htmlspecialchars($document['Author'],ENT_QUOTES);?>'  />
                                 </div>
                                 <div class="cell">
                                     <!-- FIELD CREW MEMBER -->
                                     <span class="label">Field Crew Member: </span>
-                                    <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo $crews[0][0];} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
+                                    <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo htmlspecialchars($crews[0][0],ENT_QUOTES);} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
                                     <span id="crewcell"></span>
                                 </div>
 
