@@ -35,6 +35,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     <link href='css/styles.css' rel='stylesheet' />
     <link rel="stylesheet" href= "css/l.geosearch.css"/>
     <link rel="stylesheet" href= "../../Master/master.css"/>
+    <link rel="stylesheet" href="../../ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.css">
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <script src='../../ExtLibrary/rastercoords.js'></script>
     <script src="../../ExtLibrary/Leaflet.MakiMarkers.js"></script>
@@ -42,6 +43,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     <script src="javascript/l.control.geosearch.js"></script>
     <script src="javascript/l.geosearch.provider.esri.js"></script>
     <script type="text/javascript" src="javascript/bandocatRectification.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.js"></script>
 </head>
 <style>
 /*    Styles for popup Update Status */
@@ -104,6 +106,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
 
     var map = L.mapbox.map("map");
+    L.control.mousePosition().addTo(map);
 
     //Base layers with leaflet layer control
     var street = L.tileLayer('https://api.mapbox.com/styles/v1/xuan27/ciylr8exe004r2smg2t48oxpz/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoieHVhbjI3IiwiYSI6IktzT0hVNjAifQ.v97O2GRYRJ8ZxhLHtTn30g', {
@@ -144,8 +147,10 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
         //sets marker color and style
         Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
         if(!mapSelected) {
+
             //creates new object of gcpList
             addGCP(count, event.latlng.lat, event.latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
+
             //creates marker and popup
             marker = L.marker(event.latlng, {icon: icon});
             marker.bindPopup("Edit").openPopup().closePopup;
@@ -231,6 +236,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
         var minZoom = 0,
             maxZoom = 5,
+
             img = [
                 rasterJSON.width,  // original width of raster
                 rasterJSON.height  // original height of raster
@@ -239,7 +245,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
         // create the raster
         var raster = L.map("raster",{
             minZoom: minZoom,
-            maxZoom: maxZoom,
+            maxZoom: maxZoom
         });
 
         // assign raster and raster dimensions
@@ -256,10 +262,11 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
         //add tiles to raster viewer
         L.tileLayer(tiles, {
             noWrap: true,
-            attribution: '',
-
+            attribution: ''
         }).addTo(raster);
 
+        //Raster container control that displays coordinates location on mouse hover
+        L.control.mousePosition().addTo(raster);
 
         //executes on click event on raster viewer
         raster.on("click", function(event)
@@ -269,10 +276,12 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
             if(!rasterSelected) {
                 //pushes data from click into appropriate arrays
                 var coords = rc.project(event.latlng);
-                //rasterCoords.push({rlat:event.latlng.lat,rlong:event.latlng.lng,x:rasterCoords[rasterCount-1].x,y:event.layerPoint.y});
-                rasterCoords.push(rc.project(event.latlng));
+                var unproject_coords = rc.unproject(coords);
+                rasterCoords.push({rlat:unproject_coords.lat,rlong:unproject_coords.lng,x:coords.x,y:coords.y});
+
+                //rasterCoords.push(coords);
                 //creates marker and popup
-                var rasterMarker = L.marker(rc.unproject(coords), {icon: icon})
+                var rasterMarker = L.marker(rc.unproject(coords), {icon: icon});
                 rasterMarkerArray.push(rasterMarker);
                 raster.addLayer(rasterMarker);
                 rasterMarker.bindPopup("Edit").openPopup;
@@ -283,22 +292,21 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                             rastermarkerIndex = i;
                         }
                     }
-                    var layerPoint = map.latLngToLayerPoint([event.latlng.lat, event.latlng.lng]);
                     event.target.dragging.enable();
                     return rastermarkerIndex;
                 });
+
+
                 rasterMarker.on('dragend', function (event) {
                     var marker = event.target;
                     //var latitude = marker._latlng.lat;
-
-
                     gcpList[rastermarkerIndex].rlat = marker._latlng.lat;
                     //var longitude = marker._latlng.lng;
                     gcpList[rastermarkerIndex].rlong = marker._latlng.lng;
-                    var X = marker.dragging._draggable._newPos.x;
-                    gcpList[rastermarkerIndex].x = X;
-                    var Y = marker.dragging._draggable._newPos.y;
-                    gcpList[rastermarkerIndex].y = Y;
+                    rCoords =rc.project(event.target._latlng);
+
+                    gcpList[rastermarkerIndex].x = rCoords.x;
+                    gcpList[rastermarkerIndex].y = rCoords.y;
                     $('#rasterX-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].x);
                     $('#rasterY-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].y);
                     $('#rasterLat-' + rastermarkerIndex).text(gcpList[rastermarkerIndex].rlat);
@@ -310,11 +318,12 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                 rasterSelected = true;
                 mapSelected = false;
             }
+
             else
-            {
                 alert("Select point on map");
-            }
+
         });
+
 
     </script>
 </div>
@@ -369,12 +378,17 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
             //load the points into the map and raster if there is any
             var entries = <?php echo json_encode($georec_entries); ?>;
+
             for(var i = 0; i < entries.length; i++)
             {
-                var rasterlatlng = L.latLng(entries[i][3],entries[i][4]);
-                var rasterXY = L.point(entries[i][5],entries[i][6]);
                 var maplatlng = L.latLng(entries[i][1],entries[i][2]);
-                raster.fireEvent('click',{latlng:rasterlatlng,containerPoint:rasterXY,layerPoint:rasterXY});
+
+                var rasterXY = L.Point(entries[i][5],entries[i][6]);
+                var rasterLatLng = L.latLng(entries[i][3],entries[i][4]);
+                //var rasterXY = ;
+
+
+                raster.fireEvent('click',{latlng:rasterLatLng,containerPoint:rasterXY});
                 map.fireEvent('click',{latlng:maplatlng});
             }
 
