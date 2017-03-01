@@ -97,13 +97,13 @@ $userinfo = $DB->GET_USER_INFO($session->getUserID());
                     </td>
                 </tr>
                     <tr>
-                        <td><label class="unselectable" for="txtEmail" required>Change Email:</label></td>
+                        <td><label class="unselectable" for="txtEmail" required>Email:</label></td>
                         <td>
                             <input type="text" id="txtEmail" name="txtEmail" required value="<?php echo $userinfo['email']; ?>">
                         </td>
                     </tr>
                 <tr>
-                    <td><label class="unselectable" for="txtName"> Change Name:</label></td>
+                    <td><label class="unselectable" for="txtName">Name:</label></td>
                     <td>
                         <input type="text" id="txtName" name="txtName" value="<?php echo $userinfo['fullname']; ?>">
                     </td>
