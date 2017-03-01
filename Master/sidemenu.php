@@ -12,13 +12,14 @@
     {
         //queries the database for the number of tickets currently active
         $ticketCount = $DB1->GET_ADMIN_OPENTICKET_COUNT();
-        echo '<div class="menu-item menu-item_sub3">
+        echo '<div class="menu-item menu-item_sub4">
             <!--class for the visuals, data-badge to pass the number of tickets to the text in the badge -->
             <h4 ><a class="notificationBadge" data-badge='.$ticketCount.' id="adminNotificationBadge" href="">Admin</a></h4>    
              <div   ></div>
             <ul>           
             <li><a href="../../Forms/ActivityLog/index.php">Activity Log</a></li>
             <li><a href="../../Forms/Ticket/">View Tickets</a></li>
+            <li><a href="../../Forms/ManageUser/">Manage User</a></li>
             <li><a href="../../Forms/NewUser/">Create New User</a></li>
             </ul>
         </div>';

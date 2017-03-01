@@ -77,7 +77,46 @@ else header('Location: ../../');
                     },
 
                 ],
-                "ajax": "list_processing.php"
+                "ajax": "list_processing.php",
+                "initComplete": function() {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        switch(column[0][0]) //column number
+                        {
+                            //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                            case 5: //Status column
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Open</option><option value="1">Closed</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                            //search text box
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'keyup change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                        }
+                    } );
+                },
             } );
 
             //hide first column (DocID)
@@ -96,7 +135,7 @@ else header('Location: ../../');
             } );
 
             //resize height of the scroller
-            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 35);
         });
     </script>
 </head>
@@ -121,6 +160,16 @@ else header('Location: ../../');
                                 <th>Status</th>
                             </tr>
                             </thead>
+                            <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
         </div>

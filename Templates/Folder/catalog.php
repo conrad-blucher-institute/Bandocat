@@ -63,12 +63,12 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 <div class="cell">
                     <!-- LIBRARY INDEX -->
                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex'];?>' required />
+                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>' required />
                 </div>
                 <div class="cell">
                     <!-- TITLE -->
                     <span class="label"><span style = "color:red;"> * </span>Document Title:</span>
-                    <input type = "text" name = "txtTitle" id = "txtTitle" size="26" required="true" value='<?php echo $document['Title'];?>' />
+                    <input type = "text" name = "txtTitle" id = "txtTitle" size="26" required="true" value='<?php echo htmlspecialchars($document['Title'],ENT_QUOTES);?>' />
                 </div>
                 <div class="cell">
                     <!-- NEEDS REVIEW -->
@@ -141,7 +141,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 <div class="cell">
                     <!-- DOCUMENT AUTHOR -->
                     <span class="label">Document Author:</span>
-                    <input type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo $authors[0][0];} ?>"/><span style="padding-right:5px"></span><input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
+                    <input type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo htmlspecialchars($authors[0][0],ENT_QUOTES);} ?>"/><span style="padding-right:5px"></span><input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
                     <span id="authorcell"></span>
                 </div>
             </td>

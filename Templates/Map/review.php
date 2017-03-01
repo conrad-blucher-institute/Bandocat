@@ -62,14 +62,14 @@ $date = new DateHelper();
                         </td>
                         <td>
                             <!-- LIBRARY INDEX -->
-                            <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo $document['LibraryIndex']; ?>' required="true" />
+                            <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES); ?>' required="true" />
                         </td>
                         <td>
                             <span class="label">Customer Name:</span>
                         </td>
                         <td>
                             <!-- CUSTOMER NAME -->
-                            <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="<?php echo $document['CustomerName']; ?>" />
+                            <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="<?php echo htmlspecialchars($document['CustomerName'],ENT_QUOTES); ?>" />
                             <datalist id="lstCustomer">
                                 <!-- POPULATE DDL WITH CUSTOMER NAME -->
                                 <?php $Render->getDataList($DB->GET_CUSTOMER_LIST($collection)); ?>
@@ -78,7 +78,7 @@ $date = new DateHelper();
                         <tr>
                              <!-- DOCUMENT TITLE-->
                             <td> <span class="label"><span style = "color:red;"> * </span>Document Title:</span></td>
-                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value='<?php echo $document['Title']; ?>' required />
+                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value='<?php echo htmlspecialchars($document['Title'],ENT_QUOTES); ?>' required />
                             </td>
                             <td>
                                 <!-- DOCUMENT START DATE -->
@@ -105,7 +105,7 @@ $date = new DateHelper();
                                 <span class="label">Document Subtitle:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value='<?php echo $document['Subtitle']; ?>' />
+                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value='<?php echo htmlspecialchars($document['Subtitle'],ENT_QUOTES); ?>' />
                             </td>
                             <td>
                                 <!-- DOCUMENT END DATE -->
@@ -130,14 +130,14 @@ $date = new DateHelper();
                         <tr>
                             <!-- MAP SCALE -->
                             <td><span class="label">Map Scale:</span></td>
-                            <td> <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value="<?php echo $document['MapScale']; ?>"  />
+                            <td> <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value="<?php echo htmlspecialchars($document['MapScale'],ENT_QUOTES); ?>"  />
                             </td>
                             <td>
                                 <!-- FIELD BOOK NUMBER -->
                                 <span class="label">Field Book Number:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value="<?php if($document['FieldBookNumber'] != 0 && $document['FieldBookNumber'] != null) {echo $document['FieldBookNumber'];} ?>"/><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value="<?php if($document['FieldBookNumber'] != 0 && $document['FieldBookNumber'] != null) {echo htmlspecialchars($document['FieldBookNumber'],ENT_QUOTES);} ?>"/><span class = "errorInput" id = "customernameErr"></span>
                             </td>
                         </tr>
 
@@ -151,7 +151,7 @@ $date = new DateHelper();
                              </td>
                              <!--FIELD BOOK PAGE-->
                              <td><span class="label">Field Book Page:</span></td>
-                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo $document['FieldBookPage']; ?>" />
+                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo htmlspecialchars($document['FieldBookPage'],ENT_QUOTES); ?>" />
                              </td>
                          </tr>
                         <tr>
@@ -232,7 +232,7 @@ $date = new DateHelper();
                                 <span class="label">Document Type:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtType" id = "txtType" size="26" value="<?php echo $document['Type'];?>" />
+                                <input type = "text" name = "txtType" id = "txtType" size="26" value="<?php echo htmlspecialchars($document['Type'],ENT_QUOTES);?>" />
                             </td>
                         </tr>
                         <tr>

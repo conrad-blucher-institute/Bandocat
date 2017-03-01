@@ -817,7 +817,9 @@ class DBHelper
         /* PREPARE STATEMENT */
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // sql statement CALL calls the function pointed to in the db
-        $call = $this->getConn()->prepare("SELECT COUNT(`ticketID`) FROM `ticket` WHERE `status`='0'");
+        $call = $this->getConn()->prepare("SELECT COUNT(`ticketID`) FROM `ticket` INNER JOIN `collection` ON (`ticket`.`collectionID` = `collection`.`collectionID`) WHERE `status`='0'");
+        // FROM `ticket` INNER JOIN `collection` ON (`ticket`.`collectionID` = `collection`.`collectionID`)
+        //INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`)
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
 
@@ -980,6 +982,15 @@ class DBHelper
         $call->execute();
         return $call->fetch(PDO::FETCH_NUM);
     }
+    /**********************************************
+     * Function: GET_ACTION_COUNT
+     * Description: counts the number of actions specified User has done.
+     * Parameter(s):
+     * $iYear (in int) - year
+     * $iCollectionID (in int) - specifies the collection id to search
+     * $iUserID (in int) - the user id of a specific user
+     * Return value(s): count of actions from the user
+     ***********************************************/
     function GET_ACTION_COUNT($iYear,$iCollectionID,$iUserID)
     {
         //get appropriate db
