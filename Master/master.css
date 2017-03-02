@@ -176,6 +176,7 @@ nav {
 
 .menu-item:hover ul {
     height:auto;
+    transition-delay:.35s;
 }
 .menu-item_sub2:hover ul {
     height:65px !important;

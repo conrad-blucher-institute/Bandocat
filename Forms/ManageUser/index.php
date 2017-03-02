@@ -68,7 +68,7 @@ $Render = new ControlsRender();
             <br>
 
     </form></table>
-                <p style="font-size:0.8em;color:#00BC65;" hidden id="txtPrompt">User's Temporary password is <span style="font-size:0.8em;font-weight:bold;color:#2e6da4" id="txtNewPassword"></span><br>Please notify the user to change the password once they're logged in.</p>
+                <div style="text-align:center"><p style="font-size:1.2em;color:#00BC65;" hidden id="txtPrompt">User's Temporary password is <span style="font-size:1.2em;font-weight:bold;color:#2e6da4" id="txtNewPassword"></span><br>Please notify the user to change the password once they're logged in.</p></div>
 
 </div>
 <?php include '../../Master/footer.php'; ?>
@@ -85,7 +85,6 @@ $Render = new ControlsRender();
                 url: "updaterole_processing.php",
                 data: $("#frm_user").serializeArray()
             }).success(function (data) {
-
                 alert($("#ddl_user :selected").text() + "'s role has been updated!");
                 location.reload();
             });

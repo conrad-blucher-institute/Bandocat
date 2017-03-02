@@ -7,12 +7,11 @@ if(isset($_GET['col']))
 else header('Location: ../../');
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
-$iTemplateID = 1;
 // SQL server connection information
 $sql_details = array(
     'user' => $DB->getUser(),
     'pass' => $DB->getPwd(),
-    'db'   => $DB->SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID($collection,$iTemplateID)['DbName'],
+    'db'   => $DB->SP_GET_COLLECTION_CONFIG($collection)['DbName'],
     'host' => $DB->getHost()
 );
 
