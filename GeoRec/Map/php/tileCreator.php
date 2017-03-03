@@ -30,7 +30,13 @@ $document = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($_POST['collection'],$_POST['do
 	}
 
 //name of sub directory inside Temp directory (to store generated Tiles for this document)
-$tempSubDir = str_replace(".tif","",$image);
+
+if(strchr($image, ".tif") == ".tif")
+	$tempSubDir = str_replace(".tif","",$image);
+
+if (strchr($image, ".tiff") == ".tiff")
+    $tempSubDir = str_replace(".tiff", "", $image);
+
 
 	//create Temp folder if needed (to store tiles temporarily)
 	if(!is_dir("../Temp"))
@@ -49,6 +55,13 @@ $tempSubDir = str_replace(".tif","",$image);
 	$cmd_imagesize = 'identify -format "%w,%h" "' . $imagepath . '"';
 	exec($cmd_imagesize,$dimensions_output);
 
+//Conditional statement that replacess .tif or .tiff extension from the image info
+if(strchr($image, ".tif") == ".tif")
+    $kmzName = str_replace(".tif",".kmz",$image);
+
+if (strchr($image, ".tiff") == ".tiff")
+    $kmzName = str_replace(".tiff",".kmz",$image);
+
 //array of image information for this document
 $imageInfo = array(
 	'type' => $_POST['type'],
@@ -58,7 +71,7 @@ $imageInfo = array(
     'tempSubDirectory' => $tempSubDir,
 	'subDirectory' => explode("-",$image)[0],
 	'geoTIFFName' => str_replace(".tif","_rectified.tif",$image),
-	'KMZname' => str_replace(".tif",".kmz",$image),
+	'KMZname' => $kmzName,
     'height' => explode(',',$dimensions_output[0])[1],
     'width' => explode(',',$dimensions_output[0])[0]
 	);
