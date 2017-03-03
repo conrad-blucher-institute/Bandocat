@@ -16,8 +16,11 @@ Parameter(s):
 Return value(s):
  ***********************************************/
 
+require_once 'TDLPublishDB.php';
+
 class DBHelper
 {
+    use TDLPublishTrait;
     //Members
     static protected $host = "localhost";
     static protected $user = "root";
@@ -102,6 +105,27 @@ class DBHelper
     {
         $this->setConn(null);
     }
+
+    /**********************************************
+    Function: SWITCH_DB
+    Description:This function switches the current connection to the database specified in the parameter
+    Parameter(s):
+     *$collection (string) - db parameter name (such as bluchermaps, greenmaps)
+    Return value(s): true if success, false if error occurs
+     ***********************************************/
+    public function SWITCH_DB($collection)
+    {
+        if($collection == null || $collection == "") //or == maindb
+            $this->getConn()->exec('USE ' . self::$maindb);
+        //get appropriate database
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        if ($dbname != null && $dbname != "") {
+            $this->getConn()->exec('USE ' . $dbname);
+            return true;
+        }
+        return false;
+    }
+
 
     /**********************************************
      * Function: SP_USER_AUTH
@@ -587,6 +611,43 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: TEMPLATE_DOCUMENT_SELECT
+     * Description: Pulls a specified document metadata from document table of a collection database (no SP, not recommended)
+     * Parameter(s):
+     * $iDocID (in string) - input document id
+     * Return value(s):
+     * $result (assoc array) - return document metadata in an assoc array
+     ***********************************************/
+    function TEMPLATE_DOCUMENT_SELECT($iDocID)
+    {
+        $sth = $this->getConn()->prepare("SELECT * FROM `document` where `documentID` = :docID");
+        $sth->bindParam(':docID',$iDocID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if($ret)
+            return $sth->fetch(PDO::FETCH_ASSOC);
+        return $ret;
+    }
+
+    /**********************************************
+     * Function: GET_COLLECTION_CONFIG
+     * Description: Pulls the data associated with the collection name passed in (short version, no SP, not recommended)
+     * Parameter(s):
+     * $iName (in string) - input DB Name
+     * Return value(s):
+     * $result (assoc array) - return above values in an assoc array
+     ***********************************************/
+    function GET_COLLECTION_INFO($iName)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT * FROM `collection` WHERE `collection`.`name` = :name");
+        $sth->bindParam(':name',$iName,PDO::PARAM_STR);
+        $ret = $sth->execute();
+        if($ret)
+            return $sth->fetch(PDO::FETCH_ASSOC);
+        return false;
+    }
+
+    /**********************************************
      * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
      * Description: Pulls the data associated with the collection name passed in.
      * Parameter(s):
@@ -617,7 +678,7 @@ class DBHelper
         return $result;
     }
     /**********************************************
-     * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
+     * Function: SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID (SP_GET_COLLECTION_DATA)
      * Description: Pulls the data associated with the collection name passed in.
      * Parameter(s):
      * $iName (in string) - input DB Name
