@@ -1,8 +1,9 @@
 <?php
 //for admin use only
-define('__ROOT__', dirname(dirname(__FILE__)));
-require_once(__ROOT__ .'\\..\\config.php');
+require_once '../../Library/SessionManager.php';
+require_once '../../Library/ControlsRender.php';
 $session = new SessionManager();
+require_once('../../Library/DBHelper.php');
 if($session->isAdmin()) {
     $DB = new DBHelper();
 }
