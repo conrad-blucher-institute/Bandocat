@@ -16,8 +16,11 @@ Parameter(s):
 Return value(s):
  ***********************************************/
 
+require_once 'TDLPublishDB.php';
+
 class DBHelper
 {
+    use TDLPublishTrait;
     //Members
     static protected $host = "localhost";
     static protected $user = "root";
@@ -104,6 +107,27 @@ class DBHelper
     }
 
     /**********************************************
+    Function: SWITCH_DB
+    Description:This function switches the current connection to the database specified in the parameter
+    Parameter(s):
+     *$collection (string) - db parameter name (such as bluchermaps, greenmaps)
+    Return value(s): true if success, false if error occurs
+     ***********************************************/
+    public function SWITCH_DB($collection)
+    {
+        if($collection == null || $collection == "") //or == maindb
+            $this->getConn()->exec('USE ' . self::$maindb);
+        //get appropriate database
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        if ($dbname != null && $dbname != "") {
+            $this->getConn()->exec('USE ' . $dbname);
+            return true;
+        }
+        return false;
+    }
+
+    /* DEPRECATED */
+    /**********************************************
      * Function: SP_USER_AUTH
      * Description: USER LOGIN AUTHENTICATION
      * Parameter(s):
@@ -115,32 +139,95 @@ class DBHelper
      * Return value(s): NONE
      ***********************************************/
 
-    function SP_USER_AUTH($iUsername, $iPassword, &$oMessage, &$oUserID, &$oRole)
-    {
-        /* PREPARE STATEMENT */
-        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
-        //The ? in the functions parameter list is a variable that we bind a few lines down.
-        $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRole)");
-        //Encrypts the password using built in function md5. Uses md5 Hash.
-        $iPassword = md5($iPassword);
-        //ERROR HANDLEING
-        if (!$call)
-            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-        /* bindParam is used to attach variables to the SQL query */
-        $call->bindParam(1, $iUsername, PDO::PARAM_STR, 32);
-        $call->bindParam(2, $iPassword, PDO::PARAM_STR, 64);
+//    function SP_USER_AUTH($iUsername, $iPassword, &$oMessage, &$oUserID, &$oRole)
+//    {
+//        /* PREPARE STATEMENT */
+//        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+//        //The ? in the functions parameter list is a variable that we bind a few lines down.
+//        $call = $this->getConn()->prepare("CALL SP_USER_AUTH(?,?,@oMessage,@oUserID,@oRole)");
+//        //Encrypts the password using built in function md5. Uses md5 Hash.
+//        $iPassword = md5($iPassword);
+//        //ERROR HANDLEING
+//        if (!$call)
+//            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+//        /* bindParam is used to attach variables to the SQL query */
+//        $call->bindParam(1, $iUsername, PDO::PARAM_STR, 32);
+//        $call->bindParam(2, $iPassword, PDO::PARAM_STR, 64);
+//
+//        /* EXECUTE STATEMENT */
+//        $call->execute();
+//        /* RETURN RESULT */
+//        //returned after successful call statement. Need to tell the db what data we want selected.
+//        $select = $this->getConn()->query('SELECT @oMessage,@oUserID, @oRole');
+//        /* returning the selected data */
+//        $result = $select->fetch(PDO::FETCH_ASSOC);
+//        /*store data into variables */
+//        $oMessage = $result['@oMessage'];
+//        $oUserID = $result['@oUserID'];
+//        $oRole = $result['@oRole'];
+//    }
 
-        /* EXECUTE STATEMENT */
-        $call->execute();
-        /* RETURN RESULT */
-        //returned after successful call statement. Need to tell the db what data we want selected.
-        $select = $this->getConn()->query('SELECT @oMessage,@oUserID, @oRole');
-        /* returning the selected data */
-        $result = $select->fetch(PDO::FETCH_ASSOC);
-        /*store data into variables */
-        $oMessage = $result['@oMessage'];
-        $oUserID = $result['@oUserID'];
-        $oRole = $result['@oRole'];
+    /**********************************************
+     * Function: USER_AUTH
+     * Description: USER LOGIN AUTHENTICATION (not calling a stored procedure)
+     * Parameter(s):
+     * $iUsername (in string) - input username
+     * $iPassword (in string) - input password (before md5)
+     * &$oMessage (out ref string) - output message response
+     * &$oUserID (out ref int) - output UserID if success
+     * &$oRole (out ref int) - output User Role if success
+     * Return value(s): false if not success, true if success
+     ***********************************************/
+    function USER_AUTH($iUsername, $iPassword, &$oMessage, &$oUserID, &$oRole)
+    {
+        $iUsername = htmlspecialchars($iUsername);
+        $iPassword = md5(htmlspecialchars($iPassword));
+         $sth = $this->getConn()->prepare("SELECT `userID`,`role`.`name` AS role,`password` FROM `user` LEFT JOIN `role` ON `role`.`roleID` = `user`.`roleID` WHERE `username` = :username LIMIT 1");
+         $sth->bindParam(':username',$iUsername,PDO::PARAM_STR);
+         $ret = $sth->execute();
+         if(!$ret)
+         {
+             $oMessage = "Error";
+             return false;
+         }
+         $output = $sth->fetch(PDO::FETCH_ASSOC);
+
+         if(password_verify($iPassword,$output['password']))
+         {
+             if($output['role'] === "Inactive")
+             {
+                 $oMessage = "Inactive";
+                 return false;
+             }
+             $oMessage = "Success";
+             $oUserID = $output['userID'];
+             $oRole = $output['role'];
+             return true;
+         }
+         $oMessage = "Invalid";
+         return false;
+
+    }
+
+    /**********************************************
+     * Function: USER_VERIFY_PWD
+     * Description: validate if the input password is equivalent to password stored in the DB given specified user ID
+     * Parameter(s):
+     * $iUserID (in string) - input user ID
+     * Return value(s): false if fail, pwd if success
+     ***********************************************/
+    function USER_VERIFY_PWD($iUserID,$iPassword)
+    {
+        $sth = $this->getConn()->prepare("SELECT `password` FROM `user` WHERE `userID` = :userID LIMIT 1");
+        $sth->bindParam(':userID',$iUserID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if(!$ret)
+            return false;
+        $passwordFromDB = $sth->fetchColumn();
+        if(password_verify(md5($iPassword),$passwordFromDB))
+            return true;
+        return false;
+
     }
 
     /**********************************************
@@ -444,7 +531,7 @@ class DBHelper
         $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,@oMessage)");
         if (!$call)
             trigger_error("SQL failed: ". $this->getConn()->errorCode()."-".$this->conn->erorInfo()[0]);
-        $iPassword = md5($iPassword);
+        $iPassword = password_hash(md5($iPassword),PASSWORD_DEFAULT);
         $call->bindParam(1, $iUsername, PDO::PARAM_STR, strlen($iUsername));
         $call->bindParam(2, $iPassword, PDO::PARAM_STR, strlen($iPassword));
         $call->bindParam(3, $iFullname, PDO::PARAM_STR, strlen($iFullname));
@@ -587,6 +674,43 @@ class DBHelper
     }
 
     /**********************************************
+     * Function: TEMPLATE_DOCUMENT_SELECT
+     * Description: Pulls a specified document metadata from document table of a collection database (no SP, not recommended)
+     * Parameter(s):
+     * $iDocID (in string) - input document id
+     * Return value(s):
+     * $result (assoc array) - return document metadata in an assoc array
+     ***********************************************/
+    function TEMPLATE_DOCUMENT_SELECT($iDocID)
+    {
+        $sth = $this->getConn()->prepare("SELECT * FROM `document` where `documentID` = :docID");
+        $sth->bindParam(':docID',$iDocID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if($ret)
+            return $sth->fetch(PDO::FETCH_ASSOC);
+        return $ret;
+    }
+
+    /**********************************************
+     * Function: GET_COLLECTION_CONFIG
+     * Description: Pulls the data associated with the collection name passed in (short version, no SP, not recommended)
+     * Parameter(s):
+     * $iName (in string) - input DB Name
+     * Return value(s):
+     * $result (assoc array) - return above values in an assoc array
+     ***********************************************/
+    function GET_COLLECTION_INFO($iName)
+    {
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare("SELECT * FROM `collection` WHERE `collection`.`name` = :name");
+        $sth->bindParam(':name',$iName,PDO::PARAM_STR);
+        $ret = $sth->execute();
+        if($ret)
+            return $sth->fetch(PDO::FETCH_ASSOC);
+        return false;
+    }
+
+    /**********************************************
      * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
      * Description: Pulls the data associated with the collection name passed in.
      * Parameter(s):
@@ -617,7 +741,7 @@ class DBHelper
         return $result;
     }
     /**********************************************
-     * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
+     * Function: SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID (SP_GET_COLLECTION_DATA)
      * Description: Pulls the data associated with the collection name passed in.
      * Parameter(s):
      * $iName (in string) - input DB Name
@@ -1125,22 +1249,31 @@ class DBHelper
         return $ret;
     }
 
-    //may consider use stored procedure???
-    //update user password when userID and the input old password match on the database
 
+    /**********************************************
+     * Function: USER_UPDATE_PASSWORD
+     * Description: attempts to UPDATE user's password in the specified UserID
+     * Parameter(s):
+     * $iUserID (in int) - specifies the user id to update
+     * $iOldPassword (in string) - specifies old password value to update
+     * $iNewPassword (in string) - specifies the new password value to update
+     * Return value(s): 1 if success, false if fail, 0 if no userID found
+     ***********************************************/
     function USER_UPDATE_PASSWORD($iUserID,$iOldPassword,$iNewPassword)
     {
-        $iOldPassword = md5($iOldPassword);
-        $iNewPassword = md5($iNewPassword);
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
-        $sth = $this->getConn()->prepare("UPDATE `user` SET `password` = :newpwd WHERE `userID` = :uID AND `password` = :oldpwd LIMIT 1");
-        $sth->bindParam(':oldpwd',$iOldPassword,PDO::PARAM_STR);
-        $sth->bindParam(':newpwd',$iNewPassword,PDO::PARAM_STR);
-        $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);
-        $ret = $sth->execute();
-        if($ret)
-            $ret = $sth->rowCount(); //return number of rows affected (must be 1 or 0)
-        return $ret;
+        $isValidPassword = $this->USER_VERIFY_PWD($iUserID,$iOldPassword);
+        if($isValidPassword) {
+            $iNewPassword = password_hash(md5($iNewPassword), PASSWORD_DEFAULT);
+            $this->getConn()->exec('USE ' . DBHelper::$maindb);
+            $sth = $this->getConn()->prepare("UPDATE `user` SET `password` = :newpwd WHERE `userID` = :uID LIMIT 1");
+            $sth->bindParam(':newpwd', $iNewPassword, PDO::PARAM_STR);
+            $sth->bindParam(':uID', $iUserID, PDO::PARAM_INT);
+            $ret = $sth->execute();
+            if ($ret)
+                $ret = $sth->rowCount(); //return number of rows affected (must be 1 or 0)
+            return $ret;
+        }
+        return false;
     }
 
     /**********************************************
@@ -1151,7 +1284,7 @@ class DBHelper
      ***********************************************/
     function USER_UPDATE_ADMIN_RESET_PASSWORD($iUserID,$iNewPassword)
     {
-        $iNewPassword = md5($iNewPassword);
+        $iNewPassword = password_hash(md5($iNewPassword),PASSWORD_DEFAULT);
         $this->getConn()->exec('USE ' . DBHelper::$maindb);
         $sth = $this->getConn()->prepare("UPDATE `user` SET `password` = :newpwd WHERE `userID` = :uID LIMIT 1");
         $sth->bindParam(':newpwd',$iNewPassword,PDO::PARAM_STR);
