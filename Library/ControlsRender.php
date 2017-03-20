@@ -161,7 +161,7 @@ class ControlsRender
     {
         echo '<option value="">Select</option>';
         foreach ($array as $item) {
-            if ($selected == $item)
+            if ($selected == $item['name'])
                 echo '<option value="' . $item['name'] . '" selected>' . $item['displayname'] . '</option>';
             else echo '<option value="' . $item['name'] . '">' . $item['displayname'] . '</option>';
         }

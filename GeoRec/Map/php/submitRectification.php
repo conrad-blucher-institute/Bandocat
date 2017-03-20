@@ -15,6 +15,7 @@ $DB = new MapDBHelper();
 	ini_set("allow_url_fopen", 1);
 	include('class.php');
 	$script = json_decode( $_POST['jsonData']);
+
 	$imageInfo = get_object_vars($script->fileName);
 
 	//get collection information and stored them in array $collection_info for later use
@@ -57,8 +58,10 @@ $DB = new MapDBHelper();
     }
 
     //run KML superoverlay script on CLI
-	if(exec("gdal_translate -of KMLSUPEROVERLAY " . $GeoTIFFsPath . " ../Temp/GeoTIFFs/" . $imageInfo['KMZname'] .  " -co FORMAT=JPEG"))
-	echo "\nKMLSUPEROVERLAY SUCCESS";
+	if(exec("gdal_translate -of KMLSUPEROVERLAY " . $GeoTIFFsPath . " ../Temp/GeoTIFFs/" . $imageInfo['KMZname'] .  " -co FORMAT=JPEG")){
+        echo "\nKMLSUPEROVERLAY SUCCESS";
+	}
+
 	else {
         echo "\nKMLSUPEROVERLAY FAILED";
         $error_str .= "KMLSUPEROVERLAY FAILED";
@@ -94,13 +97,18 @@ $DB = new MapDBHelper();
 		if(array_filter($pointEntries[$i]))
 			$ret = $DB->GEOREC_ENTRY_INSERT($imageInfo['docID'],$isBack,$pointEntries[$i][0],$pointEntries[$i][1],$pointEntries[$i][2],$pointEntries[$i][3],$pointEntries[$i][4],$pointEntries[$i][5],$pointEntries[$i][6]);
 			if(!$ret)
-				$error_flag = true;
+			{
+                $error_flag = true;
+			}
+
+
 	}
 
 	//update georec KMZ Path and GeoTIFFs Path into document table
 	if($error_flag == false) //means there is no error occured so far
 	{
-		$geoTIFFpath = $imageInfo['subDirectory'] . "/" . $imageInfo['geoTIFFName'];
+
+        $geoTIFFpath = $imageInfo['subDirectory'] . "/" . $imageInfo['geoTIFFName'];
         $KMZpath = $imageInfo['subDirectory'] . "/" . $imageInfo['KMZname'];
 		switch($imageInfo['type'])
 		{
@@ -113,6 +121,7 @@ $DB = new MapDBHelper();
 			default: $error_flag = true;
 				break;
 		}
+
 	}
 
 	//check errors

@@ -53,10 +53,16 @@ else header('Location: ../../');
                         <tr>
                             <td class="Collection_data">
                                 <!-- Edit/View Documents Button, Php code sends the collection name to list.php and send variable action=review -->
-                                    <a class="Collection_Button" href="./list.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block;">Edit/View Document</a>
+                                <a class="Collection_Button" href="./list.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block;">Edit/View Document</a>
                             </td>
                         </tr>
                         <tr>
+                            <td class="Collection_data">
+                                <!-- Edit/View Documents Button, Php code sends the collection name to list.php and send variable action=review -->
+                                <a class="Collection_Button" href="../../GeoRec/Map/index.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block;">Rectify Document</a>
+                            </td>
+                        </tr>
+
     </table>
 
     <?php include '../../Master/footer.php'; ?>
