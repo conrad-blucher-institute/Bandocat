@@ -440,6 +440,8 @@ $date = new DateHelper();
 
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+        $("#divleft").height($("#divscroller").height());
+
     });
 
 
