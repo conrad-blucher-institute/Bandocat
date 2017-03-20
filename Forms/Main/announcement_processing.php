@@ -3,9 +3,9 @@ require '../../Library/DBHelper.php';
 require '../../Library/AnnouncementDBHelper.php';
 $announceHelper = new AnnouncementDBHelper();
 $data = $_POST;
-print_r($data);
-$title = $data['title'];
-$message = $data['message'];
+
+$title = htmlspecialchars($data['title'], ENT_QUOTES);
+$message = htmlspecialchars($data['message'], ENT_QUOTES);
 $endDate = $data['endDate'];
 $expDate = date("Y-m-d H:i:s", strtotime($endDate));
 $user = $data['user'];
@@ -16,6 +16,6 @@ if ($action == 1)
     $announcement = $announceHelper->SP_ANNOUNCEMENT_INSERT($title, $message, $expDate, $user);
 if ($action == 2) {
     $announcementEdit = $announceHelper->SP_ANNOUNCEMENT_UPDATE($title, $message, $expDate, $user, $announcementID);
-    return $announcementEdit;
+    return htmlspecialchars_decode($announcementEdit);
 }
 ?>
