@@ -1,7 +1,18 @@
 <?php
 //This performs server side action when user select an action on Action column in index.php
-define('__ROOT__', dirname(dirname(__FILE__)));
-require_once(__ROOT__ .'\\..\\config.php');
+//This performs server side action when user select an action on Action column in index.php
+require_once '../../Library/SessionManager.php';
+require_once '../../Library/DBHelper.php';
+require_once '../../Library/DBHelper.php';
+require_once '../../Library/MapDBHelper.php';
+require_once '../../Library/FolderDBHelper.php';
+require_once '../../Library/FieldBookDBHelper.php';
+require_once '../../Library/IndicesDBHelper.php';
+
+require_once '../../Library/TDLPublishDB.php';
+require_once '../../Library/TDLSchema.php';
+require_once '../../Library/TDLPublishJob.php';
+
 $session = new SessionManager();
 $Schema = new TDLSchema();
 $TDL = new TDLPublishJob();
