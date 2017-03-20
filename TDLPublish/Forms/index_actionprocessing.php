@@ -12,7 +12,7 @@ require_once '../../Library/IndicesDBHelper.php';
 require_once '../../Library/TDLPublishDB.php';
 require_once '../../Library/TDLSchema.php';
 require_once '../../Library/TDLPublishJob.php';
-
+date_default_timezone_set("America/Chicago");
 $session = new SessionManager();
 $Schema = new TDLSchema();
 $TDL = new TDLPublishJob();
@@ -59,7 +59,6 @@ switch($_POST['action'])
         $ret = $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,0);
         break;
     case "unpublish":
-        /* TODO: Perform unpublish action, removing bitstreams and document*/
         //FIND ALL BITSTREAMS, DELETE ALL BITSTREAMS BELONG TO THIS ITEM
         $bitstreams = json_decode($TDL->TDL_CUSTOM_GET("items/" . $dspaceID . "/bitstreams"),true);
         foreach($bitstreams as $b)

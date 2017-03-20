@@ -1,6 +1,15 @@
 <?php
-    define('__ROOT__', dirname(dirname(__FILE__)));
-    require_once(__ROOT__ .'\\..\\config.php');
+require_once __DIR__ . '\..\..\Library\SessionManager.php';
+require_once __DIR__ . '\..\..\Library\DBHelper.php';
+require_once __DIR__ . '\..\..\Library\DBHelper.php';
+require_once __DIR__ . '\..\..\Library\MapDBHelper.php';
+require_once __DIR__ . '\..\..\Library\FolderDBHelper.php';
+require_once __DIR__ . '\..\..\Library\FieldBookDBHelper.php';
+require_once __DIR__ . '\..\..\Library\IndicesDBHelper.php';
+
+require_once __DIR__ . '\..\..\Library\TDLPublishDB.php';
+require_once __DIR__ . '\..\..\Library\TDLSchema.php';
+require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
     /*
      * TDL Status:
      * -1: Error
@@ -30,7 +39,7 @@
 
     fwrite($logfile,date(DATE_RFC2822) . ": " . "Job Started.\r\n");
 
-    echo "TDL Publishing job\nLast updated: 02/24/2017\nBy Son Nguyen\n";
+    echo "TDL Publishing job\nLast updated: 03/20/2017\nBy Son Nguyen\n";
     echo "TDL Publishing job is ready....\n\n...\n...\n";
 
 //*********************************************************************************************************************
