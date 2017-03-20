@@ -143,7 +143,9 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     {
         //sets marker color and style
         Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
-        if(!mapSelected) {
+        if(!mapSelected)
+        {
+
             //creates new object of gcpList
             addGCP(count, event.latlng.lat, event.latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
             //creates marker and popup
@@ -217,7 +219,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 </script>
 <!-- Raster Display and Functionality -->
 
-<div id = "raster">
+<div id = "raster" >
     <script>
         //retrieve relevant raster information from index page
         file_data = window.localStorage.getItem("imageInfo");									//retrieves name of file from local storage set by index page
@@ -233,7 +235,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
             maxZoom = 5,
             img = [
                 rasterJSON.width,  // original width of raster
-                rasterJSON.height  // original height of raster
+                rasterJSON.height // original height of raster
             ];
 
         // create the raster
@@ -264,12 +266,15 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
         //executes on click event on raster viewer
         raster.on("click", function(event)
         {
+
             Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
 
             if(!rasterSelected) {
                 //pushes data from click into appropriate arrays
                 var coords = rc.project(event.latlng);
+
                 rasterCoords.push({rlat:event.latlng.lat,rlong:event.latlng.lng,x:event.layerPoint.x,y:event.layerPoint.y});
+
                 //creates marker and popup
                 var rasterMarker = L.marker(rc.unproject(coords), {icon: icon})
                 rasterMarkerArray.push(rasterMarker);
@@ -283,7 +288,9 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                             rastermarkerIndex = i;
                         }
                     }
+
                     var layerPoint = map.latLngToLayerPoint([event.latlng.lat, event.latlng.lng]);
+                   // alert(layerPoint);
                     console.log(gcpList[rastermarkerIndex]);
                     console.log('Layer Point: '+layerPoint);
                     event.target.dragging.enable();
@@ -379,9 +386,12 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
             for(var i = 0; i < entries.length; i++)
             {
+                //why does the raster have a latlong?
                 var rasterlatlng = L.latLng(entries[i][3],entries[i][4]);
+
                 var rasterXY = L.point(entries[i][5],entries[i][6]);
                 var maplatlng = L.latLng(entries[i][1],entries[i][2]);
+
                 raster.fireEvent('click',{latlng:rasterlatlng,containerPoint:rasterXY,layerPoint:rasterXY});
                 map.fireEvent('click',{latlng:maplatlng});
             }
