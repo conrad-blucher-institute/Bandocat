@@ -22,7 +22,15 @@
             <li><a href="../../Forms/ManageUser/">Manage User</a></li>
             <li><a href="../../Forms/NewUser/">Create New User</a></li>
             </ul>
-        </div>';
+        </div>
+            <div class="menu-item menu-item_sub2">
+        <h4><a href="#">TDL Publishing</a></h4>
+        <ul>
+            <li><a href="../../TDLPublish/Forms/index.php">Listing</a></li>
+            <li><a href="../../TDLPublish/Forms/queue.php">Queue</a></li>
+        </ul>
+    </div>';
+
     }
     ?>
     <!-- Collections Tab -->

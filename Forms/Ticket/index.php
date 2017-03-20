@@ -122,6 +122,11 @@ else header('Location: ../../');
             //hide first column (DocID)
             table.column(0).visible(true);
 
+            //sorted by submission date
+            table
+                .column( '3:visible' )
+                .order( 'desc' )
+                .draw();
 
             // select row on single click
             $('#dtable tbody').on( 'click', 'tr', function () {

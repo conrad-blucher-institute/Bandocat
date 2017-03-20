@@ -111,7 +111,7 @@ $ticket = $DB->SP_ADMIN_TICKET_SELECT($tID); //assoc array contains ticket info
 
         document.getElementById("Notes").innerText = data.Notes;
         document.getElementById("Submitter").innerText = data.Submitter;
-        document.getElementById("Previously_Solvedby").innerText = data.Submitter;
+        document.getElementById("Previously_Solvedby").innerText = data.Solver;
 
         $("#btnSubmit").click(function (event) {
             event.preventDefault();

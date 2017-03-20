@@ -8,27 +8,6 @@ interface GeoRectificationDB
 trait GeoRectificationTrait
 {
 
-    //this should be moved to DBHelper
-    /**********************************************
-    Function: SWITCH_DB
-    Description:This function switches the current connection to the database specified in the parameter
-    Parameter(s):
-     *$collection (string) - db parameter name (such as bluchermaps, greenmaps)
-    Return value(s): true if success, false if error occurs
-     ***********************************************/
-    public function SWITCH_DB($collection)
-    {
-//        if($collection == null || $collection == "") //or == maindb
-//            $this->getConn()->exec('USE ' . self::);
-        //get appropriate database
-        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        if ($dbname != null && $dbname != "") {
-            $this->getConn()->exec('USE ' . $dbname);
-            return true;
-        }
-        return false;
-    }
-
     /**********************************************
     Function: GEOREC_ENTRIES_SELECT
     Description: Get all entries in georectification table from a document ID and isback (type of map: front/back)
@@ -169,6 +148,23 @@ trait GeoRectificationTrait
         $sth->bindParam(":backGeoTIFF",$BackGeoTIFFPath,PDO::PARAM_STR);
         $ret = $sth->execute();
         return $ret;
+    }
+
+    /**********************************************
+    Function: DOCUMENT_GEOREC_INFO_SELECT
+    Description: returning assoc array of status, geotiff & kmz paths of the front and back (if available) of the document, given the document ID
+    Parameter(s):
+     * $docID (int) - document to be selected on document table
+    Return value(s): return false if fail, return an assoc array of georec info if success
+     ***********************************************/
+    public function DOCUMENT_GEOREC_INFO_SELECT($docID)
+    {
+        $sth = $this->getConn()->prepare("SELECT `geoRecFrontStatus`,`georecFrontDirKMZ`,`georecFrontDirGeoTIFF`,`geoRecBackStatus`,`georecBackDirKMZ`,`georecBackDirKMZ` FROM `document` WHERE `documentID` = :docID");
+        $sth->bindParam(":docID",$docID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if($ret)
+            return $sth->fetch(PDO::FETCH_ASSOC);
+        return false;
     }
 
 }
