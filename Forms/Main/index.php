@@ -91,6 +91,23 @@ require '../../Library/AnnouncementDBHelper.php';
      ***************************************************/
     //Announcement information for post in a JSON object
     var announcementPost = '<?php echo $announcementJSON ?>';
+
+    //Replaces HTML Special characters
+    if(announcementPost.includes("&amp;"))
+        announcementPost.replace("&amp;", "&");
+
+    if(announcementPost.includes("&quot;"))
+        announcementPost.replace("&quot;", '"');
+
+    if(announcementPost.includes("&#039;"))
+        announcementPost.replace("&#039;", "'");
+
+    if(announcementPost.includes("&lt;"))
+        announcementPost.replace("&lt;", "<");
+
+    if(announcementPost.includes("&gt;"))
+        announcementPost.replace("&gt;", ">");
+    console.log(announcementPost);
     var post = JSON.parse(announcementPost);
 
     /***********************
@@ -198,7 +215,6 @@ require '../../Library/AnnouncementDBHelper.php';
      * Return value(s): NONE
      ***********************************************/
     function postAnno() {
-        var target = event.target;
         //The data for post is retrieved
         var title = $('#annoTitle').val();
         var message = $('#annoText').val();
