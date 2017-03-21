@@ -4,12 +4,6 @@ include '../../Library/SessionManager.php';
 $session = new SessionManager();
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
-
-/*if($session->isAdmin()) {
-    require('../../Library/DBHelper.php');
-    $DB = new DBHelper();
-}
-else header('Location: ../../'); */
 ?>
 
 <!doctype html>

@@ -20,8 +20,7 @@ $ticket = $DB->SP_ADMIN_TICKET_SELECT($tID);
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>Ticket view</title>
+    <title>Ticket View</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 </head>
@@ -46,10 +45,10 @@ $ticket = $DB->SP_ADMIN_TICKET_SELECT($tID);
                                     <label>
                                         <?php $stat = $ticket['Status'];
                                         if($stat == 1) {
-                                            $status = "Done";
+                                            $status = "Closed";
                                         }
-                                        else $status = "Incomplete";
-                                        echo $status?>
+                                        else $status = "Open";
+                                        echo $status;?>
                                     </label>
                                 </h4>
                                 <h4 class="Account_Title">Submitter:<label><?php echo $ticket['Submitter']?></label></h4>
@@ -78,12 +77,11 @@ $ticket = $DB->SP_ADMIN_TICKET_SELECT($tID);
     }
 
     .Account_Table{
-        background-color: #e8eaed;
-        padding: 3%;
+        background-color: #fff;
+        padding: 20px;
         border-radius: 6%;
         box-shadow: 0px 0px 2px;
         margin: auto;
-        font-family: verdana;
         vertical-align: middle;
         margin-top: 4%;
         margin-bottom: 9%;
