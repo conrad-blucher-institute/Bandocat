@@ -116,8 +116,9 @@ if ($action == "catalog")
     //assuming all of the above error checking passes. we can proceed to insert
     if( $valid == true)
     {
+        $file_name_path = preg_replace('/\s+/', '', $indicesFolder) . '/' . $file_name;
         $retval = $DB->SP_TEMPLATE_INDICES_DOCUMENT_INSERT($collection, $data['txtLibraryIndex'], $data['ddlBookID'],
-            $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex']);
+            $data['rbPageType'], $data['txtPageNumber'], $data['txtComments'], $data['rbNeedsReview'], $data['txtLibraryIndex'], $file_name_path);
 
         //Stores the document id from the database to the variable for
         $data['txtDocID'] = $retval;
