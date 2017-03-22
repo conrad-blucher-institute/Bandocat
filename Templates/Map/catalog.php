@@ -190,7 +190,7 @@ $date = new DateHelper();
                             <div class="cell">
                                 <!-- FILE UPLOAD -->
                                 <span class="label"><span style = "color:red;"> * </span>Scan Of Front:</span>
-                                <input type="file" name="fileUpload" id="fileUpload" accept="image/*" required />
+                                <input type="file" name="fileUpload" id="fileUpload" accept=".tif" required />
                             </div>
                             <div class="cell">
                                 <!-- COMMENTS -->
@@ -306,7 +306,7 @@ $date = new DateHelper();
                             <div class="cell">
                                 <!-- FILE UPLOAD BACK-->
                                 <span class="label">Scan Of Back:</span>
-                                <input type="file" name="fileUploadBack" id="fileUploadBack" accept="image/*" /></span>
+                                <input type="file" name="fileUploadBack" id="fileUploadBack" accept=".tif" /></span>
                             </div>
                             <div class="cell" style="text-align: center;padding-top:20px">
                                 <!-- Hidden inputs that are passed when the update button is hit -->

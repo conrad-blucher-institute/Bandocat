@@ -57,6 +57,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
      * $iComments (in string) - any comments on the page
      * $iNeedsReview (in int) - flag indicating if the page needs review
      * $iFilename (in string) - the filename leading to the scanned document
+     * $iFilenamePath (in string) - the filename path leading to the scanned document
      * Return value(s):
      * $result True If success, or FALSE if failed
      ***********************************************/
