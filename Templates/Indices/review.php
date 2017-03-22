@@ -249,6 +249,7 @@ $date = new DateHelper();
             });
         });
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+        $("#divleft").height($("#divscroller").height());
     });
 </script>
 <style>

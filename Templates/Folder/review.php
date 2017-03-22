@@ -246,7 +246,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     {
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
-
+        $("#divleft").height($("#divscroller").height());
         var authors = <?php echo json_encode($authors); ?>;
         for(var i = 1; i < authors.length; i++)
         {
