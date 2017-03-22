@@ -137,7 +137,8 @@ else header('Location: ../../');
             cell3.id = f.name;
             cell3.innerHTML = "Validating...";
         }
-
+        //resize height of the scroller
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         $.ajax({
             //Checks if the filenames already exist in the DB
             url: 'upload_validating.php?col=<?php echo $collection; ?>',
