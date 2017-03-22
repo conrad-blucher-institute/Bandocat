@@ -554,6 +554,7 @@ div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
     position:relative;
     vertical-align: top;
     font-size:.75em;
+    padding: 2px;
     background:red;
     color:white;
     width:18px;height:18px;
