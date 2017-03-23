@@ -42,7 +42,7 @@ $Render = new ControlsRender();
             include '../../Master/sidemenu.php';?>
         </div>
         <div id="divright">
-            <h2 id="page_title">Manage Users</h2>
+            <h2 id="page_title">Manage Map Kind</h2>
             <div id="divscroller">
                 <table class="Account_Table">
                     <form id="frm_mapkind" name="frm_mapkind" method="post">
