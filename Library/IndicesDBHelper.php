@@ -1,4 +1,5 @@
 <?php
+require_once 'DBHelper.php';
 require_once 'TranscriptionDB.php';
 /**********************************************
 Function:
@@ -176,6 +177,26 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             $result = $sth->fetchAll(PDO::FETCH_NUM);
             return $result;
     }
+
+    /**********************************************
+     * Function: INSERT_INDICES_MAPKIND
+     * Description: Inserts new mapkind
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * Return value(s):    `mapkindname`
+     * $result True If success, or FALSE if failed
+     ***********************************************/
+    function INSERT_INDICES_MAPKIND($new, $collection)
+    {
+            //get appropriate db
+            $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+            $this->getConn()->exec('USE ' . $dbname);
+            $sth = $this->getConn()->prepare("INSERT INTO `mapkind` (`mapkindID`, `mapkindname`) VALUES (NULL, :new)");
+            $sth->bindParam(':new',$new,PDO::PARAM_INT);
+            $sth->execute();
+            $result = $sth->fetchAll(PDO::FETCH_NUM);
+            return $result;
+        }
 
     /**********************************************
      * Function: GET_INDICES_BOOK
