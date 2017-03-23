@@ -1,7 +1,18 @@
 <?php
 //This performs server side action when user select an action on Action column in index.php
-define('__ROOT__', dirname(dirname(__FILE__)));
-require_once(__ROOT__ .'\\..\\config.php');
+//This performs server side action when user select an action on Action column in index.php
+require_once '../../Library/SessionManager.php';
+require_once '../../Library/DBHelper.php';
+require_once '../../Library/DBHelper.php';
+require_once '../../Library/MapDBHelper.php';
+require_once '../../Library/FolderDBHelper.php';
+require_once '../../Library/FieldBookDBHelper.php';
+require_once '../../Library/IndicesDBHelper.php';
+
+require_once '../../Library/TDLPublishDB.php';
+require_once '../../Library/TDLSchema.php';
+require_once '../../Library/TDLPublishJob.php';
+date_default_timezone_set("America/Chicago");
 $session = new SessionManager();
 $Schema = new TDLSchema();
 $TDL = new TDLPublishJob();
@@ -48,7 +59,6 @@ switch($_POST['action'])
         $ret = $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,0);
         break;
     case "unpublish":
-        /* TODO: Perform unpublish action, removing bitstreams and document*/
         //FIND ALL BITSTREAMS, DELETE ALL BITSTREAMS BELONG TO THIS ITEM
         $bitstreams = json_decode($TDL->TDL_CUSTOM_GET("items/" . $dspaceID . "/bitstreams"),true);
         foreach($bitstreams as $b)

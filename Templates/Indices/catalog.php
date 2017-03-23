@@ -56,7 +56,7 @@ $date = new DateHelper();
                                 <div class="cell">
                                     <!-- File  -->
                                     <span class="label">Scan of Page:</span>
-                                    <input type="file" name="file_array" id="fileUpload" accept="image/tiff" /></span>
+                                    <input type="file" name="file_array" id="fileUpload" accept=".tif" /></span>
                                 </div>
                                 <div class="cell">
                                     <!-- LIBRARY INDEX -->

@@ -83,5 +83,6 @@ $imageInfo = array(
 	exec($command,$output,$ret);
 	//print_r(array($output,$ret)); //use this to debug $command
 //return image info array
+
 	echo json_encode($imageInfo);
 ?>

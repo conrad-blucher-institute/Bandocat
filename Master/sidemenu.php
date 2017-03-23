@@ -14,8 +14,8 @@
         $ticketCount = $DB1->GET_ADMIN_OPENTICKET_COUNT();
         echo '<div class="menu-item menu-item_sub4">
             <!--class for the visuals, data-badge to pass the number of tickets to the text in the badge -->
-            <h4 ><a class="notificationBadge" data-badge='.$ticketCount.' id="adminNotificationBadge" href="">Admin</a></h4>    
-             <div   ></div>
+            <h4><a class="notificationBadge" data-badge='.$ticketCount.' id="adminNotificationBadge" href="">Admin</a></h4>    
+             <div></div>
             <ul>           
             <li><a href="../../Forms/ActivityLog/index.php">Activity Log</a></li>
             <li><a href="../../Forms/Ticket/">View Tickets</a></li>
@@ -23,14 +23,13 @@
             <li><a href="../../Forms/NewUser/">Create New User</a></li>
             </ul>
         </div>
-            <div class="menu-item menu-item_sub2">
+        <div class="menu-item menu-item_sub2">
         <h4><a href="#">TDL Publishing</a></h4>
         <ul>
             <li><a href="../../TDLPublish/Forms/index.php">Listing</a></li>
             <li><a href="../../TDLPublish/Forms/queue.php">Queue</a></li>
         </ul>
     </div>';
-
     }
     ?>
     <!-- Collections Tab -->
@@ -73,12 +72,19 @@
     <div class="menu-item">
         <h4><a href="../../Forms/AccountSettings/">My Account</a></h4>
     </div>
+    <!-- User Ticket Tab -->
+    <div class="menu-item menu-item_sub2">
+        <h4><a href="#">Ticket</a></h4>
+        <ul>
+            <li><a href="../../Forms/UserTicket/">View Tickets</a></li>
+            <li><a href="../../Forms/TicketsSubmission/" target="_blank">Submit Ticket</a></li>
+        </ul>
+    </div>
     <!-- Help Tab -->
-    <div class="menu-item menu-item_sub3">
+    <div class="menu-item menu-item_sub2">
         <h4><a href="#">Help</a></h4>
         <ul>
             <li><a href="../../Procedures/Documents">Procedures</a></li>
-            <li><a href="../../Forms/TicketsSubmission/" target="_blank">Submit Ticket</a></li>
             <li><a href="../../Procedures/Utilities">Support Software</a></li>
         </ul>
     </div>

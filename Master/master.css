@@ -42,15 +42,21 @@ body{
 
 #divleft{float:left;
     width:20%;
-    overflow:hidden;}
+    overflow-y:auto;
+    overflow-x:hidden;
+
+}
 #divright{float:left;
     width:79%;
     overflow-y:hidden;
 }
 #divscroller {
     overflow-y: auto;
+    overflow-x: hidden;
     padding-right: 2px;
 }
+
+
 
 #col1,#col2 {vertical-align: top;}
 
@@ -356,18 +362,34 @@ nav {
 
 /*scrollbar style */
 ::-webkit-scrollbar {
+    width: 5px;
+}
+#divscroller::-webkit-scrollbar {
     width: 15px;
 }
 ::-webkit-scrollbar-track {
     background-color: #eaeaea;
     border-left: 1px solid #ccc;
 }
-::-webkit-scrollbar-thumb {
-    background-color: #0099FF;
+#divscroller::-webkit-scrollbar-thumb {
+
+   background-color: #0099FF;
 }
 ::-webkit-scrollbar-thumb:hover {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+
+    background-color: transparent;
+}
+#divscroller::-webkit-scrollbar-thumb:hover {
     background-color: #73a55b;
 }
+
+
+
+
+
 /* end scrollbar style */
 /* _______________________________________________________________________________________  */
 /*table styles */
@@ -424,7 +446,8 @@ h2
 
 
 form {
-    margin: 0 auto;
+
+    margin-left: 4px;
     margin-top: 20px;
 }
 label {
@@ -522,15 +545,16 @@ div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
 
     min-width:20px;
     min-height:20px;
-    padding:3px;
+    padding: 3px;
     border-radius:10px;
     vertical-align: sub;
 }
 .notificationBadge[data-badge]:after {
     content:attr(data-badge);
-    position:absolute;
-
-    font-size:.7em;
+    position:relative;
+    vertical-align: top;
+    font-size:.75em;
+    padding: 2px;
     background:red;
     color:white;
     width:18px;height:18px;

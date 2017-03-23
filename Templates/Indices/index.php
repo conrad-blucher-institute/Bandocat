@@ -59,6 +59,11 @@ else header('Location: ../../');
                             </td>
                         </tr>
                         <tr>
+                            <td class="Collection_data">
+                                <!-- Transcribe Documents Button, Php code sends the collection name to transcription page of this collection -->
+                                <a class="Collection_Button" href="../../Transcription/Indices/list.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block;">Transcribe Document</a>
+                            </td>
+                        </tr>
     </table>
 
     <?php include '../../Master/footer.php'; ?>

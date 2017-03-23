@@ -314,6 +314,30 @@ $date = new DateHelper();
                                 <textarea name = "txtComments" rows = "5" cols = "35" id="txtComments"/><?php echo $document['Comments']; ?></textarea>
                             </td>
                         </tr>
+                        <tr>
+                            <td style="vertical-align: top">
+                                <!-- GEOREC DOWNLOAD URL -->
+                            </td>
+                            <td>
+                                <?php
+                                    $georecinfo = $DB->DOCUMENT_GEOREC_INFO_SELECT($docID);
+                                    if($georecinfo['geoRecFrontStatus'] == 1)
+                                {
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecFrontDirKMZ]\">Front KMZ</a>";
+                                    echo " | ";
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecFrontDirGeoTIFF]\">Front GeoTIFF</a>";
+                                }
+                                if($georecinfo['geoRecBackStatus'] == 1)
+                                {
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecBackDirKMZ]\">Back KMZ</a>";
+                                    echo " | ";
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecBackDirGeoTIFF]\">Back GeoTIFF</a>";
+                                }
+
+
+                                ?>
+                            </td>
+                        </tr>
                 <tr>
                     <td colspan="4" style="text-align: center">
                         <!-- Hidden inputs that are passed when the update button is hit -->
@@ -440,6 +464,8 @@ $date = new DateHelper();
 
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+        $("#divleft").height($("#divscroller").height());
+
     });
 
 

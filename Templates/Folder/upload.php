@@ -46,7 +46,7 @@ else header('Location: ../../');
         <tr>
             <td class="Collection_data" style="height:50px">
                 <!-- Upload Documents Button, Php code sends the collection name to upload.php -->
-                <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept="image/tiff" value="Input Map Information" multiple/>
+                <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept=".tif"  value="Input Map Information" multiple/>
             </td>
         </tr>
         <tr>
@@ -243,7 +243,7 @@ else header('Location: ../../');
         tab-size: 4;
     }
     #btnUpload{
-        height:100%}
+        height:100%;padding-bottom:10px;}
     .bluebtn{
         font-size: 0.4em !important;
         padding-bottom: 24px;

@@ -26,7 +26,9 @@ $DB = new MapDBHelper();
 	//Specify the input and ouput Path for translated image on temporary workspace
 	//type == front
 	if($imageInfo['type'] == "front") {
+
 		$inputTranslatePath = $collection_info['StorageDir'] . $document['FileNamePath'];
+
         $outputTranslatePath = "../Temp/translated_" . $document['FileName'];
     }
 	else //type == back
@@ -36,6 +38,7 @@ $DB = new MapDBHelper();
     }
     //generate shell script for translate and warp
     $GeoTIFFsPath = "../Temp/GeoTIFFs/" . $imageInfo['geoTIFFName'];
+
 	$command = $script->translate . " " . $inputTranslatePath . " " . $outputTranslatePath ; //translate script
 	$command2 = $script -> warp . " " . $outputTranslatePath . " " . $GeoTIFFsPath ; //warp script
 

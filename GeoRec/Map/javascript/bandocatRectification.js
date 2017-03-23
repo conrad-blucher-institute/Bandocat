@@ -93,6 +93,7 @@ function rectify()
         for (var i = 1, row; row = table.rows[i]; i++) {
             //iterate through rows
             //rows would be accessed using the "row" variable assigned in the for loop
+
             var entry = [];
             for (var j = 0, col; col = row.cells[j]; j++) {
 
@@ -195,5 +196,6 @@ function gcpConstructor(id, lat, lng,rlat,rlong, x, y)
 function addGCP(id, lat, lng,rlat,rlong, x, y)
 {
 	var gcp = new gcpConstructor(id, lat, lng,rlat,rlong, x, y);
+
 	gcpList.push(gcp);
 };

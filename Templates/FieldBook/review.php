@@ -241,7 +241,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
     {
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
-
+        $("#divleft").height($("#divscroller").height());
         var crews = <?php echo json_encode($crews); ?>;
         for(var i = 1; i < crews.length; i++)
         {

@@ -29,7 +29,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             /* PREPARE STATEMENT */
             //CALL is sql for telling the db to execute the function following call.
             //The ? in the functions parameter list is a variable that we bind a few lines down
-            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_SELECT(?,@oLibraryIndex,@oBookName,@oPageType,@oPageNumber,@oComments,@oNeedsReview,@oFileName,@oTranscribed)");
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_SELECT(?,@oLibraryIndex,@oBookName,@oPageType,@oPageNumber,@oComments,@oNeedsReview,@oFileName,@oFileNamePath,@oTranscribed)");
             //bind parameter variables into the prepared sql statement above
             $call->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             if (!$call)
@@ -39,7 +39,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             $call->execute();
             /* RETURN RESULT */
             //select requested document info
-            $select = $this->getConn()->query('SELECT @oLibraryIndex AS LibraryIndex,@oBookName AS BookName,@oPageType AS PageType,@oPageNumber AS PageNumber,@oComments AS Comments,@oNeedsReview AS NeedsReview,@oFileName AS FileName,@oTranscribed AS Transcribed');
+            $select = $this->getConn()->query('SELECT @oLibraryIndex AS LibraryIndex,@oBookName AS BookName,@oPageType AS PageType,@oPageNumber AS PageNumber,@oComments AS Comments,@oNeedsReview AS NeedsReview,@oFileName AS FileName,@oFileNamePath AS FileNamePath,@oTranscribed AS Transcribed');
             //return document info
             $result = $select->fetch(PDO::FETCH_ASSOC);
             return $result;
@@ -57,12 +57,13 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
      * $iComments (in string) - any comments on the page
      * $iNeedsReview (in int) - flag indicating if the page needs review
      * $iFilename (in string) - the filename leading to the scanned document
+     * $iFilenamePath (in string) - the filename path leading to the scanned document
      * Return value(s):
      * $result True If success, or FALSE if failed
      ***********************************************/
     function SP_TEMPLATE_INDICES_DOCUMENT_INSERT($collection, $iLibraryIndex, $iBookID,
                                                  $iPageType, $iPageNumber, $iComments,
-                                                 $iNeedsReview, $iFilename)
+                                                 $iNeedsReview, $iFilename,$iFilenamePath)
     {
         //get appropriate DB
         $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
@@ -74,17 +75,18 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
                 $iPageNumber = null;
             //CALL is sql for telling the db to execute the function following call.
             //The ? in the functions parameter list is a variable that we bind a few lines down
-        $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_INSERT(?,?,?,?,?,?,?)");
+        $call = $this->getConn()->prepare("CALL SP_TEMPLATE_INDICES_DOCUMENT_INSERT(?,?,?,?,?,?,?,?)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         //bind variables into the above sql statement
-        $call->bindParam(1, ($iLibraryIndex), PDO::PARAM_STR, 200);
-        $call->bindParam(2, ($iBookID), PDO::PARAM_INT, 11);
-        $call->bindParam(3, ($iPageType), PDO::PARAM_STR, 18);
-        $call->bindParam(4, ($iPageNumber), PDO::PARAM_INT, 11);
-        $call->bindParam(5, ($iComments), PDO::PARAM_STR, 40);
-        $call->bindParam(6, ($iNeedsReview), PDO::PARAM_INT, 1);
-        $call->bindParam(7, ($iFilename), PDO::PARAM_STR, 200);
+        $call->bindParam(1, ($iLibraryIndex), PDO::PARAM_STR);
+        $call->bindParam(2, ($iBookID), PDO::PARAM_INT);
+        $call->bindParam(3, ($iPageType), PDO::PARAM_STR);
+        $call->bindParam(4, ($iPageNumber), PDO::PARAM_INT);
+        $call->bindParam(5, ($iComments), PDO::PARAM_STR);
+        $call->bindParam(6, ($iNeedsReview), PDO::PARAM_INT);
+        $call->bindParam(7, ($iFilename), PDO::PARAM_STR);
+        $call->bindParam(8, ($iFilenamePath), PDO::PARAM_STR);
 
         //Execute Statement
         $ret = $call->execute();
@@ -97,6 +99,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             return $data;
         }
         else{
+            print_r($call->errorInfo());
             return false;
         }
 
@@ -135,13 +138,13 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
             //bind parameters into variables for the above SQL statement
-            $call->bindParam(1, ($iDocID), PDO::PARAM_INT, 11);
-            $call->bindParam(2, ($iLibraryIndex), PDO::PARAM_STR, 200);
-            $call->bindParam(3, ($iBookID), PDO::PARAM_INT, 11);
-            $call->bindParam(4, ($iPageType), PDO::PARAM_STR, 18);
-            $call->bindParam(5, ($iPageNumber), PDO::PARAM_INT, 11);
-            $call->bindParam(6, ($iComments), PDO::PARAM_STR, 40);
-            $call->bindParam(7, ($iNeedsReview), PDO::PARAM_INT, 1);
+            $call->bindParam(1, ($iDocID), PDO::PARAM_INT);
+            $call->bindParam(2, ($iLibraryIndex), PDO::PARAM_STR);
+            $call->bindParam(3, ($iBookID), PDO::PARAM_INT);
+            $call->bindParam(4, ($iPageType), PDO::PARAM_STR);
+            $call->bindParam(5, ($iPageNumber), PDO::PARAM_INT);
+            $call->bindParam(6, ($iComments), PDO::PARAM_STR);
+            $call->bindParam(7, ($iNeedsReview), PDO::PARAM_INT);
             $ret = $call->execute();
             //Execute Statement
             if($ret)
@@ -216,7 +219,7 @@ class IndicesDBHelper extends DBHelper implements TranscriptionDB
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
             //bind variables to the supplied sql statement above
-            $call->bindParam(1, $iLibraryIndex, PDO::PARAM_STR, 200);
+            $call->bindParam(1, $iLibraryIndex, PDO::PARAM_STR);
             $call->execute();
             //select information from the db
             $select = $this->getConn()->query('SELECT @oReturnValue');
