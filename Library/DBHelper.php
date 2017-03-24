@@ -634,7 +634,7 @@ class DBHelper
         /* PREPARE STATEMENT */
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // sql statement CALL calls the function pointed to in the db
-        $call = $this->getConn()->prepare("CALL SP_ADMIN_TICKET_SELECT(?,@oSubject,@oSubmissionDate,@oSolvedDate,@oPoster,@oCollection,@oDescription,@oNotes,@oSolver,@oStatus)");
+        $call = $this->getConn()->prepare("CALL SP_ADMIN_TICKET_SELECT(?,@oSubject,@oSubmissionDate,@oSolvedDate,@oPoster,@oCollection,@oDescription,@oNotes,@oSolver,@oStatus,@oLastSeen)");
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         //bind variable to the ? in the above call statement
@@ -643,10 +643,28 @@ class DBHelper
         $call->execute();
         /* RETURN RESULT */
         //select appropriate ticket
-        $select = $this->getConn()->query('SELECT @oSubject AS Subject,@oSubmissionDate AS SubmissionDate,@oSolvedDate AS SolvedDate,@oPoster AS Submitter,@oCollection AS Collection,@oDescription AS Description,@oNotes AS Notes,@oSolver AS Solver,@oStatus AS Status');
+        $select = $this->getConn()->query('SELECT @oSubject AS Subject,@oSubmissionDate AS SubmissionDate,@oSolvedDate AS SolvedDate,@oPoster AS Submitter,@oCollection AS Collection,@oDescription AS Description,@oNotes AS Notes,@oSolver AS Solver,@oStatus AS Status,@oLastSeen AS LastSeen');
         //return appropriate ticket
         $result = $select->fetch(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    /**********************************************
+     * Function: TICKET_UPDATE_LASTSEEN
+     * Description: UPDATE `lastseen` field in `ticket` table to current timestamp, given the ticket ID
+     * Parameter(s):
+     * $iTicketID (in Integer) - ticket ID
+     * Return value(s):
+     * $result (assoc array) - return 1 if success, otherwise fail
+     ***********************************************/
+    function TICKET_UPDATE_LASTSEEN($iTicketID)
+    {
+        //switch to correct db
+        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $sth = $this->getConn()->prepare('UPDATE `ticket` SET `lastseen` = NOW() WHERE `ticketID` = :ticketID LIMIT 1');
+        $sth->bindParam(':ticketID',$iTicketID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        return $ret;
     }
 
     /**********************************************

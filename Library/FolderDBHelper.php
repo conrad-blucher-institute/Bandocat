@@ -245,7 +245,7 @@ class FolderDBHelper extends DBHelper
             //prepares a select statement to compare author names with the documentID
             $sth = $this->getConn()->prepare("SELECT a.`authorname` FROM `documentauthor` AS da LEFT JOIN  `author` AS a ON da.`authorID` = a.`authorID` WHERE da.`docID` = ? ");
             //bind variables to the sql statement above
-            $sth->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            $sth->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             $sth->execute();
             //return array of selected authors
             $result = $sth->fetchAll(PDO::FETCH_NUM);

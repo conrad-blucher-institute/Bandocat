@@ -37,7 +37,7 @@ foreach($collections as $col) {
 
     $unique_arr = array();
     foreach($merge_arr as $key => $val){
-        if(!array_key_exists('week', $unique_arr)){
+        if(!isset($unique_arr['week'])){
             $unique_arr[$val['week']] = $val;
         }
     }

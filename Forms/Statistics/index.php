@@ -91,7 +91,7 @@ function format_size($size) {
                                 <td style="vertical-align: top">
                                     <!------------------------------------------------->
                                     <ul class="tab">
-                                        <li><a href="javascript:void(0)" class="tablinks" id="idMonthlyPerformance" onclick="openTab(event, 'MonthlyPerformance')"> Cataloging Performance</a></li>
+                                        <li><a href="javascript:void(0)" class="tablinks" id="idMonthlyPerformance" onclick="openTab(event, 'MonthlyPerformance');"> Cataloging Performance</a></li>
                                         <li><a href="javascript:void(0)" class="tablinks" id="idTranscriptionPerformance" onclick="openTab(event, 'Transcription')">Transcription Performance</a></li>
                                         <?php if($session->isAdmin()) {
                                             echo '<li ><a href = "javascript:void(0)" class="tablinks" id = "idIndividualPerformance" onclick = "openTab(event,' .  "'IndividualPerformance')" . '"> Individual Performance </a ></li >';
@@ -203,7 +203,6 @@ function format_size($size) {
         document.getElementById(tabName).style.display = "block";
         event.currentTarget.className += " active";
 
-
         switch(tabName)
         {
             case "Transcription":
@@ -265,52 +264,12 @@ function format_size($size) {
                 $('#chartWeeklyTranscriptionReport').remove();
                 $('#divWeeklyCanvasHolder').append('<canvas id="chartWeeklyReport" height="500" width="1000"><canvas>');
 
-                var year = $("#ddlYear").val();
-                if(year != "") {
-                    $(".spanYear").text(year);
-                    $.ajax({
-                        type: "POST",
-                        url: "./weeklyreports_processing.php?year=" + year,
-                        success: function (data) {
-                            var JSONdata = JSON.parse(data);
-                            //generate total chart
-                            var weeklyData = [];
-                            for (var i = 0; i < collections.length; i++) {
-                                var array = {
-                                    label: collections[i].displayname,
-                                    backgroundColor: "transparent",
-                                    borderColor: collection_color[i],
-                                    pointColor: collection_color[i],
-                                    strokeColor: collection_color[i],
-                                    borderWidth: 2,
-                                    hoverBackgroundColor : collection_highlight[i],
-                                    hoverBorderColor: "rgba(151,187,205,1)",
-                                    data: JSONdata.datasets[i]
-                                };
-                                weeklyData.push(array);
-                                array = null;
-                            }
-                            //generate weekly input chart
-                            var dat = {
-                                labels: JSONdata.labels,
-                                datasets: weeklyData,
-                            };
-                            //var ctx = new Chart(document.getElementById("chartWeeklyReport").getContext("2d")).Line(dat);
-                            var canvas = document.getElementById("chartWeeklyReport");
-                            var ctx = canvas.getContext("2d");
-                            var LineChart = new Chart(ctx,{ type: "line",
-                                data: dat,
-                                options: {responsive:true}
-                            });
-                        }
-                    });
-                }
                 break;
             case "IndividualPerformance":
                 document.getElementById("weeklyPerfHeader").style.display = 'none';
                 $('#chartWeeklyReport').remove();
                 $('#chartWeeklyTranscriptionReport').remove();
-                $("#ddlMonth").change();
+                //$("#ddlMonth").change();
 
 
                 //resize height of the scroller
@@ -323,6 +282,7 @@ function format_size($size) {
                 break;
 
         }
+        $("#ddlYear").change();
     }
 </script>
 <script>
@@ -476,48 +436,53 @@ function format_size($size) {
             //Monthly Cataloging
             $("#ddlYear").change(function()
             {
-                //reset canvas
-                $('#chartMonthlyReport').remove();
-                $('#divMonthlyPerformanceCanvasHolder').append('<canvas id="chartMonthlyReport" height="470" width="600"><canvas>');
+                var tab = document.getElementsByClassName('tablinks active')[0];
 
-                var year = $("#ddlYear").val();
-                if(year != "") {
-                    $.ajax({
-                        type: "POST",
-                        url: "./monthlyreports_processing.php?year=" + year,
-                        success: function (data) {
-                            var JSONdata = JSON.parse(data);
-                            //generate total chart
-                            var monthlyData = [];
-                            for (var i = 0; i < collections.length; i++) {
-                                var array = {
-                                    label: collections[i].displayname,
-                                    backgroundColor: "transparent",
-                                    borderColor: collection_color[i],
-                                    pointColor: collection_color[i],
-                                    strokeColor: collection_color[i],
-                                    borderWidth: 2,
-                                    hoverBackgroundColor : collection_highlight[i],
-                                    hoverBorderColor: "rgba(151,187,205,1)",
-                                    data: JSONdata[i][0]
+                if (tab.id == "idMonthlyPerformance") {
+                    //reset canvas
+                    $('#chartMonthlyReport').remove();
+                    $('#divMonthlyPerformanceCanvasHolder').append('<canvas id="chartMonthlyReport" height="470" width="600"><canvas>');
+
+                    var year = $("#ddlYear").val();
+                    if (year != "") {
+                        $.ajax({
+                            type: "POST",
+                            url: "./monthlyreports_processing.php?year=" + year,
+                            success: function (data) {
+                                var JSONdata = JSON.parse(data);
+                                //generate total chart
+                                var monthlyData = [];
+                                for (var i = 0; i < collections.length; i++) {
+                                    var array = {
+                                        label: collections[i].displayname,
+                                        backgroundColor: "transparent",
+                                        borderColor: collection_color[i],
+                                        pointColor: collection_color[i],
+                                        strokeColor: collection_color[i],
+                                        borderWidth: 2,
+                                        hoverBackgroundColor: collection_highlight[i],
+                                        hoverBorderColor: "rgba(151,187,205,1)",
+                                        data: JSONdata[i][0]
+                                    };
+                                    monthlyData.push(array);
+                                    array = null;
+                                }
+                                //generate monthly input chart
+                                var dat2 = {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: monthlyData,
                                 };
-                                monthlyData.push(array);
-                                array = null;
-                            }
-                            //generate monthly input chart
-                            var dat2 = {
-                                labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-                                datasets: monthlyData,
-                            };
 
-                            var canvas2 = document.getElementById("chartMonthlyReport");
-                            var ctx2 = canvas2.getContext("2d");
-                            var LineChart2 = new Chart(ctx2,{ type: "line",
-                                data: dat2,
-                                options: {responsive:true}
-                            });
-                        }
-                    });
+                                var canvas2 = document.getElementById("chartMonthlyReport");
+                                var ctx2 = canvas2.getContext("2d");
+                                var LineChart2 = new Chart(ctx2, {
+                                    type: "line",
+                                    data: dat2,
+                                    options: {responsive: true}
+                                });
+                            }
+                        });
+                    }
                 }
                 //resize height of the scroller
                 $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#table-header_right").outerHeight() - $("#page_title").outerHeight() - 55);
@@ -525,58 +490,66 @@ function format_size($size) {
             //Monthly Transcription
             $("#ddlYear").change(function()
             {
-                //reset canvas
-                $('#chartTranscriptionReport').remove();
-                $('#divTranscriptionCanvasHolder').append('<canvas id="chartTranscriptionReport" height="470" width="600"><canvas>');
+                var tab = document.getElementsByClassName('tablinks active')[0];
 
-                var year = $("#ddlYear").val();
-                if(year != "") {
-                    $.ajax({
-                        type: "POST",
-                        url: "./monthlytranscriptionreports_processing.php?year=" + year,
-                        success: function (data) {
-                            var JSONdata = JSON.parse(data);
-                            //generate total chart
-                            var monthlyData = [];
-                            for (var i = 0; i < collections.length; i++) {
-                                var array = {
-                                    label: collections[i].displayname,
-                                    backgroundColor: "transparent",
-                                    borderColor: collection_color[i],
-                                    pointColor: collection_color[i],
-                                    strokeColor: collection_color[i],
-                                    borderWidth: 2,
-                                    hoverBackgroundColor : collection_highlight[i],
-                                    hoverBorderColor: "rgba(151,187,205,1)",
-                                    data: JSONdata[i][0]
+                if(tab.id == "idTranscriptionPerformance") {
+                    //reset canvas
+                    $('#chartTranscriptionReport').remove();
+                    $('#divTranscriptionCanvasHolder').append('<canvas id="chartTranscriptionReport" height="470" width="600"><canvas>');
+
+                    var year = $("#ddlYear").val();
+                    if (year != "") {
+                        $.ajax({
+                            type: "POST",
+                            url: "./monthlytranscriptionreports_processing.php?year=" + year,
+                            success: function (data) {
+                                var JSONdata = JSON.parse(data);
+                                //generate total chart
+                                var monthlyData = [];
+                                for (var i = 0; i < collections.length; i++) {
+                                    var array = {
+                                        label: collections[i].displayname,
+                                        backgroundColor: "transparent",
+                                        borderColor: collection_color[i],
+                                        pointColor: collection_color[i],
+                                        strokeColor: collection_color[i],
+                                        borderWidth: 2,
+                                        hoverBackgroundColor: collection_highlight[i],
+                                        hoverBorderColor: "rgba(151,187,205,1)",
+                                        data: JSONdata[i][0]
+                                    };
+                                    monthlyData.push(array);
+                                    array = null;
+                                }
+                                //generate monthly input chart
+                                var dat2 = {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: monthlyData,
                                 };
-                                monthlyData.push(array);
-                                array = null;
-                            }
-                            //generate monthly input chart
-                            var dat2 = {
-                                labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-                                datasets: monthlyData,
-                            };
 
-                            var canvas2 = document.getElementById("chartTranscriptionReport");
-                            var ctx2 = canvas2.getContext("2d");
-                            var LineChart2 = new Chart(ctx2,{ type: "line",
-                                data: dat2,
-                                options: {responsive:true}
-                            });
-                        }
-                    });
+                                var canvas2 = document.getElementById("chartTranscriptionReport");
+                                var ctx2 = canvas2.getContext("2d");
+                                var LineChart2 = new Chart(ctx2, {
+                                    type: "line",
+                                    data: dat2,
+                                    options: {responsive: true}
+                                });
+                            }
+                        });
+                    }
+                    //resize height of the scroller
+                    $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#table-header_right").outerHeight() - $("#page_title").outerHeight() - 55);
                 }
-                //resize height of the scroller
-                $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#table-header_right").outerHeight() - $("#page_title").outerHeight() - 55);
             });
 
 
             //DDL FOR INDIVIDUAL PERFORMANCE YEAR
-            $("#ddlYear").change(function()
-            {
-                var year = $("#ddlYear").val();
+            $("#ddlYear").change(function() {
+                var tab = document.getElementsByClassName('tablinks active')[0];
+
+                if (tab.id == "idIndividualPerformance")
+                {
+                    var year = $("#ddlYear").val();
 
                 var month = $("#ddlMonth").val();
                 var action = $("#ddlAction").val();
@@ -585,12 +558,13 @@ function format_size($size) {
                         "processing": false,
                         "serverSide": false,
                         "destroy": true,
-                        "lengthMenu": [20, 40 , 60, 80, 100],
+                        "lengthMenu": [20, 40, 60, 80, 100],
                         "bStateSave": false,
-                        "order": [[ 0, 'desc' ], [ 1, 'asc' ]],
+                        "order": [[0, 'desc'], [1, 'asc']],
                         "ajax": "individual_processing.php?year=" + year + "&month=" + month + "&action=" + action
-                    } );
+                    });
 
+            }
                 //resize height of the scroller
                 $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#table-header_right").outerHeight() - $("#page_title").outerHeight() - 55);
             });
@@ -637,11 +611,11 @@ function format_size($size) {
             });
     $(document).ready(function()
     {
-        getCollectionCount();
+
         //Initialize the current tab before we call for it to change
         document.getElementById("idMonthlyPerformance").click();
-        $("#ddlYear").change();
-
+        //$("#ddlYear").change();
+        getCollectionCount();
 
 
     });

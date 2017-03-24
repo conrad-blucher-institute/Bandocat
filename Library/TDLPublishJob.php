@@ -3,8 +3,8 @@
 class TDLPublishJob
 {
     protected $token;
-    static protected $tdl_email = '';
-    static protected $tdl_pwd = '';
+    static protected $tdl_email = 'snguyen1@islander.tamucc.edu';
+    static protected $tdl_pwd = 'Sp4tialQu3ryLab';
     static protected $baseUrl = "https://tamucc-ir-stage.tdl.org/tamucc-rest/";
 
     function __construct($iToken = null)
