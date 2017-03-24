@@ -89,25 +89,37 @@ require '../../Library/AnnouncementDBHelper.php';
     /***************************************************
      * <A    N   N   O   U   N   C   E   M   E   N   T>
      ***************************************************/
-    //Announcement information for post in a JSON object
+    //Announcement information for post in JSON format
     var announcementPost = '<?php echo $announcementJSON ?>';
 
-    //Replaces HTML Special characters
-    if(announcementPost.includes("&amp;"))
-        announcementPost.replace("&amp;", "&");
 
-    if(announcementPost.includes("&quot;"))
-        announcementPost.replace("&quot;", '"');
+    /**********************************************
+     * Function: specialCharReplace
+     * Description: Function that translates the special characters that were converted in announcement_processing.php to
+     * regular characters.
+     * Parameter(s): text (string) -text with special characters.
+     * Return value(s): annoText (string) -text sanitized for display.
+     ***********************************************/
+    function specialCharReplace(text) {
+        //Statement that conditions the precense of special characters in the text
+            if(text.includes("&amp;") || text.includes("&quot;") || text.includes("&#039;") || text.includes("&lt;") || text.includes("&gt;")) {
+                //If special character found replace it with its corresponding translation
+                var annoText = text.replace(/&amp;/g,"&");
+                annoText = annoText.replace(/&quot;/g,'"');
+                annoText = annoText.replace(/&#039;/g,"'");
+                annoText = annoText.replace(/&lt;/g,"<");
+                annoText = annoText.replace(/&gt;/g,">");
+            }
+            //Otherwise retain the same text without translation
+            else{
+                annoText = text;
+            }
+        return annoText
+    }
 
-    if(announcementPost.includes("&#039;"))
-        announcementPost.replace("&#039;", "'");
 
-    if(announcementPost.includes("&lt;"))
-        announcementPost.replace("&lt;", "<");
 
-    if(announcementPost.includes("&gt;"))
-        announcementPost.replace("&gt;", ">");
-    console.log(announcementPost);
+    //JSON object with the announcement information
     var post = JSON.parse(announcementPost);
 
     /***********************
@@ -123,12 +135,6 @@ require '../../Library/AnnouncementDBHelper.php';
     var postButton = $("<input id='postAnno' class='bluebtn' type='submit' value='Post' onclick='postAnno()' style='position:relative; padding: 2%;'>");
 
 
-    /**********************************************
-     * Function: loadAnnouncement
-     * Description: Function that will retrieve and display an announcement from the database if the date condition is true
-     * Parameter(s): NONE
-     * Return value(s): NONE
-     ***********************************************/
     /***********************
      * Post Announcement
      * -Post element id = {post}-{post index}
@@ -136,17 +142,26 @@ require '../../Library/AnnouncementDBHelper.php';
      * 1. Title element id = {title}-{post index}
      * 2. Message element id = {message}-{post index}
      ***********************/
+    /**********************************************
+     * Function: loadAnnouncement
+     * Description: Function that will retrieve and display an announcement from the database if the date condition is true
+     * Parameter(s): NONE
+     * Return value(s): NONE
+     ***********************************************/
     function loadAnnouncement()
     //resize height of the scroller
     {$("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#trTop").outerHeight() - $("#h2Announcement").outerHeight() - 60);
         //Length of the JSON object to know how many announcements should be posted
         var announcementLength = '<?php echo $announcementLenght ?>';
         if(announcementLength > 0) {
-            for(i = 0; i < announcementLength; i++) {
+            for(var i = 0; i < announcementLength; i++) {
                 //Post element and components appended to the post div with information obtained from the database
                 $("#post").append("<div id = 'post-" + i + "' class='anno'><h2 id ='title-" + i + "' ondblclick='editAnnouncement(" + 0 + ")'></h2><p id='message-" + i + "' ondblclick='editAnnouncement(" + 1 + ")' style='padding: 5%;'></p></div> ");
-                $("#title-" + i).html(post[i].title);
-                $("#message-" + i).html(post[i].message);
+                titleText = post[i].title;
+                messageText = post[i].message;
+                //$("#title-" + i).text(specialCharReplace(titleText));
+                $("#title-" + 0).text(specialCharReplace(titleText));
+                $("#message-" + 0).text(specialCharReplace(messageText));
             }
         }
     }
@@ -282,12 +297,13 @@ require '../../Library/AnnouncementDBHelper.php';
         if(element == 1){
             $('#'+elemID).remove();
             $('#'+elemParent).append("<textarea id='editMessage-"+ postIndex +"' class='edit' style='height: 50px; width: 85%' maxlength='800'></textarea>");
-            $('#editMessage-' + postIndex).text(message);
+            $('#editMessage-' + postIndex).text(specialCharReplace(message));
         }
         if(element == 0){
             $('#'+elemID).remove();
             $('#'+elemParent).prepend("<h2><input id='editTitle-"+ postIndex +"' class='edit'></h2>");
-            $('#editTitle-'+postIndex).val(title);
+            $('#editTitle-'+postIndex).val(specialCharReplace(title));
+
         }
 
             var editLength = $("#updateAnnouncement-"+postIndex).length;
