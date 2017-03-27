@@ -2,13 +2,19 @@
 
 class TDLPublishJob
 {
+    static protected $ini_dir = "secure\\tdlconfig.ini";
     protected $token;
-    static protected $tdl_email = 'snguyen1@islander.tamucc.edu';
-    static protected $tdl_pwd = 'Sp4tialQu3ryLab';
-    static protected $baseUrl = "https://tamucc-ir-stage.tdl.org/tamucc-rest/";
+    protected $tdl_email;
+    protected $tdl_pwd;
+    protected $baseUrl;
 
     function __construct($iToken = null)
     {
+        $root = substr(getcwd(),0,strpos(getcwd(),"BandoCat\\"));
+        $config = parse_ini_file($root . TDLPublishJob::$ini_dir);
+        $this->tdl_email = $config['TDLemail'];
+        $this->tdl_pwd = $config['TDLpwd'];
+        $this->baseUrl = $config['baseURL'];
         if($iToken == null)
             $this->TDL_LOGIN();
         else $this->token = $iToken;
@@ -35,9 +41,9 @@ class TDLPublishJob
     public function TDL_LOGIN()
     {
         $ch = curl_init();
-        $data = array("email" => self::$tdl_email, "password" => self::$tdl_pwd);
+        $data = array("email" => $this->tdl_email, "password" => $this->tdl_pwd);
         $data_str = json_encode($data);
-        $options = array(CURLOPT_URL => self::$baseUrl . "login",
+        $options = array(CURLOPT_URL => $this->baseUrl . "login",
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $data_str,
             CURLOPT_RETURNTRANSFER => true,
@@ -63,7 +69,7 @@ class TDLPublishJob
     //return: GET output
     public function TDL_CUSTOM_GET($str)
     {
-        $ch = curl_init(self::$baseUrl . $str);
+        $ch = curl_init($this->baseUrl . $str);
         curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"GET");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //disable SSL
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -80,7 +86,7 @@ class TDLPublishJob
     public function TDL_CUSTOM_DELETE($str,$certURL = null)
     {
         $header = array('rest-dspace-token:' . $this->token,'Accept:application/json');
-        $ch = curl_init(self::$baseUrl . $str);
+        $ch = curl_init($this->baseUrl . $str);
 
         curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
@@ -108,7 +114,7 @@ class TDLPublishJob
         //prepare header
         $header = array('rest-dspace-token:' . $this->token,'Content-Type:' . $mime,'Accept:' . $mime );
 
-        $ch = curl_init(self::$baseUrl . $str);
+        $ch = curl_init($this->baseUrl . $str);
         curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -148,7 +154,7 @@ class TDLPublishJob
         //prepare header
         $header = array('rest-dspace-token:' . $this->token,'Content-Type:' . $mime,'Accept:' . $mime );
 
-        $ch = curl_init(self::$baseUrl . $str);
+        $ch = curl_init($this->baseUrl . $str);
         curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -188,7 +194,7 @@ class TDLPublishJob
     public function TDL_CHECK_STATUS()
     {
         $hdr_arr = array("rest-dspace-token:" . $this->token,'Content-Type: application/json','Accept: application/json');
-        $ch = curl_init(self::$baseUrl . "status");
+        $ch = curl_init($this->baseUrl . "status");
         curl_setopt($ch,CURLOPT_CUSTOMREQUEST,'GET');
         curl_setopt($ch, CURLOPT_HTTPHEADER,$hdr_arr);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -205,8 +211,8 @@ class TDLPublishJob
     public function TDL_GET_COMMUNITIES($communityID = null)
     {
         if($communityID == null)
-            $ch = curl_init(self::$baseUrl . "communities");
-        else $ch = curl_init(self::$baseUrl . "communities/" . $communityID);
+            $ch = curl_init($this->baseUrl . "communities");
+        else $ch = curl_init($this->baseUrl . "communities/" . $communityID);
         curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"GET");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //disable SSL
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -222,8 +228,8 @@ class TDLPublishJob
     public function TDL_GET_COLLECTIONS($communityID = null,$collectionID = null)
     {
         if($communityID == null)
-            $ch = curl_init(self::$baseUrl . "collections");
-        else $ch = curl_init(self::$baseUrl . "communities/" . $communityID ."/collections");
+            $ch = curl_init($this->baseUrl . "collections");
+        else $ch = curl_init($this->baseUrl . "communities/" . $communityID ."/collections");
         curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"GET");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //disable SSL
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -239,8 +245,8 @@ class TDLPublishJob
     public function TDL_GET_ITEMS($tdlCollectionID = null)
     {
         if($tdlCollectionID != null)
-            $ch = curl_init(self::$baseUrl . "collections/" . $tdlCollectionID . "/items");
-        else $ch = curl_init(self::$baseUrl . "items");
+            $ch = curl_init($this->baseUrl . "collections/" . $tdlCollectionID . "/items");
+        else $ch = curl_init($this->baseUrl . "items");
 
         curl_setopt($ch,CURLOPT_HTTPHEADER,array("rest-dspace-token:" . $this->token,'Content-Type:application/json'));
         curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"GET");
@@ -263,7 +269,7 @@ class TDLPublishJob
         //prepare header
         $header = array('rest-dspace-token:' . $this->token,'Content-Type:' . $mime,'Accept:' . $mime );
 
-        $ch = curl_init(self::$baseUrl . "collections/" . $tdlCollectionID . "/items");
+        $ch = curl_init($this->baseUrl . "collections/" . $tdlCollectionID . "/items");
         curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         curl_setopt($ch,CURLOPT_POST,true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -308,7 +314,7 @@ class TDLPublishJob
 
         $data = file_get_contents($name);
 
-        $ch = curl_init(self::$baseUrl . "items/" . $itemID . "/bitstreams?name=" . $postName);
+        $ch = curl_init($this->baseUrl . "items/" . $itemID . "/bitstreams?name=" . $postName);
 
         curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         curl_setopt($ch,CURLOPT_POST,true);
@@ -340,7 +346,7 @@ class TDLPublishJob
     public function TDL_DELETE_BITSTREAM($bitstreamID,$certUrl = null)
     {
         $header = array('rest-dspace-token:' . $this->token,'Accept:application/json');
-        $ch = curl_init(self::$baseUrl . "bitstreams/" . $bitstreamID);
+        $ch = curl_init($this->baseUrl . "bitstreams/" . $bitstreamID);
 
         curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
@@ -370,7 +376,7 @@ class TDLPublishJob
     public function TDL_DELETE_ITEM($itemID,$certUrl = null)
     {
         $header = array('rest-dspace-token:' . $this->token,'Accept:application/json');
-        $ch = curl_init(self::$baseUrl . "items/" . $itemID);
+        $ch = curl_init($this->baseUrl . "items/" . $itemID);
 
         curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);

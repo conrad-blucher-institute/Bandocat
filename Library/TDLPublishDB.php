@@ -19,6 +19,7 @@ trait TDLPublishTrait
         $ret = $sth->execute();
         if($ret)
             return $sth->fetch(PDO::FETCH_ASSOC);
+        print_r($sth->errorInfo());
         return null;
     }
 
