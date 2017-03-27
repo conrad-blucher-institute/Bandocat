@@ -21,4 +21,23 @@ $(document).ready(function() {
         $("#documentHistory").draggable({helper: 'clone'});
     });
 });
+
 //*********************************************************************/
+
+//*********************************************************************
+// Takes in a string and check whether the string contains an underscore
+// return true if it does
+// return false if it does not
+function validateFormUnderscore(str)
+{
+
+        if(document.getElementById(str).value.includes("_") == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+}
