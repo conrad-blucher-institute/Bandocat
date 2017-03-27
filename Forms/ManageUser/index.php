@@ -131,7 +131,7 @@ $Render = new ControlsRender();
                     $("#rd_Role_inactive").prop("checked",true);
                     break;
                 case "Super Admin":
-                    $("#btnUpdateRole").prop("disabled",true);
+                    $("#rd_Role_admin").prop("checked",true);
                     break;
                 default: break;
             }

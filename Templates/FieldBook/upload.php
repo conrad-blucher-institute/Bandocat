@@ -41,6 +41,7 @@ else header('Location: ../../');
 <div id="divright">
     <!-- Title Displayed in Green style in master.css -->
     <h2><?php echo $config['DisplayName']; ?> Document Upload</h2>
+    <div id="divscroller">
     <table class="Collection_Table">
         <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
         <tr>
@@ -81,6 +82,7 @@ else header('Location: ../../');
         </tr>
         </form>
     </table>
+    </div>
 </div>
 
 
@@ -134,7 +136,8 @@ else header('Location: ../../');
             cell3.id = f.name;
             cell3.innerHTML = "Validating...";
         }
-
+        //resize height of the scroller
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         $.ajax({
             //Checks if the filenames already exist in the DB
             url: 'upload_validating.php?col=<?php echo $collection; ?>',
@@ -161,6 +164,7 @@ else header('Location: ../../');
                     }
                 }
             },
+
         });
 
         //add rows and cells to table displaying file names

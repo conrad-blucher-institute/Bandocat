@@ -47,7 +47,6 @@ $Render = new ControlsRender();
     .Account_Table .Collection_data{
         width: 50%;
     }
-
 </style>
 <script type="text/javascript" src="PasswordMatch.js"></script>
 <div id="wrap">
@@ -86,6 +85,5 @@ $Render = new ControlsRender();
     </div>
 </div>
 <?php include '../../Master/footer.php'; ?>
-
 </body>
 </html>
