@@ -421,45 +421,62 @@ $date = new DateHelper();
 </style>
 
 <script>
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
         /* attach a submit handler to the form */
-        $('#theform').submit(function (event) {
-            /* stop form from submitting normally */
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
-            event.disabled;
+        $('#theform').submit(function (event)
+        {
+            //validates the library index
+            if(validateFormUnderscore("txtLibraryIndex") == true)
+            {
+                //Library index was found having a "_" in the string
+                /* stop form from submitting normally */
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
+                event.disabled;
 
-            event.preventDefault();
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data: $('#theform').serializeArray(),
-                success: function (data) {
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for (var i = 0; i <= json.length - 1; i++) {
-                        msg += json[i] + "\n";
-                    }
-
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
+                event.preventDefault();
+                /* Send the data using post */
+                $.ajax(
+                    {
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data: $('#theform').serializeArray(),
+                    success: function (data) {
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for (var i = 0; i <= json.length - 1; i++) {
+                            msg += json[i] + "\n";
                         }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                        {
-                            $('#btnSubmit').css("display", "inherit");
-                            $('#loader').css("display", "none");
+
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        alert(msg);
+
+                        if (result == 1){
+                            self.close();
                         }
                     }
-                    alert(msg);
+                })
+            }
+            else
+            {
+                //No _ was found in the string
+                alert("Library Index does not contain an underscore character.                            " +
+                    "Please check Library Index.");
+            }
 
-                    if (result == 1){
-                        self.close();
-                    }
-                }
-            })
+
+
         });
 
         //resize height of the scroller
