@@ -110,7 +110,7 @@ function rectify()
 //This function is used by the "rectify" function to create the string that will be executing gdaltranslate on the TIFF.
 function translateScriptCreator()
 {
-		var prefix = 'gdal_translate  -of GTiff -a_srs WGS84 ';
+		var prefix = 'gdal_translate -co COMPRESS=JPEG -co PHOTOMETRIC=YCBCR -co TILED=YES -of GTiff -a_srs WGS84 ';
 		//var suffix = translateInputFile + " " + translateOutputFile;
 		var suffix = "";
 	    var complete = "";
@@ -125,7 +125,7 @@ function translateScriptCreator()
 //This function is used by the "rectify" function to create the string that will be executing gdalwarp on the TIFF .
 function warpScriptCreator()
 {
-	var prefix = "gdalwarp -s_srs WGS84 -t_srs WGS84 -tps ";
+	var prefix = "gdalwarp -s_srs WGS84 -t_srs WGS84 -tps -co COMPRESS=JPEG -co PHOTOMETRIC=YCBCR -co TILED=YES ";
 	//var complete = prefix + " " + translateOutputFile + " " + warpOutputFile;
 	var complete = prefix;
 	return complete;
