@@ -1,5 +1,7 @@
 <?php
-
+//this class interacts with DSpace's REST API on TDL
+//DSpace REST API 5.x (by May 2017)  //See https://wiki.duraspace.org/display/DSDOC5x/REST+API
+//to change login information for TDL, locate tdlconfig.ini file and change the username and password
 class TDLPublishJob
 {
     static protected $ini_dir = "secure\\tdlconfig.ini";

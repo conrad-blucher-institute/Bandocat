@@ -1,5 +1,5 @@
 <?php
-
+//This trait provides general functions to select or update fields related to TDL in `document` table of every collections
 /**
  * Created by PhpStorm.
  * User: snguyen1
