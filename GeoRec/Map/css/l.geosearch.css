@@ -14,7 +14,8 @@
 
 .leaflet-control-geosearch a.glass {
 	background-image: url(../images/geosearch.png);
-	background-size: 100% 100%;
+	background-size: 80% 80%;
+	background-position: center;
 }
 
 .leaflet-control-geosearch a.command {
@@ -25,12 +26,15 @@
 
 .leaflet-control-geosearch a.spinner {
 	background-image: url(../images/spinner.gif);
-	background-position: 50% 50%;
+	background-size: 70% 70%;
+	background-position: center;
 }
 
 .leaflet-control-geosearch a.alert {
 	background-image: url(../images/alert.png);
-	background-size: 64% 64%;
+	background-size: 80% 80%;
+	margin-left: 10%;
+	margin-top: 10%;
 }
 
 .leaflet-control-geosearch a:hover {
@@ -39,7 +43,7 @@
 
 .leaflet-control-geosearch form {
 	position: absolute;
-	top: 0;
+	top: -20px;
 	left: 22px;
 	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.65);
 	-webkit-border-radius: 4px;
