@@ -263,8 +263,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
             formData.append("crews",JSON.stringify(array_crews));
 
             /*jquery that displays the three points loader*/
-            if(validateFormUnderscore("txtLibraryIndex") == true)
-            {
                 $('#btnSubmit').css("display", "none");
                 $('#loader').css("display", "inherit");
 
@@ -296,6 +294,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             }
                         }
                         if (result == 1){
+                            alert(msg);
                             $('#btnSubmit').css("display", "inherit");
                             $('#loader').css("display", "none");
                             self.close();
@@ -303,14 +302,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 
                     }
                 });
-            }
-            else
-            {
-                //No _ was found in the string
-                alert("Library Index does not contain an underscore character.                            " +
-                    "Please check Library Index.");
-            }
-
         });
     });
 </script>

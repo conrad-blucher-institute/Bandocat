@@ -4,7 +4,7 @@
 //to change login information for TDL, locate tdlconfig.ini file and change the username and password
 class TDLPublishJob
 {
-    static protected $ini_dir = "secure\\tdlconfig.ini";
+    static protected $ini_dir = "BandoCat_config\\tdlconfig.ini";
     protected $token;
     protected $tdl_email;
     protected $tdl_pwd;
@@ -12,7 +12,7 @@ class TDLPublishJob
 
     function __construct($iToken = null)
     {
-        $root = substr(getcwd(),0,strpos(getcwd(),"BandoCat\\"));
+        $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
         $config = parse_ini_file($root . TDLPublishJob::$ini_dir);
         $this->tdl_email = $config['TDLemail'];
         $this->tdl_pwd = $config['TDLpwd'];

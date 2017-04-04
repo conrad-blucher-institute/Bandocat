@@ -45,10 +45,10 @@ class TDLSchema
     function convertMapSchema($doc)
     {
         //preprocess
-        if($doc["FieldBookNumber"] == 0)
-            $doc["FieldBookNumber"] = "";
-        if($doc["FieldBookPage"] == 0)
-            $doc["FieldBookPage"] = "";
+//        if($doc["FieldBookNumber"] == 0)
+//            $doc["FieldBookNumber"] = "";
+//        if($doc["FieldBookPage"] == 0)
+//            $doc["FieldBookPage"] = "";
 
         $numberOfPages = "1 page";
         if($doc["FileNameBack"] != "")
@@ -58,6 +58,7 @@ class TDLSchema
         //to do: Author name to TDL official name
 
         $output = array(array("key" => "dc.contributor.author", "value" => $doc["AuthorName"]),
+            array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
             array("key" => "dc.title", "value" => $doc["Title"]),
             array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
             array("key" => "dc.type","value" => $doc["Type"]),
@@ -72,8 +73,13 @@ class TDLSchema
             array("key" => "mc.mapscale","value" => $doc["MapScale"]),
             array("key" => "mc.note","value" => $doc["Comments"]),
             array("key" => "mc.customer","value" => $doc["CustomerName"]),
-            array("key" => "mc.collection","value" => $doc["Collection"])
+            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
+            array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
+            array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
         );
+
+        //need FieldBook and Job Folder relation (dc.relation title) and PDF (dc.relation.url)
 
         //have to put info inside a "metadata" key
 //        $output["metadata"] = $temp;
@@ -82,12 +88,72 @@ class TDLSchema
     }
 
     //$document is an associative array
+    //job folder page
     function convertJobFolderSchema($doc)
     {
         //preprocess
 
+        $numberOfPages = "1 page";
+        if($doc["FileNameBack"] != "")
+            $numberOfPages = "2 pages";
+
         $output = array(
+            array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
+            array("key" => "dc.title", "value" => $doc["Title"]),
+            array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
+            //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+            array("key" => "dc.format.extent","value" => $numberOfPages),
+            array("key" => "dc.format.mimetype","value" => $this->mimetype),
+            array("key" => "dc.rights.holder","value" => $this->rightsholder),
+            array("key" => "dc.rights","value" => $this->rightsstatement),
+            array("key" => "mc.note","value" => $doc["Comments"]),
+            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
+            array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
+            array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
         );
+
+        //adding multiple authors
+        //classification
+        //classification comments
+        //related fieldbook (PDF URL) and title
+        //related Map (title and URL)
+
+        return $output;
+        //have to put info inside a "metadata" key
+//        $output["metadata"] = $temp;
+//        return json_encode($output);
+    }
+
+    function convertFieldBookSchema($doc)
+    {
+        //extend: number of page in what??? Book or number of scan???
+
+        //preprocess
+        $output = array(
+            array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
+            array("key" => "dc.title", "value" => $doc["Title"]),
+            array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
+            //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+            array("key" => "dc.format.mimetype","value" => $this->mimetype),
+            array("key" => "dc.rights.holder","value" => $this->rightsholder),
+            array("key" => "dc.rights","value" => $this->rightsstatement),
+            array("key" => "mc.note","value" => $doc["Comments"]),
+            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
+            array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
+            array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
+        );
+
+        //adding multiple crew members
+        // job number
+        // job title
+        //indexed page (page number)
+        //weather description (WTF)
+
+        //missing: relation to Map and Job Folder (URL to the PDF and title)
+
+
 
         return $output;
         //have to put info inside a "metadata" key
@@ -104,7 +170,7 @@ class TDLSchema
     {
         if($date == "00/00/0000")
             return "";
-        $dateArr = explode("/"); // [0] = MM, [1] = DD, [2] = YYYY
+        $dateArr = explode("/",$date); // [0] = MM, [1] = DD, [2] = YYYY
         if($dateArr[2] == "0000" )
             return "";
         else

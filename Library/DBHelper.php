@@ -22,7 +22,7 @@ class DBHelper
 {
     use TDLPublishTrait;
     //Members
-     static protected $ini_dir = "secure\\bandoconfig.ini";
+     static protected $ini_dir = "Bandocat_config\\bandoconfig.ini";
      protected $host;
      protected $user;
      protected $pwd;
@@ -33,7 +33,7 @@ class DBHelper
 
     function __construct()
     {
-     $root = substr(getcwd(),0,strpos(getcwd(),"BandoCat\\"));
+     $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
      $config = parse_ini_file($root . DBHelper::$ini_dir);
      $this->host = $config['servername'];
      $this->user = $config['username'];
@@ -943,6 +943,74 @@ class DBHelper
             //return statement result
             $result = $sth->fetchAll(PDO::FETCH_NUM);
             return $result;
+        } else return false;
+    }
+
+
+    /**********************************************
+     * Function: GET_AUTHOR_INFO
+     * Description: return info from a row of author table
+     * Parameter(s):
+     * $collection (in String) - Name of the collection
+     * $iAuthorID (in int) - ID of user
+     * $option (in str) - default value is null, generate different condition for the queries depends on the option
+     * Return value(s):
+     * $result  (array) - assoc array if success, otherwise, false
+     ***********************************************/
+    function GET_AUTHOR_INFO($collection,$iAuthorID,$option = null)
+    {
+        //get appropriate database
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "")
+        {
+            //prepares sql statement for execution
+            if($option == null ) // grab the exact authorID
+                $sth = $this->getConn()->prepare("SELECT * FROM `author` WHERE `authorID` = :authorID LIMIT 1");
+            else //option is available (not null)
+            {
+                switch($option)
+                {
+                    case "nextID": //grab the next available authorID
+                        $sth = $this->getConn()->prepare("SELECT * FROM `author` WHERE `authorID` > :authorID ORDER BY `authorID` LIMIT 1");
+                        break;
+                    default: return false;
+                }
+            }
+            $sth->bindParam(":authorID",$iAuthorID,PDO::PARAM_INT);
+            $sth->execute();
+            //return statement result
+            $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } else return false;
+    }
+
+    /**********************************************
+     * Function: UPDATE_AUTHOR_INFO
+     * Description: Update authorname and TDLname, given userID and name of a collection database
+     * Parameter(s):
+     * $collection (in String) - Name of the collection
+     * $iAuthorID (in int) - ID of user
+     * $iAuthorName (in str) - new value of author name
+     * $iTDLName (in str) - new value of TDL name
+     * Return value(s):
+     * return true if success, false if error occurs
+     ***********************************************/
+    function UPDATE_AUTHOR_INFO($collection,$iAuthorID,$iAuthorName,$iTDLName)
+    {
+        //get appropriate database
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "")
+        {
+            //prepares sql statement for execution
+            $sth = $this->getConn()->prepare("UPDATE `author` SET `authorname` = :authorname, `TDLname` = :TDLname WHERE `authorID` = :authorID");
+            $sth->bindParam(':authorID',$iAuthorID,PDO::PARAM_INT);
+            $sth->bindParam(':authorname',$iAuthorName,PDO::PARAM_STR);
+            $sth->bindParam(':TDLname',$iTDLName,PDO::PARAM_STR);
+            $ret = $sth->execute();
+            //return statement result
+            return $ret;
         } else return false;
     }
 
