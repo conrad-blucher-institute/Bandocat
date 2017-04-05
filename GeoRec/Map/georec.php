@@ -100,20 +100,16 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
 <div id="map"></div>
 <script id = "test" language="javascript" type="text/javascript">
-    //need mapbox API key
-    L.mapbox.accessToken = "";
-    L.MakiMarkers.accessToken = "";
-
 
     var map = L.mapbox.map("map");
     L.control.mousePosition().addTo(map);
 
-    //Base layers with leaflet layer control
-    var street = L.tileLayer('https://api.mapbox.com/styles/v1/xuan27/ciylr8exe004r2smg2t48oxpz/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoieHVhbjI3IiwiYSI6IktzT0hVNjAifQ.v97O2GRYRJ8ZxhLHtTn30g', {
+    //Base layers with leaflet layer control and access token
+    var street = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic3BhdGlhbHF1ZXJ5bGFiIiwiYSI6ImNpeW43eHZ2YTAwMTgzMnBjNGF4bWVuaHIifQ.H-IzkkctQwbBRjhS9VLddA', {
         attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors'
     }).addTo(map);
 
-    var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/xuan27/cip8mhdpt000obunqv4jc47zp/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoieHVhbjI3IiwiYSI6IktzT0hVNjAifQ.v97O2GRYRJ8ZxhLHtTn30g', {
+    var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic3BhdGlhbHF1ZXJ5bGFiIiwiYSI6ImNpeW43eHZ2YTAwMTgzMnBjNGF4bWVuaHIifQ.H-IzkkctQwbBRjhS9VLddA', {
         attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors'
     });
 
