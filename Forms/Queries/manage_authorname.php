@@ -88,10 +88,10 @@ $Render = new ControlsRender();
                         </tr>
                         <tr>
                             <td><label>TDL Name</label></td>
-                            <td><input type="text" name="txtTDLName" id="txtTDLName" value=""/></td>
+                            <td><input type="text" name="txtTDLName" id="txtTDLName" value="" required/></td>
                         </tr>
                         <tr style="text-align: center;line-height:70px">
-                          <td colspan="2"><input type="button" onclick="btnUpdate_onclick(event)" name="btnUpdate" id="btnUpdate" value="Update" class="bluebtn">
+                          <td colspan="2"><input type="submit" onclick="btnUpdate_onclick(event)" name="btnUpdate" id="btnUpdate" value="Update" class="bluebtn">
                               <input type="button" class="bluebtn" onclick="btnNext_onclick(event)" id="btnNext" value="Next" name="btnNext">
                               <input type="button" class="bluebtn" onclick="closePopup(event)" id="btnClose" value="Close" name="btnClose">
                           </td>
@@ -128,6 +128,13 @@ $Render = new ControlsRender();
     }
 </style>
 <script>
+    //Hit enter on txtTDLName will trigger Update button, hit tab will trigger loadPopupInfo
+    $("#txtTDLName").keyup(function(event){
+        event.preventDefault();
+        if(event.keyCode == 13)
+        {$("#btnUpdate").click();return false; }//hit enter
+    });
+
     function closePopup(e)
     {
         e.preventDefault();
@@ -153,6 +160,8 @@ $Render = new ControlsRender();
                 $("#lblAuthorID").text(jsonData.authorID);
                 $("#lblAuthorName").text(jsonData.authorname);
                 $("#txtTDLName").val(jsonData.TDLname);
+
+                $("#txtTDLName").focus(); //focus on this textbox
             }
         });
     }
@@ -181,6 +190,7 @@ $Render = new ControlsRender();
                 if(retval == true) {
                     alert("Success!");
                     loadPopupInfo('loadnext',collection,authorID);
+                    $('#dtable').DataTable().draw(); //rerender table
                 }
                 else alert("Update failed!");
             }
@@ -204,7 +214,7 @@ $Render = new ControlsRender();
             "serverSide": true,
             //Specifys the entries in the length dropdown select list
             "lengthMenu": [20, 40 , 60, 80, 100],
-            "bStateSave": false,
+            "bStateSave": true,
             //Initialise a datatable as usual, but if there is an existing table which matches the selector
             //it will be destroyed and replaced with the new table
             "destroy": true,

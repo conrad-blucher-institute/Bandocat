@@ -54,7 +54,6 @@ class TDLSchema
         if($doc["FileNameBack"] != "")
             $numberOfPages = "2 pages";
 
-
         //to do: Author name to TDL official name
 
         $output = array(array("key" => "dc.contributor.author", "value" => $doc["AuthorName"]),

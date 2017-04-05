@@ -95,7 +95,7 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
         //get tdl (dspace) fields from document table
         $doc_dspace = $DB->PUBLISHING_DOCUMENT_GET_DSPACE_INFO($docID);
         $doc["Collection"] = $collection["TDLname"];
-        array_merge($doc,$collection);
+        $doc += $collection;
 
         echo "\nPublishing item ID: " . $docID . "\n";
         fwrite($logfile,date(DATE_RFC2822) . ": " . "Publishing item ID:$docID" . "\r\n");
