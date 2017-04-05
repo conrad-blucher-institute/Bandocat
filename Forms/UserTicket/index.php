@@ -26,6 +26,7 @@ $DB = new DBHelper();
             var table = $('#dtable').DataTable( {
                 "processing": true,
                 "serverSide": true,
+                "aaSorting": [ [5,'asc'], [3,'desc'] ],
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
                 "columnDefs": [

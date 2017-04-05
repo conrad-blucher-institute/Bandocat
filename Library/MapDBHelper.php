@@ -110,7 +110,7 @@ class MapDBHelper extends DBHelper
             $call->bindParam(14, $iCustomerID, PDO::PARAM_INT);
             $call->bindParam(15, $iStartDate, PDO::PARAM_STR);
             $call->bindParam(16, $iEndDate, PDO::PARAM_STR);
-            $call->bindParam(17, $iFieldBookNumber, PDO::PARAM_INT);
+            $call->bindParam(17, $iFieldBookNumber, PDO::PARAM_STR);
             $call->bindParam(18, $iFieldBookPage, PDO::PARAM_STR);
             $call->bindParam(19, $iReadability, PDO::PARAM_STR);
             $call->bindParam(20, $iRectifiability, PDO::PARAM_STR);
@@ -195,7 +195,7 @@ class MapDBHelper extends DBHelper
             $call->bindParam(15, $iCustomerID, PDO::PARAM_INT);
             $call->bindParam(16, $iStartDate, PDO::PARAM_STR);
             $call->bindParam(17, $iEndDate, PDO::PARAM_STR);
-            $call->bindParam(18, $iFieldBookNumber, PDO::PARAM_INT);
+            $call->bindParam(18, $iFieldBookNumber, PDO::PARAM_STR);
             $call->bindParam(19, $iFieldBookPage, PDO::PARAM_STR);
             $call->bindParam(20, $iReadability, PDO::PARAM_STR);
             $call->bindParam(21, $iRectifiability, PDO::PARAM_STR);

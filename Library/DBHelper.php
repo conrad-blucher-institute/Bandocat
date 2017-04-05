@@ -22,16 +22,23 @@ class DBHelper
 {
     use TDLPublishTrait;
     //Members
-    static protected $host = "localhost";
-    static protected $user = "root";
-    static protected $pwd = "notroot";
-    static protected $maindb = 'bandocatdb';
-    protected $conn;
+     static protected $ini_dir = "Bandocat_config\\bandoconfig.ini";
+     protected $host;
+     protected $user;
+     protected $pwd;
+     protected $maindb;
+     protected $conn;
 
     //Getter and setters
 
     function __construct()
     {
+     $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
+     $config = parse_ini_file($root . DBHelper::$ini_dir);
+     $this->host = $config['servername'];
+     $this->user = $config['username'];
+     $this->pwd = $config['password'];
+     $this->maindb = $config['dbname'];
         /*if not currently connected, attempt to connect to DB*/
         if ($this->getConn() == null)
             $this->DB_CONNECT(null);
@@ -75,9 +82,9 @@ class DBHelper
     /**
      * @return string
      */
-    public static function getHost()
+    public function getHost()
     {
-        return self::$host;
+        return $this->host;
     }
 
 
@@ -86,9 +93,9 @@ class DBHelper
     /**
      * @return string
      */
-    public static function getUser()
+    public function getUser()
     {
-        return self::$user;
+        return $this->user;
     }
 
     //IMPORTANT: Default Host, username, password can be changed here!
@@ -96,9 +103,9 @@ class DBHelper
     /**
      * @return string
      */
-    public static function getPwd()
+    public function getPwd()
     {
-        return self::$pwd;
+        return $this->pwd;
     }
 
     function DB_CLOSE()
@@ -241,7 +248,7 @@ class DBHelper
     function GET_USER_INFO($userID)
     {
         //USE is sql for changing to the database supplied after the concat.
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         //r.name = role name
         //Select all relevant data to the supplied userID excluding password
         $sth = $this->getConn()->prepare("SELECT `username`,`fullname`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` WHERE `userID` = :userID LIMIT 1");
@@ -263,7 +270,7 @@ class DBHelper
      ***********************************************/
     function GET_USER_TABLE()
     {
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT `username`,`userID`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` ORDER BY `username` ASC ");
         $sth->execute();
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -278,7 +285,7 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT `collectionID`,`name`,`displayname` FROM `collection`");
         $sth->execute();
 
@@ -296,7 +303,7 @@ class DBHelper
     function GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID($iATemplateID, $iSwitch)
     {
 
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
 //        if($iSwitch == null)
 //        {
 //            //if the user failed to supply an indicator supply true to find exact what is passed
@@ -341,7 +348,7 @@ class DBHelper
      ***********************************************/
     function GET_ACTION_UNIQUE()
     {
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT DISTINCT `action` FROM `log`");
         $sth->execute();
 
@@ -358,7 +365,7 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_TABLE()
     {
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT * FROM `collection`");
         $sth->execute();
 
@@ -375,7 +382,7 @@ class DBHelper
      ***********************************************/
     function GET_USER_ROLE_FOR_DROPDOWN()
     {
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         $call = $this->getConn()->prepare("SELECT `roleID`,`name`, `description` FROM `bandocatdb`.`role`");
         $call->execute();
 
@@ -394,7 +401,7 @@ class DBHelper
     function GET_USER_ROLE($userID)
     {
         //USE is sql for changing to the database supplied after the concat.
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         //Select all relevant data to the supplied userID excluding password
         $sth = $this->getConn()->prepare("SELECT `user`.`userID`,`user`.`roleID`, `role`.`name` FROM `user` INNER JOIN `role` ON `user`.`roleID` = `role`.`roleID` WHERE `userID` = :userID");
         //Bind the supplied userID into the select statement above.
@@ -414,7 +421,7 @@ class DBHelper
      ***********************************************/
     function USER_ROLE_UPDATE($iUserID,$iNewRole)
     {
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         $sth = $this->getConn()->prepare("UPDATE `user` SET `roleID` = :newrole WHERE `userID` = :uID LIMIT 1");
         $sth->bindParam(':newrole',$iNewRole,PDO::PARAM_STR);
         $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);
@@ -435,7 +442,7 @@ class DBHelper
         //select only active USERs
         if($bActive == true)
         {
-            $this->getConn()->exec('USE' . DBHelper::$maindb);
+            $this->getConn()->exec('USE' . $this->maindb);
             $call = $this->getConn()->prepare("SELECT `userID`,`username` FROM `user` WHERE `roleID` != 0");
             $call->execute();
 
@@ -443,7 +450,7 @@ class DBHelper
             return $role;
         }else
         {
-            $this->getConn()->exec('USE' . DBHelper::$maindb);
+            $this->getConn()->exec('USE' . $this->maindb);
             $call = $this->getConn()->prepare("SELECT `userID`,`username` FROM `user`");
             $call->execute();
 
@@ -466,7 +473,7 @@ class DBHelper
     function SP_TICKET_INSERT($iSubject, $iPosterID, $iCollectionID, $iDescription)
     {
         //Switch to correct DB
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         //The ? in the functions parameter list is a variable that we bind a few lines down.
@@ -500,7 +507,7 @@ class DBHelper
     function TICKET_UPDATE($ticketID,$notes,$status,$solverID)
     {
         //switch to correct db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         //SQL update updates an existing record in the db
         $sth = $this->getConn()->prepare("UPDATE `ticket` SET `notes` = :note, `status` = :stat,`solverID` = :uID,`solveddate` = NOW() WHERE `ticketID` = :id");
@@ -525,7 +532,7 @@ class DBHelper
      * $iUserID (in string) -  userID of user who performs the action
      ***********************************************/
     function SP_USER_INSERT($iUsername, $iPassword, $iFullname, $iEmail, $iRoleID, &$oMessage){
-        $this->getConn()->exec('USE' . DBHelper::$maindb);
+        $this->getConn()->exec('USE' . $this->maindb);
         /*PREPARE STATEMENT*/
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,@oMessage)");
@@ -568,7 +575,7 @@ class DBHelper
     function SP_LOG_WRITE($iAction, $iCollectionID, $iDocID, $iUserID, $iStatus,$iComment)
     {
         //switch to correct db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         //sql CALL calls the built in function on the db
@@ -602,7 +609,7 @@ class DBHelper
      ***********************************************/
     function SP_LOG_INSERT($iAction,$iCollectionID,$iDocID,$iUserID,$iStatus,$iTimestamp,$iComments)
     {
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
         $call = $this->getConn()->prepare("CALL SP_LOG_INSERT(?,?,?,?,?,?,?)");
         if (!$call)
@@ -630,7 +637,7 @@ class DBHelper
     function SP_ADMIN_TICKET_SELECT($iTicketID)
     {
         //switch to correct db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // sql statement CALL calls the function pointed to in the db
@@ -660,7 +667,7 @@ class DBHelper
     function TICKET_UPDATE_LASTSEEN($iTicketID)
     {
         //switch to correct db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare('UPDATE `ticket` SET `lastseen` = NOW() WHERE `ticketID` = :ticketID LIMIT 1');
         $sth->bindParam(':ticketID',$iTicketID,PDO::PARAM_INT);
         $ret = $sth->execute();
@@ -719,7 +726,7 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_INFO($iName)
     {
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT * FROM `collection` WHERE `collection`.`name` = :name");
         $sth->bindParam(':name',$iName,PDO::PARAM_STR);
         $ret = $sth->execute();
@@ -738,7 +745,7 @@ class DBHelper
      ***********************************************/
     function SP_GET_COLLECTION_CONFIG($iName)
     {   //USE is sql for changing to the database supplied after the concat.
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
         //CALL is sql for telling the db to execute the function following call.
         //The ? in the functions parameter list is a variable that we bind a few lines down
@@ -768,7 +775,7 @@ class DBHelper
      ***********************************************/
     function SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID($iName, $iTemplateID)
     {   //USE is sql for changing to the database supplied after the concat.
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
         //CALL is sql for telling the db to execute the function following call.
         //The ? in the functions parameter list is a variable that we bind a few lines down
@@ -802,7 +809,7 @@ class DBHelper
     function GET_LOG_INFO($collection, $docID)
     {
         //switch to appropriate db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         //return appropriate db
         $dbID = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['CollectionID'];
         //select log, user, and collection information from their respective tables
@@ -830,7 +837,7 @@ class DBHelper
     function GET_COLLECTION_TEMPLATE($collection)
     {
         //switch to appropriate db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         //prepares select sql statement to return template information
         $sth = $this->getConn()->prepare("SELECT * FROM `template` WHERE `template`.`templateID` = (SELECT `templateID` FROM `collection` WHERE `name` = ? LIMIT 1) LIMIT 1");
         //bind parameter collection into the above sql statement
@@ -940,6 +947,74 @@ class DBHelper
     }
 
 
+    /**********************************************
+     * Function: GET_AUTHOR_INFO
+     * Description: return info from a row of author table
+     * Parameter(s):
+     * $collection (in String) - Name of the collection
+     * $iAuthorID (in int) - ID of user
+     * $option (in str) - default value is null, generate different condition for the queries depends on the option
+     * Return value(s):
+     * $result  (array) - assoc array if success, otherwise, false
+     ***********************************************/
+    function GET_AUTHOR_INFO($collection,$iAuthorID,$option = null)
+    {
+        //get appropriate database
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "")
+        {
+            //prepares sql statement for execution
+            if($option == null ) // grab the exact authorID
+                $sth = $this->getConn()->prepare("SELECT * FROM `author` WHERE `authorID` = :authorID LIMIT 1");
+            else //option is available (not null)
+            {
+                switch($option)
+                {
+                    case "nextID": //grab the next available authorID
+                        $sth = $this->getConn()->prepare("SELECT * FROM `author` WHERE `authorID` > :authorID ORDER BY `authorID` LIMIT 1");
+                        break;
+                    default: return false;
+                }
+            }
+            $sth->bindParam(":authorID",$iAuthorID,PDO::PARAM_INT);
+            $sth->execute();
+            //return statement result
+            $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } else return false;
+    }
+
+    /**********************************************
+     * Function: UPDATE_AUTHOR_INFO
+     * Description: Update authorname and TDLname, given userID and name of a collection database
+     * Parameter(s):
+     * $collection (in String) - Name of the collection
+     * $iAuthorID (in int) - ID of user
+     * $iAuthorName (in str) - new value of author name
+     * $iTDLName (in str) - new value of TDL name
+     * Return value(s):
+     * return true if success, false if error occurs
+     ***********************************************/
+    function UPDATE_AUTHOR_INFO($collection,$iAuthorID,$iAuthorName,$iTDLName)
+    {
+        //get appropriate database
+        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
+        $this->getConn()->exec('USE ' . $dbname);
+        if ($dbname != null && $dbname != "")
+        {
+            //prepares sql statement for execution
+            $sth = $this->getConn()->prepare("UPDATE `author` SET `authorname` = :authorname, `TDLname` = :TDLname WHERE `authorID` = :authorID");
+            $sth->bindParam(':authorID',$iAuthorID,PDO::PARAM_INT);
+            $sth->bindParam(':authorname',$iAuthorName,PDO::PARAM_STR);
+            $sth->bindParam(':TDLname',$iTDLName,PDO::PARAM_STR);
+            $ret = $sth->execute();
+            //return statement result
+            return $ret;
+        } else return false;
+    }
+
+
 
     /***************************************************************/
     /**********************QUERIES FUNCTIONS************************/
@@ -955,7 +1030,7 @@ class DBHelper
     function GET_ADMIN_OPENTICKET_COUNT()
     {
         //switch to correct db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // sql statement CALL calls the function pointed to in the db
@@ -1042,7 +1117,7 @@ class DBHelper
     function SP_WEEKLYREPORT_INSERT($iYear,$iWeek,$iCollectionID)
     {
         //get appropriate DB
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // sql statement CALL calls the function pointed to in the db
         $call = $this->getConn()->prepare("CALL SP_WEEKLYREPORT_INSERT(?,?,?)");
@@ -1067,7 +1142,7 @@ class DBHelper
     function GET_WEEKLYREPORT($iYear,$iCollectionID)
     {
         //get appropriate db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // selects the weeks from weeklyreport db that satisfy the year and collection id parameters
         $sth = $this->getConn()->prepare('SELECT `weeklyreport`.`week`,`weeklyreport`.`count` FROM `weeklyreport` WHERE `weeklyreport`.`year` = ? AND `weeklyreport`.`collectionID` = ?');
@@ -1088,7 +1163,7 @@ class DBHelper
     function GET_WEEKLY_TRANSCRIPTION_REPORT($iYear,$iCollectionID)
     {
         //get appropriate db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // selects the weeks from weeklyreport db that satisfy the year and collection id parameters
         $call = $this->getConn()->prepare("CALL SP_LOG_WEEKLYTRANSCRIPTIONREPORT_COUNT(:iYear,:iColID)");
@@ -1110,7 +1185,7 @@ class DBHelper
     function SELECT_USER_PERFORMANCE_BY_MONTH($iYear,$iMonth,$iUserID, $iAction)
     {
         //get appropriate db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // selects the weeks from weeklyreport db that satisfy the year and collection id parameters
         $call = $this->getConn()->prepare("SELECT COUNT(*), u1.`username` FROM `log` LEFT JOIN `user` AS u1 ON `log`.`userID` = u1.`userID` WHERE MONTH(`log`.`timestamp`) = :iMonth AND YEAR(`log`.`timestamp`) = :iYear AND `log`.`action`= :iAction AND `log`.`status` = 'success' AND `log`.`userID` = :iUserID");
@@ -1136,7 +1211,7 @@ class DBHelper
     function GET_ACTION_COUNT($iYear,$iCollectionID,$iUserID)
     {
         //get appropriate db
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // selects the weeks from weeklyreport db that satisfy the year and collection id parameters
         $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLY_USERCATALOG_COUNT(:iYear,:iColID,:iUserID)");
@@ -1160,7 +1235,7 @@ class DBHelper
 //     ***********************************************/
 //    function GET_MONTHLYREPORT($iYear,$iCollectionID)
 //    {
-//        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+//        $this->getConn()->exec('USE ' . $this->maindb);
 //        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
 //        // selects the weeks from monthlyreport db that satisfy the year, month, and collection id satisfy the parameters
 //        $sth = $this->getConn()->prepare("SELECT
@@ -1194,7 +1269,7 @@ class DBHelper
      ***********************************************/
     function GET_MONTHLY_TRANSCRIPTION_REPORT($iYear,$iCollectionID)
     {
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // sql statement CALL calls the function pointed to in the db
         $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLYTRANSCRIPTIONREPORT_COUNT(:iYear,:iColID)");
@@ -1215,7 +1290,7 @@ class DBHelper
      ***********************************************/
     function GET_MONTHLYREPORT2($iYear,$iCollectionID)
     {
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         // sql statement CALL calls the function pointed to in the db
         $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLYREPORT_COUNT(:iYear,:iColID)");
@@ -1258,7 +1333,7 @@ class DBHelper
      ***********************************************/
     function USER_UPDATE_INFO($iUserID,$iEmail,$iName)
     {
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("UPDATE `user` SET `email` = :email,`fullname` = :name WHERE `userID` = :uID LIMIT 1");
         $sth->bindParam(':email',$iEmail,PDO::PARAM_STR);
         $sth->bindParam(':name',$iName,PDO::PARAM_STR);
@@ -1282,7 +1357,7 @@ class DBHelper
         $isValidPassword = $this->USER_VERIFY_PWD($iUserID,$iOldPassword);
         if($isValidPassword) {
             $iNewPassword = password_hash(md5($iNewPassword), PASSWORD_DEFAULT);
-            $this->getConn()->exec('USE ' . DBHelper::$maindb);
+            $this->getConn()->exec('USE ' . $this->maindb);
             $sth = $this->getConn()->prepare("UPDATE `user` SET `password` = :newpwd WHERE `userID` = :uID LIMIT 1");
             $sth->bindParam(':newpwd', $iNewPassword, PDO::PARAM_STR);
             $sth->bindParam(':uID', $iUserID, PDO::PARAM_INT);
@@ -1303,7 +1378,7 @@ class DBHelper
     function USER_UPDATE_ADMIN_RESET_PASSWORD($iUserID,$iNewPassword)
     {
         $iNewPassword = password_hash(md5($iNewPassword),PASSWORD_DEFAULT);
-        $this->getConn()->exec('USE ' . DBHelper::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("UPDATE `user` SET `password` = :newpwd WHERE `userID` = :uID LIMIT 1");
         $sth->bindParam(':newpwd',$iNewPassword,PDO::PARAM_STR);
         $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);

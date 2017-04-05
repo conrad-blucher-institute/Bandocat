@@ -55,12 +55,13 @@
         </ul>
     </div>
     <!-- Queries Tab -->
-    <div class="menu-item menu-item_sub3">
+    <div class="menu-item menu-item_sub4">
         <h4><a href="#">Queries</a></h4>
         <ul>
             <li><a href="../../Forms/Queries/hascoast.php">Coastal Maps</a></li>
             <li><a href="../../Forms/Queries/exportcollection.php">Export Document Index</a></li>
             <li><a href="../../Forms/Queries/mapswithouttitle.php">Maps Without Titles</a></li>
+            <li><a href="../../Forms/Queries/manage_authorname.php">Manage TDL Author</a></li>
             <li><a href="#">Supplied Title Procedure</a></li>
         </ul>
     </div>

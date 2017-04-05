@@ -30,6 +30,7 @@ else header('Location: ../../');
                 "serverSide": true,
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
+                "aaSorting": [ [5,'asc'], [3,'desc'] ],
                 "columnDefs": [
                     //column Ticket Index: Replace with Hyperlink
                     {
@@ -123,10 +124,10 @@ else header('Location: ../../');
             table.column(0).visible(true);
 
             //sorted by submission date
-            table
-                .column( '3:visible' )
-                .order( 'desc' )
-                .draw();
+//            table
+//                .column( '3:visible' )
+//                .order( 'desc' )
+//                .draw();
 
             // select row on single click
             $('#dtable tbody').on( 'click', 'tr', function () {

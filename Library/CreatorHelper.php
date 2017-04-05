@@ -43,7 +43,7 @@ class CreatorHelper extends DBHelper
     //need to fix
     function COLLECTION_INSERT($iParName,$iDisplayName,$iDBName,$iStorageDir,$iThumbnailDir,$iTemplateID,$iGeorecDir)
     {
-        $this->getConn()->exec('USE ' . self::$maindb);
+        $this->getConn()->exec('USE ' . parent::$maindb);
         $sth = $this->getConn()->prepare("INSERT INTO `collection`(`name`,`displayname`,`dbname`,`storagedir`,`thumbnaildir`,`templateID`,`georecdir`) VALUES(:parname,:dname,:dbname,:storagedir,:thumbdir,:tID,:georecdir)");
         $sth->bindParam(':parname',$iParName,PDO::PARAM_STR);
         $sth->bindParam(':dname',$iDisplayName,PDO::PARAM_STR);

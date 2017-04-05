@@ -50,6 +50,11 @@ $session = new SessionManager();
     //catalog (new document)
     else if($action == "catalog")
     {
+        //Create Thumbnails dir if it doesn't exist
+        if(!is_dir("../../Thumbnails"))
+            exec(mkdir("../../Thumbnails", 0777));
+
+
         $filename = "";
         $filenameback = "";
         $filenamepath = "";
