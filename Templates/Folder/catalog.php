@@ -38,7 +38,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-
+    <script type="text/javascript" src="../../Master/master.js"></script>
 </head>
 <!-- END HTML HEADER -->
 <body>
@@ -261,45 +261,54 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             for(var i = 0; i < authors.length; i++)
                 array_authors.push(authors[i].value);
             formData.append("authors",JSON.stringify(array_authors));
+            if(validateFormUnderscore("txtLibraryIndex") == true)
+            {
+                /*jquery that displays the three points loader*/
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
 
-            /*jquery that displays the three points loader*/
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
-
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data){
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
-                    {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                /* Send the data using post */
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data:  formData,
+                    processData: false,
+                    contentType: false,
+                    success:function(data){
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for(var i = 0; i < json.length; i++)
                         {
+                            msg += json[i] + "\n";
+                        }
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        alert(msg);
+                        if (result == 1){
                             $('#btnSubmit').css("display", "inherit");
                             $('#loader').css("display", "none");
+                            window.close();
                         }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        $('#btnSubmit').css("display", "inherit");
-                        $('#loader').css("display", "none");
-                        window.close();
-                    }
 
-                }
-            });
+                    }
+                });
+            }
+            else
+            {
+                //No _ was found in the string
+                alert("Library Index does not contain an underscore character.                            " +
+                    "Please check Library Index.");
+            }
+
         });
     });
 </script>

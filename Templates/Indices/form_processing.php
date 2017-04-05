@@ -46,6 +46,11 @@ if($action == "review")
 //if we are cataloging
 if ($action == "catalog")
 {
+    //Create Thumbnails dir if it doesn't exist
+    if(!is_dir("../../Thumbnails"))
+        exec(mkdir("../../Thumbnails", 0777));
+
+
     $valid = true;
     //get the file names from the POST
     $file_name = $_FILES['file_array']['name'];

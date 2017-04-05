@@ -1,5 +1,4 @@
 <?php
-
 //This class provides functions to convert document schema from internal BandoCat to TDL
 class TDLSchema
 {
@@ -13,6 +12,7 @@ class TDLSchema
             $this->mimetype = "image/tiff";
         else $this->mimetype = $mimetype;
     }
+
 
     function convertSchema($templateID,$doc,$isPOST = true)
     {
@@ -31,12 +31,13 @@ class TDLSchema
                 return false;
         }
 
+        //POST = PUBLISH
         if($isPOST) //POST
         {
             $output["metadata"] = $array;
             return json_encode($output);
         }
-        else return json_encode($array); //PUT
+        else return json_encode($array); //PUT = UPDATE
     }
 
 
@@ -44,18 +45,25 @@ class TDLSchema
     function convertMapSchema($doc)
     {
         //preprocess
-        if($doc["FieldBookNumber"] == 0)
-            $doc["FieldBookNumber"] = "";
-        if($doc["FieldBookPage"] == 0)
-            $doc["FieldBookPage"] = "";
+//        if($doc["FieldBookNumber"] == 0)
+//            $doc["FieldBookNumber"] = "";
+//        if($doc["FieldBookPage"] == 0)
+//            $doc["FieldBookPage"] = "";
 
+        $numberOfPages = "1 page";
+        if($doc["FileNameBack"] != "")
+            $numberOfPages = "2 pages";
+
+        //to do: Author name to TDL official name
 
         $output = array(array("key" => "dc.contributor.author", "value" => $doc["AuthorName"]),
+            array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
             array("key" => "dc.title", "value" => $doc["Title"]),
             array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
             array("key" => "dc.type","value" => $doc["Type"]),
             array("key" => "dc.contributor","value" => $doc["CompanyName"]),
-            array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+            //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+            array("key" => "dc.format.extent","value" => $numberOfPages),
             array("key" => "dc.format.medium","value" => $doc["Medium"]),
             array("key" => "dc.format.mimetype","value" => $this->mimetype),
             array("key" => "dc.rights.holder","value" => $this->rightsholder),
@@ -64,8 +72,13 @@ class TDLSchema
             array("key" => "mc.mapscale","value" => $doc["MapScale"]),
             array("key" => "mc.note","value" => $doc["Comments"]),
             array("key" => "mc.customer","value" => $doc["CustomerName"]),
-            array("key" => "mc.collection","value" => $doc["Collection"])
+            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
+            array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
+            array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
         );
+
+        //need FieldBook and Job Folder relation (dc.relation title) and PDF (dc.relation.url)
 
         //have to put info inside a "metadata" key
 //        $output["metadata"] = $temp;
@@ -74,26 +87,72 @@ class TDLSchema
     }
 
     //$document is an associative array
+    //job folder page
     function convertJobFolderSchema($doc)
     {
         //preprocess
 
-        $output = array(array("key" => "dc.contributor.author", "value" => $doc["AuthorName"]),
+        $numberOfPages = "1 page";
+        if($doc["FileNameBack"] != "")
+            $numberOfPages = "2 pages";
+
+        $output = array(
+            array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
             array("key" => "dc.title", "value" => $doc["Title"]),
             array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
-            array("key" => "dc.type","value" => $doc["Type"]),
-            array("key" => "dc.contributor","value" => $doc["CompanyName"]),
-            array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
-            array("key" => "dc.format.medium","value" => $doc["Medium"]),
+            //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+            array("key" => "dc.format.extent","value" => $numberOfPages),
             array("key" => "dc.format.mimetype","value" => $this->mimetype),
             array("key" => "dc.rights.holder","value" => $this->rightsholder),
             array("key" => "dc.rights","value" => $this->rightsstatement),
-            array("key" => "mc.subtitle","value" => $doc["Subtitle"]),
-            array("key" => "mc.mapscale","value" => $doc["MapScale"]),
             array("key" => "mc.note","value" => $doc["Comments"]),
-            array("key" => "mc.customer","value" => $doc["CustomerName"]),
-            array("key" => "mc.collection","value" => $doc["Collection"])
+            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
+            array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
+            array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
         );
+
+        //adding multiple authors
+        //classification
+        //classification comments
+        //related fieldbook (PDF URL) and title
+        //related Map (title and URL)
+
+        return $output;
+        //have to put info inside a "metadata" key
+//        $output["metadata"] = $temp;
+//        return json_encode($output);
+    }
+
+    function convertFieldBookSchema($doc)
+    {
+        //extend: number of page in what??? Book or number of scan???
+
+        //preprocess
+        $output = array(
+            array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
+            array("key" => "dc.title", "value" => $doc["Title"]),
+            array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
+            //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+            array("key" => "dc.format.mimetype","value" => $this->mimetype),
+            array("key" => "dc.rights.holder","value" => $this->rightsholder),
+            array("key" => "dc.rights","value" => $this->rightsstatement),
+            array("key" => "mc.note","value" => $doc["Comments"]),
+            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
+            array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
+            array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
+        );
+
+        //adding multiple crew members
+        // job number
+        // job title
+        //indexed page (page number)
+        //weather description (WTF)
+
+        //missing: relation to Map and Job Folder (URL to the PDF and title)
+
+
 
         return $output;
         //have to put info inside a "metadata" key
@@ -103,19 +162,23 @@ class TDLSchema
 
 
 
-    //convert date from MM/DD/YYYY to MM-DD || MM-YYYY || MM-DD-YYYY
+    //convert date from MM/DD/YYYY
+    //NEW: Convert to YYYY
     //return "" if date is 00/00/0000
     function convertDate($date)
     {
         if($date == "00/00/0000")
             return "";
-        $temp = str_replace("/","-",$date);
-        $temp = str_replace("00","",$temp);
-        $temp = str_replace("--","-",$temp);
-
-        if(strrpos($temp,"-") == strlen($temp) - 1 )
-            $temp = substr($temp,0,-1);
-        return $temp;
+        $dateArr = explode("/",$date); // [0] = MM, [1] = DD, [2] = YYYY
+        if($dateArr[2] == "0000" )
+            return "";
+        else
+        {
+            if($dateArr[0] == "00" && $dateArr[1] == "00") return $dateArr[2]; //return YYYY
+            if($dateArr[1] == "00") return $dateArr[2] . "-" . $dateArr[0]; //return YYYY-MM
+            return $dateArr[2] . "-" . $dateArr[0] . "-" . $dateArr[1]; //return YYYY-DD-MM
+        }
+        return $dateArr[2] . "-" . $dateArr[0] . "-" . $dateArr[1]; //return YYYY-DD-MM
     }
 
     function mergeStrings($str1,$str2)

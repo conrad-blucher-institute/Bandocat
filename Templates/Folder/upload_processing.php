@@ -11,6 +11,9 @@ $DB = new FolderDBHelper();
 $rets = array();
 //get collection name
 $config = $DB->SP_GET_COLLECTION_CONFIG($_GET['col']);
+//Create Thumbnails dir if it doesn't exist
+if(!is_dir("../../Thumbnails"))
+    exec(mkdir("../../Thumbnails", 0777));
 foreach($_FILES as $f)
 {
     if(strpos($f['name'],"back") === false)

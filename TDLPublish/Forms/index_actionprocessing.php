@@ -44,6 +44,7 @@ switch($collection["templateID"])
         return; //error
 }
 $doc["Collection"] = $collection["TDLname"];
+$doc += $collection;
 
 $DB->SWITCH_DB($collectionName);
 //GET ITEM INFO

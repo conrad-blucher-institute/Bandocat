@@ -1,5 +1,5 @@
 <?php
-
+//This trait provides general functions to select or update fields related to TDL in `document` table of every collections
 /**
  * Created by PhpStorm.
  * User: snguyen1
@@ -19,6 +19,7 @@ trait TDLPublishTrait
         $ret = $sth->execute();
         if($ret)
             return $sth->fetch(PDO::FETCH_ASSOC);
+        print_r($sth->errorInfo());
         return null;
     }
 

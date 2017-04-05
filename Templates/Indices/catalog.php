@@ -34,7 +34,7 @@ $date = new DateHelper();
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-
+    <script type="text/javascript" src="../../Master/master.js"></script>
 </head>
 <!-- END HTML HEADER -->
 <body>
@@ -178,21 +178,37 @@ $date = new DateHelper();
         /*Program that conditionally selects the value of the Book title by splitting the filename with a underscore
          * delimiter and setting the value of the select option if equal to the prefix string value*/
 
+
         var fileNameSplit = fileName.split("_");
+        //var fileNameSplit = fileName.replace(/_/g,"");
+       // console.log("Split info: " + fileNameSplit);
         var fileNameNoSpace = "";
         for(var i = 0; i < fileNameSplit.length - 1; i++)
         {
             fileNameNoSpace += fileNameSplit[i].toLowerCase();
         }
+      //  console.log("filename with space " + fileNameNoSpace.toLowerCase());
+        var found = false;
         for(var i = 0; i < books.length;i++)
         {
             if(fileNameNoSpace == books[i][0].replace(/ /g, '').toLowerCase())
             {
+                found = true;
                 $('select.libraryIndexSelect').val(books[i][0]);
                 $('#ddlBookID').val(books[i][1]);
                 return;
+            }else
+            {
+                found = false;
+
             }
         }
+        if(found == false)
+        {
+            alert("Could not find book title match for library index.");
+            console.log("Failed to match book");
+        }
+
 
     }
 
@@ -213,43 +229,59 @@ $date = new DateHelper();
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
-            event.disabled;
+            if(validateFormUnderscore("txtLibraryIndex") == true)
+            {
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
+                event.disabled;
 
-            event.preventDefault();
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data){
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
+                event.preventDefault();
+                /* Send the data using post */
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data:  formData,
+                    processData: false,
+                    contentType: false,
+                    success:function(data)
                     {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("FAIL") || json[i].includes("EXISTED"))
+                        console.log("MADE IT HERE BITCH NUGGET")
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for(var i = 0; i < json.length; i++)
                         {
-                            $('#btnSubmit').css("display", "inherit");
-                            $('#loader').css("display", "none");
+                            msg += json[i] + "\n";
                         }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
-                    }
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("FAIL") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        alert(msg);
+                        if (result == 1){
+                            window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                        }
 
-                }
-            });
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown)
+                    {
+                        alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                    }
+                });
+            }
+            else
+            {
+                //No _ was found in the string
+                alert("Library Index does not contain an underscore character.                            " +
+                    "Please check Library Index.");
+            }
+
         });
 
     });

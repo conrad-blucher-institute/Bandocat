@@ -37,7 +37,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-
+    <script type="text/javascript" src="../../Master/master.js"></script>
 </head>
 <!-- END HTML HEADER -->
 <!--  HTML BODY -->
@@ -263,44 +263,45 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
             formData.append("crews",JSON.stringify(array_crews));
 
             /*jquery that displays the three points loader*/
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
 
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data)
-                {
-                    var json = JSON.parse(data);
-
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
+                /* Send the data using post */
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data:  formData,
+                    processData: false,
+                    contentType: false,
+                    success:function(data)
                     {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                        var json = JSON.parse(data);
+
+                        var msg = "";
+                        var result = 0;
+                        for(var i = 0; i < json.length; i++)
                         {
+                            msg += json[i] + "\n";
+                        }
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        if (result == 1){
+                            alert(msg);
                             $('#btnSubmit').css("display", "inherit");
                             $('#loader').css("display", "none");
+                            self.close();
                         }
-                    }
-                    if (result == 1){
-                        $('#btnSubmit').css("display", "inherit");
-                        $('#loader').css("display", "none");
-                        self.close();
-                    }
 
-                }
-            });
+                    }
+                });
         });
     });
 </script>
