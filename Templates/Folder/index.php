@@ -65,6 +65,11 @@ else header('Location: ../../');
                         <a class="Collection_Button" href="./list.php?col=<?php echo $collection; ?>&action=review" style="text-decoration: none; color: white; display: block">Edit/View Document</a>
                     </td>
                 </tr>
+                <tr>
+                    <td class="Collection_data">
+                        <a class="Collection_Button" href="../../Training/Form/list.php?col=<?php echo $collection; ?>&action=training" style="text-decoration: none; color: white; display: block">Trainig</a>
+                    </td>
+                </tr>
             </table>
         </td>
     </tr>

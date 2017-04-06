@@ -7,6 +7,7 @@ $session = new SessionManager();
         require('../../Library/DBHelper.php');
 	}
 	$username = $_SESSION["username"];
+$collection = $_GET["col"];
 	$userfile = "";
 
 	include 'config.php';
@@ -14,7 +15,7 @@ $session = new SessionManager();
 $file_arr = array();
 
 //list of files in the directory
-if($_SESSION["privilege"] == 1)
+if($_SESSION["role"] == 1)
 {
     $pos = -1;
     $listfile = scandir(getcwd());
@@ -131,7 +132,7 @@ else $userfile = $username;
 
     <!--Table container-->
 	<div id = "interContainer" style="display: none">
-	 		<?php if($_SESSION["privilege"] == 1){ ?>
+	 		<?php if($_SESSION["role"] == 'Admin'){ ?>
 	 		 <form enctype="multipart/form-data" id="switch" name="switch" method="GET">
 	 			<p>Switch View:
 	 			<select id="ddl_switch" name="user">
@@ -179,6 +180,18 @@ else $userfile = $username;
 	</div>
 
     <script type="text/javascript">
+
+        var trainingCollectionsJSON =  {"col": '<?php echo $collection ?>', "user": '<?php echo $username?>', "loc": 'parent'};
+
+        //Function that creates the training directory by collection, user, and training type and it is triggered when the document is ready
+        $( document ).ready(function() {
+            $.ajax({
+                type: 'post',
+                url: "collectionTrainingXML.php",
+                data: trainingCollectionsJSON
+            });
+        });
+
         function confirmReset() {
             var x =confirm("Are you sure want to reset your Training session?");
             if ( x == true) {
@@ -191,13 +204,13 @@ else $userfile = $username;
         function displayBlock(block) {
             if(block == 0) {
 
-                var user_post = {"user": '<?php echo $username?>', "type": 'newbie'};
+                var newType = {"type": 'newbie', "loc": "children"};
                 var welcomeMsg = '<h1 id="welcomeMsg">Welcome to your training list<h1>';
 
                 $.ajax({
                     type: 'post',
-                    url: "user_trainingXML.php",
-                    data: user_post,
+                    url: "collectionTrainingXML.php",
+                    data: newType,
                     success: function (data) {
                         //$('#bodyPage').append('');
                         $('#welcomeMsg').fadeIn(2000);
@@ -211,12 +224,12 @@ else $userfile = $username;
 
             if(block ==1){
 
-                var user_post = {"user": '<?php echo $username?>', "type": 'inter'};
+                var interType = {"type": 'inter', "loc": "children"};
 
                 $.ajax({
                     type: 'post',
-                    url: "user_trainingXML.php",
-                    data: user_post,
+                    url: "collectionTrainingXML.php",
+                    data: interType,
                     success: function (data) {
                         $('#bodyPage').append('<p>Welcome to your new adventure inter<p>');
                         $("#interContainer").css("display", "block");
