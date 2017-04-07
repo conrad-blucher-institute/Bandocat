@@ -23,8 +23,6 @@ $DB = new IndicesDBHelper();
 		foreach($result as $r)
 		    $coords[] = $r;
         echo json_encode($coords);
-	} else {
-		echo "0 results";
 	}
 
 ?>

@@ -21,7 +21,7 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
      */
 
     //debug flag
-    $debug = false;
+    $debug = true;
     if($debug)
         echo "DEBUG MODE IS ON\n";
     else echo "DEBUG MODE IS OFF\n";
@@ -44,7 +44,7 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
 
 //*********************************************************************************************************************
     //Current collection: Blucher Maps (bluchermaps), ID = 1,template Map (use MapDBHelper)
-    $collectionName = "bluchermaps";//change the variable if publishing to new collection
+    $collectionName = "blucherfieldbook";//change the variable if publishing to new collection
 //*********************************************************************************************************************
     fwrite($logfile,date(DATE_RFC2822) . ": Targeted collection: " . $collectionName . "\r\n");
     //Dspace Community and collection info:
@@ -79,10 +79,12 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
             case 2: //jobfolder template
                 $DB = new FolderDBHelper();
                 $doc = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_SELECT($collectionName,$docID);
+                $doc['Authors'] = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collectionName,$docID);
                 break;
             case 3: //fieldbook template
                 $DB = new FieldBookDBHelper();
                 $doc = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT($collectionName,$docID);
+                $doc['Crews'] = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collectionName,$docID);
                 break;
             case 4: //indices template
                 $DB = new IndicesDBHelper();
@@ -94,7 +96,7 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
         }
         //get tdl (dspace) fields from document table
         $doc_dspace = $DB->PUBLISHING_DOCUMENT_GET_DSPACE_INFO($docID);
-        $doc["Collection"] = $collection["TDLname"];
+        $doc["TDLCollection"] = $collection["TDLname"];
         $doc += $collection;
 
         echo "\nPublishing item ID: " . $docID . "\n";
