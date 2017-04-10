@@ -1756,7 +1756,7 @@ module.exports = function(Chart) {
 'use strict';
 
 module.exports = function(Chart) {
-
+/** FOUND THIS FOR LINE**/
 	Chart.Line = function(context, config) {
 		config.type = 'line';
 
@@ -2828,10 +2828,19 @@ module.exports = function(Chart) {
 
 	var helpers = Chart.helpers;
 
+
 	Chart.defaults.line = {
 		showLines: true,
 		spanGaps: false,
 
+		/***---------JOHN ADDED LEGEND HERE -----------------**/
+		legend: {
+			display: true,
+			labels: {
+				//fontColor: 'rgb(255, 99, 132)',
+				useLineStyle: true,
+			}
+		},
 		hover: {
 			mode: 'label'
 		},
@@ -6779,10 +6788,12 @@ module.exports = function(Chart) {
 'use strict';
 
 module.exports = function(Chart) {
-
+	//var ChartType =
+	//alert(ChartType);
+	//console.log(Chart.Controller);
+	console.log(Chart.defaults);
 	var helpers = Chart.helpers;
 	var noop = helpers.noop;
-
 	Chart.defaults.global.legend = {
 
 		display: true,
@@ -6805,9 +6816,11 @@ module.exports = function(Chart) {
 
 		onHover: null,
 
+		/**This section is for Global legend**/
 		labels: {
-			boxWidth: 40,
+			boxWidth: 30,
 			padding: 10,
+			//useLineStyle: true,
 			// Generates labels shown in the legend
 			// Valid properties to return:
 			// text : text to display
@@ -6841,6 +6854,7 @@ module.exports = function(Chart) {
 			}
 		}
 	};
+
 
 	/**
 	 * Helper function to get the box width based on the usePointStyle option
@@ -7117,7 +7131,7 @@ module.exports = function(Chart) {
 						// IE 9 and 10 do not support line dash
 						ctx.setLineDash(itemOrDefault(legendItem.lineDash, lineDefault.borderDash));
 					}
-
+					/**---------Setting the Line symbooolllllll-----------------------------------------------------------------------------**/
 					if (opts.labels && opts.labels.usePointStyle) {
 						// Recalculate x and y for drawPoint() because its expecting
 						// x and y to be center of figure (instead of top left)
@@ -7128,16 +7142,23 @@ module.exports = function(Chart) {
 
 						// Draw pointStyle as legend symbol
 						Chart.canvasHelpers.drawPoint(ctx, legendItem.pointStyle, radius, centerX, centerY);
-					} else {
+					}
+					/**THIS IS WHERE I FOUND THIS  http://stackoverflow.com/questions/39155400/legends-for-line-charts-in-chart-js **/
+					else if (opts.labels && opts.labels.useLineStyle) {
+						ctx.strokeRect(x, y + fontSize / 2, boxWidth, 0);
+					}
+
+					else {
 						// Draw box as legend symbol
 						if (!isLineWidthZero) {
 							ctx.strokeRect(x, y, boxWidth, fontSize);
 						}
 						ctx.fillRect(x, y, boxWidth, fontSize);
 					}
-
 					ctx.restore();
 				};
+
+				/***----------------------------------------------JOHN IS FINISHED HERE------------------------------------------------------------**/
 				var fillText = function(x, y, legendItem, textWidth) {
 					ctx.fillText(legendItem.text, boxWidth + (fontSize / 2) + x, y);
 
