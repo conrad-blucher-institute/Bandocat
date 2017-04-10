@@ -1,7 +1,7 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if($session->isAdmin() == true) {
+if(!$session->isAdmin()) {
     header('Location: ../../');
 }
 include '../../Library/DBHelper.php';

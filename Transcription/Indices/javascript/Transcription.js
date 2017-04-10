@@ -15,12 +15,15 @@ function getRectangleCoords()
 		url: 'php/drawRectanglesLeaflet.php',
 		data: {"fileName": fileName, "docID": docID,"collection": collection},
 		success:function(data){
-			rectangleCoords = JSON.parse(data);
-			drawRectangles(collection,rectangleCoords);
+			if(data == "") return;
+			else {
+                rectangleCoords = JSON.parse(data);
+                drawRectangles(collection, rectangleCoords);
+            	}
 			}
 		});
-		
-	
+
+
 }
 
 //This function draws rectangles on document viewer window using the JSON passed to it from getRectangleCoords() 

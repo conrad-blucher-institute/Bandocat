@@ -15,8 +15,6 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $draw = $draw . ' rectangle '. $row["x1"]. "," . $row["y1"]. " " . $row["x2"]. "," . $row['y2'];
     }
-} else {
-    echo "0 results";
 }
 $conn->close();
 

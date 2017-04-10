@@ -7,7 +7,7 @@
 	{
 		public static function deleteDir($tiles) {
 		if (! is_dir($tiles)) {
-			throw new InvalidArgumentException("$dirPath must be a directory");
+			throw new InvalidArgumentException("$tiles must be a directory");
 		}
 		if (substr($tiles, strlen($tiles) - 1, 1) != '/') {
 			$tiles .= '/';

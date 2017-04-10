@@ -102,7 +102,7 @@ $session = new SessionManager();
                                 return "";
                             return data;
                         },
-                        "targets": 5
+                        "targets": 6
                     },
                     //column : HasCoast
                     {
@@ -111,7 +111,7 @@ $session = new SessionManager();
                                 return "Yes";
                             return "No";
                         },
-                        "targets": 6
+                        "targets": 7
                     },
                    // { "searchable": false, "targets": 6 },
                     //column : NeedsReview
@@ -121,14 +121,14 @@ $session = new SessionManager();
                                 return "Yes";
                             return "No";
                         },
-                        "targets": 7
+                        "targets": 8
                     },
                    // { "searchable": false, "targets": 7 },
                     {
                         "render": function ( data, type, row ) {
                         return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
                         },
-                        "targets": 8
+                        "targets": 9
                     },
 
                 ],
@@ -140,8 +140,8 @@ $session = new SessionManager();
                         switch(column[0][0]) //column number
                         {
                             //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
-                            case 6: //column hascoast
-                            case 7: //column needsreview
+                            case 7: //column hascoast
+                            case 8: //column needsreview
                                 var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
@@ -176,7 +176,8 @@ $session = new SessionManager();
                             case 2: //title
                             case 3: //subtitle
                             case 4: //customer
-                            case 5: //end date
+                            case 5: //author
+                            case 6: //enddate
                                 var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'keyup change', function () {
@@ -197,8 +198,8 @@ $session = new SessionManager();
             //hide first column (DocID)
             table.column(0).visible(true);
             //hides the columns responsible for need's input
-            table.column(8).visible(false);
-            <?php if($session->isAdmin()){ ?> table.column(8).visible(true); <?php } ?>
+            table.column(9).visible(false);
+            <?php if($session->isAdmin()){ ?> table.column(9).visible(true); <?php } ?>
             // show or hide subtitle
             table.column(3).visible(false);
             $('#checkbox_subtitle').change(function (e) {
@@ -249,6 +250,7 @@ $session = new SessionManager();
                     <th>Document Title</th>
                     <th width="280px">Document Subtitle</th>
                     <th width="200px">Customer</th>
+                    <th width="200px">Author</th>
                     <th width="70px">End Date</th>
                     <th width="40px">Has Coast</th>
                     <th width="30px">Needs Review</th>
@@ -262,6 +264,7 @@ $session = new SessionManager();
                 <th>Document Title</th>
                 <th width="280px">Document Subtitle</th>
                 <th width="200px">Customer</th>
+                <th width="200px">Author</th>
                 <th width="70px">End Date</th>
                 <th width="40px">Has Coast</th>
                 <th width="30px">Needs Review</th>
