@@ -46,7 +46,7 @@ $Render = new ControlsRender();
                             Select Collection:
                             <select name="ddlCollection" id="ddlCollection">
                                 <!-- Renders the Dropdownlist with the collections -->
-                                <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(1),true),"bluchermaps");?>
+                                <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(4),false),"bluchermaps");?>
                             </select>
                         </form>
                         </td>

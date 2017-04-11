@@ -22,8 +22,10 @@ class TDLSchema
                 $array =  $this->convertMapSchema($doc);
                 break;
             case "2":
+                $array =  $this->convertJobFolderSchema($doc);
                 break;
             case "3":
+                $array = $this->convertFieldBookSchema($doc);
                 break;
             case "4":
                 break;
@@ -58,7 +60,7 @@ class TDLSchema
 
         $output = array(array("key" => "dc.contributor.author", "value" => $doc["AuthorName"]),
             array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
-            array("key" => "dc.title", "value" => $doc["Title"]),
+            array("key" => "dc.title", "value" => str_replace("-_","-",$doc['Title'])),
             array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
             array("key" => "dc.type","value" => $doc["Type"]),
             array("key" => "dc.contributor","value" => $doc["CompanyName"]),
@@ -72,7 +74,7 @@ class TDLSchema
             array("key" => "mc.mapscale","value" => $doc["MapScale"]),
             array("key" => "mc.note","value" => $doc["Comments"]),
             array("key" => "mc.customer","value" => $doc["CustomerName"]),
-            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "mc.collection","value" => $doc["TDLCollection"]),
             array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
             array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
             array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
@@ -80,9 +82,6 @@ class TDLSchema
 
         //need FieldBook and Job Folder relation (dc.relation title) and PDF (dc.relation.url)
 
-        //have to put info inside a "metadata" key
-//        $output["metadata"] = $temp;
-//        return json_encode($output);
         return $output;
     }
 
@@ -98,30 +97,28 @@ class TDLSchema
 
         $output = array(
             array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
-            array("key" => "dc.title", "value" => $doc["Title"]),
+            array("key" => "dc.title", "value" => str_replace("-_","-",$doc['Title'])),
             array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
             //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
             array("key" => "dc.format.extent","value" => $numberOfPages),
+            array("key" => "mc.classification","value" => $doc['Classification']),
+            array("key" => "mc.classification.note","value" => $doc['ClassificationComment']),
             array("key" => "dc.format.mimetype","value" => $this->mimetype),
             array("key" => "dc.rights.holder","value" => $this->rightsholder),
             array("key" => "dc.rights","value" => $this->rightsstatement),
             array("key" => "mc.note","value" => $doc["Comments"]),
-            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "mc.collection","value" => $doc["TDLCollection"]),
             array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
             array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
             array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
         );
-
         //adding multiple authors
-        //classification
-        //classification comments
+        foreach($doc["Authors"] as $author)
+            array_push($output,array("key" => "dc.contributor.author","value" => $author[0]));
+
         //related fieldbook (PDF URL) and title
         //related Map (title and URL)
-
         return $output;
-        //have to put info inside a "metadata" key
-//        $output["metadata"] = $temp;
-//        return json_encode($output);
     }
 
     function convertFieldBookSchema($doc)
@@ -131,33 +128,29 @@ class TDLSchema
         //preprocess
         $output = array(
             array("key" => "dc.identifier.other", "value" => str_replace("-_","-",$doc['LibraryIndex'])),
-            array("key" => "dc.title", "value" => $doc["Title"]),
+            array("key" => "dc.relation.ispartof", "value" => $doc["BookTitle"]),
+            array("key" => "mc.collection", "value" => $doc["Collection"]),
             array("key" => "dc.coverage.temporal","value" => $this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"]))),
             //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+            array("key" => "mc.pagenumber","value" => $doc["IndexedPage"]),
+            array("key" => "dc.relation.ispartof","value" => $doc['JobNumber']),
+            array("key" => "dc.relation.ispartof","value" => $doc['JobTitle']),
             array("key" => "dc.format.mimetype","value" => $this->mimetype),
             array("key" => "dc.rights.holder","value" => $this->rightsholder),
             array("key" => "dc.rights","value" => $this->rightsstatement),
             array("key" => "mc.note","value" => $doc["Comments"]),
-            array("key" => "mc.collection","value" => $doc["Collection"]),
+            array("key" => "mc.collection","value" => $doc["TDLCollection"]),
             array("key" => "dc.identifier.citation","value" => $doc['TDLcitation']),
             array("key" => "mc.collectionid","value" => $doc['TDLnumber']),
             array("key" => "mc.collection.sub","value" => $doc['TDLsubgroup'])
         );
 
         //adding multiple crew members
-        // job number
-        // job title
-        //indexed page (page number)
-        //weather description (WTF)
-
+        foreach($doc["Crews"] as $crew)
+            array_push($output,array("key" => "dc.contributor.author","value" => $crew[0]));
         //missing: relation to Map and Job Folder (URL to the PDF and title)
 
-
-
         return $output;
-        //have to put info inside a "metadata" key
-//        $output["metadata"] = $temp;
-//        return json_encode($output);
     }
 
 
@@ -203,5 +196,10 @@ class TDLSchema
 
         return str_replace('"',"",substr($header,$temp2,$temp3 - $temp2));
     }
+
+    //TODO:
+    //Job Folder (whole)
+    //Field Book (whole)
+    //Update Schema
 
 }

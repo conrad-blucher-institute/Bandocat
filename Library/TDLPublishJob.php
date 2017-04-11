@@ -138,8 +138,6 @@ class TDLPublishJob
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
         curl_close($ch);
-
-
         if($info['http_code'] == "200") //if http_code is 200, extract the item id from the header
             return $result;
         else

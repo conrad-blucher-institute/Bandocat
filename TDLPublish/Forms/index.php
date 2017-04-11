@@ -41,10 +41,10 @@ $Render = new ControlsRender();
                             <td style="float:left;font-size:14px" colspan="20%">
                                 <!-- Form responsible for the select drop down menu -->
                                 <form id = "form" name="form" method="post">
-                                    Select Collection:
+                                    Select Collection:F
                                     <select name="ddlCollection" id="ddlCollection">
                                         <!-- Renders the Dropdownlist with the collections -->
-                                        <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN(),"bluchermaps");?>
+                                        <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(4),false),"bluchermaps");?>
                                     </select>
                                 </form>
                                 <!-- Displays the count of maps -->
@@ -148,9 +148,9 @@ $Render = new ControlsRender();
                     "render": function ( data, type, row ) {
                         switch(row[2])
                         {
-                            case "0": return "<a href='' onclick='performAction(" + '"push"' + "," + row[0] +")'>Push</a>";//publish
-                            case "1": return "<a href='' onclick='performAction(" + '"update"' + "," + row[0] +")'>Update</a>  | <a href='' onclick='performAction(" + '"unpublish"' + "," + row[0] +")'>Unpublish</a>";
-                            case "2": return "<a href=''>Pop</a>"; //in publish queue
+                            case "0": return "<a href='' onclick='performAction(event," + '"push"' + "," + row[0] +")'>Push</a>";//publish
+                            case "1": return "<a href='' onclick='performAction(event," + '"update"' + "," + row[0] +")'>Update</a>  | <a href='' onclick='performAction(event," + '"unpublish"' + "," + row[0] +")'>Unpublish</a>";
+                            case "2": return "<a href='' onclick='performAction(event," + '"pop"' + "," + row[0] +")'>Pop</a>"; //in publish queue
                             case "-1": return "<a href=''>Pop</a>"; //in unpublish queue????
                             case "10": //publishing front map
                             case "11": //publishing back map
@@ -234,14 +234,15 @@ $Render = new ControlsRender();
         $("#ddlCollection").change();
     });
 
-    function performAction(action,docID)
+    function performAction(event,action,docID)
     {
+        event.preventDefault();
         $.ajax({
             type: "POST",
             url: "index_actionprocessing.php",
             data: {ddlCollection: $("#ddlCollection").val(),docID: docID, action: action},
             success: function (data) {
-                console.log(data);
+                $('#dtable').DataTable().draw();
             }
         });
     }

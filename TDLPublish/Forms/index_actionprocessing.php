@@ -29,10 +29,12 @@ switch($collection["templateID"])
     case 2: //jobfolder template
         $DB = new FolderDBHelper();
         $doc = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_SELECT($collectionName,$docID);
+        $doc['Authors'] = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collectionName,$docID);
         break;
     case 3: //fieldbook template
         $DB = new FieldBookDBHelper();
         $doc = $DB->SP_TEMPLATE_FIELDBOOK_DOCUMENT_SELECT($collectionName,$docID);
+        $doc['Crews'] = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collectionName,$docID);
         break;
     case 4: //indices template
         $DB = new IndicesDBHelper();
@@ -43,7 +45,7 @@ switch($collection["templateID"])
         echo "Error initializing class!";
         return; //error
 }
-$doc["Collection"] = $collection["TDLname"];
+$doc["TDLCollection"] = $collection["TDLname"];
 $doc += $collection;
 
 $DB->SWITCH_DB($collectionName);
@@ -95,7 +97,6 @@ switch($_POST['action'])
 }
     if($ret)
         $ret = $DB->SP_LOG_WRITE($_POST['action'] . " (tdl)",$collection["collectionID"],$docID,$session->getUserID(),"success","");
-
     if($ret)
         echo "Success!";
     else echo "Error!";

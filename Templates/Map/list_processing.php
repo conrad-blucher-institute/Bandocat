@@ -49,9 +49,10 @@ $columns = array(
     array( 'db' => '`document`.`title`', 'dt' => 2,'field' => 'title' ),
     array( 'db' => '`document`.`subtitle`',  'dt' => 3, 'field' => 'subtitle' ),
     array( 'db' => '`customer`.`customername`', 'dt' => 4,'field' => 'customername'),
-    array( 'db' => '`document`.`enddate`', 'dt' => 5,'field' => 'enddate'),
-    array( 'db' => '`document`.`hascoast`', 'dt' => 6, 'field' => 'hascoast'),
-    array( 'db' => '`document`.`needsreview`', 'dt' => 7,'field' => 'needsreview')
+    array( 'db' => '`author`.`authorname`', 'dt' => 5,'field' => 'authorname'),
+    array( 'db' => '`document`.`enddate`', 'dt' => 6,'field' => 'enddate'),
+    array( 'db' => '`document`.`hascoast`', 'dt' => 7, 'field' => 'hascoast'),
+    array( 'db' => '`document`.`needsreview`', 'dt' => 8,'field' => 'needsreview')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -61,7 +62,7 @@ $columns = array(
 
 require('../../Library/sspwithjoin.class.php');
 
-$joinQuery = " FROM `document` LEFT JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`)";
+$joinQuery = " FROM `document` LEFT JOIN `customer` ON (`document`.`customerID` = `customer`.`customerID`) LEFT JOIN `author` ON (`document`.`authorID` = `author`.`authorID`) ";
 $extraWhere = "";
 
 echo json_encode(
