@@ -1,11 +1,12 @@
 <?php
-//Super Admin only???
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
 require '../../Library/DBHelper.php';
 require '../../Library/CreatorHelper.php';
 $DB = new CreatorHelper();
-$ret = $DB->COLLECTION_INSERT($_POST['txtParameterName'],$_POST['txtDisplayName'],$_POST['txtDatabaseName'],$_POST['txtStorageDir'],$_POST['txtThumbnailDir'],$_POST['ddlTemplate'],$_POST['txtGeorecStorageDir']);
+$ret = $DB->COLLECTION_INSERT($_POST['txtParameterName'],$_POST['txtDisplayName'],
+    $_POST['txtDatabaseName'],$_POST['txtStorageDir'],$_POST['txtThumbnailDir'],
+    $_POST['ddlTemplate'],$_POST['txtGeorecStorageDir']);
 $newdbID = $ret;
 if($ret) //$ret = new collection ID
 {

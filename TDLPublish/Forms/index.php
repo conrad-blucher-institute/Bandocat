@@ -40,8 +40,8 @@ $Render = new ControlsRender();
                             <td style="margin-left: 45% ;font-size:14px" colspan="20%"
                             <td style="float:left;font-size:14px" colspan="20%">
                                 <!-- Form responsible for the select drop down menu -->
-                                <form id = "form" name="form" method="post">
-                                    Select Collection:F
+                                <form id = "form" name="form" method="post" style="padding:0;margin:0">
+                                    Select Collection:
                                     <select name="ddlCollection" id="ddlCollection">
                                         <!-- Renders the Dropdownlist with the collections -->
                                         <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(4),false),"bluchermaps");?>
