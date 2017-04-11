@@ -67,7 +67,7 @@ else header('Location: ../../');
                 </tr>
                 <tr>
                     <td class="Collection_data">
-                        <a class="Collection_Button" href="../../Training/Form/list.php?col=<?php echo $collection; ?>&action=training" style="text-decoration: none; color: white; display: block">Trainig</a>
+                        <a class="Collection_Button" href="../../Training/Forms/list.php?col=<?php echo $collection; ?>&action=training&type=none" style="text-decoration: none; color: white; display: block">Training</a>
                     </td>
                 </tr>
             </table>

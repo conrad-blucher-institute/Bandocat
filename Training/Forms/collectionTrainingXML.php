@@ -1,16 +1,20 @@
 <?php
 $data = $_POST;
 $training_location = $data['loc'];
+$training_col = $data['col'];
+$training_user = $data['user'];
+
+$training_parent = "../Training_Collections";
+//Collection directory
+$training_collection_dir = $training_parent.'/'.$training_col;
+//User directory
+$training_user_dir = $training_collection_dir.'/'.$training_user;
 
 if ($training_location == 'parent') {
-    $training_col = $data['col'];
+
     $training_user = $data['user'];
 
-    $training_parent = "../Training_Collections";
-    //Collection directory
-    $training_collection_dir = $training_parent.'/'.$training_col;
-    //User directory
-    $training_user_dir = $training_collection_dir.'/'.$training_user;
+
 
     if (file_exists($training_collection_dir))
         $training_collection_dir;
@@ -31,19 +35,9 @@ if ($training_location == 'children') {
     $training_type = $data['type'];
 
     if ($training_type == 'newbie') {
-
-        if (file_exists($training_user_dir))
-            $training_user_dir = $training_cuser_dir;
-
-
-        else
-            mkdir($training_user_dir, 07000);
-
-        $training_XML = $training_collection_dir.'/'.$training_user . "_newbie.xml";
-        print_r($training_XML);
+        $training_XML = $training_user_dir.'/'.$training_user . "_newbie.xml";
         if (file_exists($training_XML)) {
-            $training_XML = $training_user;
-
+            echo "Welcome Back";
         }
         else{
             $xml = new DOMDocument();
@@ -55,10 +49,10 @@ if ($training_location == 'children') {
     }
 
     if ($training_type == 'inter') {
-        $training_XML = $training_user.'/'.$training_user . "_inter.xml";
+        $training_XML = $training_user_dir.'/'.$training_user . "_inter.xml";
         if (file_exists($training_XML)) {
-            $training_XML = $training_user;
-            print_r('file exists');
+            echo "Welcome Back";
+
         }
         else{
             $xml = new DOMDocument();

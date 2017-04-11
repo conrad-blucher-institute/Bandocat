@@ -85,8 +85,18 @@ else $userfile = $username;
 
                         <!--Block of code that load the information from the xml file to the table-->
                         <?php
+                        $training_parent = "../Training_Collections";
+                        //Collection directory
+                        $training_collection_dir = $training_parent.'/'.$collection;
+                        //User directory
+                        $training_user_dir = $training_collection_dir.'/'.$userfile;
                         $document = new DOMDocument();
-                        $document->load('../'.$userfile.'.xml');
+                        if ($_GET['type'] == 'newbie') {
+                            $document->load($training_user_dir.'/'.$userfile.'_newbie.xml');
+                        } elseif ($_GET['type'] == 'inter') {
+                            $document->load($training_user_dir.'/'.$userfile.'_inter.xml');
+                        }
+
                         $nodes = $document->getElementsByTagName('document');
 
                         foreach ($nodes as $node) {
@@ -125,8 +135,9 @@ else $userfile = $username;
         </div>
     </div>
 
-    <img src="../../Images/beginner.jpg" id='newbie' onclick="displayBlock(0)" style="margin: 6% -4% 25% 24%">
-    <img src="../../Images/intermediate.png" id='intermediate' onclick="displayBlock(1)" style="margin: 0% 0% 0% -23%">
+    <a href="#" id="newbieLink" onclick="displayBlock(0)"><img src="../../Images/beginner.jpg" id='newbie' style="margin: 6% -4% 25% 24%"></a>
+    <a href="#" id="interLink" onclick="displayBlock(1)"><img src="../../Images/intermediate.png" id='intermediate' style="margin: 0% 0% 0% -23%"></a>
+
     <h1 id="welcomeMsg" style="display: none; position: absolute; left: 35%; top: 35%; z-index:2;">Welcome to the Document List</h1>
 
 
@@ -185,6 +196,13 @@ else $userfile = $username;
 
         //Function that creates the training directory by collection, user, and training type and it is triggered when the document is ready
         $( document ).ready(function() {
+            if("<?php echo $_GET['type']?>" == 'inter' || "<?php echo $_GET['type']?>" == 'newbie')
+            {
+                $('#newbie').css('display', 'none');
+                $('#intermediate').css('display', 'none');
+                $('#divscroller').css('display', 'block');
+            }
+
             $.ajax({
                 type: 'post',
                 url: "collectionTrainingXML.php",
@@ -204,38 +222,26 @@ else $userfile = $username;
         function displayBlock(block) {
             if(block == 0) {
 
-                var newType = {"type": 'newbie', "loc": "children"};
+                var newType = {"col": '<?php echo $collection ?>', "type": 'newbie', "loc": "children", "user": '<?php echo $username?>'};
                 var welcomeMsg = '<h1 id="welcomeMsg">Welcome to your training list<h1>';
+                $('#newbieLink').attr('href', 'http://localhost/BandoCat/Training/Forms/list.php?col=jobfolder&action=training&type=newbie');
 
                 $.ajax({
                     type: 'post',
                     url: "collectionTrainingXML.php",
-                    data: newType,
-                    success: function (data) {
-                        //$('#bodyPage').append('');
-                        $('#welcomeMsg').fadeIn(2000);
-                        $('#welcomeMsg').fadeOut(2000);
-                        $("#divscroller").delay(2000).fadeIn(2000);
-                        $('#newbie').fadeOut(1000);
-                        $('#intermediate').fadeOut(1000);
-                    }
+                    data: newType
                 });
             }
 
             if(block ==1){
 
-                var interType = {"type": 'inter', "loc": "children"};
+                var interType = {"col": '<?php echo $collection ?>', "type": 'inter', "loc": "children", "user": '<?php echo $username?>'};
+                $('#interLink').attr('href', 'http://localhost/BandoCat/Training/Forms/list.php?col=jobfolder&action=training&type=inter');
 
                 $.ajax({
                     type: 'post',
                     url: "collectionTrainingXML.php",
-                    data: interType,
-                    success: function (data) {
-                        $('#bodyPage').append('<p>Welcome to your new adventure inter<p>');
-                        $("#interContainer").css("display", "block");
-                        $('#newbie').css("display", "none");
-                        $('#intermediate').css("display", 'none');
-                    }
+                    data: interType
                 });
             }
         }
