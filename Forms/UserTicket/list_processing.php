@@ -47,8 +47,11 @@ $columns = array(
     array( 'db' => '`collection`.`displayname`', 'dt' => 1,'field' => 'displayname'),
     array( 'db' => '`ticket`.`subject`', 'dt' => 2,'field' => 'subject'),
     array( 'db' => '`ticket`.`submissiondate`', 'dt' => 3,'field' => 'submissiondate' ),
-    array( 'db' => '`user`.`username`',  'dt' => 4, 'field' => 'username' ),
-    array( 'db' => '`ticket`.`status`', 'dt' => 5,'field' => 'status')
+    array( 'db' => '`ticket`.`solveddate`', 'dt' => 4,'field' => 'solveddate' ),
+    array( 'db' => '`ticket`.`lastseen`', 'dt' => 5,'field' => 'lastseen' ),
+    //array( 'db' => '`user`.`username`',  'dt' => 6, 'field' => 'username' ),
+    array( 'db' => '`ticket`.`status`', 'dt' => 6,'field' => 'status'),
+    array( 'db' => '`ticket`.`status`', 'dt' => 7,'field' => 'status')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

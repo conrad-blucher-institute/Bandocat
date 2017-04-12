@@ -10,6 +10,7 @@ if(isset($_GET['id'])) {
 else header('Location: ../../');
 
 $ticket = $DB->SP_ADMIN_TICKET_SELECT($tID);
+$DB->TICKET_UPDATE_LASTSEEN($tID);
 //var_dump($ticket); //uncomment this to display the array
 ?>
 

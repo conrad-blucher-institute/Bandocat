@@ -316,9 +316,12 @@ function format_size($size) {
                             label: "Total Maps/Documents per Collection"
                         }],
                         labels: pieLabels
+
                     },
                     options: { responsive:true}
+                    //console.log(PieChart);
                 });
+                console.log(PieChart);
                 //calculate total counts of all collections = SUM of pieData array
                 $("#spanTotalCount").html(pieData.reduce(function(prev,curr){return parseInt(prev)+ parseInt(curr);}));
             }
@@ -480,6 +483,9 @@ function format_size($size) {
                                     data: dat2,
                                     options: {responsive: true}
                                 });
+                               console.log(LineChart2);
+
+                                //ctx2.strokeRect(222, 100 + 20 / 2, 30, 0);
                             }
                         });
                     }
