@@ -35,7 +35,7 @@ else header('Location: ../../');
 
 <body bgcolor = "#e5f1fd" onload = "getRectangleCoords()">
 
-<div id = 'title'><?php echo $config['DisplayName']; ?> Transcription</div>
+<h2 id="page_title"><?php echo $config['DisplayName']; ?> Transcription</h2>
 
 <!-- ENTRIES AND DISPLAY BUTTONS FOR CORRECTION OR COMPLETION-->
 <div id = "Entries">

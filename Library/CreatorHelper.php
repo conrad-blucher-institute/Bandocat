@@ -12,7 +12,7 @@ class CreatorHelper extends DBHelper
 
     function GET_COLLECTION_AND_TEMPLATE()
     {
-        $this->getConn()->exec('USE ' . parent::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT `collection`.`name`,`collection`.`displayname`,`collection`.`dbname`,`collection`.`templateID`,t.`name`,t.`description` FROM `collection` LEFT JOIN `template` AS t ON `collection`.`templateID` = t.`templateID`");
         $ret = $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -20,7 +20,7 @@ class CreatorHelper extends DBHelper
 
     function GET_TEMPLATES()
     {
-        $this->getConn()->exec('USE ' . parent::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT `template`.`templateID`,`template`.`name`,`template`.`description` FROM `template`");
         $ret = $sth->execute();
         return $sth->fetchAll(PDO::FETCH_NUM);
@@ -29,7 +29,7 @@ class CreatorHelper extends DBHelper
 
     function COLLECTION_VALIDATE_NEW_ENTRY($iParName,$iDisplayName,$iDBName)
     {
-        $this->getConn()->exec('USE ' . parent::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT COUNT(*) FROM `collection` WHERE `name` = :parname OR `displayname` = :dname OR `dbname` = :dbname");
         $sth->bindParam(':parname',$iParName,PDO::PARAM_STR);
         $sth->bindParam(':dname',$iDisplayName,PDO::PARAM_STR);
@@ -43,7 +43,7 @@ class CreatorHelper extends DBHelper
     //need to fix
     function COLLECTION_INSERT($iParName,$iDisplayName,$iDBName,$iStorageDir,$iThumbnailDir,$iTemplateID,$iGeorecDir)
     {
-        $this->getConn()->exec('USE ' . parent::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("INSERT INTO `collection`(`name`,`displayname`,`dbname`,`storagedir`,`thumbnaildir`,`templateID`,`georecdir`) VALUES(:parname,:dname,:dbname,:storagedir,:thumbdir,:tID,:georecdir)");
         $sth->bindParam(':parname',$iParName,PDO::PARAM_STR);
         $sth->bindParam(':dname',$iDisplayName,PDO::PARAM_STR);
@@ -60,7 +60,7 @@ class CreatorHelper extends DBHelper
 
     function COLLECTION_DELETE($iColID)
     {
-        $this->getConn()->exec('USE ' . parent::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("DELETE FROM `collection` WHERE `collectionID` = :colID");
         $sth->bindParam(':colID',$iColID,PDO::PARAM_INT);
         $ret = $sth->execute();
@@ -70,7 +70,7 @@ class CreatorHelper extends DBHelper
     //limit1 => select only one db
     function GET_DBNAME_FROM_TEMPLATEID($iTemplateID,$limit1)
     {
-        $this->getConn()->exec('USE ' . parent::$maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         if($limit1 == true)
             $sth = $this->getConn()->prepare("SELECT `dbname` FROM `collection` WHERE `templateID` = :tID ORDER BY `collectionID` ASC LIMIT 1");
         else $sth = $this->getConn()->prepare("SELECT `dbname` FROM `collection` WHERE `templateID` = :tID ORDER BY `collectionID` ASC");
