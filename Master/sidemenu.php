@@ -14,11 +14,11 @@
         $ticketCount = $DB1->GET_ADMIN_OPENTICKET_COUNT();
         echo '<div class="menu-item menu-item_sub4">
             <!--class for the visuals, data-badge to pass the number of tickets to the text in the badge -->
-            <h4><a class="notificationBadge" data-badge='.$ticketCount.' id="adminNotificationBadge" href="">Admin</a></h4>    
+            <h4><a class="notificationBadge" data-badge='.$ticketCount.' id="adminNotificationBadge" href="">Admin </a></h4>    
              <div></div>
             <ul>           
             <li><a href="../../Forms/ActivityLog/index.php">Activity Log</a></li>
-            <li><a href="../../Forms/Ticket/">View Tickets</a></li>
+            <li><a class="notificationBadge" data-badge='.$ticketCount.' id="adminNotificationBadge2" href="../../Forms/Ticket/">View Tickets </a></li>
             <li><a href="../../Forms/ManageUser/">Manage User</a></li>
             <li><a href="../../Forms/NewUser/">Create New User</a></li>
             </ul>
@@ -73,14 +73,19 @@
     <div class="menu-item">
         <h4><a href="../../Forms/AccountSettings/">My Account</a></h4>
     </div>
-    <!-- User Ticket Tab -->
-    <div class="menu-item menu-item_sub2">
-        <h4><a href="#">Ticket</a></h4>
+
+    <?php
+        $userid = $session-> getUserID();
+        $userticketCount = $DB1->GET_USER_CLOSEDTICKET_COUNT($userid);
+        echo '<div class="menu-item menu-item_sub2">
+        <h4><a class="notificationBadge" data-badge='.$userticketCount.' id="userNotificationBadge" href="#">Ticket </a></h4>
         <ul>
-            <li><a href="../../Forms/UserTicket/">View Tickets</a></li>
+            <li><a class="notificationBadge" data-badge='.$userticketCount.' id="userNotificationBadge2" href="../../Forms/UserTicket/">View Tickets </a></li>   
             <li><a href="../../Forms/TicketsSubmission/" target="_blank">Submit Ticket</a></li>
         </ul>
-    </div>
+    </div>';
+?>
+
     <!-- Help Tab -->
     <div class="menu-item menu-item_sub2">
         <h4><a href="#">Help</a></h4>
@@ -100,14 +105,26 @@
         {
             //grab ticketCount variable from above PHP function
             var count = '<?php echo $ticketCount; ?>';
+            var count2 = '<?php echo $userticketCount; ?>';
             //if we have more than 0 tickets with the status of "open"
-            if(count > 0)
-            {
+            if(count > 0) {
+                document.getElementById("adminNotificationBadge2").className = "notificationBadge";
                 document.getElementById("adminNotificationBadge").className = "notificationBadge";
-
-            }else
+            }
+            if(count < 1)
             {
+                document.getElementById("adminNotificationBadge2").className = "";
                 document.getElementById("adminNotificationBadge").className = "";
+            }
+            if(count2 > 0)
+            {
+                document.getElementById("userNotificationBadge2").className = "notificationBadge";
+                document.getElementById("userNotificationBadge").className = "notificationBadge";
+            }
+            if(count2 < 1)
+            {
+                document.getElementById("userNotificationBadge2").className = "";
+                document.getElementById("userNotificationBadge").className = "";
             }
 
         });
