@@ -195,7 +195,7 @@ else header('Location: ../../');
 	
 	<input type = "button" id = "updateEntry" value = "Update Entry" onclick = "updateEntryData()">
 	<input type = "button" id = "deleteEntry" value = "Delete Entry" onclick = "deleteSelected()">
-	<input type="submit"  value="Submit Entry" class = "Submit" id = "Submit" name = "submit">
+	<input type="submit" value="Submit Entry" class = "Submit" id = "Submit" name = "submit">
 
 
 </form>
@@ -203,7 +203,7 @@ else header('Location: ../../');
 
 <!-- BUTTONS THAT ARE NOT PART OF THE FORM -->
 <div id = "buttons" style="text-align:center">
-	<button onclick = "deletePrevious()" id = 'deletePrevious' name="deletePrevious" class="btn">Delete Active Rectangle</button>
+	<button  onclick = "deletePrevious()" id = 'deletePrevious' name="deletePrevious" class="btn">Delete Active Rectangle</button>
 	<button  id = "Complete_Transcription" onclick = "completeTranscription()" class="btn">Mark as Complete & Close</button>
 	<button  id = "Incomplete_Transcription" onclick = "incompleteTranscription()" class="btn" >Close </button>
 </div>
@@ -455,4 +455,23 @@ else header('Location: ../../');
 		padding: 10px 10px;
 	}
 </style>
+<script>
+	//Script checks the users role. If the role is set as "Reader" Then certain functionality is hidden
+	$( document ).ready(function()
+	{
+		var userRole = '<?php echo $session -> getRole(); ?>';
+
+		if(userRole == "Reader")
+		{
+
+
+			document.getElementById("deleteEntry").disabled = true;
+			document.getElementById("updateEntry").disabled = true;
+			document.getElementById("Submit").disabled = true;
+			document.getElementById('Complete_Transcription').disabled = true;
+			document.getElementById('deletePrevious').disabled = true;
+
+		}
+	});
+</script>
 </html>
