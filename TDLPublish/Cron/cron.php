@@ -44,7 +44,7 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
 
 //*********************************************************************************************************************
     //Current collection: Blucher Maps (bluchermaps), ID = 1,template Map (use MapDBHelper)
-    $collectionName = "blucherfieldbook";//change the variable if publishing to new collection
+    $collectionName = "bluchermaps";//change the variable if publishing to new collection
 //*********************************************************************************************************************
     fwrite($logfile,date(DATE_RFC2822) . ": Targeted collection: " . $collectionName . "\r\n");
     //Dspace Community and collection info:
@@ -168,6 +168,13 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
         if($doc_dspace["dspacePublished"] == 10) {
             $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,10); //set status to publishing front scan
             $pathtoImage = $collection["storagedir"] . $doc["FileNamePath"];
+
+            //convert TIF to JPEG
+            //POST jpeg bitstream
+            //delete JPEG bitstream
+            exec("convert " . $pathtoImage . " " . str_replace(".tif",".jpg",$doc["FileNamePath"]));
+
+
             // TODO: check if the image exists or not. If not exists, return 404front in http_retval
             $http_retval = $DS->TDL_POST_BITSTREAM($dspaceID, $pathtoImage, $doc["FileName"]);
             if ($http_retval == "200")
