@@ -1,11 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
+require('../../Library/DBHelper.php');
 $session = new SessionManager();
 //Get collection name and action
-	if (!isset($_SESSION["logged_in"]) || !isset($_SESSION["username"]) || ($_SESSION["username"] == ""))
-	{
-        require('../../Library/DBHelper.php');
-	}
 	$username = $_SESSION["username"];
 $collection = $_GET["col"];
 	$userfile = "";
@@ -113,7 +110,8 @@ else $userfile = $username;
                                 elseif ($child->nodeName == 'needsreview') {
                                     $needsreview = $child->nodeValue;
                                 }
-                                elseif ($child->nodeName == 'id') {
+                                elseif ($child->nodeName == 'id')
+                                {
                                     $id = $child->nodeValue;
                                 }
                             }

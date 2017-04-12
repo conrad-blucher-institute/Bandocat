@@ -14,8 +14,6 @@ if ($training_location == 'parent') {
 
     $training_user = $data['user'];
 
-
-
     if (file_exists($training_collection_dir))
         $training_collection_dir;
 

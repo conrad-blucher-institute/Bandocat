@@ -1,9 +1,19 @@
 <?php
-	session_start();
-	if (!isset($_SESSION["logged_in"]) || !isset($_SESSION["username"]) || ($_SESSION["username"] == ""))
-	{
-		header('Location: ../BlucherScanning/');
-	}
+include '../../Library/SessionManager.php';
+require('../../Library/DBHelper.php');
+$session = new SessionManager();
+//session_start();
+//if (!isset($_SESSION["logged_in"]) || !isset($_SESSION["username"]) || ($_SESSION["username"] == ""))
+
+//    //IF NOT LOGED IN, OR NO USERNAME IS SET
+//	if (!isset($_SESSION["logged_in"]) || !isset($_SESSION["username"]))
+//	{
+//        header('Location: ../../');
+//	}
+//	else
+//    {
+//        header('Location: www.google.com');
+//    }
 	$username = $_SESSION["username"];
 
 	if(isset($_GET["user"]))
@@ -30,7 +40,7 @@
 	// $input_id = getUserIDInput($id);
 
 	//$doc_id = 2;
-	
+print_r($userfile);
 	$XMLfile = XMLfilename($userfile);
 	$file = simplexml_load_file('../'.$XMLfile) or die("Cannot open file!");
 	foreach($file->document as $a)
