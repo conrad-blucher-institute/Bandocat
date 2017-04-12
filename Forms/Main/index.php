@@ -45,7 +45,12 @@ require '../../Library/AnnouncementDBHelper.php';
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/sidemenu.php' ?>
         </td>
-        <td class="tg-zhyu"><h2>BandoCat</h2></td>
+        <td class="tg-zhyu"><h2>BandoCat</h2>
+            <div>
+                <object type="text/html" data="http://spatialquerylab.com/category/map-scanning/"" width="800px" height="600px" style="overflow:auto">
+                </object>
+            </div>
+        </td>
         <td class="tg-0za1"><h2>Announcements</h2>
             <div id="divscroller" style="text-align: center">
             <div id="post"></div>
