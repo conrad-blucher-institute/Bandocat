@@ -10,6 +10,11 @@ if(isset($_GET['col']))
     $DB = new DBHelper();
     //get appropriate DB
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+    $userRole = $session -> getRole();
+    if($userRole == "Reader")
+    {
+        header('Location: ./list.php?col='.$collection.'&action=review');
+    }
 }
 else header('Location: ../../');
 ?>

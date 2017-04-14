@@ -24,6 +24,7 @@ $isBack = $_GET['type'] == "back" ? true : false; //identify if this map is a fr
 $georec_entries = $DB->GEOREC_ENTRIES_SELECT($_GET['docID'],$isBack);
 //get georec status for this map from document table
 $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -91,7 +92,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
 <div id = 'buttons'>
     <button onclick = "deletePrevious()" id = 'deletePrevious' name="deletePrevious" class="bluebtn">Delete Previous</button>
-    <button onclick="document.getElementById('divUpdateGeoRecStatus').style.visibility = 'visible';" class="bluebtn"> Set Status </button>
+    <button onclick="document.getElementById('divUpdateGeoRecStatus').style.visibility = 'visible';" class="bluebtn" id = setStatus> Set Status </button>
     <button onclick = "rectify()" id = "rectify" class="bluebtn"> Rectify / Update </button>
     <button onclick = "cancel()" id = "cancel" class="bluebtn"> Cancel </button>
 </div>
@@ -370,8 +371,23 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
     };
 
+
     $(document).ready(function(){
 
+            //check if the user is a reader
+            var userRole = '<?php echo $session -> getRole(); ?>';
+
+            if(userRole == "Reader")
+            {
+
+                document.getElementById('deletePrevious').disabled = true;
+                document.getElementById('setStatus').disabled = true;
+                document.getElementById('rectify').disabled = true;
+
+
+
+
+            }
             //load the points into the map and raster if there is any
             var entries = <?php echo json_encode($georec_entries); ?>;
 

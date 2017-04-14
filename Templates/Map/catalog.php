@@ -1,6 +1,7 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
+
 //get collection name from passed variable col
 if(isset($_GET['col']))
 {
