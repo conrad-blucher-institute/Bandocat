@@ -121,7 +121,7 @@ $Render = new ControlsRender();
                 case "Admin":
                     $("#rd_Role_admin").prop("checked",true);
                     break;
-                case "Regular User":
+                case "Writer":
                     $("#rd_Role_ru").prop("checked",true);
                     break;
                 case "Reader":
@@ -133,7 +133,8 @@ $Render = new ControlsRender();
                 case "Super Admin":
                     $("#rd_Role_admin").prop("checked",true);
                     break;
-                default: break;
+                default:break;
+
             }
         });
  });
