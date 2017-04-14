@@ -120,7 +120,7 @@ $Render = new ControlsRender();
             {
                 case "Admin":
                     $("#rd_Role_admin").prop("checked",true);
-                    break;
+                    break;5
                 case "Writer":
                     $("#rd_Role_ru").prop("checked",true);
                     break;
