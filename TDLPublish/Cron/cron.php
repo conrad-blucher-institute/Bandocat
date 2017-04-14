@@ -188,7 +188,6 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
             $http_retval = $DS->TDL_POST_BITSTREAM($dspaceID, $jpgFilePath, $jpgFileName);
             //delete JPEG
             exec("del " . str_replace('/', '\\', $jpgFilePath));
-            fwrite($logfile, date(DATE_RFC2822) . ": " . $jpgFilePath . "\r\n");
             if ($http_retval == "200")
                 fwrite($logfile, date(DATE_RFC2822) . ": Front scan has been uploaded....\r\n");
             else {

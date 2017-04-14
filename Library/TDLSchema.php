@@ -68,7 +68,7 @@ class TDLSchema
         $this->addField($output,"dc.rights",$this->rightsstatement);
         $this->addField($output,"mc.subtitle",$doc["Subtitle"]);
         $this->addField($output,"mc.mapscale",$doc["MapScale"]);
-        $this->addField($output,"mc.note","value",$doc["Comments"]);
+        $this->addField($output,"mc.note",$doc["Comments"]);
         $this->addField($output,"mc.customer",$doc["CustomerName"]);
         $this->addField($output,"mc.collection",$doc["TDLCollection"]);
         $this->addField($output,"dc.identifier.citation",$doc['TDLcitation']);
