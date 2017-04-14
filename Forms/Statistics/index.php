@@ -321,7 +321,7 @@ function format_size($size) {
                     options: { responsive:true}
                     //console.log(PieChart);
                 });
-                console.log(PieChart);
+                //console.log(PieChart);
                 //calculate total counts of all collections = SUM of pieData array
                 $("#spanTotalCount").html(pieData.reduce(function(prev,curr){return parseInt(prev)+ parseInt(curr);}));
             }

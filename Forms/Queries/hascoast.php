@@ -16,7 +16,7 @@ $Render = new ControlsRender();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Welcome to BandoCat!</title>
+    <title>Maps With Coast</title>
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
