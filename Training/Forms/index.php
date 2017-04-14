@@ -2,59 +2,47 @@
 include '../../Library/SessionManager.php';
 require('../../Library/DBHelper.php');
 $session = new SessionManager();
-//session_start();
-//if (!isset($_SESSION["logged_in"]) || !isset($_SESSION["username"]) || ($_SESSION["username"] == ""))
 
-//    //IF NOT LOGED IN, OR NO USERNAME IS SET
-//	if (!isset($_SESSION["logged_in"]) || !isset($_SESSION["username"]))
-//	{
-//        header('Location: ../../');
-//	}
-//	else
-//    {
-//        header('Location: www.google.com');
-//    }
-	$username = $_SESSION["username"];
+$username = $_GET["user"];
+$collection = $_GET['col'];
+$type = $_GET['type'];
 
-	if(isset($_GET["user"]))
-	{
-		$userfile = str_replace(".xml","",$_GET["user"]);
-		if($userfile == "")
-			$userfile = $username;
-	}
-	else $userfile = $username;
+/*print_r($_GET['user']);
+if (isset($_GET["user"])) {
+    $userfile = str_replace(".xml", "", $_GET["user"]);
+    if ($userfile == "")
+        $userfile = $username;
+} else $userfile = $username;*/
 
+include 'config.php';
+include 'main.php';
+include 'class.php';
+include 'saveTrainingData.php';
 
-	include 'config.php';
-	include 'main.php';
-	include 'class.php';
-	include 'saveTrainingData.php';
+if (!isset($_GET["id"])) {
+    header('Location: list.php');
+}
 
-	if (!isset($_GET["id"])) {
-		header('Location: list.php');
-	}
-
-	$doc_id = $_GET["id"];
+$doc_id = $_GET["id"];
 	// $progress_id = $_GET["id"];
 	// $userid = $_SESSION["user_id"];		
 	// $input_id = getUserIDInput($id);
 
 	//$doc_id = 2;
-print_r($userfile);
-	$XMLfile = XMLfilename($userfile);
-	$file = simplexml_load_file('../'.$XMLfile) or die("Cannot open file!");
-	foreach($file->document as $a)
-	{
-		if($a->id == $doc_id)
-		{
-			if($a["collection"] == "Job Folder")
-			{
-				$doc1 = new JobFolder($userfile,$doc_id);
-				break;
-			}
-		}
-	}
-	$_SESSION['currentId']=$doc_id;	
+$userType = $username . '_' . $type;
+$XMLfile = XMLfilename($userType);
+$file = simplexml_load_file('../Training_Collections/' . $collection . '/'.$username.'/'. $XMLfile) or die("Cannot open file!");
+
+foreach ($file->document as $a) {
+    print_r($a->id);
+    if ($a->id == $doc_id) {
+        if ($a["collection"] == $collection) {
+            $doc1 = new JobFolder($username, $doc_id);
+            break;
+        }
+    }
+}
+$_SESSION['currentId'] = $doc_id;
 
 	  
 

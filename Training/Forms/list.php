@@ -115,9 +115,10 @@ else $userfile = $username;
                                     $id = $child->nodeValue;
                                 }
                             }
+                            $type = $_GET['type'];
 
                             echo '<tr>';
-                            echo "<td align = 'center'><a href=\"index.php?id=$id&user=$userfile\">$libraryindex</a></td>";
+                            echo "<td align = 'center'><a href=\"index.php?id=$id&user=$userfile&col=$collection&type=$type\">$libraryindex</a></td>";
                             echo "<td align = 'center'>$libraryindex</td>";
                             echo "<td align = 'center'>$title</td>";
                             echo "<td align = 'center'>$classification</td>";

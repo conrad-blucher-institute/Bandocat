@@ -42,7 +42,7 @@ if ($training_location == 'children') {
             $xml->save($training_XML);
             $myfile = fopen($training_XML, 'w') or die("Cannot create training log!");
             fclose($myfile);
-            copy( "data.xml", $training_XML);
+            copy( "newbie.xml", $training_XML);
         }
     }
 
@@ -57,7 +57,7 @@ if ($training_location == 'children') {
             $xml->save($training_XML);
             $myfile = fopen($training_XML, 'w') or die("Cannot create training log!");
             fclose($myfile);
-            copy( "data.xml", $training_XML);
+            copy( "inter.xml", $training_XML);
         }
     }
 }
