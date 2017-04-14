@@ -1,10 +1,9 @@
 <?php
 /* PHP INCLUDES */
-include '../../Library/SessionManager.php';
+spl_autoload_register(function ($class_name) {
+    require_once "../../Library/" . $class_name . '.php';});
 $session = new SessionManager();
-require('../../Library/DBHelper.php');
 $DB = new DBHelper();
-require('../../Library/ControlsRender.php');
 $Render = new ControlsRender();
 ?>
 <!doctype html>

@@ -103,7 +103,7 @@ function rectify()
         }
 
 		$.post("php/submitRectification.php", { jsonData: JSON.stringify(scriptObject),pointEntries: JSON.stringify(pointEntries)}, function(results){
-			alert(results),closeModal(1),window.close()});
+			alert(results),closeModal(1),cancel()});
 	}
 }
 

@@ -16,8 +16,8 @@
     $ret = $DB->SET_DOCUMENT_TRANSCRIBED($collection,$docID,1);
 
 
-    //delete file from Temp
-    unlink("../" . $fileName);
+    //delete file from Temp (move this to the incomplete transcription)
+    //unlink("../" . $fileName);
     //Write Log
     $ret = $DB->SP_LOG_WRITE($action,$collectionID,$docID,$session->getUserID(),"success",$comments);
 
