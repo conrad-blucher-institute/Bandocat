@@ -43,28 +43,32 @@ $DB = new MapDBHelper();
 	$command2 = $script -> warp . " " . $outputTranslatePath . " " . $GeoTIFFsPath ; //warp script
 
 	//run translation script on CLI
-	if(exec($command))
-	echo "TRANSLATE SUCCESS";
+	if(exec($command)) {
+        //echo "TRANSLATE SUCCESS";
+    }
 	else {
-        echo "TRANSLATE FAILED";
-        $error_str .= "TRANSLATE FAILED";
+        echo "Translate failed";
+        $error_str .= "Translate failed";
+        return;
     }
 	//run warp script on CLI
-	if(exec($command2))
-	echo "\nWARP SUCCESS";
+	if(exec($command2)) {
+        //echo "\nWARP SUCCESS";
+    }
 	else {
-        echo "\nWARP FAILED";
-        $error_str .= "WARP FAILED";
+        echo "\nWarp failed";
+        $error_str .= "Warp failed";
+        return;
     }
 
     //run KML superoverlay script on CLI
 	if(exec("gdal_translate -of KMLSUPEROVERLAY " . $GeoTIFFsPath . " ../Temp/GeoTIFFs/" . $imageInfo['KMZname'] .  " -co FORMAT=JPEG")){
-        echo "\nKMLSUPEROVERLAY SUCCESS";
+        //echo "\nKMLSUPEROVERLAY SUCCESS";
 	}
-
 	else {
-        echo "\nKMLSUPEROVERLAY FAILED";
-        $error_str .= "KMLSUPEROVERLAY FAILED";
+        echo "\nSuperoverlay failed";
+        $error_str .= "\nSuperoverlay failed";
+        return;
     }
     //specify full directory of georec file ot use in CLI
 	$geoRec_fulldir = $collection_info['GeoRecDir'] . $imageInfo['subDirectory'];
@@ -148,20 +152,22 @@ $DB = new MapDBHelper();
 		$error_flag = true;
 
 	if($error_flag) {
-        echo "\nDATABASE UPDATE FAILED";
-        $error_str .= "DATABASE UPDATE FAILED";
+        echo "\nDatabase Update failed";
+        $error_str .= "Database Update failed";
     }
-	else echo "\nDATABASE UPDATE SUCCESS";
+	//else echo "\nDATABASE UPDATE SUCCESS";
 
 
-
-	//delete Tiles and translated image from temporary workspace
-	A::deleteDir("../Temp/Tiles/" . $imageInfo['tempSubDirectory']);
+	//Moved to cancel.php --- delete Tiles and
+	//A::deleteDir("../Temp/Tiles/" . $imageInfo['tempSubDirectory']);
+    //delete translated image from temporary workspace
 	unlink($outputTranslatePath);
-
 
 	//write log
 	if($error_flag == false) //no error
-		$ret = $DB->SP_LOG_WRITE("rectify", $collection_info['CollectionID'], $imageInfo['docID'], $session->getUserID(),"success",$imageInfo['type'] . " scan");
+    {
+        $ret = $DB->SP_LOG_WRITE("rectify", $collection_info['CollectionID'], $imageInfo['docID'], $session->getUserID(), "success", $imageInfo['type'] . " scan");
+    	echo "Success!";
+    }
 	else $ret = $DB->SP_LOG_WRITE("rectify", $collection_info['CollectionID'], $imageInfo['docID'], $session->getUserID(),"fail",$error_str); //error: status = fail
 ?>

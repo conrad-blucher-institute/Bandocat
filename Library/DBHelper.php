@@ -175,6 +175,37 @@ class DBHelper
 //    }
 
     /**********************************************
+     * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
+     * Description: Pulls the data associated with the collection name passed in.
+     * Parameter(s):
+     * $iName (in string) - input DB Name
+     * Return value(s):
+     * $result (assoc array) - return above values in an assoc array
+     ***********************************************/
+    function SP_GET_COLLECTION_CONFIG($iName)
+    {   //USE is sql for changing to the database supplied after the concat.
+        $this->getConn()->exec('USE ' . $this->maindb);
+        /* PREPARE STATEMENT */
+        //CALL is sql for telling the db to execute the function following call.
+        //The ? in the functions parameter list is a variable that we bind a few lines down
+        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oGeorecDir,@oCollectionID)");
+        //ERROR HANDLING
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+        //Bind the database name ($iName) into the prepared call statement from above.
+        $call->bindParam(1, $iName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        /* RETURN RESULT */
+        //returned after successful call statement. Need to tell the db what data we want selected.
+        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oGeorecDir as GeoRecDir,@oCollectionID as CollectionID');
+        //Database now has the appropriate data selected. We now need to ask the DB to fetch the values for us
+        $result = $select->fetch(PDO::FETCH_ASSOC);
+        $result["Name"] = htmlspecialchars($iName);
+        return $result;
+    }
+
+    /**********************************************
      * Function: USER_AUTH
      * Description: USER LOGIN AUTHENTICATION (not calling a stored procedure)
      * Parameter(s):
@@ -213,27 +244,6 @@ class DBHelper
          }
          $oMessage = "Invalid";
          return false;
-
-    }
-
-    /**********************************************
-     * Function: USER_VERIFY_PWD
-     * Description: validate if the input password is equivalent to password stored in the DB given specified user ID
-     * Parameter(s):
-     * $iUserID (in string) - input user ID
-     * Return value(s): false if fail, pwd if success
-     ***********************************************/
-    function USER_VERIFY_PWD($iUserID,$iPassword)
-    {
-        $sth = $this->getConn()->prepare("SELECT `password` FROM `user` WHERE `userID` = :userID LIMIT 1");
-        $sth->bindParam(':userID',$iUserID,PDO::PARAM_INT);
-        $ret = $sth->execute();
-        if(!$ret)
-            return false;
-        $passwordFromDB = $sth->fetchColumn();
-        if(password_verify(md5($iPassword),$passwordFromDB))
-            return true;
-        return false;
 
     }
 
@@ -736,36 +746,6 @@ class DBHelper
     }
 
     /**********************************************
-     * Function: SP_GET_COLLECTION_CONFIG (SP_GET_COLLECTION_DATA)
-     * Description: Pulls the data associated with the collection name passed in.
-     * Parameter(s):
-     * $iName (in string) - input DB Name
-     * Return value(s):
-     * $result (assoc array) - return above values in an assoc array
-     ***********************************************/
-    function SP_GET_COLLECTION_CONFIG($iName)
-    {   //USE is sql for changing to the database supplied after the concat.
-        $this->getConn()->exec('USE ' . $this->maindb);
-        /* PREPARE STATEMENT */
-        //CALL is sql for telling the db to execute the function following call.
-        //The ? in the functions parameter list is a variable that we bind a few lines down
-        $call = $this->getConn()->prepare("CALL SP_GET_COLLECTION_CONFIG(?,@oDisplayName,@oDbName,@oStorageDir,@oPublicDir,@oThumbnailDir,@oTemplateID,@oGeorecDir,@oCollectionID)");
-        //ERROR HANDLING
-        if (!$call)
-            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-        //Bind the database name ($iName) into the prepared call statement from above.
-        $call->bindParam(1, $iName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
-        /* EXECUTE STATEMENT */
-        $call->execute();
-        /* RETURN RESULT */
-        //returned after successful call statement. Need to tell the db what data we want selected.
-        $select = $this->getConn()->query('SELECT @oDisplayName AS DisplayName,@oDbName AS DbName,@oStorageDir AS StorageDir,@oPublicDir AS PublicDir,@oThumbnailDir AS ThumbnailDir,@oTemplateID as TemplateID,@oGeorecDir as GeoRecDir,@oCollectionID as CollectionID');
-        //Database now has the appropriate data selected. We now need to ask the DB to fetch the values for us
-        $result = $select->fetch(PDO::FETCH_ASSOC);
-        $result["Name"] = htmlspecialchars($iName);
-        return $result;
-    }
-    /**********************************************
      * Function: SP_GET_COLLECTION_CONFIG_FROM_TEMPLATEID (SP_GET_COLLECTION_DATA)
      * Description: Pulls the data associated with the collection name passed in.
      * Parameter(s):
@@ -824,7 +804,6 @@ class DBHelper
         $logArray = $logsth->fetchAll();
         return $logArray;
     }
-
 
     /**********************************************
      * Function: GET_COLLECTION_TEMPLATE
@@ -946,7 +925,6 @@ class DBHelper
         } else return false;
     }
 
-
     /**********************************************
      * Function: GET_AUTHOR_INFO
      * Description: return info from a row of author table
@@ -1014,12 +992,6 @@ class DBHelper
         } else return false;
     }
 
-
-
-    /***************************************************************/
-    /**********************QUERIES FUNCTIONS************************/
-    /***************************************************************/
-
     /**********************************************
      * Function: GET_ADMIN_OPENTICKET_COUNT
      * Description: function query's the db selecting all tickets who have a status of 0
@@ -1052,6 +1024,40 @@ class DBHelper
 
 
 
+    /***************************************************************/
+    /**********************QUERIES FUNCTIONS************************/
+    /***************************************************************/
+
+    /**********************************************
+     * Function: GET_USER_CLOSEDTICKET_COUNT
+     * Description: function query's the db selecting all user tickets that have been viewed
+     * Parameter(s): $userid only get tickets for the user that is logged in
+     * Return value(s):
+     * $result  (int) - number of tickets
+     ***********************************************/
+    function GET_USER_CLOSEDTICKET_COUNT($userid)
+    {
+        //switch to correct db
+        $this->getConn()->exec('USE ' . $this->maindb);
+        /* PREPARE STATEMENT */
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+        // sql statement CALL calls the function pointed to in the db
+        $call = $this->getConn()->prepare("SELECT COUNT(`ticketID`) FROM `ticket` INNER JOIN `collection` ON (`ticket`.`collectionID` = `collection`.`collectionID`) WHERE `posterID`=:userID AND `solveddate` IS NOT NULL AND `lastseen`<`solveddate`");
+        // FROM `ticket` INNER JOIN `collection` ON (`ticket`.`collectionID` = `collection`.`collectionID`)
+        //INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`)
+        $call->bindParam(':userID',$userid,PDO::PARAM_INT);
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+
+        /* EXECUTE STATEMENT */
+        $call->execute();
+        /* RETURN RESULT */
+        //return the result
+        $result = $call->fetchColumn();
+        return $result;
+//
+    }
+
     /**********************************************
      * Function: GET_DOCUMENT_FILTEREDCOAST_COUNT
      * Description: function responsible for returning all documents that have a coastline
@@ -1075,6 +1081,7 @@ class DBHelper
             return $result;
         } else return false;
     }
+
     /**********************************************
      * Function: GET_DOCUMENT_FILTEREDTITLE_COUNT
      * Description: function responsible for returning all documents that have a title
@@ -1098,12 +1105,6 @@ class DBHelper
             return $result;
         } else return false;
     }
-
-
-    //****************************Where the Map Functions used to be
-
-    //******************************* STATISTICS FUNCTIONS ******************//
-
 
     /**********************************************
      * Function: SP_WEEKLYREPORT_INSERT
@@ -1131,6 +1132,12 @@ class DBHelper
         $ret = $call->execute();
         return $ret;
     }
+
+
+    //****************************Where the Map Functions used to be
+
+    //******************************* STATISTICS FUNCTIONS ******************//
+
     /**********************************************
      * Function: GET_WEEKLYREPORT
      * Description: attempts to return the weeklyreport from the db of the requested parameters
@@ -1152,6 +1159,7 @@ class DBHelper
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
+
     /**********************************************
      * Function: GET_WEEKLY_TRANSCRIPTION_REPORT
      * Description: calls the SP_LOG_WEEKLYTRANSCRIPTIONREPORT_COUNT function in phpadmin
@@ -1199,6 +1207,7 @@ class DBHelper
         $call->execute();
         return $call->fetch(PDO::FETCH_NUM);
     }
+
     /**********************************************
      * Function: GET_ACTION_COUNT
      * Description: counts the number of actions specified User has done.
@@ -1222,6 +1231,28 @@ class DBHelper
         $call->execute();
 
         return $call->fetch(PDO::FETCH_NUM);
+    }
+
+    /**********************************************
+     * Function: GET_MONTHLY_TRANSCRIPTION_REPORT
+     * Description: attempts to return the monthlyreport from the db of the requested parameters
+     *              has better performance than GET_MONTHLYREPORT (this query only searches on the table one time)
+     * Parameter(s):
+     * $iYear (in int) - year
+     * $iCollectionID (in int) - specifies the collection id to search
+     * Return value(s): return array if success, false if fail
+     ***********************************************/
+    function GET_MONTHLY_TRANSCRIPTION_REPORT($iYear,$iCollectionID)
+    {
+        $this->getConn()->exec('USE ' . $this->maindb);
+        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
+        // sql statement CALL calls the function pointed to in the db
+        $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLYTRANSCRIPTIONREPORT_COUNT(:iYear,:iColID)");
+        //bind variables to the above sql statement
+        $call->bindParam(':iYear',$iYear,PDO::PARAM_INT);
+        $call->bindParam(':iColID',$iCollectionID,PDO::PARAM_INT);
+        $call->execute();
+        return $call->fetchAll(PDO::FETCH_NUM);
     }
 
 //    //DEPRECATED: SEE GET_MONTHLYREPORT2($iYear,$iCollectionID)
@@ -1258,27 +1289,7 @@ class DBHelper
 //            $sth->execute();
 //            return $sth->fetchAll(PDO::FETCH_NUM);
 //    }
-    /**********************************************
-     * Function: GET_MONTHLY_TRANSCRIPTION_REPORT
-     * Description: attempts to return the monthlyreport from the db of the requested parameters
-     *              has better performance than GET_MONTHLYREPORT (this query only searches on the table one time)
-     * Parameter(s):
-     * $iYear (in int) - year
-     * $iCollectionID (in int) - specifies the collection id to search
-     * Return value(s): return array if success, false if fail
-     ***********************************************/
-    function GET_MONTHLY_TRANSCRIPTION_REPORT($iYear,$iCollectionID)
-    {
-        $this->getConn()->exec('USE ' . $this->maindb);
-        /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
-        // sql statement CALL calls the function pointed to in the db
-        $call = $this->getConn()->prepare("CALL SP_LOG_MONTHLYTRANSCRIPTIONREPORT_COUNT(:iYear,:iColID)");
-        //bind variables to the above sql statement
-        $call->bindParam(':iYear',$iYear,PDO::PARAM_INT);
-        $call->bindParam(':iColID',$iCollectionID,PDO::PARAM_INT);
-        $call->execute();
-        return $call->fetchAll(PDO::FETCH_NUM);
-    }
+
     /**********************************************
      * Function: GET_MONTHLYREPORT2
      * Description: attempts to return the monthlyreport from the db of the requested parameters
@@ -1300,7 +1311,6 @@ class DBHelper
         $call->execute();
         return $call->fetchAll(PDO::FETCH_NUM);
     }
-
 
     /**********************************************
      * Function: SET_DOCUMENT_TRANSCRIBED
@@ -1342,7 +1352,6 @@ class DBHelper
         return $ret;
     }
 
-
     /**********************************************
      * Function: USER_UPDATE_PASSWORD
      * Description: attempts to UPDATE user's password in the specified UserID
@@ -1367,6 +1376,27 @@ class DBHelper
             return $ret;
         }
         return false;
+    }
+
+    /**********************************************
+     * Function: USER_VERIFY_PWD
+     * Description: validate if the input password is equivalent to password stored in the DB given specified user ID
+     * Parameter(s):
+     * $iUserID (in string) - input user ID
+     * Return value(s): false if fail, pwd if success
+     ***********************************************/
+    function USER_VERIFY_PWD($iUserID,$iPassword)
+    {
+        $sth = $this->getConn()->prepare("SELECT `password` FROM `user` WHERE `userID` = :userID LIMIT 1");
+        $sth->bindParam(':userID',$iUserID,PDO::PARAM_INT);
+        $ret = $sth->execute();
+        if(!$ret)
+            return false;
+        $passwordFromDB = $sth->fetchColumn();
+        if(password_verify(md5($iPassword),$passwordFromDB))
+            return true;
+        return false;
+
     }
 
     /**********************************************

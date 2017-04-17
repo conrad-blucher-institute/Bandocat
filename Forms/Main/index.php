@@ -47,7 +47,7 @@ require '../../Library/AnnouncementDBHelper.php';
         </td>
         <td class="tg-zhyu"><h2>BandoCat</h2>
             <div>
-                <object type="text/html" data="http://spatialquerylab.com/category/map-scanning/"" width="800px" height="600px" style="overflow:auto">
+                <object type="text/html" data="http://spatialquerylab.com/category/map-scanning/"" width="100%" height="680px" style="overflow:auto">
                 </object>
             </div>
         </td>

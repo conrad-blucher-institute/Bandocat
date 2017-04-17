@@ -901,7 +901,7 @@ function deleteTableRow(id)
 		table5.deleteRow(-1);
 	}
 }
-
+//cleaning temporary workspace
 function incompleteTranscription()
 {
     var collection = document.getElementById("Collection").value;
@@ -927,8 +927,7 @@ function completeTranscription()
         type: "POST",
         data: {"collection": collection,"docID": id,"fileName": window.localStorage.getItem('fileName')},
         success: function(data) {
-            alert(data);
-            window.close();
+            incompleteTranscription();
         }
     });
 }
