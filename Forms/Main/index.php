@@ -61,6 +61,60 @@ require '../../Library/AnnouncementDBHelper.php';
 
 <?php include '../../Master/footer.php'; ?>
 </body>
+<script>
+    $( document ).ready(function()
+    {
+        var map = [];
+        var down = [];
+        $(document).keydown(function(e)
+        {
+            if(!map[e.keyCode])
+            {
+                down.push(e.keyCode);
+            }
+            map[e.keyCode] = true;
+        }).keyup(function(e)
+        {
+            if(down.length > 100)
+            {
+                down.length = 0;
+            }
+            map[e.keyCode] = false;
+            var index, value;
+            console.log(down);
+            for (index = 0; index < down.length; ++index)
+            {
+                value = down[index];
+                //if tetris
+                if (value == "84")
+                {
+                    if(down[index+1] == "69")
+                    {
+                        if(down[index+2] == "84")
+                        {
+                            if(down[index+3] == "82")
+                            {
+                                if(down[index+4] == "73")
+                                {
+                                    if(down[index+5] == "83")
+                                    {
+                                        window.location.replace("../Main/iindex.php");
+                                   // ../../Transcription/Indices/list.php?
+                                        down.length = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            // down.length = 0;
+        });
+    });
+</script>
 <!-- Funny Greeting -->
 <script>
     /*Program that will get the time in hours from the Date function. Then, a conditional statement will determine what
