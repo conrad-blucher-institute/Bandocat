@@ -23,14 +23,38 @@ require '../../Library/AnnouncementDBHelper.php';
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
-
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+   <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="Greetings.js"></script>
+
+    <script src="strokeText.js"></script>
+
+    <link rel="stylesheet" href="page.css" type="text/css" />
+
+    <script src='tetris.js' type="text/javascript"></script>
+    <script type='text/javascript'>
+        TETRIS.setScoreIncreasing();
+    </script>
+
 </head>
 <!-- HTML BODY -->
 <body>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<audio id="buzzer" src="0788.ogg" type="audio/ogg"></audio>
 <!-- TABLE FOR LAYOUT OF PAGE -->
 <table id="thetable">
     <tr id="trTop">
@@ -40,82 +64,98 @@ require '../../Library/AnnouncementDBHelper.php';
         <th class="tg-chpy" colspan="2">
             <span id= "lblUsername" class="Username"><a href="../../Forms/AccountSettings"><?php echo $session->getUserName(); ?></a></span>,&nbsp;<span id="Time_Day"></span><span id="Greetings"></span>
         </th>
+
     </tr>
     <tr style="height: 630px">
         <td class="menu_left" id="thetable_left">
             <?php include '../../Master/sidemenu.php' ?>
         </td>
-        <td class="tg-zhyu"><h2>BandoCat</h2>
-            <div>
-                <object type="text/html" data="http://spatialquerylab.com/category/map-scanning/"" width="100%" height="680px" style="overflow:auto">
-                </object>
+        <td class="tg-zhyu"style="position: relative"><h2>BandoCat</h2>
+            <div id="indicatorcontainer"></div>
+
+            <canvas id="board_canvas"  style="height:95%; position: absolute; left: 0px; top: 30px; z-index: 1;">
+                Your browser does not support HTML5 Canvas.
+            </canvas>
+            <canvas id="animated_canvas"  style="height:95%; position: absolute; left: 0px; top: 30px; z-index: 3;"></canvas>
+
+
+            <canvas id="shadow_canvas" style="height:95%; position: absolute; left: 0px; top: 30px; z-index: 2;"></canvas>
+            <!-- <div id="placeholder" style=""> </div> -->
+
+            <div style="position: absolute; top: 40px; z-index: 4; font-family: sans-serif; font-size: 30px; left: 0px;"> <span id="score">0</span></div>
+
+
+            <div id="instructions" style="position: absolute; z-index: 5; margin-left: 20px; top: 90px;">
+
+
+
+                <div id="controls" style="float: left; position: absolute; top:50px; ">
+                    <input type="button" onclick="if (TETRIS.isPaused()) { TETRIS.unPause(); } else { TETRIS.setPause(); }" value="Pause" style="font-size: 150%"><br>
+                </div>
+                <div id="instr" style="display: block; margin: 20px; margin-top: 100px; width: 80%">
+
+                    <h1>Tetris</h1>
+                    <p> Touch events are now supported! Play on iOS and Android: <br>
+                        Swipe anywhere to move, tap to rotate (Can also tap while swiping to rotate). Swipe down to drop.
+                    </p>
+                    <p>
+                        Touch Sensitivity:
+                        <input id="sens_range" type="range" min="0.2" max="5" step="0.05" value="1" onchange="TETRIS.setTouchSensitivity(this.value); document.getElementById(&quot;sensitivity&quot;).innerHTML = Math.round(this.value*1000)/1000;">
+                        <span id="sensitivity">1</span>
+                    </p>
+
+
+                    <p> For PC/Mac: Use the Arrow keys to move and rotate, spacebar to drop.
+                        Z,X to rotate in either direction. </p>
+                    <p> Pause: P</p>
+                    <p> Mouse control (toggle): M<br>
+                        left click to rotate and right click to drop. Mouse control is experimental.
+                    </p>
+                    <p> To start a new game, refresh the page (F5)! </p>
+                    <p>This is an infinite tetris game. It does not speed up
+                        To score more points, drop pieces as fast
+                        as you can!</p>
+
+                </div>
+            </div>
+
+            <div id="divscroller" style="text-align: center">
+                <div id="post"></div>
             </div>
         </td>
-        <td class="tg-0za1"><h2>Announcements</h2>
-            <div id="divscroller" style="text-align: center">
-            <div id="post"></div>
-            </div>
+
+        <td class="tg-0za1" style="position: relative"><h2>Announcements</h2>
+
+
         </td>
     </tr>
+
 </table>
 
 <?php include '../../Master/footer.php'; ?>
 </body>
-<script>
-    $( document ).ready(function()
-    {
-        var map = [];
-        var down = [];
-        $(document).keydown(function(e)
-        {
-            if(!map[e.keyCode])
-            {
-                down.push(e.keyCode);
-            }
-            map[e.keyCode] = true;
-        }).keyup(function(e)
-        {
-            if(down.length > 100)
-            {
-                down.length = 0;
-            }
-            map[e.keyCode] = false;
-            var index, value;
-            console.log(down);
-            for (index = 0; index < down.length; ++index)
-            {
-                value = down[index];
-                //if tetris
-                if (value == "84")
-                {
-                    if(down[index+1] == "69")
-                    {
-                        if(down[index+2] == "84")
-                        {
-                            if(down[index+3] == "82")
-                            {
-                                if(down[index+4] == "73")
-                                {
-                                    if(down[index+5] == "83")
-                                    {
-                                        window.location.replace("../Main/iindex.php");
-                                   // ../../Transcription/Indices/list.php?
-                                        down.length = 0;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    break;
-                }
-            }
-
-            // down.length = 0;
-        });
-    });
-</script>
 <!-- Funny Greeting -->
+
+<script>
+    $( document ).ready(function() {
+
+            $('#buzzer').get(0).play();
+
+    });
+    $( function() {
+
+        setTimeout(function(){  $( "#dialog" ).dialog();},8000)
+
+        $("#dialog").attr("visibility", "visible");
+        var buzzer = $('#buzzer')[0];
+
+        $(document).on('submit', '#sample', function()  {
+            buzzer.play();
+            return false;
+        });
+    } );
+</script>
+
 <script>
     /*Program that will get the time in hours from the Date function. Then, a conditional statement will determine what
     time of the day it is; morning or afternoon*/
@@ -148,37 +188,25 @@ require '../../Library/AnnouncementDBHelper.php';
     /***************************************************
      * <A    N   N   O   U   N   C   E   M   E   N   T>
      ***************************************************/
-    //Announcement information for post in JSON format
+    //Announcement information for post in a JSON object
     var announcementPost = '<?php echo $announcementJSON ?>';
 
+    //Replaces HTML Special characters
+    if(announcementPost.includes("&amp;"))
+        announcementPost.replace("&amp;", "&");
 
-    /**********************************************
-     * Function: specialCharReplace
-     * Description: Function that translates the special characters that were converted in announcement_processing.php to
-     * regular characters.
-     * Parameter(s): text (string) -text with special characters.
-     * Return value(s): annoText (string) -text sanitized for display.
-     ***********************************************/
-    function specialCharReplace(text) {
-        //Statement that conditions the precense of special characters in the text
-            if(text.includes("&amp;") || text.includes("&quot;") || text.includes("&#039;") || text.includes("&lt;") || text.includes("&gt;")) {
-                //If special character found replace it with its corresponding translation
-                var annoText = text.replace(/&amp;/g,"&");
-                annoText = annoText.replace(/&quot;/g,'"');
-                annoText = annoText.replace(/&#039;/g,"'");
-                annoText = annoText.replace(/&lt;/g,"<");
-                annoText = annoText.replace(/&gt;/g,">");
-            }
-            //Otherwise retain the same text without translation
-            else{
-                annoText = text;
-            }
-        return annoText
-    }
+    if(announcementPost.includes("&quot;"))
+        announcementPost.replace("&quot;", '"');
 
+    if(announcementPost.includes("&#039;"))
+        announcementPost.replace("&#039;", "'");
 
+    if(announcementPost.includes("&lt;"))
+        announcementPost.replace("&lt;", "<");
 
-    //JSON object with the announcement information
+    if(announcementPost.includes("&gt;"))
+        announcementPost.replace("&gt;", ">");
+    console.log(announcementPost);
     var post = JSON.parse(announcementPost);
 
     /***********************
@@ -194,6 +222,12 @@ require '../../Library/AnnouncementDBHelper.php';
     var postButton = $("<input id='postAnno' class='bluebtn' type='submit' value='Post' onclick='postAnno()' style='position:relative; padding: 2%;'>");
 
 
+    /**********************************************
+     * Function: loadAnnouncement
+     * Description: Function that will retrieve and display an announcement from the database if the date condition is true
+     * Parameter(s): NONE
+     * Return value(s): NONE
+     ***********************************************/
     /***********************
      * Post Announcement
      * -Post element id = {post}-{post index}
@@ -201,28 +235,22 @@ require '../../Library/AnnouncementDBHelper.php';
      * 1. Title element id = {title}-{post index}
      * 2. Message element id = {message}-{post index}
      ***********************/
-    /**********************************************
-     * Function: loadAnnouncement
-     * Description: Function that will retrieve and display an announcement from the database if the date condition is true
-     * Parameter(s): NONE
-     * Return value(s): NONE
-     ***********************************************/
     function loadAnnouncement()
     //resize height of the scroller
     {$("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#trTop").outerHeight() - $("#h2Announcement").outerHeight() - 60);
         //Length of the JSON object to know how many announcements should be posted
         var announcementLength = '<?php echo $announcementLenght ?>';
         if(announcementLength > 0) {
-            for(var i = 0; i < announcementLength; i++) {
+            for(i = 0; i < announcementLength; i++) {
                 //Post element and components appended to the post div with information obtained from the database
                 $("#post").append("<div id = 'post-" + i + "' class='anno'><h2 id ='title-" + i + "' ondblclick='editAnnouncement(" + 0 + ")'></h2><p id='message-" + i + "' ondblclick='editAnnouncement(" + 1 + ")' style='padding: 5%;'></p></div> ");
-                titleText = post[i].title;
-                messageText = post[i].message;
-                //$("#title-" + i).text(specialCharReplace(titleText));
-                $("#title-" + 0).text(specialCharReplace(titleText));
-                $("#message-" + 0).text(specialCharReplace(messageText));
+                $("#title-" + i).html(post[i].title);
+                $("#message-" + i).html(post[i].message);
             }
         }
+        
+
+
     }
     //Post announcement when window loads
     $( window ).load(loadAnnouncement);
@@ -356,13 +384,12 @@ require '../../Library/AnnouncementDBHelper.php';
         if(element == 1){
             $('#'+elemID).remove();
             $('#'+elemParent).append("<textarea id='editMessage-"+ postIndex +"' class='edit' style='height: 50px; width: 85%' maxlength='800'></textarea>");
-            $('#editMessage-' + postIndex).text(specialCharReplace(message));
+            $('#editMessage-' + postIndex).text(message);
         }
         if(element == 0){
             $('#'+elemID).remove();
             $('#'+elemParent).prepend("<h2><input id='editTitle-"+ postIndex +"' class='edit'></h2>");
-            $('#editTitle-'+postIndex).val(specialCharReplace(title));
-
+            $('#editTitle-'+postIndex).val(title);
         }
 
             var editLength = $("#updateAnnouncement-"+postIndex).length;
@@ -480,7 +507,6 @@ require '../../Library/AnnouncementDBHelper.php';
 
 <!-- Page Style -->
 <style>
-
     #thetable {min-height:100% !important;}
 
     #lblUsername{
@@ -512,8 +538,12 @@ require '../../Library/AnnouncementDBHelper.php';
     #thetable .tg-chpy{font-size:20px;font-family:serif !important;;text-align:center;vertical-align:middle; width: 77%; background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c;}
     #thetable .tg-0za1{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 6; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c;
         overflow: auto}
-    #thetable .tg-yw4l{vertical-align:top; border-style: none}
-    #thetable .tg-zhyu{font-size:13px;font-family:serif !important;;vertical-align:top; background-color: #f1f1f1; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; width: 55%}
+    #thetable .tg-yw4l{vertical-align:top; border-style: none }
+
+    #thetable .tg-zhyu
+    {
+
+        font-size:13px; font-family:serif  !important;;vertical-align:top; background-color: white; border-radius: 2px; border-width: 0px; box-shadow: 0px 0px 2px #0c0c0c; width: 55%}
     a:hover {color: white !important; decoration: underline}
 
     .anno {
