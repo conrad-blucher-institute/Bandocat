@@ -1,17 +1,9 @@
 <?php
 //This performs server side action when user select an action on Action column in index.php
 //This performs server side action when user select an action on Action column in index.php
-require_once '../../Library/SessionManager.php';
-require_once '../../Library/DBHelper.php';
-require_once '../../Library/DBHelper.php';
-require_once '../../Library/MapDBHelper.php';
-require_once '../../Library/FolderDBHelper.php';
-require_once '../../Library/FieldBookDBHelper.php';
-require_once '../../Library/IndicesDBHelper.php';
+spl_autoload_register(function ($class_name) {
+    require_once "../../Library/" . $class_name . '.php';});
 
-require_once '../../Library/TDLPublishDB.php';
-require_once '../../Library/TDLSchema.php';
-require_once '../../Library/TDLPublishJob.php';
 date_default_timezone_set("America/Chicago");
 $session = new SessionManager();
 $Schema = new TDLSchema();

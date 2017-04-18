@@ -1,4 +1,11 @@
 <?php
+//$time = microtime();
+//$time = explode(' ', $time);
+//$time = $time[1] + $time[0];
+//$start = $time;
+//?>
+
+<?php
 //for admin use only
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
@@ -8,47 +15,6 @@ require('../../Library/ControlsRender.php');
 $Render = new ControlsRender();
 
 $collections = $DB->GET_COLLECTION_TABLE();
-
-//Disk space management
-function foldersize($path) {
-    $total_size = 0;
-    $files = scandir($path);
-    $cleanPath = rtrim($path, '/'). '/';
-
-    foreach($files as $t) {
-        if ($t<>"." && $t<>"..") {
-            $currentFile = $cleanPath . $t;
-            if (is_dir($currentFile)) {
-                $size = foldersize($currentFile);
-                $total_size += $size;
-            }
-            else {
-                $size = filesize($currentFile);
-                $total_size += $size;
-            }
-        }
-    }
-
-    return $total_size;
-}
-
-$units = explode(' ', 'B KB MB GB TB PB');
-function format_size($size) {
-    global $units;
-
-    $mod = 1024;
-
-    for ($i = 0; $size > $mod; $i++) {
-        $size /= $mod;
-    }
-
-    $endIndex = strpos($size, ".")+3;
-
-    return substr( $size, 0, $endIndex).' '.$units[$i];
-}
-
-
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -151,21 +117,13 @@ function format_size($size) {
                                 </td>
                                 <td style="padding-left:60px;vertical-align: top">
                                         <h3 id="titleDocumentCount">Total Maps/Documents per Collection </h3>
-                                            <canvas id="chartDocumentCount" height="350" width="350"></canvas>
+                                            <canvas id="chartDocumentCount" height="325" width="350"></canvas>
                                         <div style="text-align: center;font-weight: bold;margin-top:15px">Total: <span id="spanTotalCount"></span> documents  </div>
                                     <div id="storage_capacity">
-                                        <h3>Storage Capacity</h3>
-                                        <?php
-                                        $total_storage = 0;
-                                        foreach($collections as $col)
-                                        {
-                                            $temp = foldersize($col['storagedir']);
-                                            $total_storage += $temp;
-                                            echo "<div class='storagecap'>$col[displayname]: " . format_size($temp) . "</div>";
-                                        }
-                                        echo "<div class='storagecap'><b>All Collections:" . format_size($total_storage) . "</b></div>";
-                                        echo "<div class='storagecap'>Disk Free Space: " . format_size(disk_free_space($collections[0]['storagedir'])) . "</div>";
-                                        ?>
+                                        <h3 id="storage_header">Storage Capacity</h3>
+                                        <div id="storage_info" style="border-size: 1px; border-width: thin; border-style:solid; border-color:LightGray; padding:5px">
+                                            <img src="../../Images/loading.gif"  style="width:15px;height:15px;">
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -321,7 +279,7 @@ function format_size($size) {
                     options: { responsive:true}
                     //console.log(PieChart);
                 });
-                console.log(PieChart);
+                //console.log(PieChart);
                 //calculate total counts of all collections = SUM of pieData array
                 $("#spanTotalCount").html(pieData.reduce(function(prev,curr){return parseInt(prev)+ parseInt(curr);}));
             }
@@ -622,6 +580,11 @@ function format_size($size) {
         document.getElementById("idMonthlyPerformance").click();
         //$("#ddlYear").change();
         getCollectionCount();
+        $.get('ajax/calculatefilesize_processing.php', function(data)
+        {
+           console.log(data);
+           $('#storage_info').html(data);
+        })
 
 
     });
@@ -629,5 +592,12 @@ function format_size($size) {
 
 
 </script>
-
+<!--<?php
+//$time = microtime();
+//$time = explode(' ', $time);
+//$time = $time[1] + $time[0];
+//$finish = $time;
+//$total_time = round(($finish - $start), 4);
+//echo 'Page generated in '.$total_time.' seconds.';
+//?>-->
 </html>
