@@ -1,5 +1,5 @@
 <data>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>1</id>
 	<libraryindex>149-A_016</libraryindex>
 	<title></title>
@@ -29,7 +29,7 @@
 	<frontthumbnail>149-A_016.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>2</id>
 	<libraryindex>143-(envelope)</libraryindex>
 	<title></title>
@@ -54,12 +54,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>143-(envelope).tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>143-(envelope).jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>3</id>
 	<libraryindex>142-_038.1</libraryindex>
 	<title></title>
@@ -84,12 +84,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>142-_038.1.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>142-_038.1.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>4</id>
 	<libraryindex>142-_038.3</libraryindex>
 	<title></title>
@@ -114,12 +114,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>142-_038.3.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>142-_038.3.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>5</id>
 	<libraryindex>140-H_012</libraryindex>
 	<title></title>
@@ -144,12 +144,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>140-H_012.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>140-H_012.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>6</id>
 	<libraryindex>140G-_005.6</libraryindex>
 	<title></title>
@@ -174,12 +174,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
-	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
-	<backthumbnail></backthumbnail>
+	<frontimage>140G-_005.6.tif</frontimage>
+	<backimage>140G-_005.6_back.tif</backimage>
+	<frontthumbnail>140G-_005.6.jgp</frontthumbnail>
+	<backthumbnail>140G-_005.6_back.jpg</backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>7</id>
 	<libraryindex>140-F_083</libraryindex>
 	<title></title>
@@ -204,12 +204,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
-	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
-	<backthumbnail></backthumbnail>
+	<frontimage>140-F_083.tif</frontimage>
+	<backimage>140-F_083_back.tif</backimage>
+	<frontthumbnail>140-F_083.jpg</frontthumbnail>
+	<backthumbnail>140-F_083_back.jpg</backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>8</id>
 	<libraryindex>140G-_002.18</libraryindex>
 	<title></title>
@@ -234,12 +234,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>140G-_002.18.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>140G-_002.18.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>9</id>
 	<libraryindex>140-_003</libraryindex>
 	<title></title>
@@ -264,12 +264,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>140-_003.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>140-_003.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>10</id>
 	<libraryindex>142-_020</libraryindex>
 	<title></title>
@@ -294,12 +294,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>142-_020.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>142-_020.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>11</id>
 	<libraryindex>126-_001</libraryindex>
 	<title></title>
@@ -324,12 +324,12 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>126-_001.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>126-_001.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
-<document collection = "Job Folder">
+<document collection = "jobfolder">
 	<id>12</id>
 	<libraryindex>88-A_104</libraryindex>
 	<title></title>
@@ -354,9 +354,9 @@
 	<needsreview>1</needsreview>
 	<needsinput>1</needsinput>
 
-	<frontimage></frontimage>
+	<frontimage>88-A_104.tif</frontimage>
 	<backimage></backimage>
-	<frontthumbnail></frontthumbnail>
+	<frontthumbnail>88-A_104.jpg</frontthumbnail>
 	<backthumbnail></backthumbnail>
 </document>
 </data>
