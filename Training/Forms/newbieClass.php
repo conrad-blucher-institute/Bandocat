@@ -18,15 +18,13 @@
 		public $needsinput; //bool
 		public $fronturl;
 		public $backurl;
+		public $frontimage;
+		public $backimage;
 		public $frontthumbnail;
-		public $backtthumbnail;
-
+		public $backthumbnail;
 		public $xmlfile;
-
-		public $url = "./jobfolder/maps/";
-		public $thumb_url = "./jobfolder/thumbnails/";
-
-
+		public $url = "../Training_Newbie_Images/Images/";
+		public $thumb_url = "../Training_Newbie_Images/Thumbnails/";
 	}
 
 
@@ -41,14 +39,16 @@
 		public $classification;
 		public $classificationcomments;
 
-		public function JobFolder($username,$mapid)
+        public function __construct($collection,$xmlpath,$username,$mapid)
 		{
-			$this->xmlfile = '../'.$username . ".xml";
+			$this->xmlfile = $xmlpath;
 			$found = -1;
-			$this->collection = "Job Folder";
+			$this->collection = $collection;
 			$this->id = $mapid;
 
 			$xml = simplexml_load_file($this->xmlfile) or die("Cannot open file!");
+           // print_r($this);
+            //print_r($xml->document->frontimage);
 			foreach($xml->document as $a)
 			{
 				if($a->id == $this->id)
@@ -72,11 +72,10 @@
 					$this->author3 = $a->author3;
 
 					$this->libraryindex = $a->libraryindex;
-					$this->frontimage = $this->url . $a->frontimage;
-					$this->backimage = $this->url . $a->backimage;
-					$this->frontthumbnail = $this->thumb_url . $a->frontthumbnail;
-					$this->backthumbnail = $this->thumb_url . $a->backthumbnail;
-
+					$this->frontimage = $this->url. $a->frontimage;
+					$this->backimage = $this->url. $a->backimage;
+					$this->frontthumbnail = $this->thumb_url. $a->frontthumbnail;
+					$this->backthumbnail = $this->thumb_url. $a->backthumbnail;
 					$found = 1;
 				}
 				if($found == 1)
