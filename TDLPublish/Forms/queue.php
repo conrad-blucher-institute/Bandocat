@@ -1,9 +1,8 @@
 <?php
 //for admin use only
-require_once '../../Library/SessionManager.php';
-require_once '../../Library/ControlsRender.php';
+spl_autoload_register(function ($class_name) {
+    require_once "../../Library/" . $class_name . '.php';});
 $session = new SessionManager();
-require_once('../../Library/DBHelper.php');
 if($session->isAdmin()) {
     $DB = new DBHelper();
 }

@@ -10,6 +10,21 @@ require_once __DIR__ . '\..\..\Library\IndicesDBHelper.php';
 require_once __DIR__ . '\..\..\Library\TDLPublishDB.php';
 require_once __DIR__ . '\..\..\Library\TDLSchema.php';
 require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
+
+
+class bitstream{
+    public $name;
+    public $type;
+    public $path;
+    function __construct($name,$path,$type=null)
+    {
+        $this->name = $name;
+        $this->path = $path;
+        if($type != null)
+            $this->type = $type;
+    }
+}
+
     /*
      * TDL Status:
      * -1: Error
@@ -169,72 +184,32 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
         // - Find the bitstream's names on Dspace
         // - Gather fullpath, filename, isBack, type (jpg/kmz/geotiff)
         // - compare: (if bitstreams name match then pass, if bitstreams name not match, then publish)
-
-
-        //PUBLISH BITSTREAM FRONT
-        if($doc_dspace["dspacePublished"] == 10) {
-            $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,10); //set status to publishing front scan
-            $pathtoImage = $collection["storagedir"] . $doc["FileNamePath"];
-
-            //convert TIF to JPEG
-            //POST jpeg bitstream
-            //delete JPEG bitstream
-            $jpgFilePath = str_replace(".tif",".jpg",$pathtoImage);
-            $jpgFileName = str_replace(".tif",".jpg",$doc["FileName"]);
-            exec("convert " . $pathtoImage . " " . $jpgFilePath );
-
-
-            // TODO: check if the image exists or not. If not exists, return 404front in http_retval
-            $http_retval = $DS->TDL_POST_BITSTREAM($dspaceID, $jpgFilePath, $jpgFileName);
-            //delete JPEG
-            exec("del " . str_replace('/', '\\', $jpgFilePath));
-            if ($http_retval == "200")
-                fwrite($logfile, date(DATE_RFC2822) . ": Front scan has been uploaded....\r\n");
-            else {
-                fwrite($logfile, date(DATE_RFC2822) . ": Front scan failed to upload. Code $http_retval. Job End\r\n");
-                fclose($logfile);
-                return;
-            }
-
-            //georec front if available
-//            if($doc['geoRecFrontStatus'] == 1)
-//            {
-//                //kmz
-//                $http_retval = $DS->TDL_POST_BITSTREAM($dspaceID, $doc['georecdir'] . $doc['georecFrontDirKMZ'], $doc['georecFrontDirKMZ']);
-//                //delete JPEG
-//                exec("del " . $jpgFilePath . " 2>nul");
-//                if ($http_retval == "200")
-//                    fwrite($logfile, date(DATE_RFC2822) . ": KMZ Front scan has been uploaded....\r\n");
-//                else {
-//                    fwrite($logfile, date(DATE_RFC2822) . ": KMZ Front scan failed to upload. Code $http_retval. Job End\r\n");
-//                    fclose($logfile);
-//                    return;
-//                }
-//
-//                //geotiff
-//                $http_retval = $DS->TDL_POST_BITSTREAM($dspaceID, $doc['georecdir'] . $doc['georecFrontDirGeoTIFF'], $doc['georecFrontDirGeoTIFF']);
-//                //delete JPEG
-//                exec("del " . $jpgFilePath . " 2>nul");
-//                if ($http_retval == "200")
-//                    fwrite($logfile, date(DATE_RFC2822) . ": KMZ Front scan has been uploaded....\r\n");
-//                else {
-//                    fwrite($logfile, date(DATE_RFC2822) . ": KMZ Front scan failed to upload. Code $http_retval. Job End\r\n");
-//                    fclose($logfile);
-//                    return;
-//                }
-//            }
-
-        }
-
-        //PUBLISH BITSTREAM BACK (IF AVAILABLE)
+        $bitStreamError = false;
+        $hasBack = true;
+        $hasGeorectification = true;
         if(!isset($doc["FileNameBack"]) || $doc["FileNameBack"] == "" || $doc["FileNameBack"] == null)
+            $hasBack = false;
+        if(!isset($doc['geoRecFrontStatus']))
+            $hasGeorectification = false;
+
+        //find bitstreams:
+        $publishedBitstreams = $DS->TDL_GET_BITSTREAMS($dspaceID);
+
+        $internalBitstreams = array();
+
+        //tif(s) (convert to jpg(s))
+        //convert TIF to JPEG
+        //POST jpeg bitstream
+        //delete JPEG bitstream
+
+        //front JPG scan
+        $pathtoImage = $collection["storagedir"] . $doc["FileNamePath"];
+        $jpgFilePath = str_replace(".tif",".jpg",$pathtoImage);
+        $jpgFileName = str_replace(".tif",".jpg",$doc["FileName"]);
+        exec("convert " . $pathtoImage . " " . $jpgFilePath );
+        array_push($internalBitstreams,new bitstream($jpgFileName,$jpgFilePath,"frontJPG"));
+        if($hasBack)
         {
-            fwrite($logfile,date(DATE_RFC2822) . ": There is no back scan....\r\n");
-            //back not available
-        }
-        else
-        {
-            $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,11); //set status to publishing back scan
             $pathtoImageBack = $collection["storagedir"] . $doc["FileNameBackPath"];
             //convert TIF to JPEG
             //POST jpeg bitstream
@@ -243,21 +218,55 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
             $jpgFileNameBack = str_replace(".tif",".jpg",$doc["FileNameBack"]);
             exec("convert " . $pathtoImageBack . " " . $jpgFilePathBack );
 
-            // TODO: check if the image exists or not. If not exists, return 404back in http_retval
-            $http_retval = $DS->TDL_POST_BITSTREAM($dspaceID, $jpgFilePathBack, $jpgFileNameBack);
-            //delete JPEG
-            exec("del " . $jpgFilePathBack . " 2>nul");
-            if($http_retval == "200")
-                fwrite($logfile,date(DATE_RFC2822) . ": Back scan has been uploaded....\r\n");
-            else {
-                fwrite($logfile,date(DATE_RFC2822) . ": Back scan failed to upload. Code $http_retval. Job End\r\n");
-                fclose($logfile);
-                return;
+            array_push($internalBitstreams,new bitstream($jpgFileNameBack,$jpgFilePathBack,"backJPG"));
+
+        }
+
+        if($hasGeorectification) {
+            //kmz(s)and geotiff
+            if ($doc['geoRecFrontStatus'] == 1) {
+                array_push($internalBitstreams,new bitstream(explode('/', $doc['georecFrontDirKMZ'])[1], $doc['georecdir'] . $doc['georecFrontDirKMZ'], 'frontKMZ'));
+                array_push($internalBitstreams,new bitstream(explode('/', $doc['georecFrontDirGeoTIFF'])[1], $doc['georecdir'] . $doc['georecFrontDirGeoTIFF'], 'frontGeoTIFF'));
+            }
+            if ($hasBack && $doc['geoRecBackStatus'] == 1) {
+                array_push($internalBitstreams,new bitstream(explode('/', $doc['georecBackDirKMZ'])[1], $doc['georecdir'] . $doc['georecBackDirKMZ'], 'backKMZ'));
+                array_push($internalBitstreams,new bitstream(explode('/', $doc['georecBackDirGeoTIFF'])[1], $doc['georecdir'] . $doc['georecBackDirGeoTIFF'], 'backGeoTIFF'));
             }
         }
 
+        //compare & publish
+        foreach($internalBitstreams as $iB)
+        {
+            $published = false;
+            foreach($publishedBitstreams as $pB)
+            {
+                if($pB->name == $iB->name) {
+                    $published = true;
+                    break;
+                }
+            }
+
+            if(!$published){
+                fwrite($logfile, date(DATE_RFC2822) . ": Publishing " . $iB->name . " - " . $iB->type . "\r\n");
+                $http_retval = $DS->TDL_POST_BITSTREAM($dspaceID, $iB->path, $iB->name);
+                if ($http_retval == "200")
+                    fwrite($logfile, date(DATE_RFC2822) . ": " . $iB->type . " has been uploaded....\r\n");
+                else {
+                    fwrite($logfile, date(DATE_RFC2822) . ": " . $iB->type . " failed to upload.... HTTP CODE: . " . $http_retval . "\r\n");
+                    $bitStreamError = true;
+                }
+            }
+        }
+
+        //cleaning
+        exec("del " . str_replace('/','\\',$jpgFilePath));
+        if($hasBack)
+        exec("del " . str_replace('/','\\',$jpgFilePathBack));
+
+        $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,1); //set status to Published
+
         if($http_retval == "200") {
-            fwrite($logfile, date(DATE_RFC2822) . ": Bitstream(s) uploaded successfully....\r\n");
+            fwrite($logfile, date(DATE_RFC2822) . ": Bitstream(s) uploaded....\r\n");
             fwrite($logfile, date(DATE_RFC2822) . ": Document ID: $docID has been published!\r\n");
             $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,1); //set status to Published
 
@@ -266,7 +275,12 @@ require_once __DIR__ . '\..\..\Library\TDLPublishJob.php';
             if(!$ret)
                 fwrite($logfile, date(DATE_RFC2822) . ": Unable to write log to DB!\r\n");
         }
-        else $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,-1); //set status to Error
+        else
+        {
+            if($bitStreamError) //error when publishing one of the bitstream
+                $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,11);
+            else $DB->PUBLISHING_DOCUMENT_UPDATE_STATUS($docID,-1); //unknown error
+        } //set status to 11
 
         //$isEmptyQueue = true; //break the loop, for testing
     }

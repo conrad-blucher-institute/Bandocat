@@ -205,6 +205,18 @@ class TDLPublishJob
         return $output;
     }
 
+
+    public function TDL_GET_BITSTREAMS($itemID)
+    {
+        $ch = curl_init($this->baseUrl . "items/" . $itemID . "/bitstreams");
+        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"GET");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //disable SSL
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($output);
+    }
+
     //get_communities, if $communityID = null, return all communities
     //method: GET
     //return: list of all communities (json)
@@ -237,6 +249,7 @@ class TDLPublishJob
         curl_close($ch);
         return $output;
     }
+
 
     //get_items
     //method: GET
