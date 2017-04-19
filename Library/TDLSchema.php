@@ -55,7 +55,7 @@ class TDLSchema
             $numberOfPages = "2 pages";
 
         $fieldbookrelation = "";
-        if($doc["FieldBookNumber"] != "")
+        if($doc["FieldBookNumber"] != "" && trim($doc["FieldBookNumber"]) != "0")
         {
             $fieldbookrelation = "Book " . $doc["FieldBookNumber"] . " ";
             if($doc["FieldBookPage"] != "")
