@@ -200,7 +200,7 @@ else header('Location: ../../');
                             //case: GeoRec Front/Back status columns
                             case 11: //column GeoRec Front Status
                             case 12: //column GeoRec Back Status
-                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Not Rectified</option><option value="1">Rectified</option><option value="2">Not Rectifiable</option><option value="3">Needs Review</option></select>')
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Not Rectified</option><option value="1">Rectified</option><option value="2">Not Rectifiable</option><option value="3">Needs Review</option><option value="4">Research Required</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
                                         var val = $.fn.dataTable.util.escapeRegex(
