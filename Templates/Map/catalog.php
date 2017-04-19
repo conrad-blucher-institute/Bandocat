@@ -342,8 +342,10 @@ $date = new DateHelper();
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
-            if(validateFormUnderscore("txtLibraryIndex") == true)
-            {
+
+             //TODO:: removed libraryindex underscore validation
+//            if(validateFormUnderscore("txtLibraryIndex") == true)
+//            {
                 $('#btnSubmit').css("display", "none");
                 $('#loader').css("display", "inherit");
                 event.disabled;
@@ -381,13 +383,13 @@ $date = new DateHelper();
 
                     }
                 });
-            }
-            else
-            {
-                //No _ was found in the string
-                alert("Library Index does not contain an underscore character.                            " +
-                    "Please check Library Index.");
-            }
+//            }
+//            else
+//            {
+//                //No _ was found in the string
+//                alert("Library Index does not contain an underscore character.                            " +
+//                    "Please check Library Index.");
+//            }
 
         });
         //resize height of the scroller
