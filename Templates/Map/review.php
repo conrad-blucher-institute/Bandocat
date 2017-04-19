@@ -427,8 +427,9 @@ $date = new DateHelper();
         $('#theform').submit(function (event)
         {
             //validates the library index
-            if(validateFormUnderscore("txtLibraryIndex") == true)
-            {
+            //TODO:: removed underscore validation for library index
+//            if(validateFormUnderscore("txtLibraryIndex") == true)
+//            {
                 //Library index was found having a "_" in the string
                 /* stop form from submitting normally */
                 $('#btnSubmit').css("display", "none");
@@ -467,13 +468,13 @@ $date = new DateHelper();
                         }
                     }
                 })
-            }
-            else
-            {
-                //No _ was found in the string
-                alert("Library Index does not contain an underscore character.                            " +
-                    "Please check Library Index.");
-            }
+//            }
+//            else
+//            {
+//                //No _ was found in the string
+//                alert("Library Index does not contain an underscore character.                            " +
+//                    "Please check Library Index.");
+//            }
 
 
 
