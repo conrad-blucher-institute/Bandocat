@@ -265,8 +265,6 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 array_authors.push(authors[i].value);
             formData.append("authors",JSON.stringify(array_authors));
 
-            if(validateFormUnderscore("txtLibraryIndex") == true)
-            {
                 /*jquery that displays the three points loader*/
                 $('#btnSubmit').css("display", "none");
                 $('#loader').css("display", "inherit");
@@ -305,14 +303,6 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 
                     }
                 });
-            }
-            else
-            {
-                //No _ was found in the string
-                alert("Library Index does not contain an underscore character.                            " +
-                    "Please check Library Index.");
-            }
-
         });
     });
 </script>

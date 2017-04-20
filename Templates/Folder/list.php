@@ -99,7 +99,6 @@ else header('Location: ../../');
                         },
                         "targets": 4
                     },
-                    { "searchable": false, "targets": 4 },
                     //column : NeedsReview
                     {
                         "render": function ( data, type, row )
@@ -110,7 +109,6 @@ else header('Location: ../../');
                         },
                         "targets": 5
                     },
-                    { "searchable": false, "targets": 5 },
                     {
                         "render": function ( data, type, row )
                         {
@@ -127,6 +125,7 @@ else header('Location: ../../');
                         switch(column[0][0]) //column number
                         {
                             //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                            case 4:
                             case 5: //column needsreview
                                     //column completed?
                                 var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
@@ -145,8 +144,7 @@ else header('Location: ../../');
                             case 1:
                             case 2:
                             case 3:
-                            case 4:
-                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""/>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'keyup change', function () {
                                         var val = $.fn.dataTable.util.escapeRegex(
@@ -158,6 +156,7 @@ else header('Location: ../../');
                                             .draw();
                                     } );
                                 break;
+                            default: break;
                         }
                     } );
                 },
