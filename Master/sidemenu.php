@@ -8,6 +8,10 @@
     require_once '../../Library/DBHelper.php';
     $DB1 = new DBHelper();
     //if user is admin, then add Admin section to the menu
+    $userid = $session-> getUserID();
+    $userticketCount = $DB1->GET_USER_CLOSEDTICKET_COUNT($userid);
+    $ticketCount = 0;
+    $admin = $session->isAdmin();
     if($session->isAdmin())
     {
         //queries the database for the number of tickets currently active
@@ -32,6 +36,9 @@
     </div>';
     }
     ?>
+    <script>
+
+        </script>
     <!-- Collections Tab -->
     <div class="menu-item menu-item_sub5">
         <h4><a href="#">Collections</a></h4>
@@ -75,8 +82,8 @@
     </div>
 
     <?php
-        $userid = $session-> getUserID();
-        $userticketCount = $DB1->GET_USER_CLOSEDTICKET_COUNT($userid);
+
+
         echo '<div class="menu-item menu-item_sub2">
         <h4><a class="notificationBadge" data-badge='.$userticketCount.' id="userNotificationBadge" href="#">Ticket </a></h4>
         <ul>
@@ -100,22 +107,50 @@
     </div>
 
     <script>
-
+        //Writer
+//        $( document ).ready(function()
+//        {
+//            var count2 = '<?php //echo $userticketCount; ?>//';
+//            if(count2 > 0)
+//            {
+//                document.getElementById("userNotificationBadge2").className = "notificationBadge";
+//                document.getElementById("userNotificationBadge").className = "notificationBadge";
+//            }
+//            if(count2 < 1)
+//            {
+//                document.getElementById("userNotificationBadge2").className = "";
+//                document.getElementById("userNotificationBadge").className = "";
+//            }
+//        });
+        //Admin
         $( document ).ready(function()
         {
-            //grab ticketCount variable from above PHP function
-            var count = '<?php echo $ticketCount; ?>';
-            var count2 = '<?php echo $userticketCount; ?>';
-            //if we have more than 0 tickets with the status of "open"
+            var count = '<?php echo $ticketCount ?>';
             if(count > 0) {
                 document.getElementById("adminNotificationBadge2").className = "notificationBadge";
                 document.getElementById("adminNotificationBadge").className = "notificationBadge";
             }
             if(count < 1)
             {
-                document.getElementById("adminNotificationBadge2").className = "";
-                document.getElementById("adminNotificationBadge").className = "";
+                var admin = 0;
+                try
+                {
+                    admin = '<?php echo $admin ?>';
+                }catch(e)
+                {
+                    console.log("Error: "+ e);
+                }
+                //Handle our admin notification
+                if(admin != '') {
+                    document.getElementById("adminNotificationBadge2").className = "";
+                    document.getElementById("adminNotificationBadge").className = "";
+                }
+                else {//Do nothing}
+                }
             }
+
+            var count2 = '<?php echo $userticketCount; ?>';
+            console.log(count2);
             if(count2 > 0)
             {
                 document.getElementById("userNotificationBadge2").className = "notificationBadge";
@@ -126,7 +161,6 @@
                 document.getElementById("userNotificationBadge2").className = "";
                 document.getElementById("userNotificationBadge").className = "";
             }
-
         });
     </script>
 </nav>
