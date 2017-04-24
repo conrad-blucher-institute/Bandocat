@@ -37,6 +37,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     <link rel="stylesheet" href= "css/l.geosearch.css"/>
     <link rel="stylesheet" href= "../../Master/master.css"/>
     <link rel="stylesheet" href="../../ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.css">
+    <link rel="stylesheet" href="../../ExtLibrary/PolylineMeasure/PolylineMeasure.css" />
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <script src='../../ExtLibrary/rastercoords.js'></script>
     <script src="../../ExtLibrary/Leaflet.MakiMarkers.js"></script>
@@ -44,6 +45,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     <script src="javascript/l.control.geosearch.js"></script>
     <script src="javascript/l.geosearch.provider.esri.js"></script>
     <script type="text/javascript" src="javascript/bandocatRectification.js"></script>
+    <script src="../../ExtLibrary/PolylineMeasure/PolylineMeasure.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.js"></script>
 </head>
 <style>
@@ -126,6 +128,50 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
         showMarker: false
     }).addTo(map);
 
+    L.control.polylineMeasure({
+        position: 'topright',                    // Position to show the control. Possible values are: 'topright', 'topleft', 'bottomright', 'bottomleft'
+        imperial: true,                        // Show imperial or metric distances
+        title: '',                              // Title for the control
+        innerHtml: '&#8614;',                   // HTML to place inside the control
+        classesToApply: [],                     // Classes to apply to the control
+        backgroundColor: '#8f8',                // Background color for control when selected
+        cursor: 'crosshair',                    // Cursor type to show when creating measurements
+        clearMeasurementsOnStop: true,          // Clear all the measurements when the control is unselected
+        showMeasurementsClearControl: false,    // Show a control to clear all the measurements
+        clearControlTitle: 'Clear',             // Title text to show on the clear measurements control button
+        clearControlInnerHtml: '&times',        // Clear control inner html
+        clearControlClasses: [],                // Collection of classes to add to clear control button
+        tempLine: {                             // Styling settings for the temporary dashed line
+            color: '#00f',                      // Dashed line color
+            weight: 2                           // Dashed line weight
+        },
+        line: {                                 // Styling for the solid line
+            color: '#006',                      // Solid line color
+            weight: 2                           // Solid line weight
+        },
+        startingPoint: {                        // Style settings for circle marker indicating the starting point of the polyline
+            color: '#000',                      // Color of the border of the circle
+            weight: 1,                          // Weight of the circle
+            fillColor: '#0f0',                  // Fill color of the circle
+            fillOpacity: 1,                     // Fill opacity of the circle
+            radius: 3                           // Radius of the circle
+        },
+        lastPoint: {                            // Style settings for circle marker indicating the last point of the polyline
+            color: '#000',                      // Color of the border of the circle
+            weight: 1,                          // Weight of the circle
+            fillColor: '#fa8d00',               // Fill color of the circle
+            fillOpacity: 1,                     // Fill opacity of the circle
+            radius: 3                           // Radius of the circle
+        },
+        endPoint: {                             // Style settings for circle marker indicating the last point of the polyline
+            color: '#000',                      // Color of the border of the circle
+            weight: 1,                          // Weight of the circle
+            fillColor: '#f00',                  // Fill color of the circle
+            fillOpacity: 1,                     // Fill opacity of the circle
+            radius: 3                           // Radius of the circle
+        }
+    }).addTo(map);
+
     var markerColors = new Array('#e74c3c','#2980b9', '#2ecc71','#ffee58','#9b59b6',
         '#FE9A2E', '#f1948a', '#80deea', '#abebc6',  '#f9e79f','#b388ff', '#ffcc80'); // array of possible colors of markers
     var colorCount = 0;						//counter that increments when ever a new color from markerColors needs to be used
@@ -138,82 +184,94 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
     map.setView([27.73725068372226, -97.43062019348145], 12);
 
+
     //executes on click of map
     map.addEventListener("click", function(event)
     {
-        //sets marker color and style
-        Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
-        if(!mapSelected) {
+        console.log(L.control.polylineMeasure()._measureMarkerGet());
 
-            //creates new object of gcpList
-            addGCP(count, event.latlng.lat, event.latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
+        //Boolean true prevent marker placement and enable measuring mode
+        if(L.control.polylineMeasure()._measureModeGet() == true) {
 
-            //creates marker and popup
-            marker = L.marker(event.latlng, {icon: icon});
-            marker.bindPopup("Edit").openPopup().closePopup;
-            markerArray.push(marker);
-            map.addLayer(marker);
-
-            var markerIndex = marker.on('click', function clickIndex(event) {
-                for (i = 0; i < gcpList.length; i++) {
-                    if (gcpList[i].lat == event.latlng.lat) {
-                        markerIndex = i;
-                    }
-                }
-                event.target.dragging.enable();
-                return markerIndex;
-            });
-
-            marker.on('dragend', function (event) {
-                var marker = event.target;
-                var latitude = marker._latlng.lat;
-                gcpList[markerIndex].lat = latitude;
-                var longitude = marker._latlng.lng;
-                gcpList[markerIndex].lng = longitude;
-                $('#markerLat-' + markerIndex).text(gcpList[markerIndex].lat);
-                $('#markerLong-' + markerIndex).text(gcpList[markerIndex].lng);
-            });
-
-
-            //alert(colorCount);
-            colorCount++;
-            if (colorCount > 11)
-                alert("Maximum amount of points reached");
-
-            count++;
-            rasterSelected = false;
-            mapSelected = true;
-
-            //creates table
-            var table = document.getElementById("table");
-            var row = table.insertRow(count + 1);
-            var cell1 = row.insertCell(0);
-            $(cell1).attr('id', 'marker-'+gcpList[count-1].id);
-            var cell2 = row.insertCell(1);
-            $(cell2).attr('id', 'markerLat-'+gcpList[count-1].id);
-            var cell3 = row.insertCell(2);
-            $(cell3).attr('id', 'markerLong-'+gcpList[count-1].id);
-            var cell4 = row.insertCell(3);
-            $(cell4).attr('id', 'rasterLat-'+gcpList[count-1].id);
-            var cell5 = row.insertCell(4);
-            $(cell5).attr('id', 'rasterLong-'+gcpList[count-1].id);
-            var cell6 = row.insertCell(5);
-            $(cell6).attr('id', 'rasterX-'+gcpList[count-1].id);
-            var cell7 = row.insertCell(6);
-            $(cell7).attr('id', 'rasterY-'+gcpList[count-1].id);
-            cell1.innerHTML = "<button id = 'zoomToMarker' onclick = 'zoomToMarker(" + count + ")' style = 'background-color:" + markerColors[colorCount - 1] + "'>" + count + "</button>";
-            cell2.innerHTML = gcpList[count - 1].lat;
-            cell3.innerHTML = gcpList[count - 1].lng;
-            cell4.innerHTML = gcpList[count - 1].rlat;
-            cell5.innerHTML = gcpList[count - 1].rlong;
-            cell6.innerHTML = gcpList[count - 1].x;
-            cell7.innerHTML = gcpList[count - 1].y;
-            //hide column raster lat and raster long
-            cell4.style.display = "none";
-            cell5.style.display = "none";
-        }else {
-            alert("Select point from raster");
         }
+        //Boolean false enable marker placement and disable measuring mode
+        else{
+
+            Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
+            if(!mapSelected) {
+
+                //creates new object of gcpList
+                addGCP(count, event.latlng.lat, event.latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
+
+                //creates marker and popup
+                marker = L.marker(event.latlng, {icon: icon});
+                marker.bindPopup("Edit").openPopup().closePopup;
+                markerArray.push(marker);
+                map.addLayer(marker);
+
+                var markerIndex = marker.on('click', function clickIndex(event) {
+                    for (i = 0; i < gcpList.length; i++) {
+                        if (gcpList[i].lat == event.latlng.lat) {
+                            markerIndex = i;
+                        }
+                    }
+                    event.target.dragging.enable();
+                    return markerIndex;
+                });
+
+                marker.on('dragend', function (event) {
+                    var marker = event.target;
+                    var latitude = marker._latlng.lat;
+                    gcpList[markerIndex].lat = latitude;
+                    var longitude = marker._latlng.lng;
+                    gcpList[markerIndex].lng = longitude;
+                    $('#markerLat-' + markerIndex).text(gcpList[markerIndex].lat);
+                    $('#markerLong-' + markerIndex).text(gcpList[markerIndex].lng);
+                });
+
+
+                //alert(colorCount);
+                colorCount++;
+                if (colorCount > 11)
+                    alert("Maximum amount of points reached");
+
+                count++;
+                rasterSelected = false;
+                mapSelected = true;
+
+                //creates table
+                var table = document.getElementById("table");
+                var row = table.insertRow(count + 1);
+                var cell1 = row.insertCell(0);
+                $(cell1).attr('id', 'marker-'+gcpList[count-1].id);
+                var cell2 = row.insertCell(1);
+                $(cell2).attr('id', 'markerLat-'+gcpList[count-1].id);
+                var cell3 = row.insertCell(2);
+                $(cell3).attr('id', 'markerLong-'+gcpList[count-1].id);
+                var cell4 = row.insertCell(3);
+                $(cell4).attr('id', 'rasterLat-'+gcpList[count-1].id);
+                var cell5 = row.insertCell(4);
+                $(cell5).attr('id', 'rasterLong-'+gcpList[count-1].id);
+                var cell6 = row.insertCell(5);
+                $(cell6).attr('id', 'rasterX-'+gcpList[count-1].id);
+                var cell7 = row.insertCell(6);
+                $(cell7).attr('id', 'rasterY-'+gcpList[count-1].id);
+                cell1.innerHTML = "<button id = 'zoomToMarker' onclick = 'zoomToMarker(" + count + ")' style = 'background-color:" + markerColors[colorCount - 1] + "'>" + count + "</button>";
+                cell2.innerHTML = gcpList[count - 1].lat;
+                cell3.innerHTML = gcpList[count - 1].lng;
+                cell4.innerHTML = gcpList[count - 1].rlat;
+                cell5.innerHTML = gcpList[count - 1].rlong;
+                cell6.innerHTML = gcpList[count - 1].x;
+                cell7.innerHTML = gcpList[count - 1].y;
+                //hide column raster lat and raster long
+                cell4.style.display = "none";
+                cell5.style.display = "none";
+            }else {
+                alert("Select point from raster");
+            }
+        }
+        //sets marker color and style
+
     })
 
 </script>
@@ -260,6 +318,50 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
         L.tileLayer(tiles, {
             noWrap: true,
             attribution: ''
+        }).addTo(raster);
+
+        L.control.polylineMeasure({
+            position: 'topleft',                    // Position to show the control. Possible values are: 'topright', 'topleft', 'bottomright', 'bottomleft'
+            imperial: false,                        // Show imperial or metric distances
+            title: '',                              // Title for the control
+            innerHtml: '&#8614;',                   // HTML to place inside the control
+            classesToApply: [],                     // Classes to apply to the control
+            backgroundColor: '#8f8',                // Background color for control when selected
+            cursor: 'crosshair',                    // Cursor type to show when creating measurements
+            clearMeasurementsOnStop: true,          // Clear all the measurements when the control is unselected
+            showMeasurementsClearControl: false,    // Show a control to clear all the measurements
+            clearControlTitle: 'Clear',             // Title text to show on the clear measurements control button
+            clearControlInnerHtml: '&times',        // Clear control inner html
+            clearControlClasses: [],                // Collection of classes to add to clear control button
+            tempLine: {                             // Styling settings for the temporary dashed line
+                color: '#00f',                      // Dashed line color
+                weight: 2                           // Dashed line weight
+            },
+            line: {                                 // Styling for the solid line
+                color: '#006',                      // Solid line color
+                weight: 2                           // Solid line weight
+            },
+            startingPoint: {                        // Style settings for circle marker indicating the starting point of the polyline
+                color: '#000',                      // Color of the border of the circle
+                weight: 1,                          // Weight of the circle
+                fillColor: '#0f0',                  // Fill color of the circle
+                fillOpacity: 1,                     // Fill opacity of the circle
+                radius: 3                           // Radius of the circle
+            },
+            lastPoint: {                            // Style settings for circle marker indicating the last point of the polyline
+                color: '#000',                      // Color of the border of the circle
+                weight: 1,                          // Weight of the circle
+                fillColor: '#fa8d00',               // Fill color of the circle
+                fillOpacity: 1,                     // Fill opacity of the circle
+                radius: 3                           // Radius of the circle
+            },
+            endPoint: {                             // Style settings for circle marker indicating the last point of the polyline
+                color: '#000',                      // Color of the border of the circle
+                weight: 1,                          // Weight of the circle
+                fillColor: '#f00',                  // Fill color of the circle
+                fillOpacity: 1,                     // Fill opacity of the circle
+                radius: 3                           // Radius of the circle
+            }
         }).addTo(raster);
 
         //Raster container control that displays coordinates location on mouse hover
