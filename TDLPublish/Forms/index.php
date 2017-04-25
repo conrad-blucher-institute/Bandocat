@@ -60,7 +60,7 @@ $Render = new ControlsRender();
                                 <th width="100px">Status</th>
                                 <th width="100px">Dspace URI</th>
                                 <th width="85px">Dspace ID</th>
-                                <th width="120px">Action</th>
+                                <th width="150px">Action</th>
                             </tr>
                             </thead>
                             <tfoot>
@@ -153,7 +153,7 @@ $Render = new ControlsRender();
                             case "-1": return "<a href=''>Pop</a>"; //in unpublish queue????
                             case "10": //publishing front map
                             case "11": //publishing back map
-                                return "Publishing..."; //publishing
+                                return "Publishing... | <a href='' onclick='performAction(event," + '"unpublish"' + "," + row[0] +")'>Unpublish</a>"; //publishing
                             default: return "";
                         }
                     },

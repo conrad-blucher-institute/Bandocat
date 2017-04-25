@@ -59,6 +59,7 @@ $Render = new ControlsRender();
                         <br/>
                     <button id="btnPush" name="btnPush" onclick="pushQueue();">Push</button>
                         <select id="ddlHowMany" name="ddlHowMany">
+                            <option value="1">1</option>
                             <option value="20">20</option>
                             <option value="40">40</option>
                             <option value="60">60</option>

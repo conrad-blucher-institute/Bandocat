@@ -117,7 +117,7 @@ else header('Location: ../../');
 					?>
 				</select>
 			</td>
-
+			<td><input type="submit" value="Create" id="btnNewMapkind" class="bluebtn" name="btnNewMapkind"/></td>
 		</tr>
 	</table>
 
@@ -430,7 +430,35 @@ else header('Location: ../../');
 
 </script>
 </div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+	<table class="Account_Table">
+		<form id="frm_mapkind" name="frm_mapkind" method="post">
+			<tr>
+				<td colspan="2" style="text-align: center">
+					<label>Existing Map Kinds:</label><br><br>
+					<select name="ddl_user" id="ddl_user" multiple style="height: 250px; width: 250px">
+						<?php $Render->GET_DDL_MAPKIND($arr,null);
+						//echo $arr?>
+					</select><br/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: center">
+					<label>Input New Map Kind:</label><br><br>
+					<input type="text" name="mapkind"><br>
+					<div style="text-align:center"><p style="font-size:1.2em;" hidden id="txtResult"></div>
+				</td>
+			</tr>
+			<td colspan="2" style="text-align: center">
+				<br>
+				<input type="submit" value="Create" id="btnNewMapkind" class="bluebtn" name="btnNewMapkind"/>
+			</td>
+			<br>
 
+		</form>
+	</table>
+</div>
 </body>
 <style>
 	mark {
@@ -455,6 +483,11 @@ else header('Location: ../../');
 		padding: 10px 10px;
 	}
 </style>
+<script>
+	$("#btnNewMapkind").click(function(){
+		$("#myModal").show();
+	});
+</script>
 <script>
 	//Script checks the users role. If the role is set as "Reader" Then certain functionality is hidden
 	$( document ).ready(function()
