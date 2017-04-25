@@ -970,11 +970,11 @@ class DBHelper
      * $collection (in String) - Name of the collection
      * $iAuthorID (in int) - ID of user
      * $iAuthorName (in str) - new value of author name
-     * $iTDLName (in str) - new value of TDL name
+     * $iOldName (in str) - new value of old name
      * Return value(s):
      * return true if success, false if error occurs
      ***********************************************/
-    function UPDATE_AUTHOR_INFO($collection,$iAuthorID,$iAuthorName,$iTDLName)
+    function UPDATE_AUTHOR_INFO($collection,$iAuthorID,$iAuthorName,$iOldName)
     {
         //get appropriate database
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
@@ -982,10 +982,10 @@ class DBHelper
         if ($dbname != null && $dbname != "")
         {
             //prepares sql statement for execution
-            $sth = $this->getConn()->prepare("UPDATE `author` SET `authorname` = :authorname, `TDLname` = :TDLname WHERE `authorID` = :authorID");
+            $sth = $this->getConn()->prepare("UPDATE `author` SET `authorname` = :authorname, `TDLname` = :oldname WHERE `authorID` = :authorID");
             $sth->bindParam(':authorID',$iAuthorID,PDO::PARAM_INT);
             $sth->bindParam(':authorname',$iAuthorName,PDO::PARAM_STR);
-            $sth->bindParam(':TDLname',$iTDLName,PDO::PARAM_STR);
+            $sth->bindParam(':oldname',$iOldName,PDO::PARAM_STR);
             $ret = $sth->execute();
             //return statement result
             return $ret;
