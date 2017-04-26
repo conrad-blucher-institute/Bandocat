@@ -38,7 +38,7 @@
     ?>
     <script>
 
-        </script>
+    </script>
     <!-- Collections Tab -->
     <div class="menu-item menu-item_sub5">
         <h4><a href="#">Collections</a></h4>
@@ -84,21 +84,14 @@
     <?php
 
 
-        echo '<div class="menu-item menu-item_sub2">
+    echo '<div class="menu-item menu-item_sub2">
         <h4><a class="notificationBadge" data-badge='.$userticketCount.' id="userNotificationBadge" href="#">Ticket </a></h4>
         <ul>
             <li><a class="notificationBadge" data-badge='.$userticketCount.' id="userNotificationBadge2" href="../../Forms/UserTicket/">View Tickets </a></li>   
             <li><a href="../../Forms/TicketsSubmission/" target="_blank">Submit Ticket</a></li>
         </ul>
     </div>';
-
-        //create a new collection
-    if($session->isSuperAdmin()) {
-        echo '<div class="menu-item">
-        <h4><a href="../../Creator/">Create New Collection</a></h4>
-        </div>';
-    }
-?>
+    ?>
 
     <!-- Help Tab -->
     <div class="menu-item menu-item_sub2">
@@ -114,21 +107,6 @@
     </div>
 
     <script>
-        //Writer
-//        $( document ).ready(function()
-//        {
-//            var count2 = '<?php //echo $userticketCount; ?>//';
-//            if(count2 > 0)
-//            {
-//                document.getElementById("userNotificationBadge2").className = "notificationBadge";
-//                document.getElementById("userNotificationBadge").className = "notificationBadge";
-//            }
-//            if(count2 < 1)
-//            {
-//                document.getElementById("userNotificationBadge2").className = "";
-//                document.getElementById("userNotificationBadge").className = "";
-//            }
-//        });
         //Admin
         $( document ).ready(function()
         {
@@ -157,7 +135,6 @@
             }
 
             var count2 = '<?php echo $userticketCount; ?>';
-            console.log(count2);
             if(count2 > 0)
             {
                 document.getElementById("userNotificationBadge2").className = "notificationBadge";
