@@ -16,7 +16,7 @@
 				}
 			?>
 
-<link rel="stylesheet" type="text/css" href="styles.css">
+<link rel="stylesheet" type="text/css" href="../styles.css">
 <script type="text/javascript">
 	var myMessages = ['info','warning','error','success'];
 

@@ -8,7 +8,6 @@ $collection = $_GET["col"];
 	$userfile = "";
 
 	include 'config.php';
-	include 'class.php';
 $file_arr = array();
 
 //list of files in the directory
@@ -74,12 +73,12 @@ else $userfile = $username;
                             <th>Library Index</th>
                             <th>Document Title</th>
                             <th>Classification</th>
-                            <th>Needs Review</th>
+                            <th>Completed</th>
                         </tr>
+
                         </thead>
 
                         <tbody>
-
                         <!--Block of code that load the information from the xml file to the table-->
                         <?php
                         $training_parent = "../Training_Collections";
@@ -95,7 +94,8 @@ else $userfile = $username;
                         }
 
                         $nodes = $document->getElementsByTagName('document');
-
+                        $count = 0;
+                        //echo "<td align = 'center'><a href=\"index.php?id=$id&user=$userfile&col=$collection&type=$type\">$libraryindex</a></td>";
                         foreach ($nodes as $node) {
                             foreach ($node->childNodes as $child) {
                                 if ($child->nodeName == 'libraryindex') {
@@ -117,6 +117,7 @@ else $userfile = $username;
                             }
                             $type = $_GET['type'];
 
+
                             echo '<tr>';
                             echo "<td align = 'center'><a href=\"index.php?id=$id&user=$userfile&col=$collection&type=$type\">$libraryindex</a></td>";
                             echo "<td align = 'center'>$libraryindex</td>";
@@ -124,7 +125,6 @@ else $userfile = $username;
                             echo "<td align = 'center'>$classification</td>";
                             echo "<td align = 'center'>".(($needsreview == 0) ? 'No' : 'Yes')."</td>";
                             echo '</tr>';
-
                         }
                         ?>
                         </tbody>
@@ -247,6 +247,7 @@ else $userfile = $username;
         $(document).ready(function() {
             oTable = $('#dtable').dataTable({
                 "bJQueryUI": true,
+                "order": [[3, "desc"]],
                 'sPaginationType': 'full_numbers'
             });
         } );

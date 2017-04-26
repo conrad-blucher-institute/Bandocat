@@ -491,7 +491,7 @@
         clearAllMeasurements: function() {
             var self = this;
             if (self._layerPaint) {
-                self._layerPaint.clearLayers();
+                //self._layerPaint.clearLayers();
             }
         },
 
@@ -579,6 +579,7 @@
                     radius: self.options.startingPoint.radius,
                     interactive: false
                 }).addTo(self._layerPaint);
+                self._startCircle.bindPopup('Edit').openPopup();
             }
 
             if(self._layerPaintPath) {
@@ -628,15 +629,18 @@
                 radius: self.options.endPoint.radius,
                 interactive: false
             }).addTo(self._layerPaint);
+            self._finishCircle.bindPopup('carnage');
             if(self._lastCircle) {
                 self._layerPaint.removeLayer(self._lastCircle);
             }
             if(self._tooltip) {
                 self._layerPaint.removeLayer(self._tooltip);
+                console.log(self._tooltip);
             }
             if(self._layerPaint && self._layerPaintPathTemp) {
                 self._layerPaint.removeLayer(self._layerPaintPathTemp);
             }
+            self._layerPaint.bindPopup('Maze');
             // Reset everything
             self._restartPath();
             return self._lastPoint;
@@ -671,6 +675,7 @@
                 icon: icon,
                 interactive: false
             }).addTo(self._layerPaint);
+            console.log(self._layerPaint);
         },
 
         /**

@@ -109,10 +109,14 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
     //Base layers with leaflet layer control and access token
     var street = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic3BhdGlhbHF1ZXJ5bGFiIiwiYSI6ImNpeW43eHZ2YTAwMTgzMnBjNGF4bWVuaHIifQ.H-IzkkctQwbBRjhS9VLddA', {
+        maxZoom: 20,
+        maxNativeZoom: 18,
         attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors'
     }).addTo(map);
 
     var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic3BhdGlhbHF1ZXJ5bGFiIiwiYSI6ImNpeW43eHZ2YTAwMTgzMnBjNGF4bWVuaHIifQ.H-IzkkctQwbBRjhS9VLddA', {
+        maxZoom: 20,
+        maxNativeZoom: 18,
         attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> contributors'
     });
 
@@ -188,15 +192,15 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     //executes on click of map
     map.addEventListener("click", function(event)
     {
-        console.log(L.control.polylineMeasure()._measureMarkerGet());
-
         //Boolean true prevent marker placement and enable measuring mode
         if(L.control.polylineMeasure()._measureModeGet() == true) {
+            var measureMarker = L.control.polylineMeasure()._measureMarkerGet();
 
-        }
+            }
+
         //Boolean false enable marker placement and disable measuring mode
         else{
-
+            //
             Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
             if(!mapSelected) {
 

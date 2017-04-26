@@ -1,4 +1,35 @@
 <data>
+	<document collection = "jobfolder">
+		<id>0</id>
+		<libraryindex>Tutorial</libraryindex>
+		<title></title>
+		<inasubfolder></inasubfolder>
+		<subfoldercomments></subfoldercomments>
+		<classification></classification>
+		<classificationcomments></classificationcomments>
+
+		<startmonth></startmonth>
+		<startday></startday>
+		<startyear></startyear>
+		<endmonth></endmonth>
+		<endday></endday>
+		<endyear></endyear>
+
+		<author1></author1>
+		<author2></author2>
+		<author3></author3>
+		<comments>
+		</comments>
+
+		<needsreview>1</needsreview>
+		<needsinput>1</needsinput>
+
+		<frontimage></frontimage>
+		<backimage></backimage>
+		<frontthumbnail></frontthumbnail>
+		<backthumbnail></backthumbnail>
+		<completed></completed>
+	</document>
 <document collection = "jobfolder">
 	<id>1</id>
 	<libraryindex>149-A_016</libraryindex>
