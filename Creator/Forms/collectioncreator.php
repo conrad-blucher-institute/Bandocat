@@ -209,7 +209,12 @@ $arrayTemplates = $DB->GET_TEMPLATES();
     //run validation function
     $("#btnConfirm").click(function (event)
     {
-       event.preventDefault();
+        event.preventDefault();
+        if($("#ddlTemplate :selected").val() == "")
+        {
+            alert("Please select a template!");
+            return;
+        }
         /* Send the data using post */
         $.ajax({
             type: 'post',
@@ -242,8 +247,15 @@ $arrayTemplates = $DB->GET_TEMPLATES();
     //submit
     $("#btnSubmit").click(function(event)
     {
-        $("#btnSubmit").val("Submitting...");
         event.preventDefault();
+        if($("#ddlTemplate :selected").val() == "")
+        {
+            alert("Please select a template!");
+            return;
+        }
+
+        $("#btnSubmit").val("Submitting...");
+
         $.ajax({
             type: 'post',
             url: 'collection_create_processing.php',
