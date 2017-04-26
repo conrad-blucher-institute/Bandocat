@@ -133,6 +133,7 @@ else header('Location: ../../');
                                 case "1": return "<span style='color:#00BC65'>Rectified</span>";
                                 case "2": return "<span style='color:red'>Not Rectifiable</span>";
                                 case "3": return "<span style='color:darkkhaki'>Needs Review</span>";
+                                case "4": return "<span style='color:darkred'>Research Required</span>";
                                 default: return "<span>Unknown</span>";
                             }
                         },
@@ -149,6 +150,7 @@ else header('Location: ../../');
                                 case "1": return "<span style='color:#00BC65'>Rectified</span>";
                                 case "2": return "<span style='color:red'>Not Rectifiable</span>";
                                 case "3": return "<span style='color:darkkhaki'>Needs Review</span>";
+                                case "4": return "<span style='color:darkred'>Research Required</span>";
                                 default: return "<span>Unknown</span>";
                             }
                         },
@@ -198,7 +200,7 @@ else header('Location: ../../');
                             //case: GeoRec Front/Back status columns
                             case 11: //column GeoRec Front Status
                             case 12: //column GeoRec Back Status
-                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Not Rectified</option><option value="1">Rectified</option><option value="2">Not Rectifiable</option><option value="3">Needs Review</option></select>')
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Not Rectified</option><option value="1">Rectified</option><option value="2">Not Rectifiable</option><option value="3">Needs Review</option><option value="4">Research Required</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
                                         var val = $.fn.dataTable.util.escapeRegex(
@@ -314,8 +316,8 @@ else header('Location: ../../');
                         <th>Back Map</th>
                         <th width="40px">Has POI</th>
                         <th>Rectifiability</th>
-                        <th width="95px">GeoRec Front Status</th>
-                        <th width="95px">GeoRec Back Status</th>
+                        <th width="120px">GeoRec Front Status</th>
+                        <th width="120px">GeoRec Back Status</th>
                         <th width="60px">GeoRectify</th>
                     </tr>
                     </thead>
@@ -332,8 +334,8 @@ else header('Location: ../../');
                         <th>Back Map</th>
                         <th>Has POI</th>
                         <th>Rectifiability</th>
-                        <th width="95px">GeoRec Front Status</th>
-                        <th width="95px">GeoRec Back Status</th>
+                        <th width="120x">GeoRec Front Status</th>
+                        <th width="120px">GeoRec Back Status</th>
 
                     </tr>
 

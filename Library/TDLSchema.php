@@ -4,8 +4,7 @@ class TDLSchema
 {
     public $rightsholder1 = "Special Collections and Archives, Mary and Jeff Bell Library, Texas A&M University-Corpus Christi.";
     public $rightsholder2 = "Conrad Blucher Institute, Texas A&M University-Corpus Christi.";
-    public $rightsstatement = "This material is made available for use in research, teaching, and private study, pursuant to U.S. Copyright law. The user assumes full responsibility for any use of the materials, including but not limited to, infringement of copyright and publication rights of reproduced materials. Any materials used should be fully credited with the source. Permission for publication of GeoTIFF, KMZ, and CSV files must be secured with the Conrad Blucher Institute. Permission for publication of scanned images must be secured with the Head of Special Collections and Archives.";
-
+    public $rightsstatement = "This material is made available for use in research, teaching, and private study, pursuant to U.S. Copyright law. The user assumes full responsibility for any use of the materials, including but not limited to, infringement of copyright and publication rights of reproduced materials. Any materials used should be fully credited with the source. Permission for publication of scanned images, GeoTIFF, KMZ, and CSV files must be secured with the Head of Special Collections and Archives.";
     function __construct()
     {
     }
@@ -54,12 +53,22 @@ class TDLSchema
         if($doc["FileNameBack"] != "")
             $numberOfPages = "2 pages";
 
+        $fieldbookrelation = "";
+        if($doc["FieldBookNumber"] != "" && trim($doc["FieldBookNumber"]) != "0")
+        {
+            $fieldbookrelation = "Book " . $doc["FieldBookNumber"] . " ";
+            if($doc["FieldBookPage"] != "")
+                $fieldbookrelation .= "Page " . $doc["FieldBookPage"];
+        }
+
+
         $output = array();
         $this->addField($output,"dc.identifier.other",str_replace("-_","-",$doc['LibraryIndex']));
         $this->addField($output,"dc.title",str_replace("-_","-",$doc['Title']));
         $this->addField($output,"dc.coverage.temporal",$this->mergeStrings($this->convertDate($doc["StartDate"]),$this->convertDate($doc["EndDate"])));
         $this->addField($output,"dc.type",$doc["Type"]);
             //array("key" => "dc.relation.isbasedon","value" => $this->mergeStrings($doc["FieldBookNumber"],$doc["FieldBookPage"])),
+        $this->addField($output,"dc.relation",$fieldbookrelation);
         $this->addField($output,"dc.format.extent",$numberOfPages);
         $this->addField($output,"dc.format.medium",$doc["Medium"]);
         $this->addField($output,"dc.format.mimetype","image/jpeg");
@@ -75,8 +84,9 @@ class TDLSchema
         $this->addField($output,"mc.collectionid",$doc['TDLnumber']);
         $this->addField($output,"mc.collection.sub",$doc['TDLsubgroup']);
 
-        $this->addField($output,"dc.contributor",$doc["TDLAuthorName"]);
+        $this->addField($output,"dc.contributor",$doc["AuthorName"]);
         $this->addField($output,"dc.contributor",$doc["CompanyName"]);
+
 
 
         //need FieldBook and Job Folder relation (dc.relation title) and PDF (dc.relation.url)
@@ -86,7 +96,7 @@ class TDLSchema
 
     //$document is an associative array
     //job folder page
-    function convertJobFolderSchema($doc)
+    function convertJobFolderWholeSchema($doc)
     {
         //preprocess
 

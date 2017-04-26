@@ -63,10 +63,15 @@ trait TDLPublishTrait
         }
         return false;
     }
-
-    function PUBLISHING_PUSH_TO_QUEUE($howMany = null)
+    //$hasGeoRec: for template that has GeoRectification feature such as map, needs to check if the maps has been either rectified or Not Rectifiable before pushing
+    function PUBLISHING_PUSH_TO_QUEUE($howMany = null,$hasGeoRec = false)
     {
-        $query = "UPDATE `document` SET `dspacePublished`  = 2 WHERE `dspacePublished` = 0 ORDER BY `documentID` ASC";
+        $query = "UPDATE `document` SET `dspacePublished`  = 2 WHERE `dspacePublished` = 0 ";
+        if($hasGeoRec)
+        {
+            $query .= " AND (`geoRecFrontStatus` = 1 OR `geoRecFrontStatus` = 2) AND ((`geoRecBackStatus` = 1 OR `geoRecBackStatus` = 2) OR (`filenameback` = '' OR `filenameback` IS NULL)) ";
+        }
+        $query .= "ORDER BY `documentID` ASC ";
         if($howMany != null)
             $query = $query . " LIMIT " . $howMany;
         //$howMany = null means publishing all documents in a collections

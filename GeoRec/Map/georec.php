@@ -454,7 +454,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
                 <td width="300px">Update GeoRec Status</td>
                 <td><select style="height: 2.5em" id="ddlGeoStatus" name="ddlGeoStatus" required>
                         <?php
-                            $arrGeoStatus = array(array(0,"Not Rectified"),array(2,"Not Rectifiable"));
+                            $arrGeoStatus = array(array(0,"Not Rectified"),array(2,"Not Rectifiable"),array(4,"Research Required"));
                             $Render->GET_DDL3($arrGeoStatus,$georec_status);
                         ?>
                         ?>
