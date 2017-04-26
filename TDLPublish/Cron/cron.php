@@ -73,7 +73,8 @@ class bitstream{
     $TDLCollectionID = $collection["TDLcollectionID"];
 
     $isEmptyQueue = false;
-    while(!$isEmptyQueue) {
+    while(1){ //infinite loop
+    //while(!$isEmptyQueue) {
         //use this database
         $DB->SWITCH_DB($collectionName);
         $docID = $DB->PUBLISHING_DOCUMENT_GET_PUBLISHING_ID(); //look for abandoned job
@@ -295,6 +296,8 @@ class bitstream{
         } //set status to 11
 
         //$isEmptyQueue = true; //break the loop, for testing
+        if($isEmptyQueue)
+            sleep(30);
     }
 
     echo "\n...\n...\n...\nEnd Job...";

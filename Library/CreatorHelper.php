@@ -90,9 +90,9 @@ class CreatorHelper extends DBHelper
         $sth = $this->getConn()->query($query);
         if($sth) {
             //export routines,triggers and schema (no data) of existing db
-            $export = "mysqldump -d --routines --triggers -u " . parent::$user .  " -p" . parent::$pwd . " " . $iExistingDBName . " > temp.sql 2>&1";
+            $export = "mysqldump -d --routines --triggers -u " . $this->getUser() .  " -p" . $this->getPwd() . " " . $iExistingDBName . " > temp.sql 2>&1";
             exec($export,$output);
-            $import = "mysql -u " . parent::$user . " -p" . parent::$pwd . " " . $iNewDBName . " < temp.sql 2>&1";
+            $import = "mysql -u " . $this->getUser() . " -p" . $this->getPwd() . " " . $iNewDBName . " < temp.sql 2>&1";
             exec($import,$output);
             //delete temp file
             $delete = "del /f temp.sql 2>&1";
