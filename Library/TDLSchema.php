@@ -84,7 +84,7 @@ class TDLSchema
         $this->addField($output,"mc.collectionid",$doc['TDLnumber']);
         $this->addField($output,"mc.collection.sub",$doc['TDLsubgroup']);
 
-        $this->addField($output,"dc.contributor",$doc["AuthorName"]);
+        $this->addField($output,"dc.contributor",$doc["TDLAuthorName"]);
         $this->addField($output,"dc.contributor",$doc["CompanyName"]);
 
 
