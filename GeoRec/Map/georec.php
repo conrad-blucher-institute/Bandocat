@@ -158,21 +158,21 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
             weight: 1,                          // Weight of the circle
             fillColor: '#0f0',                  // Fill color of the circle
             fillOpacity: 1,                     // Fill opacity of the circle
-            radius: 3                           // Radius of the circle
+            radius: 8                           // Radius of the circle
         },
         lastPoint: {                            // Style settings for circle marker indicating the last point of the polyline
             color: '#000',                      // Color of the border of the circle
             weight: 1,                          // Weight of the circle
             fillColor: '#fa8d00',               // Fill color of the circle
             fillOpacity: 1,                     // Fill opacity of the circle
-            radius: 3                           // Radius of the circle
+            radius: 8                           // Radius of the circle
         },
         endPoint: {                             // Style settings for circle marker indicating the last point of the polyline
             color: '#000',                      // Color of the border of the circle
             weight: 1,                          // Weight of the circle
             fillColor: '#f00',                  // Fill color of the circle
             fillOpacity: 1,                     // Fill opacity of the circle
-            radius: 3                           // Radius of the circle
+            radius: 8                           // Radius of the circle
         }
     }).addTo(map);
 
@@ -188,18 +188,60 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 
     map.setView([27.73725068372226, -97.43062019348145], 12);
 
+    var measureControl = L.control.polylineMeasure();
+
+    function measureLyrGrp() {
+            if(measureControl._measureLayerGet() != null){
+                var measureLayerGroup = measureControl._measureLayerGet();
+            }
+        return measureLayerGroup;
+    }
+
+    $('#polyline-measure-control').click(measureLyrGrp());
+
+    var measureLayerGroup = measureLyrGrp();
+    console.log("Test");
+    console.log(measureLayerGroup);
+
+    if(measureLayerGroup != null) {
+        measureLayerGroup.on('click', function () {
+            if(measureLayerGroup != null) {
+                measureLayerGroup.eachLayer(function (layer) {
+                    layer.on('click', function () {
+                        var layerID = this._leaflet_id;
+                        var selectedLayer = measureLayerGroup.getLayer(layerID);
+                        console.log(selectedLayer);
+                    })
+                });
+            }
+        });
+    }
+
 
     //executes on click of map
     map.addEventListener("click", function(event)
     {
-        //Boolean true prevent marker placement and enable measuring mode
-        if(L.control.polylineMeasure()._measureModeGet() == true) {
-            var measureMarker = L.control.polylineMeasure()._measureMarkerGet();
+        console.log("from map event");
+        console.log(measureControl._measureMarkerGet());
+     //Boolean true prevent marker placement and enable measuring mode
+        if(measureControl._measureModeGet() == true) {
 
-            }
+
+        }
 
         //Boolean false enable marker placement and disable measuring mode
         else{
+            var measureLayerGroup = measureLyrGrp();
+            console.log(measureLayerGroup);
+            if(measureLayerGroup != null) {
+                measureLayerGroup.eachLayer(function (layer) {
+                    layer.on('click', function () {
+                        var layerID = this._leaflet_id;
+                        var selectedLayer = measureLayerGroup.getLayer(layerID);
+                        console.log(selectedLayer);
+                    })
+                });
+            }
             //
             Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
             if(!mapSelected) {

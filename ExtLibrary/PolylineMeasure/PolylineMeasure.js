@@ -196,7 +196,7 @@
                  * @type {Number}
                  * @default
                  */
-                radius: 3
+                radius: 8
             },
             /**
              * Style settings for circle marker indicating the last point of the polyline
@@ -428,6 +428,7 @@
             L.DomEvent.on(self._map, 'mousemove', self._mouseMove, self);
             L.DomEvent.on(self._map, 'click', self._mouseClick, self);
             L.DomEvent.on(document, 'keydown', self._onKeyDown, self);
+            L.DomEvent.on(self._map, 'contextmenu', self._mouseDblClick, self);
         },
 
         /**
@@ -439,6 +440,7 @@
             L.DomEvent.off(document, 'keydown', self._onKeyDown, self);
             L.DomEvent.off(self._map, 'mousemove', self._mouseMove, self);
             L.DomEvent.off(self._map, 'click', self._mouseClick, self);
+            L.DomEvent.off(self._map, 'contextmenu', self._mouseDblClick, self);
         },
 
         /**
@@ -462,6 +464,12 @@
                 self._points = [];
             }
         },
+        _measureLayerSet: function (layer) {
+            self.measureLayer = layer;
+        },
+        _measureLayerGet: function () {
+            return self.measureLayer;
+        },
 
         /**
          * Stop the measuring functionality on the map
@@ -477,6 +485,8 @@
                 self.clearAllMeasurements();
             }
             self._restartPath();
+            self._measureLayerSet(self._layerPaint);
+
         },
         _measureMarkerSet: function(lastPoint) {
             self.measureMarker = lastPoint;
@@ -537,7 +547,16 @@
                 self._updateTooltipDistance(self._distance + distance, distance);
             }
         },
-
+        /**
+         * Event to fire on mouse double click
+         * @param {Object} e Event
+         * @private
+         */
+        _mouseDblClick: function(e) {
+            var self = this;
+            self._finishPath();
+            e.preventDefault();
+        },
         /**
          * Event to fire on mouse click
          * @param {Object} e Event
@@ -579,7 +598,12 @@
                     radius: self.options.startingPoint.radius,
                     interactive: false
                 }).addTo(self._layerPaint);
-                self._startCircle.bindPopup('Edit').openPopup();
+                self._startCircle.on('click', function () {
+                    //var layerID = this._leaflet_id;
+                    //var selectedLayer = measureLayerGroup.getLayer(layerID);
+                    self._measureMarkerGet(this);
+                    console.log(this);
+                })
             }
 
             if(self._layerPaintPath) {
@@ -589,7 +613,9 @@
             // change color+radius of intermediate circle markers. markers optical important if new segment of line the doesn't bend
             if(self._lastCircle) {
                 self._lastCircle.setStyle ({radius:2, fillColor:'#000'});
-                self._lastCircle.off();
+                self._lastCircle.on('click', function () {
+                    console.log("black circle");
+                });
             }
 
             self._lastCircle = new L.CircleMarker(e.latlng, {
@@ -601,7 +627,9 @@
                 radius: self.options.lastPoint.radius,
                 interactive: true  // to handle a click within this circle which is the command to finish drawing the polyline
             }).addTo(self._layerPaint);
-            self._lastCircle.on('click', function() { self._finishPath(); }, self);  // to handle a click within this circle which is the command to finish drawing the polyline
+            self._lastCircle.on('click', function() {
+                //self._finishPath();
+            }, self);  // to handle a click within this circle which is the command to finish drawing the polyline
             // Save current location as last location
             self._lastPoint = e.latlng;
             self._measureMarkerSet(self._lastPoint);
@@ -635,12 +663,13 @@
             }
             if(self._tooltip) {
                 self._layerPaint.removeLayer(self._tooltip);
-                console.log(self._tooltip);
             }
             if(self._layerPaint && self._layerPaintPathTemp) {
                 self._layerPaint.removeLayer(self._layerPaintPathTemp);
             }
-            self._layerPaint.bindPopup('Maze');
+            self._finishCircle.on('click', function () {
+                console.log("finish Circle");
+            });
             // Reset everything
             self._restartPath();
             return self._lastPoint;
@@ -675,9 +704,7 @@
                 icon: icon,
                 interactive: false
             }).addTo(self._layerPaint);
-            console.log(self._layerPaint);
         },
-
         /**
          * Update the tooltip position on the map
          * @param {LatLng} position
@@ -759,7 +786,6 @@
                     self._toggleMeasure();
                 } else {
                     self._finishPath();
-                    alert(self._lastPoint)
                 }
             }
         }
@@ -772,6 +798,7 @@
             this.mode = mode;
         }
     });
+
     L.Control.PolylineMeasure.addInitHook('_measureMode');
 
 //======================================================================================
