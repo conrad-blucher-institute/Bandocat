@@ -21,8 +21,6 @@ if($ret) //$ret = new collection ID
         $ret = false;
     }
 
-    //debug
-    //$ret = false;
 }
 
 if($ret == false)
@@ -33,13 +31,13 @@ if($ret == false)
 else
 {
 //creating directories for thumbnail
-    exec("cd ../../Thumbnails/ & md " . $_POST['txtParameterName'] . " >2&1",$output,$retval);
+    exec("cd ../../Thumbnails/ & md " . $_POST['txtParameterName'],$output,$retval);
 
     //creating directories for storage dir
-    exec("md " . str_replace('/', '\\', $_POST['txtStorageDir']) . " >2&1",$output2,$retval2);
+    exec("md " . str_replace('/', '\\', $_POST['txtStorageDir']),$output2,$retval2);
     //creating directories for GeoRecStorageDir if not empty
     if($_POST['txtGeorecStorageDir'] != "")
-        exec("md " . str_replace('/', '\\', $_POST['txtGeorecStorageDir']) . " >2&1",$output3,$retval3);
+        exec("md " . str_replace('/', '\\', $_POST['txtGeorecStorageDir']),$output3,$retval3);
 }
 
 if($ret)

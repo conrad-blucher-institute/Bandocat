@@ -8,5 +8,5 @@ require_once '../../Library/ControlsRender.php';
 //temporary CreatorHelper class
 require_once '../../Library/CreatorHelper.php';
 $DB = new CreatorHelper();
-echo "Not Yet Implemented!";
+echo "Coming Soon!";
 ?>

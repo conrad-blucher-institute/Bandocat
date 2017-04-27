@@ -272,16 +272,16 @@ class DBHelper
     }
 //IN PROGRESS
     /**********************************************
-     * Function: GET_USER_TABLE
+     * Function: GET_ACTIVE USER_TABLE
      * Description: Gets a table of users.
      * Parameter(s): NONE
      * Return value(s):
      * $result  (associative array) - return associative array of Users
      ***********************************************/
-    function GET_USER_TABLE()
+    function GET_ACTIVE_USER_TABLE()
     {
         $this->getConn()->exec('USE' . $this->maindb);
-        $sth = $this->getConn()->prepare("SELECT `username`,`userID`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` ORDER BY `username` ASC ");
+        $sth = $this->getConn()->prepare("SELECT `username`,`userID`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` WHERE  NOT `user`.`roleID`=0 ORDER BY `username` ASC ");
         $sth->execute();
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $result;
