@@ -4,7 +4,7 @@ include '../../Library/SessionManager.php';
 $session = new SessionManager();
 if(!$session->isAdmin())
     header('Location: ../../');
-
+//This page executes the action from the queue.php
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
 $collectionConfig = $DB->SP_GET_COLLECTION_CONFIG($_POST['ddlCollection']);
@@ -15,7 +15,6 @@ switch($collectionConfig['TemplateID']) //switch $hasRec to true if the collecti
     case 1: $hasRec = true; //Collections in the Map Template
     break;
 }
-
 switch($_GET['action'])
 {
     case "load":
