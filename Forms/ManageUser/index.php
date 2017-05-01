@@ -64,7 +64,7 @@ $Render = new ControlsRender();
             <input type="radio" name="rd_Role" id="rd_Role_admin" value="2"/><label>Admin</label></td>
             <td><input type="radio" name="rd_Role" id="rd_Role_reader" value="4"/><label>Reader</label></td></tr>
             <td><input type="radio" name="rd_Role" id="rd_Role_ru" value="3"/><label>Regular</label></td>
-                <!-- <td><input type="radio" name="rd_Role" id="rd_Role_inactive" value="0"/><label>Inactive</label></td></tr> -->
+            <td><input type="radio" name="rd_Role" id="rd_Role_inactive" value="0"/><label>Inactive</label></td></tr>
             <br>
 
     </form></table>

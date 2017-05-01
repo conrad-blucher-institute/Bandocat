@@ -91,6 +91,14 @@
             <li><a href="../../Forms/TicketsSubmission/" target="_blank">Submit Ticket</a></li>
         </ul>
     </div>';
+
+
+    if($session->isSuperAdmin())
+    {
+        echo '<div class="menu-item">
+        <h4><a href="../../Creator/">Create New Collection</a></h4>
+    </div>';
+    }
     ?>
 
     <!-- Help Tab -->
