@@ -39,7 +39,6 @@ else
     if($_POST['txtGeorecStorageDir'] != "")
         exec("md " . str_replace('/', '\\', $_POST['txtGeorecStorageDir']),$output3,$retval3);
 }
-
 if($ret)
     echo "Collection " . $_POST['txtDisplayName'] . " has been successfully created!";
 else echo "Fail to create new collection";

@@ -5,6 +5,7 @@ spl_autoload_register(function ($class_name) {
 $session = new SessionManager();
 $DB = new DBHelper();
 $Render = new ControlsRender();
+//This page allows to push/pop documents to the TDL publishing Queue in BandoCat, Unpublish/Update Published document in TDL Server
 ?>
 <!doctype html>
 <html lang="en">
@@ -120,9 +121,10 @@ $Render = new ControlsRender();
                             case "2": return "In Queue";
                             case "-1": return ""; // Unpublished???
                             case "10": //publishing front
-                            case "11":  //publishing back
                                 return "Publishing...";
-                            default: return "Unknown code: " +data;
+                            case "11":  //publishing back
+                                return "Continue Publishing...";
+                            default: return "Unknown code: " + data;
                         }
                     },
                     "targets": 2
@@ -233,6 +235,10 @@ $Render = new ControlsRender();
         $("#ddlCollection").change();
     });
 
+    //Description: pass action and data to index_actionprocessing.php
+    //Parameter: event: to prevent Default event of the action
+    //           action: type of action
+    //           docID: target document ID
     function performAction(event,action,docID)
     {
         event.preventDefault();
