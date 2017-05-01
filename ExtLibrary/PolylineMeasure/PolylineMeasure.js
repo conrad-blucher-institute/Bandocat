@@ -142,7 +142,7 @@
                  * @type {Number}
                  * @default
                  */
-                weight: 1,
+                weight: 2,
                 /**
                  * Fill color of the circle
                  * @type {String}
@@ -160,7 +160,7 @@
                  * @type {Number}
                  * @default
                  */
-                radius: 3
+                radius: 8
             },
             /**
              * Style settings for circle marker indicating the last point of the polyline
@@ -232,7 +232,7 @@
                  * @type {Number}
                  * @default
                  */
-                radius: 3
+                radius: 8
             }
         },
 
@@ -428,7 +428,7 @@
             L.DomEvent.on(self._map, 'mousemove', self._mouseMove, self);
             L.DomEvent.on(self._map, 'click', self._mouseClick, self);
             L.DomEvent.on(document, 'keydown', self._onKeyDown, self);
-            L.DomEvent.on(self._map, 'contextmenu', self._mouseDblClick, self);
+            L.DomEvent.on(self._map, 'contextmenu', self._mouseRgtClick, self);
         },
 
         /**
@@ -440,7 +440,7 @@
             L.DomEvent.off(document, 'keydown', self._onKeyDown, self);
             L.DomEvent.off(self._map, 'mousemove', self._mouseMove, self);
             L.DomEvent.off(self._map, 'click', self._mouseClick, self);
-            L.DomEvent.off(self._map, 'contextmenu', self._mouseDblClick, self);
+            L.DomEvent.off(self._map, 'contextmenu', self._mouseRgtClick, self);
         },
 
         /**
@@ -485,8 +485,7 @@
                 self.clearAllMeasurements();
             }
             self._restartPath();
-            self._measureLayerSet(self._layerPaint);
-
+            //self._measureLayerSet(self._layerPaint);
         },
         _measureMarkerSet: function(lastPoint) {
             self.measureMarker = lastPoint;
@@ -501,7 +500,7 @@
         clearAllMeasurements: function() {
             var self = this;
             if (self._layerPaint) {
-                //self._layerPaint.clearLayers();
+                self._layerPaint.clearLayers();
             }
         },
 
@@ -552,7 +551,7 @@
          * @param {Object} e Event
          * @private
          */
-        _mouseDblClick: function(e) {
+        _mouseRgtClick: function(e) {
             var self = this;
             self._finishPath();
             e.preventDefault();
@@ -599,10 +598,7 @@
                     interactive: false
                 }).addTo(self._layerPaint);
                 self._startCircle.on('click', function () {
-                    //var layerID = this._leaflet_id;
-                    //var selectedLayer = measureLayerGroup.getLayer(layerID);
-                    self._measureMarkerGet(this);
-                    console.log(this);
+                    gcpMarker(this._leaflet_events.click[0].context, 'measureMarker');
                 })
             }
 
@@ -614,7 +610,7 @@
             if(self._lastCircle) {
                 self._lastCircle.setStyle ({radius:2, fillColor:'#000'});
                 self._lastCircle.on('click', function () {
-                    console.log("black circle");
+                    gcpMarker(this._leaflet_events.click[0].context, 'measureMarker');
                 });
             }
 
@@ -634,6 +630,7 @@
             self._lastPoint = e.latlng;
             self._measureMarkerSet(self._lastPoint);
         },
+
 
         /**
          * Finish the drawing of the path
@@ -657,7 +654,6 @@
                 radius: self.options.endPoint.radius,
                 interactive: false
             }).addTo(self._layerPaint);
-            self._finishCircle.bindPopup('carnage');
             if(self._lastCircle) {
                 self._layerPaint.removeLayer(self._lastCircle);
             }
@@ -668,7 +664,7 @@
                 self._layerPaint.removeLayer(self._layerPaintPathTemp);
             }
             self._finishCircle.on('click', function () {
-                console.log("finish Circle");
+                gcpMarker(this._leaflet_events.click[0].context, 'measureMarker');
             });
             // Reset everything
             self._restartPath();
@@ -735,8 +731,8 @@
                 } else if (dist >= 1609.344) {
                     dist = (dist/1609.344).toFixed(2);
                 } else {
-                    dist = (dist/0.9144).toFixed(1);
-                    unit = "yd";
+                    dist = (dist/0.3048006).toFixed(1);
+                    unit = "ft";
                 }
             } else {
                 unit = "km";

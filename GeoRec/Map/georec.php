@@ -187,82 +187,34 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     var UTM = "+proj=utm +zone=14 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
 
     map.setView([27.73725068372226, -97.43062019348145], 12);
-
     var measureControl = L.control.polylineMeasure();
 
-    function measureLyrGrp() {
-            if(measureControl._measureLayerGet() != null){
-                var measureLayerGroup = measureControl._measureLayerGet();
-            }
-        return measureLayerGroup;
-    }
-
-    $('#polyline-measure-control').click(measureLyrGrp());
-
-    var measureLayerGroup = measureLyrGrp();
-    console.log("Test");
-    console.log(measureLayerGroup);
-
-    if(measureLayerGroup != null) {
-        measureLayerGroup.on('click', function () {
-            if(measureLayerGroup != null) {
-                measureLayerGroup.eachLayer(function (layer) {
-                    layer.on('click', function () {
-                        var layerID = this._leaflet_id;
-                        var selectedLayer = measureLayerGroup.getLayer(layerID);
-                        console.log(selectedLayer);
-                    })
-                });
-            }
-        });
-    }
-
-
-    //executes on click of map
-    map.addEventListener("click", function(event)
-    {
-        console.log("from map event");
-        console.log(measureControl._measureMarkerGet());
-     //Boolean true prevent marker placement and enable measuring mode
-        if(measureControl._measureModeGet() == true) {
-
-
-        }
-
-        //Boolean false enable marker placement and disable measuring mode
-        else{
-            var measureLayerGroup = measureLyrGrp();
-            console.log(measureLayerGroup);
-            if(measureLayerGroup != null) {
-                measureLayerGroup.eachLayer(function (layer) {
-                    layer.on('click', function () {
-                        var layerID = this._leaflet_id;
-                        var selectedLayer = measureLayerGroup.getLayer(layerID);
-                        console.log(selectedLayer);
-                    })
-                });
-            }
-            //
-            Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
+    function gcpMarker(markerLayer, markerType) {
+        Maki_Icon = icon = L.MakiMarkers.icon({icon: colorCount+1, color: markerColors[colorCount], size: "m"});
+        if(markerType == 'measureMarker'){
             if(!mapSelected) {
-
                 //creates new object of gcpList
-                addGCP(count, event.latlng.lat, event.latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
+                addGCP(count, markerLayer._latlng.lat, markerLayer._latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
 
                 //creates marker and popup
-                marker = L.marker(event.latlng, {icon: icon});
-                marker.bindPopup("Edit").openPopup().closePopup;
+                marker = L.marker(markerLayer._latlng, {icon: icon});
                 markerArray.push(marker);
                 map.addLayer(marker);
 
                 var markerIndex = marker.on('click', function clickIndex(event) {
-                    for (i = 0; i < gcpList.length; i++) {
-                        if (gcpList[i].lat == event.latlng.lat) {
-                            markerIndex = i;
-                        }
+                    if (measureControl._measureModeGet() == true) {
+
                     }
-                    event.target.dragging.enable();
-                    return markerIndex;
+                    else{
+                        marker.bindPopup("Edit").openPopup().closePopup;
+                        for (i = 0; i < gcpList.length; i++) {
+                            if (gcpList[i].lat == event.latlng.lat) {
+                                markerIndex = i;
+                            }
+                        }
+                        event.target.dragging.enable();
+                        return markerIndex;
+                    }
                 });
 
                 marker.on('dragend', function (event) {
@@ -315,9 +267,93 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
             }else {
                 alert("Select point from raster");
             }
-        }
-        //sets marker color and style
+            return;
+            }
 
+            if(markerType == 'mapMarker'){
+            if(!mapSelected) {
+                //creates new object of gcpList
+            addGCP(count, markerLayer.latlng.lat, markerLayer.latlng.lng, rasterCoords[rasterCount - 1].rlat, rasterCoords[rasterCount - 1].rlong, rasterCoords[rasterCount - 1].x, rasterCoords[rasterCount - 1].y);
+
+            //creates marker and popup
+            marker = L.marker(markerLayer.latlng, {icon: icon});
+            marker.bindPopup("Edit").openPopup().closePopup;
+            markerArray.push(marker);
+            map.addLayer(marker);
+
+            var markerIndex = marker.on('click', function clickIndex(event) {
+                for (i = 0; i < gcpList.length; i++) {
+                    if (gcpList[i].lat == event.latlng.lat) {
+                        markerIndex = i;
+                    }
+                }
+                event.target.dragging.enable();
+                return markerIndex;
+            });
+
+            marker.on('dragend', function (event) {
+                var marker = event.target;
+                var latitude = marker._latlng.lat;
+                gcpList[markerIndex].lat = latitude;
+                var longitude = marker._latlng.lng;
+                gcpList[markerIndex].lng = longitude;
+                $('#markerLat-' + markerIndex).text(gcpList[markerIndex].lat);
+                $('#markerLong-' + markerIndex).text(gcpList[markerIndex].lng);
+            });
+
+
+            //alert(colorCount);
+            colorCount++;
+            if (colorCount > 11)
+                alert("Maximum amount of points reached");
+
+            count++;
+            rasterSelected = false;
+            mapSelected = true;
+
+            //creates table
+            var table = document.getElementById("table");
+            var row = table.insertRow(count + 1);
+            var cell1 = row.insertCell(0);
+            $(cell1).attr('id', 'marker-'+gcpList[count-1].id);
+            var cell2 = row.insertCell(1);
+            $(cell2).attr('id', 'markerLat-'+gcpList[count-1].id);
+            var cell3 = row.insertCell(2);
+            $(cell3).attr('id', 'markerLong-'+gcpList[count-1].id);
+            var cell4 = row.insertCell(3);
+            $(cell4).attr('id', 'rasterLat-'+gcpList[count-1].id);
+            var cell5 = row.insertCell(4);
+            $(cell5).attr('id', 'rasterLong-'+gcpList[count-1].id);
+            var cell6 = row.insertCell(5);
+            $(cell6).attr('id', 'rasterX-'+gcpList[count-1].id);
+            var cell7 = row.insertCell(6);
+            $(cell7).attr('id', 'rasterY-'+gcpList[count-1].id);
+            cell1.innerHTML = "<button id = 'zoomToMarker' onclick = 'zoomToMarker(" + count + ")' style = 'background-color:" + markerColors[colorCount - 1] + "'>" + count + "</button>";
+            cell2.innerHTML = gcpList[count - 1].lat;
+            cell3.innerHTML = gcpList[count - 1].lng;
+            cell4.innerHTML = gcpList[count - 1].rlat;
+            cell5.innerHTML = gcpList[count - 1].rlong;
+            cell6.innerHTML = gcpList[count - 1].x;
+            cell7.innerHTML = gcpList[count - 1].y;
+            //hide column raster lat and raster long
+            cell4.style.display = "none";
+            cell5.style.display = "none";
+        }else {
+            alert("Select point from raster");
+        }
+            }
+
+    }
+
+    //executes on click of map
+    map.addEventListener("click", function(event)
+    {
+        if(measureControl._measureModeGet() == true) {
+
+        }
+        else{
+            gcpMarker(event, 'mapMarker');
+        }
     })
 
 </script>
