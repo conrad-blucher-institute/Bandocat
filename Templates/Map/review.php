@@ -1,16 +1,19 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['doc'])) {
+if(isset($_GET['col']) && isset($_GET['doc']))
+{
     $collection = $_GET['col'];
     $docID = $_GET['doc'];
     require('../../Library/ControlsRender.php');
     $Render = new ControlsRender();
-    require('../../Library/DBHelper.php');
-    $DB = new DBHelper();
+    require '../../Library/DBHelper.php';
+    require('../../Library/MapDBHelper.php');
+    $DB = new MapDBHelper();
+    //get appropriate DB
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+    //find the document by passing collection and docid
     $document = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($collection,$docID);
-    $logInfo = $DB->GET_LOG_INFO($collection, $docID);
     //var_dump($document);
 }
 else header('Location: ../../');
@@ -20,6 +23,7 @@ $date = new DateHelper();
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -29,42 +33,23 @@ $date = new DateHelper();
     <title>Review Form</title>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+
+    <script type="text/javascript" src="../../Master/master.js"></script>
 
 </head>
+<!-- END HTML HEADER -->
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">
         <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
-            <div style="padding-left:3px"><input type="checkbox" id="historyCheck"><span id="historyText">Document History</span></div>
-            <div id="documentHistory" class="ui-widget-content" style="text-align: center">
-                <p>Document History</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Action</th>
-                            <th>Username</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php
-                        $user = [];
-                        $length = count($logInfo);
-                        for ($x = 0; $x <= $length-1; $x++) {
-                            $action[$x] = $logInfo[$x][0];
-                            $user[$x] = $logInfo[$x][1];
-                            $time[$x] = $logInfo[$x][2];
-                            echo "<tr><td>$action[$x]</td><td>$user[$x]</td><td id='timeStamp'>$time[$x]</td></tr>";
-                            }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+            include '../../Master/sidemenu.php';
+                        if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
+                            $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
+            ?>
         </div>
         <div id="divright">
             <h2><?php echo $config['DisplayName'];?> Review Form</h2>
@@ -73,34 +58,42 @@ $date = new DateHelper();
             <table id="table2">
                     <tr>
                         <td>
-                                <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
+                            <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                         </td>
                         <td>
-                                <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex']; ?>" required="true" />
+                            <!-- LIBRARY INDEX -->
+                            <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES); ?>' required="true" />
                         </td>
                         <td>
                             <span class="label">Customer Name:</span>
                         </td>
                         <td>
-                            <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="<?php echo $document['CustomerName']; ?>" />
+                            <!-- CUSTOMER NAME -->
+                            <input type = "text" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" size="26" value="<?php echo htmlspecialchars($document['CustomerName'],ENT_QUOTES); ?>" />
                             <datalist id="lstCustomer">
+                                <!-- POPULATE DDL WITH CUSTOMER NAME -->
                                 <?php $Render->getDataList($DB->GET_CUSTOMER_LIST($collection)); ?>
                             </datalist>
                         </td>
                         <tr>
+                             <!-- DOCUMENT TITLE-->
                             <td> <span class="label"><span style = "color:red;"> * </span>Document Title:</span></td>
-                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value="<?php echo $document['Title']; ?>" required />
+                            <td><input type = "text" name = "txtTitle" id = "txtTitle" size="26" value='<?php echo htmlspecialchars($document['Title'],ENT_QUOTES); ?>' required />
                             </td>
                             <td>
+                                <!-- DOCUMENT START DATE -->
                                 <span class="label">Document Start Date:</span>
                             </td>
                             <td>
+                                <!-- DDL START MONTH -->
                                 <select name="ddlStartMonth" id="ddlStartMonth" style="width:60px">
                                     <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
                                 </select>
+                                <!-- DDL START DAY -->
                                 <select name="ddlStartDay" id="ddlStartDay" style="width:60px">
                                     <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
                                 </select>
+                                <!-- DDL START YEAR -->
                                 <select id="ddlStartYear" name="ddlStartYear" style="width:85px">
                                     <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
                                 </select>
@@ -108,21 +101,26 @@ $date = new DateHelper();
                         </tr>
                         <tr>
                             <td>
+                                <!-- DOCUMENT SUBTITLE -->
                                 <span class="label">Document Subtitle:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value="<?php echo $document['Subtitle']; ?>" />
+                                <input type = "text" name = "txtSubtitle" id = "txtSubtitle" size="26" value='<?php echo htmlspecialchars($document['Subtitle'],ENT_QUOTES); ?>' />
                             </td>
                             <td>
+                                <!-- DOCUMENT END DATE -->
                                 <span class="label">Document End Date:</span>
                             </td>
                             <td>
+                                <!-- DDL END MONTH -->
                                 <select name="ddlEndMonth" id="ddlEndMonth" style="width:60px">
                                     <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
                                 </select>
+                                <!-- DDL END DAY -->
                                 <select name="ddlEndDay" id="ddlEndDay" style="width:60px">
                                     <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
                                 </select>
+                                <!-- DDL END YEAR -->
                                 <select name="ddlEndYear" id="ddlEndYear" style="width:85px">
                                     <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
                                 </select>
@@ -130,26 +128,30 @@ $date = new DateHelper();
                         </tr>
 
                         <tr>
+                            <!-- MAP SCALE -->
                             <td><span class="label">Map Scale:</span></td>
-                            <td> <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value="<?php echo $document['MapScale']; ?>"  />
+                            <td> <input type = "text" name = "txtMapScale" id = "txtMapScale" size="26" value="<?php echo htmlspecialchars($document['MapScale'],ENT_QUOTES); ?>"  />
                             </td>
                             <td>
+                                <!-- FIELD BOOK NUMBER -->
                                 <span class="label">Field Book Number:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value="<?php if($document['FieldBookNumber'] != 0 && $document['FieldBookNumber'] != null) {echo $document['FieldBookNumber'];} ?>"/><span class = "errorInput" id = "customernameErr"></span>
+                                <input type = "text" name = "txtFieldBookNumber" id = "txtFieldBookNumber" size="26" value="<?php if($document['FieldBookNumber'] != 0 && $document['FieldBookNumber'] != null) {echo htmlspecialchars($document['FieldBookNumber'],ENT_QUOTES);} ?>"/><span class = "errorInput" id = "customernameErr"></span>
                             </td>
                         </tr>
 
                          <tr>
+                             <!-- IS MAP -->
                              <td><span class="labelradio"><mark>Is Map:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
                              </td>
                              <td>
                                  <input type = "radio" name = "rbIsMap" id = "rbIsMap_yes" size="26" value="1" <?php if($document['IsMap'] == 1) echo "checked"; ?>/>Yes
                                  <input type = "radio" name = "rbIsMap" id = "rbIsMap_no" size="26" value="0"  <?php if($document['IsMap'] == 0) echo "checked"; ?>/>No
                              </td>
+                             <!--FIELD BOOK PAGE-->
                              <td><span class="label">Field Book Page:</span></td>
-                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo $document['FieldBookPage']; ?>" />
+                             <td><input type = "text" name = "txtFieldBookPage" id = "txtFieldBookPage" size="26" value="<?php echo htmlspecialchars($document['FieldBookPage'],ENT_QUOTES); ?>" />
                              </td>
                          </tr>
                         <tr>
@@ -157,14 +159,17 @@ $date = new DateHelper();
                                 <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                             </td>
                             <td>
+                                <!-- NEEDS REVIEW -->
                                 <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" <?php if($document['NeedsReview'] == 1) echo "checked"; ?>/>Yes
                                 <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?>/>No
                             </td>
                             <td>
+                                <!--RECTIFIABILITY -->
                                 <?php $readrec = array("POOR","GOOD","EXCELLENT"); ?>
                                 <span class="label"><span style = "color:red;"> * </span>Readability:</span>
                             </td>
                             <td>
+                                <!-- READABILITY -->
                                 <select id="ddlReadability" name="ddlReadability" required style="width:215px">
                                     <?php
                                     $Render->GET_DDL2($readrec,$document['Readability']);
@@ -173,6 +178,7 @@ $date = new DateHelper();
                             </td>
                         </tr>
                         <tr>
+                            <!-- HAS NORTH ARROW -->
                                 <td><span class="labelradio"><mark>Has North Arrow:</mark><p hidden><b></b>This is to signal if it has a North Arrow</p></span>
                                 </td>
                                 <td>
@@ -183,6 +189,7 @@ $date = new DateHelper();
                                      <span class="label"><span style = "color:red;"> * </span>Rectifiability:</span>
                                 </td>
                                 <td>
+                                    <!-- POPULATE THE DDL RECTIFIABILITY -->
                                 <select id="ddlRectifiability" name="ddlRectifiability" required style="width:215px">
                                     <?php
                                     $Render->GET_DDL2($readrec,$document['Rectifiability']);
@@ -195,6 +202,7 @@ $date = new DateHelper();
                                 <span class="labelradio"><mark>Has Street:</mark><p hidden><b></b>This is to signal if a Street(s) are present</p></span>
                             </td>
                             <td>
+                                <!-- HAS STREETS -->
                                 <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_yes" size="26" value="1" <?php if($document['HasStreets'] == 1) echo "checked"; ?>/>Yes
                                 <input type = "radio" name = "rbHasStreets" id = "rbHasStreets_no" size="26" value="0" <?php if($document['HasStreets'] == 0) echo "checked"; ?> />No
                             </td>
@@ -203,6 +211,7 @@ $date = new DateHelper();
 
                             </td>
                             <td>
+                                <!-- POPULATE DDL WITH COMPANY NAMES -->
                                 <input type = "text" list="lstCompany" name = "txtCompany" id = "txtCompany" size="26" value="<?php echo $document['CompanyName'];?>" />
                                 <datalist id="lstCompany">
                                     <?php $Render->getDataList($DB->GET_COMPANY_LIST($collection)); ?>
@@ -211,6 +220,7 @@ $date = new DateHelper();
                         </tr>
                         <tr>
                             <td>
+                                <!-- HAS POINT OF INTEREST -->
                                 <span class="labelradio"><mark>Has POI:</mark><p hidden><b></b>This is to signal if a Point of Interest is present</p></span>
                             </td>
                             <td>
@@ -218,14 +228,16 @@ $date = new DateHelper();
                                 <input type = "radio" name = "rbHasPOI" id = "rbHasPOI_no" size="26" value="0"  <?php if($document['HasPOI'] == 0) echo "checked"; ?>/>No
                             </td>
                             <td>
+                                <!-- DOCUMENT TYPE-->
                                 <span class="label">Document Type:</span>
                             </td>
                             <td>
-                                <input type = "text" name = "txtType" id = "txtType" size="26" value="<?php echo $document['Type'];?>" />
+                                <input type = "text" name = "txtType" id = "txtType" size="26" value="<?php echo htmlspecialchars($document['Type'],ENT_QUOTES);?>" />
                             </td>
                         </tr>
                         <tr>
                             <td>
+                                <!-- HAS COORDINATES-->
                                 <span class="labelradio"><mark>Has Coordinates:</mark><p hidden><b></b>This is to signal if Coordinates are visible</p></span>
                             </td>
                             <td>
@@ -236,6 +248,7 @@ $date = new DateHelper();
                                 <span class="label"><span style = "color:red;"> * </span>Document Medium:</span>
                             </td>
                             <td>
+                                <!-- POPULATES DDL WITH MEDIUM -->
                                 <select id="ddlMedium" name="ddlMedium" style="width:215px" required>
                                     <?php
                                     $Render->GET_DDL($DB->GET_TEMPLATE_MAP_MEDIUM_FOR_DROPDOWN($collection),$document['Medium']);
@@ -248,13 +261,16 @@ $date = new DateHelper();
                                 <span class="labelradio"><mark>Has Coast:</mark><p hidden><b></b>This is to signal if a Coast line is present</p></span>
                             </td>
                             <td>
+                                <!-- HAS A COAST -->
                                 <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_yes" size="26" value="1" <?php if($document['HasCoast'] == 1) echo "checked"; ?>/>Yes
                                 <input type = "radio" name = "rbHasCoast" id = "rbHasCoast_no" size="26" value="0" <?php if($document['HasCoast'] == 0) echo "checked"; ?> />No
                             </td>
                             <td>
+                                <!-- DOCUMENT AUTHOR -->
                                 <span class="label">Document Author:</span>
                             </td>
                             <td>
+                                <!-- POPULATE DDL WITH AUTHOR LIST -->
                                 <input type = "text" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" size="26" value="<?php echo $document['AuthorName']; ?>" /></span>
                                 <datalist id="lstAuthor">
                                     <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
@@ -263,6 +279,7 @@ $date = new DateHelper();
                         </tr>
                         <tr style="vertical-align: top">
                             <td>
+                                <!-- SCAN OF FRONT-->
                                 <span class="label"><span style = "color:red;"> * </span>Scan Of Front:</span>
 
                             </td>
@@ -273,6 +290,7 @@ $date = new DateHelper();
                                 ?>
                             </td>
                             <td>
+                                <!-- SCAN OF BACK -->
                                 <span class="label">Scan Of Back:</span>
                             </td>
                             <td rowspan="2" style="text-align: center">
@@ -289,14 +307,40 @@ $date = new DateHelper();
                         </tr>
                         <tr>
                             <td style="vertical-align: top">
+                                <!-- COMMENTS -->
                                 <span class="label"><br>Comments:</span>
                             </td>
                             <td>
                                 <textarea name = "txtComments" rows = "5" cols = "35" id="txtComments"/><?php echo $document['Comments']; ?></textarea>
                             </td>
                         </tr>
+                        <tr>
+                            <td style="vertical-align: top">
+                                <!-- GEOREC DOWNLOAD URL -->
+                            </td>
+                            <td>
+                                <?php
+                                    $georecinfo = $DB->DOCUMENT_GEOREC_INFO_SELECT($docID);
+                                    if($georecinfo['geoRecFrontStatus'] == 1)
+                                {
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecFrontDirKMZ]\">Front KMZ</a>";
+                                    echo " | ";
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecFrontDirGeoTIFF]\">Front GeoTIFF</a>";
+                                }
+                                if($georecinfo['geoRecBackStatus'] == 1)
+                                {
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecBackDirKMZ]\">Back KMZ</a>";
+                                    echo " | ";
+                                    echo "<a href=\"download.php?file=$config[GeoRecDir]$georecinfo[georecBackDirGeoTIFF]\">Back GeoTIFF</a>";
+                                }
+
+
+                                ?>
+                            </td>
+                        </tr>
                 <tr>
                     <td colspan="4" style="text-align: center">
+                        <!-- Hidden inputs that are passed when the update button is hit -->
                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
                         <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
@@ -323,18 +367,6 @@ $date = new DateHelper();
 
 </body>
 <style>
-
-    #documentHistory table { border-collapse: collapse; text-align: left; width: 100%;padding-left:2px; }
-    #documentHistory {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
-    #documentHistory table td, #documentHistory table th { padding: 3px 10px; }
-    #documentHistory table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
-    #documentHistory table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; }
-    #documentHistory table tbody tr:hover { background-color: #bce1ff; }
-    div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
-    #timeStamp{
-        font-size: 12px;
-    }
-
     #table2{
         width:100%;
         background-color: white;
@@ -346,7 +378,6 @@ $date = new DateHelper();
         text-align: left;
         margin-top: 10px;
         margin-bottom: 50px;
-
     }
     #table2 td,tr{line-height:42px;}
 
@@ -390,75 +421,69 @@ $date = new DateHelper();
 </style>
 
 <script>
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
         /* attach a submit handler to the form */
-        $('#theform').submit(function (event) {
-            /* stop form from submitting normally */
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
-            event.disabled;
+        $('#theform').submit(function (event)
+        {
+            //validates the library index
+            //TODO:: removed underscore validation for library index
+//            if(validateFormUnderscore("txtLibraryIndex") == true)
+//            {
+                //Library index was found having a "_" in the string
+                /* stop form from submitting normally */
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
+                event.disabled;
 
-            event.preventDefault();
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data: $('#theform').serializeArray(),
-                success: function (data) {
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for (var i = 0; i <= json.length - 1; i++) {
-                        msg += json[i] + "\n";
-                    }
-
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
+                event.preventDefault();
+                /* Send the data using post */
+                $.ajax(
+                    {
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data: $('#theform').serializeArray(),
+                    success: function (data) {
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for (var i = 0; i <= json.length - 1; i++) {
+                            msg += json[i] + "\n";
                         }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                        {
-                            $('#btnSubmit').css("display", "inherit");
-                            $('#loader').css("display", "none");
+
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        alert(msg);
+
+                        if (result == 1){
+                            self.close();
                         }
                     }
-                    alert(msg);
+                })
+//            }
+//            else
+//            {
+//                //No _ was found in the string
+//                alert("Library Index does not contain an underscore character.                            " +
+//                    "Please check Library Index.");
+//            }
 
-                    if (result == 1){
-                        window.location.href = "./list.php?col=<?php echo $_GET['col'];?>";
-                    }
-                }
-            })
+
+
         });
 
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+        $("#divleft").height($("#divscroller").height());
 
-        //Condition that determines if the user has Admin permission to view the document history//
-        var admin = <?php $admin = $session->isAdmin(); echo json_encode($admin); ?>;
-        if (admin)
-            $('#historyCheck').css('display', 'inline');
-        else{
-            $('#historyCheck').css('display', 'none');
-            $('#historyText').text(" ");
-        }
-
-        //jQuery that allows the visibility of the draggable element if checked
-        $('#documentHistory').css('display', 'none');
-        $('#historyCheck').change(function () {
-            if($("#historyCheck").is(':checked')){
-                $("#documentHistory").css('display', 'block');  // checked
-            }
-
-            else{
-                $("#documentHistory").css('display', 'none');  // checked
-            }
-
-        });
-        //jQuery function that drags the draggable element
-        $( function() {
-            $( "#documentHistory" ).draggable({helper:'clone'});
-        } );
     });
 
 

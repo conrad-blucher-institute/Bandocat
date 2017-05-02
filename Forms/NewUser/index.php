@@ -105,7 +105,7 @@ $Render = new ControlsRender();
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" style="text-align: center">
+                                    <td colspan="2" style="text-align: center;padding-right:0 !important">
                                         <!--Submit form-->
                                         <input type="submit" value="Register" class="bluebtn"/>
                                     </td>
@@ -238,10 +238,10 @@ a procedure in the database that insert the information into the bandocatdb data
     #innerRightTable {
         border:1px solid black;
         padding:30px;
-        border-radius: 6%;
         margin: auto;
         font-size: 1.0em;
         line-height: 2em;
+        background-color: #f1f1f1; border-radius: 2px;  box-shadow: 0px 0px 3px #0c0c0c
     }
     #innerRightTable td:first-child {
         padding-right:50px;

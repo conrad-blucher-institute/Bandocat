@@ -1,10 +1,12 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-    if(isset($_GET['col'])) {
+    if(isset($_GET['col']))
+    {
         $collection = $_GET['col'];
         require('../../Library/DBHelper.php');
         $DB = new DBHelper();
+        //get appropriate db
         $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     }
     else header('Location: ../../');
@@ -12,6 +14,7 @@ $session = new SessionManager();
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -25,6 +28,15 @@ $session = new SessionManager();
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
+        /**********************************************
+         * Function:  DeleteDocument
+         * Description: deletes the document from the database
+         * Parameter(s):
+         * col (in string) - name of the collection
+         * id (in Int) - document id
+         * Return value(s):
+         * $result true if success, false if failed
+         ***********************************************/
         function DeleteDocument(col,id)
         {
             $response = confirm('Are you sure you want to delete this document?');
@@ -45,7 +57,9 @@ $session = new SessionManager();
                 });
             }
         }
-        $(document).ready(function() {
+        //When the document is ready, begin the rendering of the datatable
+        $(document).ready(function()
+        {
             var collection_config = <?php echo json_encode($config); ?>;
             $('#page_title').text(collection_config.DisplayName);
 
@@ -80,7 +94,7 @@ $session = new SessionManager();
                         },
                         "targets": 3
                     },
-                    { "searchable": false, "targets": 3 },
+                    //{ "searchable": false, "targets": 3 },
                     //column : Date
                     {
                         "render": function ( data, type, row ) {
@@ -88,7 +102,7 @@ $session = new SessionManager();
                                 return "";
                             return data;
                         },
-                        "targets": 5
+                        "targets": 6
                     },
                     //column : HasCoast
                     {
@@ -97,9 +111,9 @@ $session = new SessionManager();
                                 return "Yes";
                             return "No";
                         },
-                        "targets": 6
+                        "targets": 7
                     },
-                    { "searchable": false, "targets": 6 },
+                   // { "searchable": false, "targets": 6 },
                     //column : NeedsReview
                     {
                         "render": function ( data, type, row ) {
@@ -107,24 +121,85 @@ $session = new SessionManager();
                                 return "Yes";
                             return "No";
                         },
-                        "targets": 7
+                        "targets": 8
                     },
-                    { "searchable": false, "targets": 7 },
+                   // { "searchable": false, "targets": 7 },
                     {
                         "render": function ( data, type, row ) {
                         return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
                         },
-                        "targets": 8
+                        "targets": 9
                     },
 
                 ],
-                "ajax": "list_processing.php?col=" + collection_config.Name
+                "ajax": "list_processing.php?col=" + collection_config.Name,
+                "initComplete": function()
+                {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        switch(column[0][0]) //column number
+                        {
+                            //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                            case 7: //column hascoast
+                            case 8: //column needsreview
+                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                            //case: DROP DOWN LIST
+//                            case ?:
+//                                var select = $('<select style="width:100%"><option value="">Filter...</option></select>')
+//                                    .appendTo( $(column.footer()).empty() )
+//                                    .on( 'change', function () {
+//                                        var val = $.fn.dataTable.util.escapeRegex(
+//                                            $(this).val()
+//                                        );
+//
+//                                        column
+//                                            .search(val)
+//                                            .draw();
+//                                    } );
+//
+//                                column.data().unique().sort().each( function ( d, j ) {
+//                                    select.append( '<option value="'+d+'">'+d+'</option>' )
+//                                } );
+//                                break;
+                            case 1: //lib index
+                            case 2: //title
+                            case 3: //subtitle
+                            case 4: //customer
+                            case 5: //author
+                            case 6: //enddate
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'keyup change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                        }
+                    } );
+                },
             } );
 
             //hide first column (DocID)
             table.column(0).visible(true);
-            table.column(8).visible(false);
-            <?php if($session->isAdmin()){ ?> table.column(8).visible(true); <?php } ?>
+            //hides the columns responsible for need's input
+            table.column(9).visible(false);
+            <?php if($session->isAdmin()){ ?> table.column(9).visible(true); <?php } ?>
             // show or hide subtitle
             table.column(3).visible(false);
             $('#checkbox_subtitle').change(function (e) {
@@ -151,6 +226,7 @@ $session = new SessionManager();
     </script>
 
 </head>
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">
@@ -174,12 +250,27 @@ $session = new SessionManager();
                     <th>Document Title</th>
                     <th width="280px">Document Subtitle</th>
                     <th width="200px">Customer</th>
+                    <th width="200px">Author</th>
                     <th width="70px">End Date</th>
                     <th width="40px">Has Coast</th>
                     <th width="30px">Needs Review</th>
                     <th></th>
                 </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th width="100px">Library Index</th>
+                <th>Document Title</th>
+                <th width="280px">Document Subtitle</th>
+                <th width="200px">Customer</th>
+                <th width="200px">Author</th>
+                <th width="70px">End Date</th>
+                <th width="40px">Has Coast</th>
+                <th width="30px">Needs Review</th>
+                <th></th>
+            </tr>
+            </tfoot>
         </table>
         </div>
         </div>

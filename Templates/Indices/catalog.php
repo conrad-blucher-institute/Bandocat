@@ -1,7 +1,9 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col'])) {
+//get collection name from passed variables col and doc
+if(isset($_GET['col']))
+{
     $collection = $_GET['col'];
 }
 else header('Location: ../../');
@@ -12,12 +14,15 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new IndicesDBHelper();
+//get indices
 $book = $DB->GET_INDICES_BOOK($collection);
+//get appropriate DB
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -29,9 +34,11 @@ $date = new DateHelper();
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-
+    <script type="text/javascript" src="../../Master/master.js"></script>
 </head>
+<!-- END HTML HEADER -->
 <body>
+<!--  HTML BODY -->
 <div id="wrap">
     <div id="main">
         <div id="divleft">
@@ -47,14 +54,17 @@ $date = new DateHelper();
                         <tr>
                             <td id="col1">
                                 <div class="cell">
+                                    <!-- File  -->
                                     <span class="label">Scan of Page:</span>
-                                    <input type="file" name="file_array" id="fileUpload" accept="image/tiff" /></span>
+                                    <input type="file" name="file_array" id="fileUpload" accept=".tif" /></span>
                                 </div>
                                 <div class="cell">
+                                    <!-- LIBRARY INDEX -->
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
                                     <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required />
                                 </div>
                                 <div class="cell">
+                                    <!-- BOOK TITLE -->
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <select class="libraryIndexSelect" id="ddlBookTitle" name="ddlBookTitle">
                                         <?php
@@ -65,23 +75,28 @@ $date = new DateHelper();
                                 </div>
 
                                 <div class="cell">
+                                    <!-- PAGE TYPE -->
                                     <span class="labelradio"><mark>Page Type:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
                                     <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="General Index" checked="true"/>General Index
                                     <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="Table of Contents"/>Table of Contents
                                 </div>
                                 <div class="cell">
+                                    <!-- PAGE NUMBER -->
                                     <span class="label"><span style = "color:red;"></span>Page Number:</span>
                                     <input type="text" name="txtPageNumber" id="txtPageNumber"/>
                                 </div>
                                 <div class="cell" >
+                                    <!-- NEEDS REVIEW -->
                                     <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" checked="true"/>Yes
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" />No
                                 </div>
                                 <div class="cell">
+                                    <!-- COMMENTS -->
                                     <span class="label"><span style = "color:red;"> </span>Comments:</span>
                                     <textarea cols="35" rows="5" name="txtComments" id="txtComments"></textarea>
                                 </div>
+                                <!-- Hidden inputs that are passed when the update button is hit -->
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
@@ -108,6 +123,13 @@ $date = new DateHelper();
 
 </body>
 <script>
+    /**********************************************
+     * Function: setBookID
+     * Description: Populates the DDL with books
+     * Parameter(s):
+     * Return value(s):
+     * $result (assoc array) -
+     ***********************************************/
     function setBookID()
     {
         var books = <?php echo json_encode($book); ?>;
@@ -122,15 +144,29 @@ $date = new DateHelper();
     }
 
     selLibraryIndex = document.querySelector("#txtLibraryIndex");
-
     //Event listener that it is triggered when a document is loaded to the document//
     document.addEventListener("DOMContentLoaded", init, false);
-    //Initial function that selects the elements in which the event will take place
-    function init() {
+
+    /**********************************************
+     * Function: init
+     * Description: responsible for initializing the handlefileselect function when the content is loaded
+     * Parameter(s):
+     * Return value(s):
+     ***********************************************/
+    function init()
+    {
         document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
+
     }
-    //Function that is called that handles all the functions that will reshape the document
-    function handleFileSelect(e) {
+    /**********************************************
+     * Function: handleFileSelect
+     * Description: handles the selcected files
+     * Parameter(s):
+     * e (in files) - selected files
+     * Return value(s):
+     ***********************************************/
+    function handleFileSelect(e)
+    {
         var books = <?php echo json_encode($book); ?>;
         if(!e.target.files) return;
 
@@ -142,28 +178,47 @@ $date = new DateHelper();
         /*Program that conditionally selects the value of the Book title by splitting the filename with a underscore
          * delimiter and setting the value of the select option if equal to the prefix string value*/
 
+
         var fileNameSplit = fileName.split("_");
+        //var fileNameSplit = fileName.replace(/_/g,"");
+       // console.log("Split info: " + fileNameSplit);
         var fileNameNoSpace = "";
         for(var i = 0; i < fileNameSplit.length - 1; i++)
         {
             fileNameNoSpace += fileNameSplit[i].toLowerCase();
         }
+      //  console.log("filename with space " + fileNameNoSpace.toLowerCase());
+        var found = false;
         for(var i = 0; i < books.length;i++)
         {
             if(fileNameNoSpace == books[i][0].replace(/ /g, '').toLowerCase())
             {
+                found = true;
                 $('select.libraryIndexSelect').val(books[i][0]);
                 $('#ddlBookID').val(books[i][1]);
                 return;
+            }else
+            {
+                found = false;
+
             }
         }
+        if(found == false)
+        {
+            alert("Could not find book title match for library index.");
+            console.log("Failed to match book");
+        }
+
 
     }
 
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
+        //resize height of the scroller
+        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         //Eventlistener that on change the new value of the drop down is send to the #ddlBookID hidden input for update
-        $('#ddlBookTitle').on('change', function(e){
-            alert("YEAH");
+        $('#ddlBookTitle').on('change', function(e)
+        {
             setBookID();
         });
 
@@ -174,46 +229,61 @@ $date = new DateHelper();
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
-            event.disabled;
+            if(validateFormUnderscore("txtLibraryIndex") == true)
+            {
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
+                event.disabled;
 
-            event.preventDefault();
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data){
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
+                event.preventDefault();
+                /* Send the data using post */
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data:  formData,
+                    processData: false,
+                    contentType: false,
+                    success:function(data)
                     {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("FAIL") || json[i].includes("EXISTED"))
+                        console.log("MADE IT HERE BITCH NUGGET")
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for(var i = 0; i < json.length; i++)
                         {
-                            $('#btnSubmit').css("display", "inherit");
-                            $('#loader').css("display", "none");
+                            msg += json[i] + "\n";
                         }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
-                    }
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("FAIL") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        alert(msg);
+                        if (result == 1){
+                            window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                        }
 
-                }
-            });
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown)
+                    {
+                        alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                    }
+                });
+            }
+            else
+            {
+                //No _ was found in the string
+                alert("Library Index does not contain an underscore character.                            " +
+                    "Please check Library Index.");
+            }
+
         });
-        //resize height of the scroller
-        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+
     });
 
 

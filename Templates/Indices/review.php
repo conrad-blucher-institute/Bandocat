@@ -1,7 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['doc'])) {
+if(isset($_GET['col']) && isset($_GET['doc']))
+{
     $collection = $_GET['col'];
     $docID = $_GET['doc'];
 }
@@ -15,15 +16,20 @@ require '../../Library/ControlsRender.php';
 
 $Render = new ControlsRender();
 $DB = new IndicesDBHelper();
+//get appropriate db
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+//select template indices document
 $document = $DB->SP_TEMPLATE_INDICES_DOCUMENT_SELECT($collection, $docID);
+//get the indices book
 $book = $DB->GET_INDICES_BOOK($collection);
+//get indices info
 $info = $DB->GET_INDICES_INFO($collection, $docID);
 $date = new DateHelper();
 ?>
 
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -35,14 +41,19 @@ $date = new DateHelper();
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-
+    <script type="text/javascript" src="../../Master/master.js"></script>
 </head>
+<!-- END HTML HEADER -->
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">
         <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
+            include '../../Master/sidemenu.php' ;
+            if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
+                $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
+            ?>
         </div>
         <div id="divright">
             <h2><?php echo $config['DisplayName'];?> Review Form</h2>
@@ -53,10 +64,12 @@ $date = new DateHelper();
                         <tr>
                             <td id="col1">
                                 <div class="cell">
+                                    <!-- LIBRARY INDEX -->
                                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="" required />
+                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='' required />
                                 </div>
                                 <div class="cell">
+                                    <!-- BOOK TITLE -->
                                     <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
                                     <select id="ddlBookTitle" name="ddlBookTitle" class="selectBookTitle">
                                         <?php
@@ -67,26 +80,30 @@ $date = new DateHelper();
                                 </div>
 
                                 <div class="cell" id="pageType">
+                                    <!-- PAGE TYPE -->
                                     <span class="labelradio"><mark>Page Type:</mark><p hidden><b></b>This is to signal if it is a map</p></span>
                                     <input type = "radio" name = "rbPageType" id = "rbPageType_tableContent" size="26" value="General Index" checked="true"/>General Index
                                     <input type = "radio" name = "rbPageType" id = "rbIsMap_generalIndex" size="26" value="Table of Contents"/>Table of Contents
                                 </div>
                                 <div class="cell">
+                                    <!-- PAGE NUMBER -->
                                     <span class="label"><span style = "color:red;"> * </span>Page Number:</span>
-                                    <input type="text" name="txtPageNumber" id="txtPageNumber" value="<?php echo $document['PageNumber']?>"/>
+                                    <input type="text" name="txtPageNumber" id="txtPageNumber" value="<?php echo htmlspecialchars($document['PageNumber'],ENT_QUOTES);?>"/>
                                 </div>
                                 <div class="cell" >
+                                    <!-- NEEDS REVIEW -->
                                     <span class="labelradio" ><mark>Needs Review:</mark><p hidden><b></b>This is to signal if a review is needed</p></span>
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" checked="true"/>Yes
                                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" />No
                                 </div>
                                 <div class="cell">
+                                    <!--COMMENTS -->
                                     <span class="label"><span style = "color:red;"> </span>Comments:</span>
                                     <textarea cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
                                 </div>
                             </td>
                             <td id="col2">
-
+                                <!-- SCAN OF PAGE -->
                                 <div class="cell">
                                     <table>
                                         <tr>
@@ -106,6 +123,7 @@ $date = new DateHelper();
                         </tr>
                         <tr>
                             <td colspan="2">
+                                <!-- Hidden inputs that are passed when the update button is hit -->
                                 <div class="cell" style="text-align: center;padding-top:20px">
                                     <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                     <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID; ?>" />
@@ -132,6 +150,13 @@ $date = new DateHelper();
 
 </body>
 <script>
+    /**********************************************
+     * Function: setBookID
+     * Description: Populates the DDL with books
+     * Parameter(s):
+     * Return value(s):
+     * $result (assoc array) -
+     ***********************************************/
     function setBookID()
     {
         var books = <?php echo json_encode($book); ?>;
@@ -145,7 +170,8 @@ $date = new DateHelper();
         }
     }
 
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
         //LIBRARY INDEX
         /*$document: array object that contains the selection from the bandocat_indicesinventory database, document table*/
         //Library index information retrieved from document array object
@@ -184,45 +210,56 @@ $date = new DateHelper();
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
-            event.disabled;
+            if(validateFormUnderscore("txtLibraryIndex") == true)
+            {
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
+                event.disabled;
 
-            event.preventDefault();
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data){
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
-                    {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                event.preventDefault();
+                /* Send the data using post */
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data:  formData,
+                    processData: false,
+                    contentType: false,
+                    success:function(data){
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for(var i = 0; i < json.length; i++)
                         {
-                            $('#btnSubmit').css("display", "inherit");
-                            $('#loader').css("display", "none");
+                            msg += json[i] + "\n";
                         }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        window.location.href = "./list.php?col=<?php echo $_GET['col']; ?>";
-                    }
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        alert(msg);
+                        if (result == 1){
+                            self.close();
+                        }
 
-                }
-            });
+                    }
+                });
+            }
+            else
+            {
+                //No _ was found in the string
+                alert("Library Index does not contain an underscore character.                            " +
+                    "Please check Library Index.");
+            }
+
         });
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+        $("#divleft").height($("#divscroller").height());
     });
 </script>
 <style>

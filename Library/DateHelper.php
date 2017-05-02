@@ -11,7 +11,14 @@ class DateHelper
     {
     }
 
-
+    /**********************************************
+     * Function: splitDate
+     * Description: helps to manipulate supplied dates into a different form
+     * Parameter(s):
+     * $date (in string) - date
+     * Return value(s):
+     * $result array containing separated date
+     ***********************************************/
     function splitDate($date)
     {
         if($date == '' || $date == null)
@@ -29,7 +36,16 @@ class DateHelper
             "Year" => $split[2],
         );
     }
-
+    /**********************************************
+     * Function: mergeDate
+     * Description: helps to manipulate supplied dates into a different form
+     * Parameter(s):
+     * $month (in string) - month
+     * $day (in string) - day
+     * $year (in string) - year
+     * Return value(s):
+     * $result date
+     ***********************************************/
     function mergeDate($month,$day,$year)
     {
         if($month == "" || $month == null || $month == "0")

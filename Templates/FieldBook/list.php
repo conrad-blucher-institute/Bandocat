@@ -1,10 +1,13 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['action'])) {
+//Get collection name and action
+if(isset($_GET['col']) && isset($_GET['action']))
+{
     $collection = $_GET['col'];
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
+    //get appropriate db
     $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
     $action = $_GET['action'];
     if($action == "catalog")
@@ -17,6 +20,7 @@ else header('Location: ../../');
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -30,11 +34,21 @@ else header('Location: ../../');
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
+        /**********************************************
+         * Function:  DeleteDocument
+         * Description: deletes the document from the database
+         * Parameter(s):
+         * col (in string) - name of the collection
+         * id (in Int) - document id
+         * Return value(s):
+         * $result true if success, false if failed
+         ***********************************************/
         function DeleteDocument(col,id)
         {
             $response = confirm('Are you sure you want to delete this document?');
             if($response)
             {
+                //send to form_processing the information in the data: folder
                 $.ajax({
                     type: 'post',
                     url: 'form_processing.php',
@@ -50,21 +64,27 @@ else header('Location: ../../');
                 });
             }
         }
-        $(document).ready(function() {
+        //When the document is ready, begin the rendering of the datatable
+        $(document).ready(function()
+        {
             var collection_config = <?php echo json_encode($config); ?>;
             var action = '<?php echo $action; ?>';
             $('#page_title').text(collection_config.DisplayName);
 
-            var table = $('#dtable').DataTable( {
+            var table = $('#dtable').DataTable(
+                {
                 "processing": true,
                 "serverSide": true,
                 "lengthMenu": [20, 40 , 60, 80, 100],
                 "bStateSave": false,
                 "order": [[ 0, "desc" ]],
-                "columnDefs": [
+                "columnDefs":
+                    [
                     //column Document Index: Replace with Hyperlink
                     {
-                        "render": function ( data, type, row ) {
+                        //If the action is catalog or if the action is review
+                        "render": function ( data, type, row )
+                        {
                             if(action == "catalog")
                                 var ret = "<a target='_blank' href='catalog.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Catalog</a>" ;
                             else var ret = "<a target='_blank' href='review.php?doc=" + data + "&col=" + collection_config['Name'] + "'>Edit/View</a>" ;
@@ -93,22 +113,65 @@ else header('Location: ../../');
                         "targets": 5
                     },
                     {
-                        "render": function ( data, type, row ) {
+                        "render": function ( data, type, row )
+                        {
                             return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
                         },
                         "targets": 6
                     },
 
                 ],
-                "ajax": "list_processing.php?col=" + collection_config.Name + "&action=" + '<?php echo $action; ?>'
+                "ajax": "list_processing.php?col=" + collection_config.Name + "&action=" + '<?php echo $action; ?>',
+                "initComplete": function()
+                {
+                        this.api().columns().every( function () {
+                            var column = this;
+                            switch(column[0][0]) //column number
+                            {
+                                //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                                case 4: //needs input
+                                case 5: //column needsreview
+                                    var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
+                                        .appendTo( $(column.footer()).empty() )
+                                        .on( 'change', function () {
+                                            var val = $.fn.dataTable.util.escapeRegex(
+                                                $(this).val()
+                                            );
+
+                                            column
+                                                .search(val)
+                                                .draw();
+                                        } );
+                                    break;
+                                    //search text box
+                                case 1:
+                                case 2:
+                                case 3:
+                                    var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                        .appendTo( $(column.footer()).empty() )
+                                        .on( 'keyup change', function () {
+                                            var val = $.fn.dataTable.util.escapeRegex(
+                                                $(this).val()
+                                            );
+
+                                            column
+                                                .search(val)
+                                                .draw();
+                                        } );
+                                    break;
+                            }
+                        } );
+                },
             } );
 
             //hide first column (DocID)
             table.column(0).visible(true);
+            //hides the columns responsible for need's input
             table.column(6).visible(false);
             if(action == "catalog")
                 table.column(5).visible(false);
             else table.column(4).visible(false);
+            //only if admin is loged in, we show the 6th column
             <?php if($session->isAdmin()){ ?> table.column(6).visible(true); <?php } ?>
 
 
@@ -123,11 +186,12 @@ else header('Location: ../../');
                 }
             } );
             //resize height of the scroller
-            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 50);
+            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
         });
     </script>
 
 </head>
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">
@@ -150,6 +214,19 @@ else header('Location: ../../');
                         <th width="40px"></th>
                     </tr>
                     </thead>
+
+                    <tfoot>
+                    <tr>
+                        <th width="50px"></th>
+                        <th width="200px">Book Title</th>
+                        <th width="150px">Library Index</th>
+                        <th></th>
+                        <th width="50px" class="thBoolean">Needs Input</th>
+                        <th width="50px" class="thBoolean">Needs Review</th>
+                        <th width="40px"></th>
+                    </tr>
+
+                    </tfoot>
                 </table>
             </div>
         </div>

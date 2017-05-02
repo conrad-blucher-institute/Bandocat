@@ -15,16 +15,21 @@ body{
 #header_logo{
     padding-bottom:10px;
 }
+/* Define how each icon button should look like */
 
 #thetable
 {
     width:100%;
+    min-height:800px;
 }
+#thetable td{padding-top: 11px; padding-left: 1px;}
+
 #thetable_left
 {
     width: 230px;
     vertical-align: top;
     padding: 8px 8px 8px 8px;
+
 }
 
 #thetable_right
@@ -32,20 +37,27 @@ body{
     width: 100%;
     vertical-align: top;
     background: #f1f1f1;
+
 }
 
 
 #divleft{float:left;
     width:20%;
-    overflow:hidden;}
+    overflow-y:auto;
+    overflow-x:hidden;
+
+}
 #divright{float:left;
     width:79%;
     overflow-y:hidden;
 }
 #divscroller {
     overflow-y: auto;
+    overflow-x: hidden;
     padding-right: 2px;
 }
+
+
 
 #col1,#col2 {vertical-align: top;}
 
@@ -147,7 +159,7 @@ nav {
 }
 
 .menu-item li:hover {
-    background: #eee;
+    background: #00BC65;
 }
 
 /*ul Styles*/
@@ -171,6 +183,10 @@ nav {
 
 .menu-item:hover ul {
     height:auto;
+    transition-delay:.35s;
+}
+.menu-item_sub2:hover ul {
+    height:65px !important;
 }
 .menu-item_sub3:hover ul {
     height:95px !important;
@@ -281,6 +297,7 @@ nav {
     box-shadow: 0 0 .1em rgba(0,0,0,0.4);
     -moz-box-shadow: 0 0 .1em rgba(0,0,0,0.4);
     -webkit-box-shadow: 0 0 .1em rgba(0,0,0,0.4);
+
 }
 
 .button:active
@@ -340,25 +357,48 @@ nav {
     background: linear-gradient(to right, rgba(0,127,62,1) 0%, rgba(0,127,62,0.89) 14%, rgba(0,127,62,0.89) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007f3e', endColorstr='#007f3e', GradientType=1 );
 }
-
+.bluebtn:disabled{
+    box-shadow: 0px 10px 14px -7px #3e7327;
+    background-color: #0067C5;
+    border-radius: 16px;
+    color: #ffffff;
+    opacity: 0.3;
+    filter: alpha(opacity=30); /* For IE8 and earlier */
+}
 /* End Button classes*/
 /* _______________________________________________________________________________________  */
 
 
 /*scrollbar style */
 ::-webkit-scrollbar {
+    width: 5px;
+}
+#divscroller::-webkit-scrollbar {
     width: 15px;
 }
 ::-webkit-scrollbar-track {
     background-color: #eaeaea;
     border-left: 1px solid #ccc;
 }
-::-webkit-scrollbar-thumb {
-    background-color: #0099FF;
+#divscroller::-webkit-scrollbar-thumb {
+
+   background-color: #0099FF;
 }
 ::-webkit-scrollbar-thumb:hover {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+
+    background-color: transparent;
+}
+#divscroller::-webkit-scrollbar-thumb:hover {
     background-color: #73a55b;
 }
+
+
+
+
+
 /* end scrollbar style */
 /* _______________________________________________________________________________________  */
 /*table styles */
@@ -415,7 +455,8 @@ h2
 
 
 form {
-    margin: 0 auto;
+
+    margin-left: 4px;
     margin-top: 20px;
 }
 label {
@@ -445,6 +486,21 @@ footer a:hover
 {
     text-decoration: underline;
     color: #007F3E;
+}
+
+.disabledClass{
+    box-shadow: 0px 10px 14px -7px #3e7327;
+    background-color: #0067C5;
+    border-radius: 16px;
+    color: #ffffff;
+    padding-top:3%;
+    width: 100%;
+    height: 2.1em;
+    font-size: 63%;
+    margin:0px;
+    opacity: 0.3;
+    filter: alpha(opacity=30); /* For IE8 and earlier */
+
 }
 
 /*Map Collections Stylesheet*/
@@ -485,11 +541,96 @@ footer a:hover
     height: 2.1em;
     font-size: 63%;
     margin:0px;
+
 }
 .Collection_Table .Collection_Button:hover {
     background-color:  #007F3E;
 }
 .Collection_Table .Collection_Button:active {
+     position:relative;
+     top:1px;
+ }
+.Collection_Table .Collection_Button:disabled{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+
+
+/* Styles for jqueryUI dialog box showing on the bottom left of review page on Admin View */
+/*******************************************/
+#documentHistory table { border-collapse: collapse; text-align: left; width: 100%;padding-left:2px; }
+#documentHistory {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+#documentHistory table td, #documentHistory table th { padding: 3px 10px; }
+#documentHistory table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
+#documentHistory table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; }
+#documentHistory table tbody tr:hover { background-color: #bce1ff; }
+div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
+#timeStamp{
+    font-size: 12px;
+}
+
+
+.notificationBadge {
+
+    min-width:20px;
+    min-height:20px;
+    padding: 3px;
+    border-radius:10px;
+    vertical-align: sub;
+}
+.notificationBadge[data-badge]:after {
+    content:attr(data-badge);
     position:relative;
-    top:1px;
+    vertical-align: top;
+    font-size:.75em;
+    padding: 2px;
+    background:red;
+    color:white;
+    width:18px;height:18px;
+    text-align:center;
+    line-height:18px;
+    border-radius:50%;
+    box-shadow:0 0 1px #333;
+}
+/*********Tabs for the statistics page*************************/
+
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: left;}
+
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
 }

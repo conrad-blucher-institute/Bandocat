@@ -1,7 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['action'])) {
+if(isset($_GET['col']) && isset($_GET['action']))
+{
     $collection = htmlspecialchars($_GET['col']);
     $action = htmlspecialchars($_GET['action']);
 }
@@ -67,7 +68,7 @@ $extraWhere = "";
 if($action == "catalog")
     $extraWhere =  " `document`.`needsinput` = 1 ";
 else $extraWhere = " `document`.`needsinput` = 0 "; //review
-
+/*$_GET: , $sql_details, $table: "document", $primaryKey: "documentID" $columns: 2D array of table  */
 echo json_encode(
     SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere,null )
 );

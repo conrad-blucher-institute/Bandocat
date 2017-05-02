@@ -8,12 +8,26 @@ Return value(s):
 class FolderDBHelper extends DBHelper
 {
 
-    //NEED TESTING
+    /**********************************************
+     * Function: SP_TEMPLATE_FOLDER_DOCUMENT_INSERT
+     * Description: Creates a new folder document in the template folder db then returns the id if successful
+     * Parameter(s):
+     * $collection (in String) - the collection name
+     * $iLibraryIndex (in String) - the index of the document
+     * $iTitle (in String) - the title of the document
+     * $iFileName (in String) - the filename associated with the document
+     * $iFileNameBack (in String) -
+     * $iFileNamePath (in String) - the filepath to the file
+     * $iFileNameBackPath (in String) -
+     * Return value(s):
+     ***********************************************/
     function SP_TEMPLATE_FOLDER_DOCUMENT_INSERT($collection, $iLibraryIndex, $iTitle,$iFileName, $iFileNameBack,
-                                                                  $iFileNamePath,$iFileNameBackPath)
+                                                $iFileNamePath,$iFileNameBackPath)
     {
+        //get appropriate db
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        if ($dbname != null && $dbname != "") {
+        if ($dbname != null && $dbname != "")
+        {
             $this->getConn()->exec('USE ' . $dbname);
             if($iFileNameBack == "")
             {
@@ -26,10 +40,13 @@ class FolderDBHelper extends DBHelper
                 $iFileNamePath = null;
             }
             /* PREPARE STATEMENT */
+            //CALL is sql for telling the db to execute the function following call.
+            //The ? in the functions parameter list is a variable that we bind a few lines down
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FOLDER_DOCUMENT_INSERT(:libindex,:title,:fname,
             :fnameback,:fnamepath,:fnamebackpath)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+            //bind variables to the prepared  sql statement above
             $call->bindParam(':libindex', $iLibraryIndex, PDO::PARAM_STR, 200);
             $call->bindParam(':title', $iTitle, PDO::PARAM_STR, 350);
             $call->bindParam(':fname', $iFileName, PDO::PARAM_STR, 80);
@@ -41,6 +58,7 @@ class FolderDBHelper extends DBHelper
             $ret = $call->execute();
             if($ret)
             {
+                //get the last inserted id()
                 $select = $this->getConn()->query('SELECT LAST_INSERT_ID()');
                 $ret = $select->fetch(PDO::FETCH_COLUMN);
                 return $ret;
@@ -50,20 +68,42 @@ class FolderDBHelper extends DBHelper
     }
 
 
-    //NEED TESTING
-    function SP_TEMPLATE_FOLDER_DOCUMENT_UPDATE($collection,$iDocID,$iLibraryIndex, $iTitle, $iInSubfolder, $iSubfolderComment,
-                                                                  $iClassificationName, $iClassificationComment,
-                                                                  $iNeedsInput,$iNeedsReview,$iComments,
-                                                                  $iStartDate, $iEndDate)
+    /**********************************************
+     * Function: SP_TEMPLATE_FOLDER_DOCUMENT_UPDATE
+     * Description: Updates a specific entry in the db
+     * Parameter(s):
+     * $collection (in String) - name of the collection
+     * $iDocID (in String) - documentID in the collection
+     * $iLibraryIndex (in String) - the library index
+     * $iTitle (in String) - the title of the document
+     * $iInSubfolder (in Int) - flag if it is in a subfolder
+     * $iSubfolderComment (in String) - comments for the subfolder
+     * $iClassificationName (in String) - classification name
+     * $iClassificationComment (in String) - classification comments
+     * $iNeedsInput (in Int) - flag if the document needs input
+     * $iNeedsReview (in Int) - flag if the document needs review
+     * $iComments (in String) - general comments
+     * $iStartDate (in String) - job start date (document)
+     * $iEndDate (in String) - job end date (document)
+     * Return value(s): true if succcessful, false if failed
+     ***********************************************/
+    function SP_TEMPLATE_FOLDER_DOCUMENT_UPDATE($collection,$iDocID,$iLibraryIndex, $iTitle, $iInSubfolder,
+                                                $iSubfolderComment, $iClassificationName, $iClassificationComment,
+                                                $iNeedsInput,$iNeedsReview,$iComments, $iStartDate, $iEndDate)
     {
+        //get appropriate db
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        if ($dbname != null && $dbname != "") {
+        if ($dbname != null && $dbname != "")
+        {
             $this->getConn()->exec('USE ' . $dbname);
             /* PREPARE STATEMENT */
+            //CALL is sql for telling the db to execute the function following call.
+            //The ? in the functions parameter list is a variable that we bind a few lines down
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FOLDER_DOCUMENT_UPDATE(:docID,:libindex,:title,:insub,:subcomment,:classname,:classcom,
             :input,:review,:comm,:startdate,:enddate)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+            //bind variables to the above sql statement
             $call->bindParam(':docID', $iDocID, PDO::PARAM_INT, 200);
             $call->bindParam(':libindex', $iLibraryIndex, PDO::PARAM_STR, 200);
             $call->bindParam(':title', $iTitle, PDO::PARAM_STR, 350);
@@ -84,21 +124,35 @@ class FolderDBHelper extends DBHelper
 
 
 
-    //NEEDS TESTING
+    /**********************************************
+     * Function: SP_TEMPLATE_FOLDER_DOCUMENT_SELECT
+     * Description: Updates a specific entry in the db
+     * Parameter(s):
+     * $collection (in String) - name of the collection
+     * $iDocID (in String) - documentID in the collection
+     * Return value(s): returns array of selected values
+     ***********************************************/
     function SP_TEMPLATE_FOLDER_DOCUMENT_SELECT($collection, $iDocID)
     {
+        //get appropriate DB
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        if ($dbname != null && $dbname != "") {
+        if ($dbname != null && $dbname != "")
+        {
             $this->getConn()->exec('USE ' . $dbname);
             /* PREPARE STATEMENT */
+            //CALL is sql for telling the db to execute the function following call.
+            //The ? in the functions parameter list is a variable that we bind a few lines down
             $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FOLDER_DOCUMENT_SELECT(?,@oLibraryIndex,@oTitle,@oInSubfolder,@oSubfolderComment,@oClassification,@oClassificationComment,@oFileName,@oFileNameBack,@oNeedsInput,@oNeedsReview,@oFileNamePath,@oFileNameBackPath,@oComments,@oStartDate,@oEndDate)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
-            $call->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            //bind variables to the above sql statement
+            $call->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             /* EXECUTE STATEMENT */
             $call->execute();
             /* RETURN RESULT */
+            //select the values we want returned
             $select = $this->getConn()->query('SELECT @oLibraryIndex AS LibraryIndex,@oTitle AS Title,@oInSubfolder AS InSubfolder,@oSubfolderComment AS SubfolderComment,@oClassification AS Classification,@oClassificationComment AS ClassificationComment,@oFileName AS FileName,@oFileNameBack AS FileNameBack,@oNeedsInput AS NeedsInput,@oNeedsReview AS NeedsReview,@oFileNamePath AS FileNamePath,@oFileNameBackPath AS FileNameBackPath,@oComments AS Comments,@oStartDate AS StartDate,@oEndDate AS EndDate');
+            //return values as array
             $result = $select->fetch(PDO::FETCH_ASSOC);
             return $result;
         } else return false;
@@ -108,7 +162,8 @@ class FolderDBHelper extends DBHelper
 
     /**********************************************
      * Function: SP_TEMPLATE_FOLDER_DOCUMENTAUTHOR_INSERT
-     * Description: GIVEN document ID & array of AuthorName, delete from documentauthor first, then call SP to select/insert from author table, then insert into documentauthor
+     * Description: GIVEN document ID & array of AuthorName, delete from documentauthor first,
+     * then call SP to select/insert from author table, then insert into documentauthor
      * Parameter(s):
      * collection (in string) - name of the collection
      * $iDocID (in Integer) - document ID
@@ -125,13 +180,19 @@ class FolderDBHelper extends DBHelper
             if (!$ret)
                 return false;
             //INSERT VALUES INTO DOCUMENTAUTHOR, IF VALUE DOES NOT EXIST IN AUTHOR TABLE, INSERT INTO AUTHOR FIRST
-            foreach ($iAuthorNameArray as $iAuthor) {
-                if($iAuthor != "") {
+            foreach ($iAuthorNameArray as $iAuthor)
+            {
+                if($iAuthor != "")
+                {
+                    //CALL is sql for telling the db to execute the function following call.
+                    //The ? in the functions parameter list is a variable that we bind a few lines down
                     $call = $this->getConn()->prepare("CALL SP_TEMPLATE_FOLDER_DOCUMENTAUTHOR_INSERT(:docID,:author)");
-                    if (!$call) {
+                    if (!$call)
+                    {
                         trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
                         return false;
                     }
+                    //bind parameters into the above sql statement
                     $call->bindParam(':docID', ($iDocID), PDO::PARAM_INT);
                     $call->bindParam(':author', ($iAuthor), PDO::PARAM_STR);
                     $ret = $call->execute();
@@ -143,11 +204,19 @@ class FolderDBHelper extends DBHelper
         }
         return false;
     }
-
+    /**********************************************
+     * Function: TEMPLATE_FOLDER_DELETE_DOCUMENTAUTHOR
+     * Description: deletes the documents author from the documentID supplied
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * $iDocID (in Integer) - document ID
+     * Return value(s):
+     * True if good, False if fail
+     ***********************************************/
     function TEMPLATE_FOLDER_DELETE_DOCUMENTAUTHOR($collection,$iDocID)
     {
-        $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection));
-        $db = $dbname['DbName'];
+        //get appropriate db
+        $db= $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $db);
         //DELETE FROM DOCUMENTAUTHOR BEFORE INSERTING
         $sth = $this->getConn()->prepare("DELETE FROM `documentauthor` WHERE `documentauthor`.`docID` = :docID");
@@ -157,31 +226,55 @@ class FolderDBHelper extends DBHelper
             return true;
         return false;
     }
-
+    /**********************************************
+     * Function: GET_FOLDER_AUTHORS_BY_DOCUMENT_ID
+     * Description: returns the authors of the folder by the supplied document id
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * $iDocID (in Integer) - document ID
+     * Return value(s):
+     * True if good, False if fail
+     ***********************************************/
     function GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$iDocID)
     {
+        //get appropriate db
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
-        if ($dbname != null && $dbname != "") {
+        if ($dbname != null && $dbname != "")
+        {
+            //prepares a select statement to compare author names with the documentID
             $sth = $this->getConn()->prepare("SELECT a.`authorname` FROM `documentauthor` AS da LEFT JOIN  `author` AS a ON da.`authorID` = a.`authorID` WHERE da.`docID` = ? ");
-            $sth->bindParam(1, htmlspecialchars($iDocID), PDO::PARAM_INT, 11);
+            //bind variables to the sql statement above
+            $sth->bindParam(1, $iDocID, PDO::PARAM_INT, 11);
             $sth->execute();
-
+            //return array of selected authors
             $result = $sth->fetchAll(PDO::FETCH_NUM);
             return $result;
         } else return false;
     }
 
 
-    //FileName is unique on document table
+    /**********************************************
+     * Function: TEMPLATE_FOLDER_CHECK_EXIST_RECORD_BY_FILENAME
+     * Description: check if the records exist by filename
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * $iFileName (in string) - filename
+     * Return value(s):
+     * True if good, False if fail
+     ***********************************************/
     public function TEMPLATE_FOLDER_CHECK_EXIST_RECORD_BY_FILENAME($collection, $iFileName)
     {
+        //get appropriate db
         $db = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
-        if ($db != null && $db != "") {
+        if ($db != null && $db != "")
+        {
             $this->getConn()->exec('USE ' . $db);
+            //strpos finds the position of the first occurrence of a substring in a string
             if(strpos($iFileName,"back") !== false)
                 $sth = $this->getConn()->prepare("SELECT COUNT(*) FROM `document` WHERE `filenameback` = :filename");
             else $sth = $this->getConn()->prepare("SELECT COUNT(*) FROM `document` WHERE `filename` = :filename");
+            //binds the variable to the above sql statement
             $sth->bindParam(':filename',$iFileName,PDO::PARAM_STR);
             $sth->execute();
             $result = $sth->fetchColumn();
@@ -189,15 +282,26 @@ class FolderDBHelper extends DBHelper
         }
         else return false;
     }
-
+    /**********************************************
+     * Function: GET_FOLDER_CLASSIFICATION_LIST
+     * Description: returns the folders classifications
+     * Parameter(s):
+     * collection (in string) - name of the collection
+     * Return value(s):
+     * True if good, False if fail
+     ***********************************************/
     function GET_FOLDER_CLASSIFICATION_LIST($collection)
     {
+        //get appropriate DB
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         $this->getConn()->exec('USE ' . $dbname);
-        if ($dbname != null && $dbname != "") {
+        if ($dbname != null && $dbname != "")
+        {
+            //prepares a select statement to select the classifications and descriptions from the classification table
             $sth = $this->getConn()->prepare("SELECT `classificationname`,`classificationdescription` FROM `classification`");
             $sth->execute();
 
+            //returns the classifications and their descriptions
             $result = $sth->fetchAll(PDO::FETCH_NUM);
             return $result;
         } else return false;

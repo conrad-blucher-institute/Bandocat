@@ -1,7 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-if(isset($_GET['col']) && isset($_GET['doc'])) {
+if(isset($_GET['col']) && isset($_GET['doc']))
+{
     $collection = $_GET['col'];
     $docID = $_GET['doc'];
 }
@@ -13,14 +14,18 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new FolderDBHelper();
+//get appropriate db
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
+//selelct template folder document
 $document = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_SELECT($collection, $docID);
 $date = new DateHelper();
+//get the authors by document id
 $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 ?>
 
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -32,15 +37,21 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
     <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
+    <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../Master/master.js"></script>
 </head>
-
+<!-- END HTML HEADER -->
+<!-- HTML BODY -->
 <body>
 <div id="wrap">
     <div id="main">
         <div id="divleft">
             <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php' ?>
+            include '../../Master/sidemenu.php';
+            if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
+                $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
+            ?>
         </div>
         <div id="divright">
             <h2 id="page_title"><?php echo $config['DisplayName'];?> Edit/View Form</h2>
@@ -49,18 +60,22 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 <table class="Account_Table">
                     <tr>
                             <datalist id="lstAuthor">
+                                <!-- Populates the control with data -->
                                 <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                             </datalist>
             <td id="col1">
                 <div class="cell">
+                    <!-- LIBRARY INDEX -->
                     <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value="<?php echo $document['LibraryIndex'];?>" required />
+                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>' required />
                 </div>
                 <div class="cell">
+                    <!-- TITLE -->
                     <span class="label"><span style = "color:red;"> * </span>Document Title:</span>
-                    <input type = "text" name = "txtTitle" id = "txtTitle" size="26" required="true" value="<?php echo $document['Title'];?>" />
+                    <input type = "text" name = "txtTitle" id = "txtTitle" size="26" required="true" value='<?php echo htmlspecialchars($document['Title'],ENT_QUOTES);?>' />
                 </div>
                 <div class="cell">
+                    <!-- NEEDS REVIEW  -->
                     <span class="labelradio" >
                         <mark>Needs Review:</mark>
                         <p hidden><b></b>This is to signal if a review is needed</p>
@@ -69,6 +84,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?>  />No
                 </div>
                 <div class="cell">
+                    <!-- IN A SUBFOLDER -->
                     <span class="labelradio" >
                         <mark>In A Subfolder:</mark>
                         <p hidden><b></b>This document belongs in a subfolder</p>
@@ -76,11 +92,13 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <input type = "radio" name = "rbInASubfolder" id = "rbInASubfolder_yes" size="26" value="1" <?php if($document['InSubfolder'] == 1) echo "checked"; ?> />Yes
                     <input type = "radio" name = "rbInASubfolder" id = "rbInASubfolder_no" size="26" value="0" <?php if($document['InSubfolder'] == 0) echo "checked"; ?> />No
                 </div>
+                <!-- COMMENTS -->
                 <div class="cell">
                     <span class="label">Subfolder Comments:</span>
                     <textarea cols = "35" name="txtSubfolderComments" id="txtSubfolderComments"/><?php echo $document['SubfolderComment']; ?></textarea>
                 </div>
                 <div class="cell">
+                    <!-- CLASSIFICATION -->
                     <span class="label">Classification:</span>
                     <select id="ddlClassification" name="ddlClassification" style="width:215px">
                         <?php
@@ -89,42 +107,51 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     </select>
                 </div>
                 <div class="cell">
+                    <!--CLASSIFICATION COMMENTS-->
                     <span class="label">Classification Comments:</span>
                     <textarea rows = "2" cols = "35" id="txtClassificationComments" name="txtClassificationComments"/><?php echo $document['ClassificationComment']; ?></textarea>
                 </div>
                 <div class="cell">
+                    <!-- GET START DDL MONTH -->
                     <select name="ddlStartMonth" id="ddlStartMonth" style="width:60px">
                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
                     </select>
                     <span class="label">Document Start Date:</span>
+                    <!-- GET START DDL DAY -->
                     <select name="ddlStartDay" id="ddlStartDay" style="width:60px">
                         <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
                     </select>
+                    <!-- GET START DDL YEAR -->
                     <select id="ddlStartYear" name="ddlStartYear" style="width:85px">
                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
                     </select>
 
                 </div>
                 <div class="cell">
+                    <!-- GET END DDL MONTH -->
                     <select name="ddlEndMonth" id="ddlEndMonth" style="width:60px">
                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
                     </select>
                     <span class="label">Document End Date:</span>
+                    <!-- GET END DDL DAY -->
                     <select name="ddlEndDay" id="ddlEndDay" style="width:60px">
                         <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
                     </select>
+                    <!-- GET END DDL YEAR -->
                     <select name="ddlEndYear" id="ddlEndYear" style="width:85px">
                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
                     </select>
                 </div>
                 <div class="cell">
+                    <!-- DOCUMENT AUTHOR -->
                     <span class="label">Document Author:</span>
-                    <input type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo $authors[0][0];} ?>"/><span style="padding-right:5px"></span><input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
+                    <input type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo htmlspecialchars($authors[0][0],ENT_QUOTES);} ?>"/><span style="padding-right:5px"></span><input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
                     <span id="authorcell"></span>
                 </div>
             </td>
             <td id="col2" style="padding-left:40px">
                 <div class="cell">
+                    <!-- COMMENTS -->
                     <span class="label">Comments:</span>
                     <textarea rows = "4" cols = "35" id="txtComments" name="txtComments"/><?php echo $document['Comments']; ?></textarea>
                     <br><br><br>
@@ -133,7 +160,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <table>
                         <tr>
                             <td style="text-align: center" >
-                                <!--Scan of Front-->
+                                <!--THUMBNAIL FRONT-->
                                 <span class="label" style="text-align: center">Scan of Front</span><br>
                                 <?php
                                 echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . str_replace(".tif",".jpg",$document['FileName']) . " ' alt = Error /></a>";
@@ -143,6 +170,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                             </td>
                             <td style="padding-right:20px"></td>
                             <td style="text-align: center">
+                                <!--THUMBNAIL BACK-->
                                 <?php
                                 if($document['FileNameBack'] != '') //has Back Scan
                                  {
@@ -165,6 +193,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     <tr>
                         <td colspan="2">
                             <div class="cell" style="text-align: center;padding-top:20px">
+                                <!-- Hidden inputs that are passed when the update button is hit -->
                                 <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
                                 <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
                                 <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
@@ -189,7 +218,16 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 
 <?php include '../../Master/footer.php'; ?>
 </body>
+<!-- END HTML BODY -->
 <script>
+    /**********************************************
+     * Function: add_fields
+     * Description: adds more fields for the crew members
+     * Parameter(s):
+     * val (in String ) - name of the crew
+     * Return value(s):
+     * $result (assoc array) - return a document info in an associative array, or FALSE if failed
+     ***********************************************/
     var max = 5;
     var author_count = 0;
     function add_fields(val) {
@@ -204,10 +242,11 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         objTo.appendChild(divtest);
     }
 
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
         //resize height of the scroller
         $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
-
+        $("#divleft").height($("#divscroller").height());
         var authors = <?php echo json_encode($authors); ?>;
         for(var i = 1; i < authors.length; i++)
         {
@@ -226,44 +265,44 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 array_authors.push(authors[i].value);
             formData.append("authors",JSON.stringify(array_authors));
 
-            /*jquery that displays the three points loader*/
-            $('#btnSubmit').css("display", "none");
-            $('#loader').css("display", "inherit");
+                /*jquery that displays the three points loader*/
+                $('#btnSubmit').css("display", "none");
+                $('#loader').css("display", "inherit");
 
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data){
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
-                    {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                /* Send the data using post */
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data:  formData,
+                    processData: false,
+                    contentType: false,
+                    success:function(data){
+                        var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for(var i = 0; i < json.length; i++)
                         {
+                            msg += json[i] + "\n";
+                        }
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                $('#loader').css("display", "none");
+                            }
+                        }
+                        alert(msg);
+                        if (result == 1){
                             $('#btnSubmit').css("display", "inherit");
                             $('#loader').css("display", "none");
+                            window.close();
                         }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        $('#btnSubmit').css("display", "inherit");
-                        $('#loader').css("display", "none");
-                        window.close();
-                    }
 
-                }
-            });
+                    }
+                });
         });
     });
 </script>

@@ -15,12 +15,15 @@ function getRectangleCoords()
 		url: 'php/drawRectanglesLeaflet.php',
 		data: {"fileName": fileName, "docID": docID,"collection": collection},
 		success:function(data){
-			rectangleCoords = JSON.parse(data);
-			drawRectangles(collection,rectangleCoords);
+			if(data == "") return;
+			else {
+                rectangleCoords = JSON.parse(data);
+                drawRectangles(collection, rectangleCoords);
+            	}
 			}
 		});
-		
-	
+
+
 }
 
 //This function draws rectangles on document viewer window using the JSON passed to it from getRectangleCoords() 
@@ -898,7 +901,7 @@ function deleteTableRow(id)
 		table5.deleteRow(-1);
 	}
 }
-
+//cleaning temporary workspace
 function incompleteTranscription()
 {
     var collection = document.getElementById("Collection").value;
@@ -924,8 +927,7 @@ function completeTranscription()
         type: "POST",
         data: {"collection": collection,"docID": id,"fileName": window.localStorage.getItem('fileName')},
         success: function(data) {
-            alert(data);
-            window.close();
+            incompleteTranscription();
         }
     });
 }

@@ -35,7 +35,32 @@ $Render = new ControlsRender();
                 "bStateSave": false,
                 "destroy": true,
                 "order": [[ 0, "desc" ]],
-                "ajax": "activitylog_processing.php?col=" + collection
+                "ajax": "activitylog_processing.php?col=" + collection,
+                "initComplete": function() {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        switch(column[0][0]) //column number
+                        {
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'keyup change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val)
+                                            .draw();
+                                    } );
+                                break;
+                        }
+                    } );
+                },
             } );
 
             //hide first column (LogID)
@@ -84,13 +109,23 @@ $Render = new ControlsRender();
                             <tr>
                                 <th width="35px">ID</th>
                                 <th width="130px">Timestamp</th>
-                                <th width="60px">Action</th>
+                                <th width="100px">Action</th>
                                 <th width="150px">Library Index</th>
                                 <th width="100px">Username</th>
                                 <th>Notes</th>
 
                             </tr>
                             </thead>
+                            <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
