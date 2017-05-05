@@ -692,7 +692,7 @@
             var self = this;
             var icon = L.divIcon({
                 className: 'polyline-measure-tooltip',
-                iconAnchor: [-4, -4]
+                iconAnchor: [-15, -10]
             });
             self._tooltip = L.marker(position, {
                 icon: icon,
