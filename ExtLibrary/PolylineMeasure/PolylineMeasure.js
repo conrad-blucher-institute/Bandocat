@@ -1,6 +1,3 @@
-/**
- * Created by jmartinez91 on 4/20/2017.
- */
 (function() {
 
     var _measureControlId = 'polyline-measure-control';
@@ -588,14 +585,15 @@
                     weight: self.options.line.weight,
                     interactive: false
                 }).addTo(self._layerPaint);
-                self._startCircle = new L.CircleMarker(self._lastPoint, {
+                self._startCircle = new L.marker(self._lastPoint, {
                     // Style of the Circle marking the start of the Polyline
-                    color: self.options.startingPoint.color,
-                    weight: self.options.startingPoint.weight,
-                    fillColor: self.options.startingPoint.fillColor,
-                    fillOpacity: self.options.startingPoint.fillOpacity,
-                    radius: self.options.startingPoint.radius,
-                    interactive: false
+                    // color: self.options.startingPoint.color,
+                    // weight: self.options.startingPoint.weight,
+                    // fillColor: self.options.startingPoint.fillColor,
+                    // fillOpacity: self.options.startingPoint.fillOpacity,
+                    // radius: self.options.startingPoint.radius,
+                    // interactive: false,
+                    icon: targetIcon
                 }).addTo(self._layerPaint);
                 self._startCircle.on('click', function () {
                     gcpMarker(this._leaflet_events.click[0].context, 'measureMarker');
@@ -621,7 +619,7 @@
                 fillColor: self.options.lastPoint.fillColor,
                 fillOpacity: self.options.lastPoint.fillOpacity,
                 radius: self.options.lastPoint.radius,
-                interactive: true  // to handle a click within this circle which is the command to finish drawing the polyline
+                interactive: true, // to handle a click within this circle which is the command to finish drawing the polyline
             }).addTo(self._layerPaint);
             self._lastCircle.on('click', function() {
                 //self._finishPath();
@@ -694,7 +692,7 @@
             var self = this;
             var icon = L.divIcon({
                 className: 'polyline-measure-tooltip',
-                iconAnchor: [-4, -4]
+                iconAnchor: [-15, -10]
             });
             self._tooltip = L.marker(position, {
                 icon: icon,
