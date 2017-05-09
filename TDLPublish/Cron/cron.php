@@ -71,9 +71,8 @@ class bitstream{
 
     $TDLCommunityID = $collection["TDLcommunityID"];
     $TDLCollectionID = $collection["TDLcollectionID"];
-
-    $isEmptyQueue = false;
-    while(1){ //infinite loop
+    while(true){ //infinite loop
+	$docID = null;
     //while(!$isEmptyQueue) {
         //use this database
         $DB->SWITCH_DB($collectionName);
@@ -82,12 +81,24 @@ class bitstream{
         if ($docID == null) {
             $docID = $DB->PUBLISHING_DOCUMENT_GET_NEXT_IN_QUEUE_ID();
             if ($docID == null) {
-                echo "\nThere is no item in the Queue";
-                fwrite($logfile,date(DATE_RFC2822) . ": " . "No item in the Queue.\r\n");
-                $isEmptyQueue = true;
-                break;
+                echo "\nThere is no item in the Queue. Sleep for 30 seconds.";
+                //fwrite($logfile,date(DATE_RFC2822) . ": " . "No item in the Queue.\r\n");
+                sleep(30);
+                //break;
+					//re-run (testing)
+					$DB = null;
+					$DS = null;
+					$Schema = null;
+				    //prepare
+					$DB = new DBHelper();
+					$DS = new TDLPublishJob();
+					$Schema = new TDLSchema();
             }
         }
+		
+
+		if($docID != null)		//begin if[1]
+		{
         //add more case if there are new templates
         //get document info
         switch($collection["templateID"])
@@ -296,8 +307,7 @@ class bitstream{
         } //set status to 11
 
         //$isEmptyQueue = true; //break the loop, for testing
-        if($isEmptyQueue)
-            sleep(30);
+		}//end if [1]
     }
 
     echo "\n...\n...\n...\nEnd Job...";
