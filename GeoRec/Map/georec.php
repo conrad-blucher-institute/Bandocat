@@ -132,6 +132,13 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
         showMarker: false
     }).addTo(map);
 
+    var targetIcon = L.icon({
+        iconUrl: '../../Images/target.png',
+        iconSize:     [50, 50], // size of the icon
+        iconAnchor: [25.5, 24.5],
+        popupAnchor: [0, 0]
+    });
+
     L.control.polylineMeasure({
         position: 'topright',                    // Position to show the control. Possible values are: 'topright', 'topleft', 'bottomright', 'bottomleft'
         imperial: true,                        // Show imperial or metric distances

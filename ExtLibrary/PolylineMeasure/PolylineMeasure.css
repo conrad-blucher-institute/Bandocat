@@ -1,5 +1,5 @@
 .polyline-measure-tooltip {
-    font: 10px Arial, Helvetica, sans-serif;
+    font: 16px Arial, Helvetica, sans-serif;
     line-height: 10px;
     background-color: rgba(255, 255, 160, 0.7);
     border-radius: 3px;
@@ -17,6 +17,7 @@
 }
 
 .polyline-measure-tooltip-difference {
+    margin-top: 8%;
     color: #060;
 }
 
@@ -25,5 +26,5 @@
     font-weight: bold;
 }
 .leaflet-control {
-    cursor: pointer;
+    cursor: crosshair;
 }
