@@ -46,7 +46,6 @@ $columns = array(
     array( 'db' => '`ticket`.`subject`', 'dt' => 2,'field' => 'subject'),
     array( 'db' => '`ticket`.`submissiondate`', 'dt' => 3,'field' => 'submissiondate' ),
     array( 'db' => '`user`.`username`',  'dt' => 4, 'field' => 'username' ),
-    array( 'db' => '`ticket`.`status`', 'dt' => 5,'field' => 'status')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -55,7 +54,6 @@ $columns = array(
  */
 
 require('../../Library/sspwithjoin.class.php');
-
 $joinQuery = " FROM `ticket` INNER JOIN `collection` ON (`ticket`.`collectionID` = `collection`.`collectionID`)
  INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`)";
 $extraWhere = "";

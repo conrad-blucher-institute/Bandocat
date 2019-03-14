@@ -18,72 +18,56 @@ if(isset($_GET['col']))
 }
 else header('Location: ../../');
 ?>
-    <!doctype html>
-    <html lang="en">
-    <!-- HTML HEADER -->
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <!-- The title of the page -->
-        <title><?php echo $config["DisplayName"] . " Menu"; ?></title>
-        <link rel = "stylesheet" type = "text/css" href = "CSS/Map_Collection.css" >
-        <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-        <script type="text/javascript" src="ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
-        <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
-        <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-        <script type="text/javascript" src="../../Master/master.js"></script>
+<!doctype html>
+<html lang="en">
+<!-- HTML HEADER -->
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    </head>
-    <!-- HTML BODY -->
-    <body>
-    <table id = "thetable">
-        <tr>
-            <!-- Draw the header and Side Menu -->
-            <td class="menu_left" id="thetable_left">
-                <?php include '../../Master/header.php';
-                include '../../Master/sidemenu.php' ?>
-            </td>
-            <td class="Collection" id="thetable_right">
-                    <h2>Menu</h2>
-                    <table class="Collection_Table">
-                        <tr>
-                            <td>
-                                <!-- Title Displayed in Green style in master.css -->
-                                <h4 class="Collection_Title"><?php echo $config["DisplayName"]; ?></h4>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="Collection_data">
-                                <!-- Catalog Documents Button, Php code sends the collection name to list.php and send variable action=catalog -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title><?php echo $config["DisplayName"]; ?> Menu</title>
 
-                                    <a class="Collection_Button" id="catalogBtn"  href="./catalog.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block">Catalog Document</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="Collection_data">
-                                <!-- Edit/View Documents Button, Php code sends the collection name to list.php and send variable action=review -->
-                                <a class="Collection_Button" id="editBtn" href="./list.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block;">Edit/View Document</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="Collection_data">
-                                <!-- Edit/View Documents Button, Php code sends the collection name to list.php and send variable action=review -->
-                                <a class="Collection_Button" id="rectifyBtn" href="../../GeoRec/Map/index.php?col=<?php echo $collection; ?>" style="text-decoration: none; color: white; display: block;">Rectify Document</a>
-                            </td>
-                        </tr>
+    <!-- Font Awesome CDN CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    </table>
-
-    <?php include '../../Master/footer.php'; ?>
-
-    </body>
-
-    <style type="text/css">
-
-        nav{margin: -1px 0px 40px 15px !important;}
-
-    </style>
-
+</head>
+<body style="height: 100%;">
+<?php include "../../Master/bandocat_navbar.php"; ?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <?php include "../../Master/bandocat_sidenavbar.php"; ?>
+        </div>
+        <div class="col-9" style="height: 67vh;">
+            <!-- Put Page Contents Here -->
+            <h1 class="text-center">Menu</h1>
+            <hr>
+            <div class="col" align="center">
+                <div class="card" style="width: 50%;">
+                    <div class="card-header text-center">
+                        <h3><?php echo $config["DisplayName"]; ?></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column bd-highlight mb-3">
+                            <div class="p-2 bd-highlight"><a href="catalog.php?col=<?php echo $collection; ?>" class="btn btn-primary btn-block">Catalog Document</a></div>
+                            <div class="p-2 bd-highlight"><a href="./list.php?col=<?php echo $collection; ?>" class="btn btn-primary btn-block">Edit/View Document</a></div>
+                            <div class="p-2 bd-highlight"><a href="../../GeoRec/Map/index.php?col=<?php echo $collection; ?>" class="btn btn-primary btn-block">Rectify Document</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Card Col -->
+        </div> <!-- Col-9 -->
+    </div> <!-- row -->
+</div><!-- Container-fluid -->
+<?php include "../../Master/bandocat_footer.php"; ?>
+<!-- Complete JavaScript Bundle -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
 </html>

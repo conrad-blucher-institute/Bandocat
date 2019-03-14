@@ -4,183 +4,333 @@ include '../../Library/SessionManager.php';
 $session = new SessionManager();
 if($session->isAdmin()) {
     require('../../Library/DBHelper.php');
+    require('../../Library/Ticket.php');
     $DB = new DBHelper();
+    $ticket = new Ticket();
 }
 else header('Location: ../../');
 ?>
 <!doctype html>
 <html lang="en">
+<!-- HTML HEADER -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Bootstrap CDN Datatables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
+
+    <!-- Font Awesome CDN CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <title>Ticket</title>
 
-    <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-    <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
-    <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-
-            var table = $('#dtable').DataTable( {
-                "processing": true,
-                "serverSide": true,
-                "lengthMenu": [20, 40 , 60, 80, 100],
-                "bStateSave": false,
-                "aaSorting": [ [5,'asc'], [3,'desc'] ],
-                "columnDefs": [
-                    //column Ticket Index: Replace with Hyperlink
-                    {
-                        "render": function ( data, type, row ) {
-                            return "<a href='ticketview.php?id=" + data + "' target='_blank' >View</a>" ;
-                        },
-                        "targets": 0
-                    },
-                    //column Collection
-                    {
-                        "render": function ( data, type, row ) {
-                            return data;
-                        },
-                        "targets": 1
-                    },
-                    //column Subject
-                    {
-                        "render": function ( data, type, row ) {
-                            return data;
-                        },
-                        "targets": 2
-                    },
-                    //column : Submitted Date
-                    {
-                        "render": function ( data, type, row ) {
-                            return data;
-                        },
-                        "targets": 3
-                    },
-                    //column : Poster
-                    {
-                        "render": function ( data, type, row ) {
-                            return data;
-                        },
-                        "targets": 4
-                    },
-                    //column : Status
-                    {
-                        "render": function ( data, type, row ) {
-                            if(data == 1)
-                                return 'Closed';
-                            return 'Open';
-                        },
-                        "targets": 5
-                    },
-
-                ],
-                "ajax": "list_processing.php",
-                "initComplete": function() {
-                    this.api().columns().every( function () {
-                        var column = this;
-                        switch(column[0][0]) //column number
-                        {
-                            //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
-                            case 5: //Status column
-                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Open</option><option value="1">Closed</option></select>')
-                                    .appendTo( $(column.footer()).empty() )
-                                    .on( 'change', function () {
-                                        var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                        );
-
-                                        column
-                                            .search(val)
-                                            .draw();
-                                    } );
-                                break;
-                            //search text box
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 4:
-                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
-                                    .appendTo( $(column.footer()).empty() )
-                                    .on( 'keyup change', function () {
-                                        var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                        );
-
-                                        column
-                                            .search(val)
-                                            .draw();
-                                    } );
-                                break;
-                        }
-                    } );
-                },
-            } );
-
-            //hide first column (DocID)
-            table.column(0).visible(true);
-
-            //sorted by submission date
-//            table
-//                .column( '3:visible' )
-//                .order( 'desc' )
-//                .draw();
-
-            // select row on single click
-            $('#dtable tbody').on( 'click', 'tr', function () {
-                if ( $(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
-                }
-                else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            } );
-
-            //resize height of the scroller
-            $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 35);
-        });
-    </script>
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
 <body>
-<div id="wrap">
-    <div id="main">
-        <div id="divleft">
-                    <?php include '../../Master/header.php';
-                    include '../../Master/sidemenu.php' ?>
-        </div>
-        <div id="divright">
-                    <h2 id="page_title">Ticket</h2>
-                    <div id="divscroller">
-                        <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Collection</th>
-                                <th>Subject / Library Index</th>
-                                <th>Submitted Date</th>
-                                <th>Submitter</th>
-                                <th>Status</th>
-                            </tr>
-                            </thead>
-                            <tfoot>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-        </div>
-    </div>
-</div>
-<?php include '../../Master/footer.php'; ?>
+<?php include "../../Master/bandocat_mega_menu.php"; ?>
+<div class="container pad-bottom">
+    <div class="row">
+        <div class="col">
+            <!-- Put Page Contents Here -->
+            <h1 class="text-center" id="page_title">Tickets</h1>
+            <hr>
+            <table id="dtable" class="table table-bordered table-hover" width="100%" cellspacing="0" data-page-length='20'>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Collection</th>
+                    <th>Library Index</th>
+                    <th>Date Submitted</th>
+                    <th>Solved</th>
+                    <th>Last Seen</th>
+                    <th>Error</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Collection</th>
+                    <th>Library Index</th>
+                    <th>Date Submitted</th>
+                    <th>Solved</th>
+                    <th>Last Seen</th>
+                    <th>Error</th>
+                    <th>Status</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div> <!-- col -->
+    </div> <!-- row -->
+</div><!-- Container -->
+<?php include "../../Master/bandocat_footer.php" ?>
+
+
+<!-- Complete JavaScript Bundle -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- JQuery UI cdn -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+<!-- Datatables CDN -->
+<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JS files for datatables CDN -->
+<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+
+<!-- Our custom javascript file -->
+<script type="text/javascript" src="../../Master/master.js"></script>
+
+<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
+<script>
+    $(document).ready(function() {
+
+        var docHeight = $(window).height() - $('#megaMenu').height();
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight)
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+    });
+
+    $(window).resize(function() {
+        var docHeight = $(window).height() - $('#megaMenu').height();
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight)
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+    });
+</script>
+<!-- Page's local script -->
+<script>
+    $(document).ready(function() {
+
+
+        //hide first column (DocID)
+        //table.column(0).visible(true);
+        //showTable();
+        showTable();
+    });
+
+    function showTable()
+    {
+        var counter = 0;
+        // Setup - add a text input to each footer cell
+        $('#dtable tfoot th').each( function () {
+            var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        } );
+
+        // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
+        var table = $('#dtable').DataTable({
+            "processing": true,
+            "serverside": true,
+            "lengthMenu": [20, 40, 60, 80, 100],
+            "destroy": true,
+            "order": [[ 6, "desc" ], [2, "desc"]],
+            /*"initComplete": function () {
+                console.log("Table done loading...");
+            },*/
+            // Getting select statement
+            "ajax": "./table_processing.php",
+            "columns": [
+                {"data": 'ticketID'},
+                {"data": 'displayname'},
+                {
+                    "data": 'subject',
+                    "render": function(data, type, row, meta) {
+                        //console.log(data);
+                        //console.log(type);
+                        console.log(row);
+                        //console.log(meta);
+                        //console.log(row);
+                        if(type === "display" && row["jsonlink"] !== null)
+                        {
+                            data = "";
+                            var json = JSON.parse(row["jsonlink"]);
+
+                            if(json.length === 1)
+                            {
+                                data += createLink(json[0], row["templateID"], row["name"]);
+                            }
+
+                            else
+                            {
+                                for(var i = 0; i < json.length; i++)
+                                {
+                                    // Last one
+                                    if(i === json.length - 1)
+                                    {
+                                        data += createLink(json[i], row["templateID"], row["name"]);
+                                    }
+
+                                    // Not last
+                                    else
+                                    {
+                                        data += createLink(json[i], row["templateID"], row["name"]) + "<br>";
+                                    }
+                                }
+                            }
+                        }
+                        return data;
+                    }
+                },
+                {"data": 'submissiondate'},
+                {"data": 'solveddate'},
+                {"data": 'lastseen'},
+                {"data": 'error'},
+                {
+                    "data": 'status',
+                    "render":function(data, type, row, meta)
+                    {
+                        data = parseInt(data);
+                        if(data === 1)
+                        {
+                            return "Closed";
+                        }
+
+                        else
+                        {
+                            return "Open";
+                        }
+                    }
+                }
+            ],
+            "initComplete": function() {
+                this.api().columns().every( function () {
+                    var column = this;
+                    switch(column[0][0]) //column number
+                    {
+                        case 0:
+                            break;
+
+                        //search text box
+                        case 1:
+                            var that = this;
+
+                            $(column.footer()).empty();
+                            // Create the select list and search operation
+                            var select = $('<select class="form-control form-control-sm" />')
+                                .appendTo(
+                                    this.footer()
+                                )
+                                .on( 'change', function () {
+                                    that
+                                        .search( $(this).val() )
+                                        .draw();
+                                } );
+
+                            select.append($('<option value="">Filter...</option>'));
+
+                            // Get the search data for the first column and add to the select list
+                            this
+                                .cache( 'search' )
+                                .sort()
+                                .unique()
+                                .each( function ( d ) {
+                                    console.log(d);
+                                    select.append( $('<option value="'+d+'">'+d+'</option>') );
+                                } );
+                            break;
+                        case 2:
+                        case 3:
+                        case 4:
+                        // Search text box for all columns between 1 - 5
+                        case 5:
+                            var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search..." value=""></input>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on( 'keyup change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+
+                                    column
+                                        .search(val)
+                                        .draw();
+                                } );
+                            break;
+                        case 6:
+                            var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search..." value=""></input>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on( 'keyup change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+
+                                    column
+                                        .search(val)
+                                        .draw();
+                                } );
+                            break;
+                        //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                        case 7: //Status column
+                            var select = $('<select class="form-control form-control-sm"><option value="">Filter...</option><option value="0">Open</option><option value="1">Closed</option></select>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on( 'change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+
+                                    column
+                                        .search(val)
+                                        .draw();
+                                } );
+                            break;
+                        default:
+
+                            break;
+                    }
+                } );
+            }
+        });
+
+        // When the user clicks on a row on the data table
+        /*$('#dtable tbody').on('click', 'tr', function () {
+            var data = table.row( this ).data();
+            alert( 'You clicked on '+data+'\'s row' );
+            console.log(data);
+        } );*/
+    }
+
+    function createLink(json, templateID, collection)
+    {
+        var tag = "";
+        templateID = parseInt(templateID);
+        // Getting the template
+        switch(templateID)
+        {
+            // Map
+            case 1:
+                tag = '<a href="../../Templates/Map/review.php?doc=' + json["documentID"] + '&col=' + collection + '">' + json["libraryIndex"] + '</a>';
+                break;
+            // Folder
+            case 2:
+                tag = '<a href="../../Templates/Folder/review.php?doc=' + json["documentID"] + '&col=' + collection +'">' + json["libraryIndex"] + '</a>';
+                break;
+            // Field Book
+            case 3:
+                tag = '<a href="../../Templates/FieldBook/review.php?doc=' + json["documentID"] + '&col=' + collection + '">' + json["libraryIndex"] + '</a>';
+                break;
+            // Indices
+            case 4:
+                //tags.push(data);
+                break;
+            default:
+                break;
+        }
+        return tag;
+    }
+</script>
 </body>
 </html>

@@ -11,125 +11,149 @@ $Render = new ControlsRender();
 <html lang="en">
 <!-- HTML HEADER -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Bootstrap CDN Datatables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
+
+    <!-- Font Awesome CDN CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
 
     <title>Manage TDL Author Name</title>
 
-    <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-    <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
-    <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.min.js"></script>
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<!-- END HEADER -->
-<!-- HTML BODY -->
 <body>
-<div id="wrap">
-    <div id="main">
-        <!-- HTML Header and Side Menu -->
-        <div id="divleft">
-            <?php include '../../Master/header.php';
-            include '../../Master/sidemenu.php';?>
-        </div>
-        <div id="divright">
-            <h2 id="page_title">Manage TDL Author Name</h2>
-            <table width="100%" id="table-header_right">
+<?php include "../../Master/bandocat_mega_menu.php"; ?>
+<div class="container pb-3">
+    <div class="row">
+        <div class="col">
+            <!-- Put Page Contents Here -->
+            <h1 class="text-center">Manage TDL Author Name</h1>
+            <hr>
+
+            <!-- Form responsible for the select drop down menu -->
+            <form id = "form" name="form" method="post">
+                Select Collection:
+                <select name="ddlCollection" id="ddlCollection">
+                    <!-- Renders the Dropdownlist with the collections -->
+                    <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(4),false),"bluchermaps");?>
+                </select>
+            </form>
+            <table id="dtable" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0" data-page-length='20'>
+                <thead>
                 <tr>
-                    <td style="margin-left: 45% ;font-size:14px" colspan="20%"
-                    <td style="float:left;font-size:14px" colspan="20%">
-                        <!-- Form responsible for the select drop down menu -->
-                        <form id = "form" name="form" method="post">
-                            Select Collection:
-                            <select name="ddlCollection" id="ddlCollection">
-                                <!-- Renders the Dropdownlist with the collections -->
-                                <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(4),false),"bluchermaps");?>
-                            </select>
-                        </form>
-                        <!-- Displays the count of maps -->
-                        <h4 id="txt_counter" ></h4>
+                    <th>Author ID</th>
+                    <th>Author Name</th>
+                    <th>TDL Name</th>
+                    <th></th>
                 </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </tfoot>
             </table>
-            <!-- Table responsible for displaying returned db items in a table format -->
-            <div id="divscroller">
-                <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
-                    <thead>
-                    <tr>
-                        <th width="80px">Author ID</th>
-                        <th>TDL Name</th>
-                        <th>Old Name</th>
-                        <th width="30px"></th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
 
-            <div id="PopupControl" hidden>
-                <form id="frmEditTDLName" name="frmEditTDLName">
-                    <h2>Edit TDL Name</h2>
-                    <table>
-                        <tr>
-                            <td width="150px"><label>Author ID</label></td>
-                            <td width="300px"><label id="lblAuthorID"></label></td>
-                        </tr>
-                        <tr>
-                            <td><label>TDL Name</label></td>
-                            <td><input type="text" name="txtAuthorName" id="txtAuthorName" value="" required/></td>
-                        </tr>
-                        <tr>
-                            <td><label>Old Name</label></td>
-                            <td><label id="lblOldName"></label></td>
-                        </tr>
-                        <tr style="text-align: center;line-height:70px">
-                          <td colspan="2"><input type="submit" onclick="btnUpdate_onclick(event)" name="btnUpdate" id="btnUpdate" value="Update" class="bluebtn">
-                              <input type="button" class="bluebtn" onclick="btnNext_onclick(event)" id="btnNext" value="Next" name="btnNext">
-                              <input type="button" class="bluebtn" onclick="closePopup(event)" id="btnClose" value="Close" name="btnClose">
-                          </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+        </div> <!-- col -->
+    </div> <!-- row -->
+</div><!-- Container -->
+<?php include "../../Master/bandocat_footer.php" ?>
 
+<!-- Modal -->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit TDL Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="frmEditTDLName" name="frmEditTDLName">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label id="lblAuthorID"></label>
+                    </div>
+                    <!-- Author Name -->
+                    <div class="form-group">
+                        <label for="lblAuthorName">Author Name</label>
+                        <input type="text" readonly id="lblAuthorName" value="" class="form-control">
+                    </div>
+                    <!-- TDL Name -->
+                    <div class="form-group">
+                        <label for="txtTDLName">TDL Name</label>
+                        <input type="text" id="txtTDLName" value="" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-primary" onclick="btnUpdate_onclick(event)" id="btnUpdate" value="Apply Changes">
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<?php include '../../Master/footer.php'; ?>
-</body>
-<!-- END BODY -->
-<style>
-    #PopupControl{
-        position:absolute;
-        z-index:9999;
-        width:100%;
-        height:100%;
-        top:30%;
-        left:10%;
-        background-color: transparent;
-        opacity: 0.9;
-    }
-    #frmEditTDLName{
-        border-radius:10px;
-        width:470px;
-        padding: 10px;
-        height:220px;
-        background-color:#f1f1f1;
-        margin-left:40%;
-        vertical-align: middle;
-    }
-</style>
+
+
+<!-- Complete JavaScript Bundle -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- JQuery UI cdn -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+<!-- Datatables CDN -->
+<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JS files for datatables CDN -->
+<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+
+<!-- Our custom javascript file -->
+<script type="text/javascript" src="../../Master/master.js"></script>
+
+<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
-    //Hit enter on txtOldName will trigger Update button, hit tab will trigger loadPopupInfo
-    $("#txtOldName").keyup(function(event){
+    $(document).ready(function() {
+
+        var docHeight = $(window).height() - $('#megaMenu').height();
+        console.log(docHeight);
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight)
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+    });
+
+    $( window ).resize(function() {
+        var docHeight = $(window).height() - $('#megaMenu').height();
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight)
+        {
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+        }
+    });
+</script>
+<!-- Page Level Plugin -->
+<script>
+    //Hit enter on txtTDLName will trigger Update button, hit tab will trigger loadPopupInfo
+    $("#txtTDLName").keyup(function(event){
         event.preventDefault();
         if(event.keyCode == 13)
         {$("#btnUpdate").click();return false; }//hit enter
@@ -140,15 +164,6 @@ $Render = new ControlsRender();
         e.preventDefault();
         $("#PopupControl").hide();
     }
-    /*******************************************
-     * Function is called when user hit Edit link on the fourth column
-     *******************************************/
-    function showPopup(e,collection,id)
-    {
-        e.preventDefault();
-        loadPopupInfo('load',collection,id);
-        $("#PopupControl").show();
-    }
 
     function loadPopupInfo(action,collection,id)
     {
@@ -158,10 +173,10 @@ $Render = new ControlsRender();
             success:function(data) {
                 var jsonData = JSON.parse(data)[0];
                 $("#lblAuthorID").text(jsonData.authorID);
-                $("#txtAuthorName").val(jsonData.authorname);
-                $("#lblOldName").text(jsonData.TDLname);
+                $("#lblAuthorName").text(jsonData.authorname);
+                $("#txtTDLName").val(jsonData.TDLname);
 
-                $("#txtOldName").focus(); //focus on this textbox
+                $("#txtTDLName").focus(); //focus on this textbox
             }
         });
     }
@@ -174,25 +189,28 @@ $Render = new ControlsRender();
         e.preventDefault();
         var collection = $("#ddlCollection").val();
         var authorID = $("#lblAuthorID").text();
-        var authorName = $("#txtAuthorName").val();
-        var oldName = $("#lblOldName").text();
+        var authorName = $("#lblAuthorName").val();
+        var TDLName = $("#txtTDLName").val();
 
-        if(authorName.trim() == "") {
-            alert("TDL Name must not be empty!");
-            return false;
-        }
+        $('#edit').modal('hide');
+        // Getting only the number
+        authorID = authorID.replace(/^\D+/g, '');
+
         $.ajax({
             type: 'post',
             url: 'manage_authorname_processing.php?action=update&col=' + collection,
-            data: {authorID: authorID , authorname: authorName, oldname: oldName },
+            data: {authorID: authorID , authorname: authorName, TDLname: TDLName },
             success:function(data) {
                 var retval = JSON.parse(data);
                 if(retval == true) {
                     alert("Success!");
-                    loadPopupInfo('loadnext',collection,authorID);
                     $('#dtable').DataTable().draw(); //rerender table
                 }
-                else alert("Update failed!");
+
+                else
+                {
+                    alert("The changes could not be applied, there was some kind of error on the server!");
+                }
             }
         });
     }
@@ -229,7 +247,7 @@ $Render = new ControlsRender();
                     //column Edit
                     {
                         "render": function ( data, type, row ) {
-                            return "<a href='#' onclick='showPopup(event," + JSON.stringify(collection) + "," + row[0] +")'>Edit</a>";
+                            return "<a href='#'  data-toggle='modal' data-target='#edit' data-book-id='{\"collection\":\"" + collection + "\", \"row\":\"" + row[0] + "\"}'>Edit</a>";
                         },
                         "targets": 3
                     }
@@ -245,7 +263,7 @@ $Render = new ControlsRender();
                         case 0:
                         case 1:
                         case 2:
-                            var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""/>')
+                            var input = $('<input type="text" class="form-control" placeholder="Search..." value=""/>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on( 'keyup change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
@@ -277,9 +295,6 @@ $Render = new ControlsRender();
         <?php if($session->hasWritePermission()){ ?> table.column(3).visible(true); <?php } ?>
 
 
-        //resize height of the scroller
-        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#table-header_right").outerHeight() - $("#page_title").outerHeight() - 55);
-
     }
     //**********************************************************************************************************
     //On page ready, pass elementIDddlCollections value into the SSP_DataTable Function
@@ -298,5 +313,26 @@ $Render = new ControlsRender();
         $("#popupcontrol").hide();
     });
 
+    //triggered when modal is about to be shown
+    $('#edit').on('show.bs.modal', function(e) {
+
+        //get data-id attribute of the clicked element
+        var json = $(e.relatedTarget).data('book-id');
+        var action = "load";
+
+        $.ajax({
+            type: 'post',
+            url: 'manage_authorname_processing.php?action=' + action + '&col=' + json.collection + '&id=' + json.row,
+            success:function(data) {
+                var jsonData = JSON.parse(data)[0];
+                $("#lblAuthorID").text("Author ID: " + jsonData.authorID);
+                $("#lblAuthorName").val(jsonData.authorname);
+                $("#txtTDLName").val(jsonData.TDLname);
+
+                $("#txtTDLName").focus(); //focus on this textbox
+            }
+        });
+    });
 </script>
+</body>
 </html>

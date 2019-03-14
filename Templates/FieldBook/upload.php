@@ -18,74 +18,121 @@ else header('Location: ../../');
 <html lang="en">
 <!-- HTML HEADER -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- The title of the page -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title><?php echo $config['DisplayName']; ?> Document Upload</title>
-    <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
 
+    <!-- Bootstrap CDN Datatables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
+
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<!-- HTML BODY -->
 <body>
-<div id="wrap"></div>
-<div id="main"></div>
-<!-- Draw the header and Side Menu -->
-<div id = "divleft">
-    <?php include '../../Master/header.php';
-    include '../../Master/sidemenu.php' ?>
-</div>
-<div id="divright">
-    <!-- Title Displayed in Green style in master.css -->
-    <h2><?php echo $config['DisplayName']; ?> Document Upload</h2>
-    <div id="divscroller">
-    <table class="Collection_Table">
-        <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
-        <tr>
-            <td class="Collection_data" style="height:50px">
-                <!-- Upload Documents Button, Php code sends the collection name to upload.php -->
-                <input type="file" name="file_array[]" id="file_array" class="bluebtn" accept=".tif" value="Input Map Information" multiple/>
-            </td>
-        </tr>
-        <tr>
-            <!-- table for displaying selected files -->
-            <td class="Collection_data" >
-                <div id="selectedFilesDiv">
-                    <table >
-                        <thead><span style="font-family: Algerian; font: message-box;">Selected Files</span>
-                        <tr>
-                            <th>File Name</th>
-                            <th>File Size</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody id="selectedFilesTable">
-                        <tr><td>No files selected</td></tr>
-                        </tbody>
-                        <tfoot id="selectedFilesTableFooter" style="background: #007F3E; color: white;"></tfoot>
-                    </table>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="Collection_data">
-                <input type="submit" class="bluebtn" value="Upload" id="btnUpload"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="color:red; font-size: .45em"><br>*Recommended number of files for uploading: 100 files<br> </p>
-            </td>
-        </tr>
-        </form>
-    </table>
-    </div>
-</div>
+<?php include "../../Master/bandocat_mega_menu.php"; ?>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <!-- Put Page Contents Here -->
+            <h1 class="text-center"><?php echo $config['DisplayName']; ?> Document Upload</h1>
+            <hr>
+
+            <!-- This is used to center the card onto the page -->
+            <div class="d-flex justify-content-center">
+                <!-- Starting a card for styling -->
+                <div class="card" style="width: 30em;">
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <!-- Starting the form -->
+                        <form id="frmUpload" name="frmUpload" method="post" enctype="multipart/form-data">
+                            <!-- File Upload Button -->
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="file_array[]" id="file_array" accept=".tif" value="Input Map Information" multiple>
+                                        <label class="custom-file-label" for="customFile">Choose Files</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Table -->
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label>Selected Files</label>
+                                    <table class="table table-striped table-bordered" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>File Name</th>
+                                            <th>File Size</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="selectedFilesTable">
+                                        <tr><td>No files selected</td></tr>
+                                        </tbody>
+                                        <tfoot id="selectedFilesTableFooter" style="background: #007F3E; color: white;"></tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Upload Button -->
+                            <div class="form-row">
+                                <div class="form-group col d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-primary" value="Upload" id="btnUpload">Upload</button>
+                                </div>
+                            </div>
+                            <!-- Message -->
+                            <div class="form-row">
+                                <div class="form-group col d-flex justify-content-center">
+                                    <p class="text-danger">Recommended number of files for uploading: 100 files</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div> <!-- Card body -->
+                </div> <!-- Card -->
+            </div> <!-- d-flex center -->
+
+            <!-- Importing loading modal -->
+            <?php include "../../Templates/Load/load.php"; ?>
+
+        </div> <!-- col -->
+    </div> <!-- row -->
+</div><!-- Container -->
+<?php include "../../Master/bandocat_footer.php" ?>
 
 
+<!-- Complete JavaScript Bundle -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- JQuery UI cdn -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+<!-- Our custom javascript file -->
+<script type="text/javascript" src="../../Master/master.js"></script>
+
+<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
+<script>
+    $(document).ready(function() {
+
+        var docHeight = $(window).height();
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight)
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+
+        // Adding modal attributes
+        $('#loaderModalContent').append('<div class="modal-body" id="loaderModalBody"></div>');
+        $('#loaderModalBody').append('<div class="d-flex justify-content-center"><img src="../../Images/loading2.gif"></div><h5 class="text-center">Uploading Files...</h5>');
+    });
+</script>
+<!-- This page's script -->
 <script>
     var totalFsize = 0;
 
@@ -136,8 +183,7 @@ else header('Location: ../../');
             cell3.id = f.name;
             cell3.innerHTML = "Validating...";
         }
-        //resize height of the scroller
-        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
+
         $.ajax({
             //Checks if the filenames already exist in the DB
             url: 'upload_validating.php?col=<?php echo $collection; ?>',
@@ -185,7 +231,11 @@ else header('Location: ../../');
     {
         //Change button to uploading, then disable it
         $("#btnUpload").val("Uploading...");
-        $("#btnUpload").attr("disabled","true");
+        $("#btnUpload").attr("disabled",true);
+
+        // Showing loader modal
+        $("#loaderModal").modal("show");
+
         event.preventDefault();
         var data = new FormData();
         //Javascript FormData sent to upload_processing via ajax
@@ -212,59 +262,12 @@ else header('Location: ../../');
                     else document.getElementById(data[i][0]).style.color = "red";
                 }
                 $("#btnUpload").val("Upload");
-                $("#btnUpload").attr("disabled","false");
-                alert("Upload completed!");
-            },
+                $("#btnUpload").attr("disabled",false);
+                // Showing loader modal
+                $("#loaderModal").modal("hide");
+            }
         });
-
     });
-
 </script>
-
-<style>
-    nav{margin-left: 8px;
-        margin-top: 22px;}
-    ul{
-        text-align: left;
-        margin:auto;
-    }
-    #selectedFilesDiv table { border-collapse: collapse; text-align: start; width: 100%;padding-left:2px; }
-    #selectedFilesDiv {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
-    #selectedFilesDiv table td, #documentHistory table th { padding: 3px 10px; }
-    #selectedFilesDiv table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #1b77cb), color-stop(1, #125490) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #0070A8; }
-    #selectedFilesDiv table tbody td { color: #001326; border-left: 1px solid #E1EEF4;font-size: 11.56px;font-weight: normal; width: 50%}
-    #selectedFilesDiv table tbody tr:hover { background-color: #bce1ff; }
-    div#dhtmlx_window_active, div#dhx_modal_cover_dv { position: fixed !important; }
-
-    #file_array{
-        height:90%;
-        padding: 1%;
-        overflow: auto;
-    }
-    pre{
-        tab-size: 4;
-    }
-    #btnUpload{
-        height:100%;padding-bottom:10px;}
-    .bluebtn{
-        font-size: 0.4em !important;
-        padding-bottom: 24px;
-    }
-
-    #divright{
-        font-size:45% !important;
-        vertical-align: top;
-        background: #f1f1f1;
-        border-radius: 2%;
-        box-shadow: 0px 0px 2px;
-    }
-    .Collection_Table .Collection_Button{
-        font-size: 45% !important;
-    }
-
-
-</style>
-<?php include '../../Master/footer.php'; ?>
-
 </body>
 </html>

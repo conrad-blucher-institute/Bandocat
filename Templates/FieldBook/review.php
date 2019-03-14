@@ -26,191 +26,294 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 <html lang="en">
 <!-- HTML HEADER -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Edit/View Form</title>
-    <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
-    <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
-    <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
-    <script type="text/javascript" src="../../Master/master.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Edit/View</title>
+
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<!-- END HTML HEADER -->
-<!-- HTML BODY -->
 <body>
-<div id="wrap">
-    <div id="main">
-        <div id="divleft">
-            <?php include '../../Master/header.php';
-                include '../../Master/sidemenu.php';
+<?php include "../../Master/bandocat_mega_menu.php"; ?>
+<div class="container" style="padding-bottom: 15px;">
+    <div class="row">
+        <div class="col">
+            <!-- Put Page Contents Here -->
+            <h1 class="text-center"><?php echo $config['DisplayName'];?> Review Form</h1>
+            <hr>
+            <div class="row">
+                <div class="col"></div>
+                <?php
                 if($session->isAdmin()) //if user is Admin, render the Document History (Log Info)
-                    $Render->DISPLAY_LOG_INFO($DB->GET_LOG_INFO($collection, $docID));
-            ?>
-        </div>
-        <div id="divright">
-            <h2><?php echo $config['DisplayName'];?> Catalog Form</h2>
-            <div id="divscroller">
-                <table class="Account_Table">
+                {
+                    $arrayLogInfo = $DB->GET_LOG_INFO($collection, $docID);
+                    echo "<div class=\"col\"><h3 class='text-center'>Document History</h3>";
+                    echo "<table class=\"table table-sm table-striped table-bordered\"  cellspacing=\"0\" data-page-length='20'><thead><tr><th>Action</th><th>Username</th> <th>Timestamp</th></tr></thead><tbody>";
 
-                    <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
-                        <tr>
+                    $user = [];
+                    $length = count($arrayLogInfo);
+                    for ($x = 0; $x < $length; $x++) {
+                        $action[$x] = $arrayLogInfo[$x][0];
+                        $user[$x] = $arrayLogInfo[$x][1];
+                        $time[$x] = $arrayLogInfo[$x][2];
+                        echo "<tr><td>$action[$x]</td><td>$user[$x]</td><td id='timeStamp'>$time[$x]</td></tr>";
+                    }
+                    echo "</tbody></table></div>";
+                }
+                ?>
+                <div class="col"></div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Document Meta Data</h3>
+                    </div>
+                    <div class="card-body" style="width: 50em;">
+                        <form id="theform" name="theform" method="post" enctype="multipart/form-data">
+                            <!-- Populates the control with data -->
                             <datalist id="lstAuthor">
-                                <!-- Populates the control with data -->
                                 <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                             </datalist>
+                            <!-- Populates the control with data -->
                             <datalist id="lstCollection">
-                                <!-- Populates the control with data -->
                                 <?php $Render->getDataList($DB->GET_FIELDBOOK_COLLECTION_LIST($collection)); ?>
                             </datalist>
-                            <datalist id="lstCrew">
-                                <!-- Populates the control with data -->
+                            <!-- Populates the control with data -->
+                            <datalist  id="lstCrew">
                                 <?php $Render->getDataList($DB->GET_CREW_LIST($collection)); ?>
                             </datalist>
-                            <td id="col1">
-                                <div class="cell">
-                                    <!-- LIBRARY INDEX -->
-                                    <span class="label"><span style = "color:red;"> * </span>Library Index:</span>
-                                    <input type = "text" name = "txtLibraryIndex" id = "txtLibraryIndex" size="26" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>' required />
+                            <!-- Library Index -->
+                            <div class="form-group row">
+                                <label for="txtLibraryIndex" class="col-sm-3 col-form-label">Library Index:</label>
+                                <div class="col-sm-9">
+                                    <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>" />
                                 </div>
-                                <div class="cell">
-                                    <!-- COLLECTION -->
-                                    <span class="label"><span style = "color:red;"> * </span>Collection:</span>
-                                    <input type = "text" name = "txtFBCollection" id = "txtFBCollection" size="26" value='<?php echo htmlspecialchars($document['Collection'],ENT_QUOTES);?>' required list="lstCollection"/>
+                            </div>
+                            <!-- Collection -->
+                            <div class="form-group row">
+                                <label for="txtFBCollection" class="col-sm-3 col-form-label">Collection:</label>
+                                <div class="col-sm-9">
+                                    <input type = "text" class="form-control" name = "txtFBCollection" id = "txtFBCollection" value="<?php echo htmlspecialchars($document['Collection'],ENT_QUOTES);?>" required list="lstCollection"/>
                                 </div>
-                                <div class="cell">
-                                    <!-- BOOK TITLE -->
-                                    <span class="label"><span style = "color:red;"> * </span>Book Title:</span>
-                                    <input type = "text" name = "txtBookTitle" id = "txtBookTitle" size="26" value='<?php echo htmlspecialchars($document['BookTitle'],ENT_QUOTES);?>' />
+                            </div>
+                            <!-- Book Title -->
+                            <div class="form-group row">
+                                <label for="txtBookTitle" class="col-sm-3 col-form-label">Book Title:</label>
+                                <div class="col-sm-9">
+                                    <input type = "text" class="form-control" name = "txtBookTitle" id = "txtBookTitle" value="<?php echo htmlspecialchars($document['BookTitle'],ENT_QUOTES);?>" required />
                                 </div>
-                                <div class="cell">
-                                    <!-- JOB NUMBER -->
-                                    <span class="label">Job Number:</span>
-                                    <input type = "text" name = "txtJobNumber" id = "txtJobNumber" size="26" value='<?php echo htmlspecialchars($document['JobNumber'],ENT_QUOTES);?>'  />
+                            </div>
+                            <!-- Job Number -->
+                            <div class="form-group row">
+                                <label for="txtJobNumber" class="col-sm-3 col-form-label">Job Number:</label>
+                                <div class="col-sm-9">
+                                    <input type = "text" class="form-control" name = "txtJobNumber" id = "txtJobNumber" value="<?php echo htmlspecialchars($document['JobNumber'],ENT_QUOTES);?>"  />
                                 </div>
-                                <div class="cell">
-                                    <!-- JOB TITLE -->
-                                    <span class="label">Job Title:</span>
-                                    <input type = "text" name = "txtJobTitle" id = "txtJobTitle" size="26" value='<?php echo htmlspecialchars($document['JobTitle'],ENT_QUOTES);?>'  />
+                            </div>
+                            <!-- Job Title -->
+                            <div class="form-group row">
+                                <label for="txtJobTitle" class="col-sm-3 col-form-label">Job Title:</label>
+                                <div class="col-sm-9">
+                                    <input type = "text" class="form-control" name = "txtJobTitle" id = "txtJobTitle" value="<?php echo htmlspecialchars($document['JobTitle'],ENT_QUOTES);?>"  />
                                 </div>
-                                <div class="cell">
-                                    <!-- INDEXED PAGE -->
-                                    <span class="label">Indexed Page:</span>
-                                    <input type = "text" name = "txtIndexedPage" id = "txtIndexedPage" size="26" value='<?php echo htmlspecialchars($document['IndexedPage'],ENT_QUOTES);?>'  />
+                            </div>
+                            <!-- Indexed Page -->
+                            <div class="form-group row">
+                                <label for="txtIndexedPage" class="col-sm-3 col-form-label">Indexed Page:</label>
+                                <div class="col-sm-9">
+                                    <input type = "text" class="form-control" name = "txtIndexedPage" id = "txtIndexedPage" value="<?php echo htmlspecialchars($document['IndexedPage'],ENT_QUOTES);?>"  />
                                 </div>
-                                <div class="cell">
-                                    <!-- BLANK PAGE -->
-                                    <span class="labelradio"><mark>Blank Page:</mark><p hidden><b></b>This is to signal if it is a Blank Page</p></span>
-                                    <input type = "radio" name = "rbBlankPage" id = "rbBlankPage_yes" size="26" value="1" <?php if($document['IsBlankPage'] == 1) echo "checked"; ?>/>Yes
-                                    <input type = "radio" name = "rbBlankPage" id = "rbBlankPage_no" size="26" value="0"  <?php if($document['IsBlankPage'] == 0) echo "checked"; ?>/>No
+                            </div>
+                            <!-- Radio Buttons -->
+                            <div class="form-group row">
+                                <!-- Blank Page -->
+                                <div class="col">
+                                    <label class="col col-form-label">Blank Page:</label>
+                                    <div class="form-check col-sm-10">
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-check-input" name = "rbBlankPage" id = "rbBlankPage_yes" value="1" <?php if($document['IsBlankPage'] == 1) echo "checked"; ?>/>
+                                            <label class="form-check-label" for="rbBlankPage_yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-check-input" name = "rbBlankPage" id = "rbBlankPage_no" value="0"  <?php if($document['IsBlankPage'] == 0) echo "checked"; ?>/>
+                                            <label class="form-check-label" for="rbBlankPage_no">No</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="cell" >
-                                    <!-- SKETCH -->
-                                    <span class="labelradio" ><mark>Sketch:</mark><p hidden><b></b>This is to signal if a Sketch is present</p></span>
-                                    <input type = "radio" name = "rbSketch" id = "rbSketch_yes" size="26" value="1" <?php if($document['IsSketch'] == 1) echo "checked"; ?>/>Yes
-                                    <input type = "radio" name = "rbSketch" id = "rbSketch_no" size="26" value="0" <?php if($document['IsSketch'] == 0) echo "checked"; ?>/>No
+                                <!-- Sketch -->
+                                <div class="col">
+                                    <label class="col col-form-label">Sketch:</label>
+                                    <div class="form-check col-sm-10">
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-check-input" name = "rbSketch" id = "rbSketch_yes" value="1" <?php if($document['IsSketch'] == 1) echo "checked"; ?>/>
+                                            <label class="form-check-label" for="rbSketch_yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-check-input" name = "rbSketch" id = "rbSketch_no" value="0" <?php if($document['IsSketch'] == 0) echo "checked"; ?>/>
+                                            <label class="form-check-label" for="rbSketch_no">No</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="cell">
-                                    <!-- LOOSE DOCUMENT -->
-                                    <span class="labelradio"><mark>Loose Document:</mark><p hidden><b></b>This is to signal if it is a Loose Document</p></span>
-                                    <input type = "radio" name = "rbLooseDocument" id = "rbLooseDocument_yes" size="26" value="1" <?php if($document['IsLooseDoc'] == 1) echo "checked"; ?>/>Yes
-                                    <input type = "radio" name = "rbLooseDocument" id = "rbLooseDocument_no" size="26" value="0" <?php if($document['IsLooseDoc'] == 0) echo "checked"; ?> />No
+                                <!-- Loose Document -->
+                                <div class="col">
+                                    <label class="col col-form-label">Loose Document:</label>
+                                    <div class="form-check col-sm-10">
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-control-input" name = "rbLooseDocument" id = "rbLooseDocument_yes" value="1" <?php if($document['IsLooseDoc'] == 1) echo "checked"; ?>/>
+                                            <label class="form-check-label" for="rbLooseDocument_yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-control-input" name = "rbLooseDocument" id = "rbLooseDocument_no" value="0" <?php if($document['IsLooseDoc'] == 0) echo "checked"; ?> />
+                                            <label class="form-check-label" for="rbLooseDocument_no">No</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="cell">
-                                    <!-- NEEDS REVIEW -->
-                                    <span class="labelradio"><mark>Needs Review:</mark><p hidden><b></b>This is to signal if the Page needs to be reviewed by admin</p></span>
-                                    <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" <?php if($document['NeedsReview'] == 1) echo "checked"; ?> />Yes
-                                    <input type = "radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?> />No
+                                <!-- Needs Review -->
+                                <div class="col">
+                                    <label class="col col-form-label">Needs Review:</label>
+                                    <div class="form-check col-sm-10 bg-white">
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-control-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" <?php if($document['NeedsReview'] == 1) echo "checked"; ?> />
+                                            <label class="form-check-label" for="rbNeedsReview_yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check">
+                                            <input type = "radio" class="form-control-input" name = "rbNeedsReview" id = "rbNeedsReview_no" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?> />
+                                            <label class="form-check-label" for="rbNeedsReview_no">No</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="cell">
-                                    <!-- FIELD BOOK AUTHOR -->
-                                    <span class="label">Field Book Author:</span>
-                                    <input type = "text" name = "txtBookAuthor" id = "txtBookAuthor" size="26" list="lstAuthor" value='<?php echo htmlspecialchars($document['Author'],ENT_QUOTES);?>'  />
+                            </div>
+                            <!-- Field Book Author -->
+                            <div class="form-group row">
+                                <label for="txtBookAuthor" class="col-sm-3 col-form-label">Field Book Author:</label>
+                                <div class="col-sm-9">
+                                    <input type = "text" class="form-control" name = "txtBookAuthor" id = "txtBookAuthor" list="lstAuthor" value="<?php echo htmlspecialchars($document['Author'],ENT_QUOTES);?>"  />
                                 </div>
-                                <div class="cell">
-                                    <!-- FIELD CREW MEMBER -->
-                                    <span class="label">Field Crew Member: </span>
-                                    <input type = "text" name = "txtCrew[]" id = "txtCrew[]" size="24" value="<?php if(count($crews) > 0){echo htmlspecialchars($crews[0][0],ENT_QUOTES);} ?>" autocomplete="off" list="lstCrew" />&nbsp;<input type="button" id="more_fields" onclick="add_fields(null);" value="+"/>
-                                    <span id="crewcell"></span>
+                            </div>
+                            <div id="crewcell">
+                                <!-- Field Crew Member -->
+                                <div class="form-group row">
+                                    <label for="txtCrew[]" class="col-sm-3 col-form-label">Field Crew Member:</label>
+                                    <div class="col-sm-8">
+                                        <input type = "text" class="form-control" name = "txtCrew[]" id = "txtCrew[]" value="<?php if(count($crews) > 0){echo htmlspecialchars($crews[0][0],ENT_QUOTES);} ?>" autocomplete="off" list="lstCrew" />
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <input type="button" class="btn btn-primary" id="more_fields" onclick="add_fields(null);" value="+"/>
+                                    </div>
                                 </div>
-
-                            </td>
-                            <td id="col2">
-                                <div class="cell">
-                                    <!-- GET START DDL MONTH -->
-                                    <select name="ddlStartMonth" id="ddlStartMonth" style="width:60px">
+                            </div>
+                            <!-- Document Start Date -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Document Start Date:</label>
+                                <!-- Month -->
+                                <div class="col">
+                                    <select name="ddlStartMonth" id="ddlStartMonth" class="form-control">
                                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
                                     </select>
-                                    <span class="label">Document Start Date:</span>
-                                    <!-- GET START DDL DAY -->
-                                    <select name="ddlStartDay" id="ddlStartDay" style="width:60px">
+                                </div>
+                                <!-- Day -->
+                                <div class="col">
+                                    <select name="ddlStartDay" id="ddlStartDay" class="form-control">
                                         <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
                                     </select>
-                                    <!-- GET START DDL YEAR -->
-                                    <select id="ddlStartYear" name="ddlStartYear" style="width:85px">
+                                </div>
+                                <!-- Year -->
+                                <div class="col">
+                                    <select id="ddlStartYear" name="ddlStartYear" class="form-control">
                                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
                                     </select>
-
                                 </div>
-                                <div class="cell">
-                                    <!-- GET END DDL MONTH -->
-                                    <select name="ddlEndMonth" id="ddlEndMonth" style="width:60px">
+                            </div>
+                            <!-- Document End Date -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Document End Date:</label>
+                                <!-- Month -->
+                                <div class="col">
+                                    <select name="ddlEndMonth" id="ddlEndMonth" class="form-control">
                                         <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
                                     </select>
-                                    <span class="label">Document End Date:</span>
-                                    <!-- GET END DDL DAY -->
-                                    <select name="ddlEndDay" id="ddlEndDay" style="width:60px">
+                                </div>
+                                <!-- Day -->
+                                <div class="col">
+                                    <select name="ddlEndDay" id="ddlEndDay" class="form-control">
                                         <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
                                     </select>
-                                    <!-- GET END DDL YEAR -->
-                                    <select name="ddlEndYear" id="ddlEndYear" style="width:85px">
+                                </div>
+                                <!-- Year -->
+                                <div class="col">
+                                    <select name="ddlEndYear" id="ddlEndYear" class="form-control">
                                         <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
                                     </select>
                                 </div>
-                                <div class="cell">
-                                    <!-- COMMENTS  -->
-                                    <span class="label">Comments:</span>
-                                    <textarea cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
+                            </div>
+                            <!-- Comments -->
+                            <div class="form-group row">
+                                <label for="txtComments" class="col-sm-3 col-form-label">Comments:</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
                                 </div>
-                                <div class="cell">
-                                    <span class="label">Scan of Page:</span>
-                                </div>
-                                <!-- THUMBNAIL -->
-                                <div class='cell' style='text-align:center'>
+                            </div>
+                            <!-- Scan of Page -->
+                            <div class="form-group row">
+                                <div class="col-sm-3 col-form-label">Scan of Page:</div>
+                                <div class="col-sm-9">
                                     <?php echo "<a href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\">(Click to download)</a><br>";
                                     echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . $document['Thumbnail'] . " ' alt = Error /></a>";
                                     echo "<br>Size: " . round(filesize($config['StorageDir'] . $document['FileNamePath'])/1024/1024, 2) . " MB";
                                     ?>
                                 </div>
-                                <div class="cell" style="text-align: center;padding-top:20px">
-                                    <!-- Hidden inputs that are passed when the update button is hit -->
-                                    <span><input type="reset" id="btnReset" name="btnReset" value="Reset" class="bluebtn"/></span>
-                                    <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
-                                    <input type = "hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
-                                    <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
-                                    <span>
-                                    <?php if($session->hasWritePermission())
-                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='bluebtn'/>";}
-                                    ?>
-                                        <div class="bluebtn" id="loader" style="display: none;">
-                                        Updating
-                                        <img style="width: 4%;;" src='../../Images/loader.gif'/></div>
-                                    </span>
-                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col">
+                                    <div class="d-flex justify-content-between">
+                                        <div><input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/></div>
+                                        <div><?php if($session->hasWritePermission())
+                                            {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='btn btn-primary'/>";}
+                                            ?></div>
 
-                            </td>
-                        </tr>
-                    </form>
-                </table>
+                                        <input type="hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID;?>" />
+                                        <input type="hidden" id="txtAction" name="txtAction" value="review" />  <!-- catalog or review -->
+                                        <input type="hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- Card -->
             </div>
-        </div>
-    </div>
-</div>
-<?php include '../../Master/footer.php'; ?>
-</body>
-<!-- END HTML BODY -->
+        </div> <!-- Col -->
+    </div> <!-- row -->
+</div><!-- Container -->
+<!-- Doesn't matter where these go, this is for overlay effect and loader -->
+<div id="overlay"></div>
+<?php include "../../Master/bandocat_footer.php" ?>
+
+<!-- Complete JavaScript Bundle -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="../../Master/errorHandling.js"></script>
+
+<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+        var docHeight = $(window).height();
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight)
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+    });
+</script>
 <script>
     /**********************************************
      * Function: add_fields
@@ -221,7 +324,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
      * $result (assoc array) - return a document info in an associative array, or FALSE if failed
      ***********************************************/
     var max = 9;
-    var crew_count = 0;
+    var crew_count = 1;
     function add_fields(val)
     {
         if(val == null)
@@ -230,26 +333,34 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
             return false;
         crew_count++;
         var objTo = document.getElementById('crewcell');
-        var divtest = document.createElement("div");
-        divtest.innerHTML = '<br><span class="label">Field Crew Member ' + (crew_count+1) + '</span><input type = "text" name = "txtCrew[]" autocomplete="off" id = "txtCrew[]" size="24" value="' + val + '" list="lstCrew" />';
+        var div = document.createElement("div");
 
-        objTo.appendChild(divtest)
+        div.innerHTML = '<div class="form-group row">\n' +
+            '                                <label for="txtCrew[]" class="col-sm-3 col-form-label">Field Crew Member ' + crew_count + ':</label>\n' +
+            '                                <div class="col-sm-9">\n' +
+            '                                    <input type = "text" class="form-control" name = "txtCrew[]" id = "txtCrew[]" value="<?php if (count($crews) > 0) {
+                echo htmlspecialchars($crews[0][0], ENT_QUOTES);
+            } ?>" autocomplete="off" list="lstCrew" />\n' +
+            '                                </div>\n' +
+            '                            </div>';
+        $("#crewcell").append(div);
     }
 </script>
 <script>
-    $( document ).ready(function()
+    $(document).ready(function()
     {
-        //resize height of the scroller
-        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
-        $("#divleft").height($("#divscroller").height());
         var crews = <?php echo json_encode($crews); ?>;
+        //Parse out the authors read in to the add_fields function
         for(var i = 1; i < crews.length; i++)
         {
             add_fields(crews[i][0]);
         }
         /* attach a submit handler to the form */
-        $('#theform').submit(function (event) {
+        $('#theform').submit(function (event)
+        {
+            event.preventDefault();
             /* stop form from submitting normally */
+            //This attaches the entire "#theform" in addition to the crews to the post
             var formData = new FormData($(this)[0]);
 
             //Append Crews data to the form
@@ -259,122 +370,44 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                 array_crews.push(crews[i].value);
             formData.append("crews",JSON.stringify(array_crews));
 
-            /*jquery that displays the three points loader*/
-                $('#btnSubmit').css("display", "none");
-                $('#loader').css("display", "inherit");
-                event.preventDefault();
-                /* Send the data using post */
-                $.ajax({
-                    type: 'post',
-                    url: 'form_processing.php',
-                    data:  formData,
-                    processData: false,
-                    contentType: false,
-                    success:function(data){
-                        var json = JSON.parse(data);
-                        var msg = "";
-                        var result = 0;
-                        for(var i = 0; i < json.length; i++)
-                        {
-                            msg += json[i] + "\n";
-                        }
-                        for (var i = 0; i < json.length; i++){
-                            if (json[i].includes("Success")) {
-                                result = 1;
-                            }
-                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                            {
-                                $('#btnSubmit').css("display", "inherit");
-                                $('#loader').css("display", "none");
-                            }
-                        }
-                        alert(msg);
-                        if (result == 1){
-                            $('#btnSubmit').css("display", "inherit");
-                            $('#loader').css("display", "none");
-                            self.close();
-                        }
+            // Use jquery to show the overlay and the loading circle
+            $("#overlay").show();
 
+            /* Send the data using post */
+            $.ajax({
+                type: 'post',
+                url: 'form_processing.php',
+                data:  formData,
+                processData: false,
+                contentType: false,
+                success:function(data)
+                {
+                    var json = JSON.parse(data);
+
+                    var msg = "";
+                    var result = 0;
+                    for(var i = 0; i < json.length; i++)
+                    {
+                        msg += json[i] + "\n";
                     }
-                });
+                    for (var i = 0; i < json.length; i++){
+                        if (json[i].includes("Success")) {
+                            result = 1;
+                        }
+                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                        {
+                            $('#overlay').removeAttr("style").hide();
+                        }
+                    }
+                    if (result == 1){
+                        alert(msg);
+                        $('#overlay').removeAttr("style").hide();
+                        self.close();
+                    }
+                }
+            });
         });
-        //resize height of the scroller
-        $("#divscroller").height($(window).outerHeight() - $(footer).outerHeight() - $("#page_title").outerHeight() - 55);
     });
 </script>
-
-<style>
-
-    /*Account Stylesheet Adaptation from Collection Name */
-    .Account{
-        border-radius: 2%;
-        box-shadow: 0px 0px 4px;
-    }
-
-    .Account_Table{
-        background-color: white;
-        padding: 3%;
-        border-radius: 6%;
-        box-shadow: 0px 0px 2px;
-        margin: auto;
-        font-family: verdana;
-        text-align: left;
-        margin-top: 2%;
-        margin-bottom: 9%;
-
-    }
-
-    .Account_Table .Account_Title{
-        margin-top: 2px;
-        margin-bottom: 12px;
-        color: #008852;
-    }
-
-    .Account_Table .Collection_data{
-        width: 50%;
-    }
-    }
-    #col1{float:left;width:460px;height:100%;padding-left:80px;}
-    #col2{float:left;width:500px;height:100%;padding-left:5px;}
-    #row{float:bottom;width:2000px;height:52px;background-color: #ccf5ff;}
-
-    .cell
-    {
-        min-height: 45px;
-    }
-
-    .label
-    {
-        float:left;
-        width:150px;
-        min-width: 195px;
-        padding-top:2px;
-    }
-    .labelradio
-    {
-        float:left;
-        width:150px;
-        min-width: 195px;
-    }
-    mark {
-        background-color: #ccf5ff;
-    }
-    span.labelradio:hover p{
-        z-index: 10;
-        display: inline;
-        position: absolute;
-        border: 1px solid #000000;
-        background: #bfe9ff;
-        font-size: 14px;
-        font-style: normal;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px; -o-border-radius: 3px;
-        border-radius: 3px;
-        -webkit-box-shadow: 4px 4px 4px #000000;
-        -moz-box-shadow: 4px 4px 4px #000000;
-        box-shadow: 4px 4px 4px #000000;
-        width: 200px;
-        padding: 10px 10px;
-    }
-</style>
+</body>
 </html>

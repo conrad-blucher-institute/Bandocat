@@ -95,7 +95,7 @@ else $userfile = $username;
 
                         $nodes = $document->getElementsByTagName('document');
                         $count = 0;
-                        //echo "<td align = 'center'><a href=\"index.php?id=$id&user=$userfile&col=$collection&type=$type\">$libraryindex</a></td>";
+                        //echo "<td align = 'center'><a href=\"index_old.php?id=$id&user=$userfile&col=$collection&type=$type\">$libraryindex</a></td>";
                         foreach ($nodes as $node) {
                             foreach ($node->childNodes as $child) {
                                 if ($child->nodeName == 'libraryindex') {
@@ -119,7 +119,7 @@ else $userfile = $username;
 
 
                             echo '<tr>';
-                            echo "<td align = 'center'><a href=\"index.php?id=$id&user=$userfile&col=$collection&type=$type\">$libraryindex</a></td>";
+                            echo "<td align = 'center'><a href=\"index_old.php?id=$id&user=$userfile&col=$collection&type=$type\">$libraryindex</a></td>";
                             echo "<td align = 'center'>$libraryindex</td>";
                             echo "<td align = 'center'>$title</td>";
                             echo "<td align = 'center'>$classification</td>";

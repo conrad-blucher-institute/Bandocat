@@ -4,7 +4,7 @@ require '../../Library/SessionManager.php';
 $session = new SessionManager();
 //prevent accessing directly
 if(!isset($_POST))
-    header('Location: index.php');
+    header('Location: index_old.php');
 
 require '../../Library/DBHelper.php';
 require '../../Library/IndicesDBHelper.php';

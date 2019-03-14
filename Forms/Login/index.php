@@ -5,14 +5,14 @@
  * Creates a session or resumes the current one based on
  * a session identifier passed via a GET or POST request,
  * or passed via a cookie.
-*******************************************/
+ *******************************************/
 session_start();
 ?>
 <!doctype html>
 <html lang="en">
 <!-- HTML HEADER -->
 <head>
-<!--definitions and title-->
+    <!--definitions and title-->
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -22,7 +22,7 @@ session_start();
     <link rel="shortcut icon" type="image/png" href="../../Images/favicon.ico"/>
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="footer-distributed.css">
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <style>
 
         *{margin:0;padding:0;}
@@ -48,7 +48,7 @@ session_start();
             color:#000;
             font-size:21px;
             line-height:40px !important;
-             }
+        }
         /*style affecting both fields*/
         input[type="password"],input[type="text"]{height:30px;font-size:18px}
         /*login button style*/
@@ -67,13 +67,13 @@ session_start();
         /*styling for element txt_error*/
         #txt_error{color:red;line-height:20px;}
         /*define css for class Copyrights*/
-         .Copyrights{position: relative;
-             width: auto;
-             float: right;
-             text-align: right;
-             font-family: serif;
-             margin-bottom: 0px;
-             bottom: 0%;}
+        .Copyrights{position: relative;
+            width: auto;
+            float: right;
+            text-align: right;
+            font-family: serif;
+            margin-bottom: 0px;
+            bottom: 0%;}
         /*define css for class Logo*/
         .Logo{position: relative;
             top: 10%;
@@ -101,45 +101,45 @@ session_start();
         /*define unique id main*/
         #main {overflow:auto;
             padding-bottom: 210px;}  /* must be same height as the footer */
-   </style>
-<!--    end style-->
+    </style>
+    <!--    end style-->
 </head>
 <!--HTML BODY-->
 <!-- ATTENTION: Some CSS classes and ID's are located in the Master.css file -->
 <body onresize="onResizeWindow()">
 <div id="wrap">
     <div id="main">
-    <div id="login_container">
-        <form id="frm_auth" name="frm_auth" method="post">
-            <div style="width: 100%;text-align: center"><img width="400px" src="../../Images/Logos/bando-logo-medium.png" class="unselectable"/>
-            </div>
+        <div id="login_container">
+            <form id="frm_auth" name="frm_auth" method="post">
+                <div style="width: 100%;text-align: center"><img width="400px" src="../../Images/Logos/bando-logo-medium.png" class="unselectable"/>
+                </div>
                 <table width="100%" style="text-align:center">
-                <tr>
-                    <td><label class="unselectable" for="username">Username</label>
+                    <tr>
+                        <td><label class="unselectable" for="username">Username</label>
                         </td>
-                    <td>
-                        <input type="text" id="txtUsername" name="username" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label class="unselectable" for="password">Password</label></td>
-                    <td>
-                        <input type="password" id="txtPassword" name="password" required>
+                        <td>
+                            <input type="text" id="txtUsername" name="username" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="unselectable" for="password">Password</label></td>
+                        <td>
+                            <input type="password" id="txtPassword" name="password" required>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" name = "login" id="btnSubmit" value="Login" class="bluebtn"/>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name = "login" id="btnSubmit" value="Login" class="bluebtn"/>
+                        </td>
+                    </tr>
                     <tr>
                         <td colspan="2"><p id="txt_error"></p></td>
                     </tr>
-            </table>
-        </form>
+                </table>
+            </form>
+        </div>
     </div>
-</div>
 </div>
 <footer id="footer" class="footer-distributed">
 
@@ -161,10 +161,10 @@ session_start();
 
     <p>Contact Information:</p>
     <ul>
-        <li>Website Admin: <a href="mailto:snguyen1@islander.tamucc.edu" target="_top">snguyen1@islander.tamucc.edu</a></li>
+        <li>Website Admin: <a href="mailto:sallred@islander.tamucc.edu" target="_top">sallred@islander.tamucc.edu</a></li>
         <li>Project Manager: <a href="mailto:richard.smith@tamucc.edu" target="_top">richard.smith@tamucc.edu</a></li>
     </ul>
-        <p class = "Copyrights">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science  </p>
+    <p class = "Copyrights">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science  </p>
 </footer>
 </body>
 <script>
@@ -218,7 +218,7 @@ session_start();
                             $('#txt_error').html("User is inactive.<br>Please contact Administrator.");
                             break;
                         case 'Success':
-                            window.location.replace("../Main/");
+                            window.location.replace("../Landing/");
                             break;
                         default: break;
                     }
