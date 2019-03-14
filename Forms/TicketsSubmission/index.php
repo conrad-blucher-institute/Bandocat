@@ -16,10 +16,6 @@ require '../../Library/DBHelper.php';
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <title>Submit Ticket</title>
 
     <!-- Our Custom CSS -->
@@ -69,19 +65,10 @@ require '../../Library/DBHelper.php';
                             <div id="divSubject">
 
                             </div>
-                            <!-- What problems are you experiencing? -->
-                            <div class="form-group">
-                                <label for="errorTicket">What's wrong?</label>
-                                <select class="form-control" id="errorTicket">
-                                    <?php echo $errorTickets; ?>
-                                </select>
-                                <small class="form-control-plaintext">Please select one only. If more than one applies to your situation, just pick the best one that fits and describe the issue.</small>
-                            </div>
                             <!-- What's Wrong? -->
                             <div class="form-group">
-                                <label for="txtDesc">Please describe the problem</label>
-                                <textarea name = "txtDesc" id="txtDesc" rows = "10" cols = "70" class="form-control" maxlength="250" required/></textarea>
-                                <p class="form-control-plaintext" id="counter"></p>
+                                <label for="txtDesc">What's Wrong?</label>
+                                <textarea name = "txtDesc" id="txtDesc" rows = "10" cols = "70" class="form-control" required/></textarea>
                             </div>
                             <input type = "submit" name = "btnSubmit" value = "Submit" class="btn btn-primary"/>
                         </form>
@@ -110,16 +97,7 @@ require '../../Library/DBHelper.php';
 <script>
     $(document).ready(function() {
 
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $(window).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
+        var docHeight = $(window).height();
         var footerHeight = $('#footer').height();
         var footerTop = $('#footer').position().top + footerHeight;
 
@@ -132,19 +110,14 @@ require '../../Library/DBHelper.php';
 
     var libArray = [];
     var length;
-
-
     $( document ).ready(function() {
         // Setting length = 2
         length = 2;
-
 
         /* attach a submit handler to the form */
         $('#frm_ticket').submit(function (event) {
             // Making sure libarray is empty
             libArray = [];
-            var flag = 1;
-            var check = [];
 
             /* stop form from submitting normally */
             event.preventDefault();
@@ -152,27 +125,8 @@ require '../../Library/DBHelper.php';
             /*Converts the list of Library indexes into a JSON format*/
             $.each($("input[name*='txtSubject']"), function (index, libIndex) {
                 libArray.push({"libraryIndex": libIndex.value});
-
-                // Checking for duplicates
-                if(checkDuplicates(check, libIndex.value) === -1)
-                {
-                    check.push(libIndex.value);
-                }
-
-                else
-                {
-                    flag = 0;
-                }
-
                 console.log(libArray);
             });
-
-            // Exit if duplicat values
-            if(flag === 0)
-            {
-                alert("The library indexes you enter must be unique, not the same.");
-                return;
-            }
 
             // Building Subject String
             if(libArray.length > 1)
@@ -201,35 +155,25 @@ require '../../Library/DBHelper.php';
             }
 
             var strLib = JSON.stringify(libArray);
-            //console.log($('#errorTicket').val());
+            console.log(subject);
 
             /* Send the data using post */
             $.ajax({
                 type: 'post',
                 url: 'index_processing.php',
-                data: {dbname: $('#ddlDBname :selected').val(), subject: subject, description: $('#txtDesc').val(), libIndex: strLib, error: $('#errorTicket').val()},
+                data: {dbname: $('#ddlDBname :selected').val(), subject: subject, description: $('#txtDesc').val(), libIndex: strLib},
                 success:function(data){
-                    data = JSON.parse(data);
-                    console.log(data);
 
-                    // Getting the status
-                    var status = data;
-                    if(status["status"] === true)
+                    if(data == "true")
                     {
-                        alert(status["message"]);
+                        alert("Ticket Submitted!");
                         window.close();
                     }
-                    else alert(status["message"]);
+                    else alert("Ticket failed to submit!");
                 }
             });
         });
     });
-
-    function checkDuplicates(array, value)
-    {
-        // Returns -1 if the item could not be found
-        return array.indexOf(value);
-    }
 
     /**********************************************
      * Function: add_fields
@@ -274,25 +218,6 @@ require '../../Library/DBHelper.php';
         }
     }
 
-    $('#txtDesc').keyup(function(event) {
-        var characters = 250 - $(this).val().length;
-
-        if(characters >= 0)
-        {
-            $("#counter").text("Characters left: " + characters);
-        }
-        console.log((250 - $(this).val().length));
-
-    });
-
-    function maxLength(el) {
-        if (!('maxLength' in el)) {
-            var max = el.attributes.maxLength.value;
-            el.onkeypress = function () {
-                if (this.value.length >= max) return false;
-            };
-        }
-    }
 </script>
 </body>
 </html>

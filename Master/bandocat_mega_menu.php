@@ -1,49 +1,3 @@
-<?php
-require_once "../../Library/DBHelper.php";
-$bugDB = new DBHelper();
-
-// Bugs are website related errors, errorTickets are cataloging errors
-$errors = $bugDB->GET_ERRORS();
-$bugs = "";
-$errorTickets = "";
-$tempb = "";
-$tempt = "";
-
-foreach($errors as $error)
-{
-    // Website bugs
-    if($error["website"] == 1)
-    {
-        if($error["error"] == "Other")
-        {
-            $tempb .= '<option value="' . $error["errorID"] . '">' . $error["error"] . '</option>';
-        }
-
-        else
-        {
-            $bugs .= '<option value="' . $error["errorID"] . '">' . $error["error"] . '</option>';
-        }
-    }
-
-    // Other errors
-    else
-    {
-        if($error["error"] == "Other")
-        {
-            $tempt .= '<option value="' . $error["errorID"] . '">' . $error["error"] . '</option>';
-        }
-
-        else
-        {
-            $errorTickets .= '<option value="' . $error["errorID"] . '">' . $error["error"] . '</option>';
-        }
-    }
-}
-
-// Add Other
-$bugs .= $tempb;
-$errorTickets .= $tempt;
-?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="megaMenu">
     <a class="navbar-brand" href="../../Forms/Landing/">Bandocat</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +7,7 @@ $errorTickets .= $tempt;
         <ul class="navbar-nav">
             <!-- Main Menu -->
             <li class="nav-item active">
-                <a class="nav-link" href="../../Forms/Main/">Main Menu <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="../../Forms/Main/main.php">Main Menu <span class="sr-only">(current)</span></a>
             </li>
             <!-- Landing Page -->
             <li class="nav-item">
@@ -266,113 +220,14 @@ $errorTickets .= $tempt;
                     </div>
                 </div>
             </li>-->
-            <!-- Forcing other options on the left side -->
-
-        </ul>
-        <!-- right side -->
-        <!-- Website Errors -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Bug Reporting (Website errors) -->
-            <li class="nav-item" data-toggle="modal" data-target="#bugReportModal">
-                <a class="nav-link">
-                    <i class="fas fa-bug"></i>
-                </a>
+            <!-- Account Settings -->
+            <li>
+                <a class="nav-link" href="../../Forms/AccountSettings/">Account Settings</a>
             </li>
-            <!-- Create a ticket -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">
-                    <i class="fa fa-ticket"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="User Settings">
-                    <?php echo '<a href="../../Forms/UserTicket/" class="dropdown-item">View Tickets <span class="badge badge-danger">'.$userticketCount.'</span></a>';?>
-                    <a href="../../Forms/TicketsSubmission/" target="_blank" class="dropdown-item">Submit Ticket</a>
-                </div>
-            </li>
-            <!-- User Options -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">
-                    <i class="fas fa-user"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="User Settings">
-                    <a class="dropdown-item" href="../../Forms/AccountSettings/">Account Settings</a>
-                    <a class="dropdown-item" href="../../../Bandocat/Forms/Logout/">Logout as <?php echo $session->getUsername(); ?></a>
-                </div>
+            <!-- Logout -->
+            <li class="nav-item">
+                <a class="nav-link" href="../../../Bandocat/Forms/Logout/">Logout as <?php echo $session->getUsername(); ?></a>
             </li>
         </ul>
     </div>
 </nav>
-
-<!-- Bug reporting modal -->
-<!-- Modal -->
-<div class="modal fade" id="bugReportModal" tabindex="-1" role="dialog" aria-labelledby="bugReportModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Report a Website Error</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="bugReport">
-                <div class="modal-body">
-                    <!-- URL -->
-                    <div class="form-group row">
-                        <label for="url" class="col-sm-2 col-form-label">URL:</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext" id="url" name="url" value="<?php $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; echo $actual_link; ?>">
-                        </div>
-                    </div>
-                    <!-- User -->
-                    <div class="form-group row">
-                        <label for="username" class="col-sm-2 col-form-label">User:</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly class="form-control-plaintext" id="username" name="username" value="<?php echo $session->getUsername(); ?>">
-                            <input type="text" hidden value="<?php echo $session->getUserID(); ?>" id="userid" name="userid">
-                        </div>
-                    </div>
-                    <!-- Error types -->
-                    <div class="form-group">
-                        <label for="error">What is the problem?</label>
-                        <select class="form-control" id="error" name="error">
-                            <?php echo $bugs; ?>
-                        </select>
-                        <small id="errorHelp" class="form-text text-muted">Please select one error only</small>
-                    </div>
-                    <!-- Problem -->
-                    <div class="form-group">
-                        <label for="errorMessage">Please describe it</label>
-                        <textarea rows="5" class="form-control" id="errorMessage" placeholder="Write your description here" name="errorMessage"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <p id="errorMessageHelp" class="form-control-plaintext">This form is only for website errors, click this link <a href="../../Forms/TicketsSubmission/">here</a> to submit a ticket.</p>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary" value="Submit">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Response Modal -->
-<div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="answerModalTitle">Success!</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p id="answer"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Javascript for the form found in master.js -->

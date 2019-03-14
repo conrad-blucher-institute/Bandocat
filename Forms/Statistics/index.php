@@ -33,11 +33,12 @@ $collections = $DB->GET_COLLECTION_TABLE();
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container-fluid" style="">
+            <!-- Put Page Contents Here -->
+            <h1 class="text-center">Statistics</h1>
+            <hr>
+
             <!-- Container -->
             <div class="container">
-                <!-- Put Page Contents Here -->
-                <h1 class="text-center">Statistics</h1>
-                <hr>
                 <div class="row">
                     <!-- Main -->
                         <!-- Select Year -->

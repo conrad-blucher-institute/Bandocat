@@ -1,6 +1,5 @@
 //JSON array object of all the input elements of the form by name and value
 var form = $('form').serializeArray();
-//console.log(form);
 //Maximum numbers of underscore characters
 var maxUscr = 0;
 
@@ -12,7 +11,6 @@ var maxUscr = 0;
  * Return value(s): errorJSON (JSON) The JSON object contains the description of the element id and analyzed error massage.
  ***********************************************/
 function errorHandling(element, collection) {
-    form = $('form').serializeArray();
     //Element id
     var name = element[0].id;
     //Element value
@@ -72,7 +70,7 @@ function errorHandling(element, collection) {
                 //Error message
                 var ems = 'The ' + name + ' does not contain the right amount of parenthesis';
                 //Highlight function
-                highlight(name);
+                (name);
                 //constructs the error JSON object
                 errorObjects(name, ems, errorJSON, errorArray)
             }
@@ -81,7 +79,6 @@ function errorHandling(element, collection) {
         //Folder Documents
         //Test for no parenthesis
         else if (!rePtheChar.test(value)) {
-            console.log("HERE");
             //Test for whitespace
             whiteSpace(name, value, errorJSON, errorArray);
             //Test for special characters
@@ -272,7 +269,6 @@ function dashChar(name, value, errorJSON, errorArray) {
 function uscrChar(name, value, errorJSON, errorArray) {
     //Under score regex
     var reUscrChar = /[_]/g;
-    var envelope = /envelope/g;
     //If the input value contains an under score no error
     if (reUscrChar.test(value)) {
         errorArray.push(false);
@@ -306,13 +302,9 @@ function uscrChar(name, value, errorJSON, errorArray) {
     //Otherwise the input value is missing an under score character and an error is stored into the errorJSON with the
     // element name
     else{
-        // if the library index that we are checking is the envelope, then it does not need an underscore character
-        if(!envelope.test(value))
-        {
-            var ems = 'The ' + name + ' is missing an under score (_) character';
-            highlight(name);
-            errorObjects(name, ems, errorJSON, errorArray);
-        }
+        var ems = 'The ' + name + ' is missing an under score (_) character';
+        highlight(name);
+        errorObjects(name, ems, errorJSON, errorArray);
     }
 }
 
@@ -327,7 +319,7 @@ function uscrChar(name, value, errorJSON, errorArray) {
  * **********************************************/
 function envlChar(name, value, errorJSON, errorArray) {
     //Envelope regex
-    var reEnvlChar = /envelope/g;
+    var reEnvlChar = /envlope/g;
     //If the input value contains an envelope word
     if(reEnvlChar.test(value)){
         //Test for white space
@@ -361,7 +353,7 @@ function backChar(name, value, collection, errorJSON, errorArray) {
      * Two different types of back inputs types;
      * jobfolder: _back
      * largemaps: (back)
-     ***********************************************/
+    ***********************************************/
     if(collection == 'jobfolder'){
         //The jobfolder second under score character is followed by back characters
         var underScoreMax = uscrChar(name, value, errorJSON, errorArray);
@@ -445,7 +437,6 @@ function backChar(name, value, collection, errorJSON, errorArray) {
  * **********************************************/
 function dotChar(name, value, errorJSON, errorArray) {
     //Loops through all the input elements in the form
-    //console.log(form);
     for(var e = 0; e < form.length; e++) {
         //Input form Element name
         var elementName = form[e].name;
@@ -455,8 +446,6 @@ function dotChar(name, value, errorJSON, errorArray) {
         if(elementName == 'rbInASubfolder'){
             //If radio input value is 1
             if(elementValue == '1'){
-                console.log("Subfolder was selected.");
-                console.log("Elements value: " + elementValue);
                 //dot regex
                 var reDotChar = /\./g;
                 //dot flag test
@@ -475,8 +464,6 @@ function dotChar(name, value, errorJSON, errorArray) {
             }
             //If In a subfolder selected
             else{
-                console.log("Subfolder was not selected.");
-                console.log("Elements value: " + elementValue);
                 var reDotChar = /\./g;
                 var flag = reDotChar.test(value);
                 //If dot character not found in the input value the error is stored into the errorJSON

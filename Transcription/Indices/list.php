@@ -26,9 +26,6 @@ else header('Location: ../../');
     <!-- Bootstrap CDN Datatables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
 
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <title>Map Indices Transcription</title>
 
     <!-- Our Custom CSS -->
@@ -36,42 +33,40 @@ else header('Location: ../../');
 </head>
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
-<div class="container" id="main-container">
-    <div id="main">
-        <div class="row">
-            <div class="col">
-                <!-- Put Page Contents Here -->
-                <h1 class="text-center" id="page_title">Title</h1>
-                <hr>
-                <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Page Type</th>
-                        <th>Library Index</th>
-                        <th>Book Title</th>
-                        <th>Page #</th>
-                        <th>Needs Review</th>
-                        <th>Completed?</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <th></th>
-                        <th>Page Type</th>
-                        <th>Library Index</th>
-                        <th>Book Title</th>
-                        <th>Page #</th>
-                        <th>Needs Review</th>
-                        <th>Completed?</th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div> <!-- col -->
-        </div> <!-- row -->
-    </div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <!-- Put Page Contents Here -->
+            <h1 class="text-center" id="page_title">Title</h1>
+            <hr>
+            <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Page Type</th>
+                    <th>Library Index</th>
+                    <th>Book Title</th>
+                    <th>Page #</th>
+                    <th>Needs Review</th>
+                    <th>Completed?</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Page Type</th>
+                    <th>Library Index</th>
+                    <th>Book Title</th>
+                    <th>Page #</th>
+                    <th>Needs Review</th>
+                    <th>Completed?</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div> <!-- col -->
+    </div> <!-- row -->
 </div><!-- Container -->
 <?php include "../../Master/bandocat_footer.php" ?>
 
@@ -96,63 +91,15 @@ else header('Location: ../../');
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
-    /*$(document).ready(function() {
+    $(document).ready(function() {
 
         var docHeight = $(window).height();
         var footerHeight = $('#footer').height();
         var footerTop = $('#footer').position().top + footerHeight;
-        var bodyHeight = $('body').height();
 
-
-        if (footerTop < bodyHeight)
-        {
-            $('#footer').css('margin-top', 0 + (bodyHeight - footerTop) + 'px');
-        }
+        if (footerTop < docHeight)
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
     });
-
-    $('#main-container').resize(function () {
-        console.log("sup with it");
-        var docHeight = $(window).height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-        var bodyHeight = $('body').height();
-
-
-        if (footerTop < bodyHeight)
-        {
-            console.log("here");
-            $('#footer').css('margin-top', 0 + (bodyHeight - footerTop) + 'px');
-        }
-    });
-
-    function fixFooter()
-    {
-        console.log("sup with it");
-        var docHeight = $(window).height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-        var bodyHeight = $('body').height();
-
-
-        if (footerTop < bodyHeight)
-        {
-            console.log("here");
-            $('#footer').css('margin-top', 0 + (bodyHeight - footerTop) + 'px');
-        }
-    }
-
-    function onElementHeightChange(elm, callback){
-        var lastHeight = elm.clientHeight, newHeight;
-        (function run(){
-
-        })();
-    }
-
-
-    onElementHeightChange(document.body, function(){
-        alert('Body height changed');
-    });*/
-
 </script>
 
 <!-- This page's script -->

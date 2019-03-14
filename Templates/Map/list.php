@@ -26,14 +26,7 @@ $session = new SessionManager();
 
     <!-- Bootstrap CDN Datatables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
-
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <title>Edit/View <?php echo $config["DisplayName"]; ?></title>
-
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 
     <!-- END HTML HEADER -->
 </head>
@@ -97,17 +90,6 @@ $session = new SessionManager();
 
 <!-- Bootstrap JS files for datatables CDN -->
 <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-
-<script>
-    $(window).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-</script>
 
 <script>
     /**********************************************

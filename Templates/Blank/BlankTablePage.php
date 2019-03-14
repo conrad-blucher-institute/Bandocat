@@ -17,10 +17,6 @@ $session = new SessionManager();
     <!-- Bootstrap CDN Datatables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
 
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-
     <title>Blank Table Page</title>
 
     <!-- Our Custom CSS -->
@@ -96,7 +92,7 @@ $session = new SessionManager();
     });
 
     $( window ).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
+        var docHeight = $(window).height() -  - $('#megaMenu').height();
         var footerHeight = $('#footer').height();
         var footerTop = $('#footer').position().top + footerHeight;
 

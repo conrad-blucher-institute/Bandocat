@@ -11,119 +11,96 @@ $Render = new ControlsRender();
 <html lang="en">
 <!-- HTML HEADER -->
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Convert And Compress</title>
 
-    <!-- Bootstrap CDN Datatables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
-
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-    <title>Convert and Compress</title>
-
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
-
+    <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
+    <link rel = "stylesheet" type="text/css" href="../../ExtLibrary/DataTables-1.10.12/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../../ExtLibrary/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
 </head>
+<!-- END HEADER -->
+<!-- HTML BODY -->
 <body>
-<?php include "../../Master/bandocat_mega_menu.php"; ?>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <!-- Put Page Contents Here -->
-            <h1 class="text-center">Convert and Compress to PDF</h1>
-            <hr>
+<div id="wrap">
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <form id = "form" name="form" method="post">
-                                <label for="ddlCollection">Select Collection</label>
-                                <select name="ddlCollection" id="ddlCollection" class="form-control">
-                                    <!-- Renders the Dropdownlist with the collections -->
-                                    <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(2,3),true),null);?>
-                                </select>
-                                <button id="btnbatchjob" style="display:none; margin-top: 5px;" class="Collection_Button" onclick="onClickCalculate_batch(event,document.getElementById('ddlCollection').value)"> Start Batch Job</button>
-                            </form>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="ddlCollection2">Select Stage</label>
-                            <select name="ddlCollection2" id="ddlCollection2" class="form-control">
-                                <option value="0">Needs Review</option>
-                                <option value="1">Ready for PDF</option>
-                                <option value="2">Completed</option>
-                            </select>
-                        </div>
+    <div id="main">
+
+
+
+            <!-- HTML Header and Side Menu -->
+        <div id="divleft">
+                    <?php include '../../Master/header.php';
+                    include '../../Master/sidemenu.php';?>
+        </div>
+        <div id="divright">
+
+
+
+
+                    <h2 id="page_title">Convert and Compress To PDF</h2>
+					<!-- <figure id="loadingfigure" style='background: white;border-radius: 10px;box-shadow: 0 0 20px; blur-radius:10px; padding: 10px; position:absolute; top:40%;left:42%; display: none;' ><img src='../../Images/loading2.gif'> <figcaption><b> Loading. Please wait...</b></figcaption></figure> -->
+                    <table width="100%" id="table-header_right">
+                        
+                        <tr>
+                            <td style="margin-left: 45% ;font-size:14px" colspan="5%"
+                            <td style="float:left;font-size:14px" colspan="5%">
+                                <!-- Form responsible for the select drop down menu -->
+                                <form id = "form" name="form" method="post">
+                                    Select Collection:
+									<!-- <select name="ddlCollection" id="ddlCollection" onchange="Calculate(this.value)"> -->
+                                    <select name="ddlCollection" id="ddlCollection">
+
+                                        <!-- Renders the Dropdownlist with the collections -->
+                                        <?php $Render->GET_DDL_COLLECTION($DB->GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID(array(2,3),true),null);?>
+
+                                    </select>
+									<button id="btnbatchjob" style="display:none; margin-top: 5px;" class="Collection_Button" onclick="onClickCalculate_batch(event,document.getElementById('ddlCollection').value)"> Start Batch Job</button>
+                                </form>
+								
+                                <td>
+								
+                                <form id = "form2" name="form2" method="post">
+                                    Select Stage:
+                                    <!-- <select name="ddlCollection2" id="ddlCollection2" onchange="Calculate(document.getElementById('ddlCollection').value)"> -->
+									<select name="ddlCollection2" id="ddlCollection2">
+                                    <option value="0">Needs Review</option>
+                                    <option value="1">Ready for PDF</option>
+                                    <option value="2">Completed</option>
+                                    </select>
+                                </form>
+                                </td>
+
+                                <!-- Displays the count of maps -->
+                                <h4 id="txt_counter" ></h4>
+                        </tr>
+                    </table>
+
+                    <!-- Table responsible for displaying returned db items in a table format -->
+                    <div id="divscroller">
+                        <table id="dtable" class="display compact cell-border hover stripe" cellspacing="0" width="100%" data-page-length='20'>
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th width="50px"></th>
+                                <th id="tablequery" width="40px"></th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
-                </div>
-            </div>
 
-            <!-- Data table -->
-            <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>library Index</th>
-                    <th id="tablequery"></th>
-                </tr>
-                </thead>
-            </table>
-        </div> <!-- col -->
-    </div> <!-- row -->
-</div><!-- Container -->
-<?php include "../../Master/bandocat_footer.php" ?>
+        </div>
 
+    </div>
 
-<!-- Complete JavaScript Bundle -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<!-- JQuery UI cdn -->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-
-<!-- Datatables CDN -->
-<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-
-<!-- Bootstrap JS files for datatables CDN -->
-<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-
-<!-- Our custom javascript file -->
-<script type="text/javascript" src="../../Master/master.js"></script>
-
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
-<script>
-    $(document).ready(function() {
-
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        console.log(docHeight);
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $( window ).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-        {
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-        }
-    });
-</script>
-<!-- Page Level Plugin -->
+</div>
+<?php include '../../Master/footer.php'; ?>
+</body>
+<!-- END BODY -->
 <script>
     /**************************************
      * Calculate is responsible for counting
@@ -134,13 +111,14 @@ $Render = new ControlsRender();
      * The calculation is complete, output into
      * txt_counter
      * ************************************/
-    //
+//
 
 
 </script>
+
 <script>
     var selected = false;
-    var table;
+	 var table;
     /*******************************************
      * Function responsible for calling Jquery.
      * DataTables to render and load the database
@@ -150,7 +128,7 @@ $Render = new ControlsRender();
     {
         if(collection == "jobfolder")
         {
-            table = $('#dtable').DataTable( {
+             table = $('#dtable').DataTable( {
                 //Enables display of a processing indicator
                 "processing": true,
                 //Toggles serverside processing
@@ -207,18 +185,18 @@ $Render = new ControlsRender();
                 //Use ajax to pass data to the table. collection contains the db info
 
                 "ajax":
-                    {
-                        url: "convert_and_compress_processing.php?col=" +collection + "&stage=" + document.getElementById('ddlCollection2').value
-                        , dataType: "json"
-                        ,  complete: function() {
+                {
+                    url: "convert_and_compress_processing.php?col=" +collection + "&stage=" + document.getElementById('ddlCollection2').value
+                    , dataType: "json"
+                    ,  complete: function() {
+                    
+                }
+                    , error: function (xhr, error, thrown)
+                {
+                    alert("An error occurred while attempting to retrieve data via ajax.\n"+thrown );
+                }
 
-                        }
-                        , error: function (xhr, error, thrown)
-                        {
-                            alert("An error occurred while attempting to retrieve data via ajax.\n"+thrown );
-                        }
-
-                    },
+                },
 
 
 
@@ -229,13 +207,13 @@ $Render = new ControlsRender();
         }
         if(collection == "blucherfieldbook")
         {
-
-            table = $('#dtable').DataTable( {
+			
+             table = $('#dtable').DataTable( {
                 //Enables display of a processing indicator
                 "oLanguage" :
-                    {
-                        "sProcessing": "<figure style='background: white;border-radius: 10px;box-shadow: 0 0 20px; blur-radius:10px; padding: 10px; position:absolute; top:40%;left:42%'><img src='../../Images/loading2.gif'> <figcaption><b> Loading. Please wait...</b></figcaption></figure>"
-                    },
+                {
+                    "sProcessing": "<figure style='background: white;border-radius: 10px;box-shadow: 0 0 20px; blur-radius:10px; padding: 10px; position:absolute; top:40%;left:42%'><img src='../../Images/loading2.gif'> <figcaption><b> Loading. Please wait...</b></figcaption></figure>"
+                },
                 "processing": true,
                 //Toggles serverside processing
                 "serverSide": true,
@@ -252,7 +230,7 @@ $Render = new ControlsRender();
 
                             "render": function ( data, type, row )
                             {
-
+								
                                 //NEEDS REVIEW
 
                                 if(document.getElementById('ddlCollection2').value == 0)
@@ -286,19 +264,19 @@ $Render = new ControlsRender();
                 //Use ajax to pass data to the table. collection contains the db info
 
                 "ajax":
-                    {
-                        url: "convert_and_compress_processing.php?col=" +collection + "&stage=" + document.getElementById('ddlCollection2').value
-                        , dataType: "json"
-                        ,  complete: function() {
+                {
+                    url: "convert_and_compress_processing.php?col=" +collection + "&stage=" + document.getElementById('ddlCollection2').value
+                    , dataType: "json"
+                    ,  complete: function() {
+					
+                   // document.getElementById("loader_2").style.visibility = "hidden";
+                }
+                    , error: function (xhr, error, thrown)
+                {
+                    alert("An error occurred while attempting to retrieve data via ajax.\n"+thrown );
+                }
 
-                            // document.getElementById("loader_2").style.visibility = "hidden";
-                        }
-                        , error: function (xhr, error, thrown)
-                        {
-                            alert("An error occurred while attempting to retrieve data via ajax.\n"+thrown );
-                        }
-
-                    },
+                },
 
 
 
@@ -337,33 +315,33 @@ $Render = new ControlsRender();
             {
 
 
-                case "": break;
-
-                default:
-                {
-                    SSP_DataTable($("#ddlCollection").val());
-
-
-                }
+				case "": break;
+              
+                default: 
+				{
+					SSP_DataTable($("#ddlCollection").val());
+					
+			
+				}
 
 
 
             }
         });
-
+		
         $( "#ddlCollection2" ).change(function()
         {
-
-            if($("#ddlCollection2").val() == 1) // Ready For PDF
-            {
-                document.getElementById("btnbatchjob").style.display = "block";
-            }
-            else
-            {
-                document.getElementById("btnbatchjob").style.display = "none";
-            }
+		
+			if($("#ddlCollection2").val() == 1) // Ready For PDF
+			{
+				document.getElementById("btnbatchjob").style.display = "block";
+			}
+			else
+			{
+				document.getElementById("btnbatchjob").style.display = "none";
+			}
             switch ($("#ddlCollection").val())
-            {
+            {			
                 case "": break;
                 default: SSP_DataTable($("#ddlCollection").val());
 
@@ -372,11 +350,11 @@ $Render = new ControlsRender();
         });
 
     });
-    function onClickCalculate(event,Query)
-    {
-        //console.log("test");
-
-        // event.path[2].firstChild.textContent;
+    function onClickCalculate(event,Query) 
+	{
+		//console.log("test");
+		
+       // event.path[2].firstChild.textContent;
         //The above event is passed with the "onclick" function each row has
         //event.path points to 14 things passed into the event.
         //event.path[2] points to the TR (row) of the event being fired
@@ -386,42 +364,42 @@ $Render = new ControlsRender();
 
 
         //document.getElementById("loader_2").style.visibility = "visible";
-        // alert(tableAADataForContributors.fnGetPosition( $(this).closest('tr')[0]));
-        if($("#ddlCollection").val() == "jobfolder")
+       // alert(tableAADataForContributors.fnGetPosition( $(this).closest('tr')[0]));
+	    if($("#ddlCollection").val() == "jobfolder")
         {
-            console.log("IT IS JOBFOLDER BRUH");
-            var Column = "needsreview";
+			console.log("IT IS JOBFOLDER BRUH");
+			var Column = "needsreview";
             var filename = event.path[2].firstChild.textContent;
-
-            var datatable = table.rows().data();
-
-            var folderArray = [];
-            var tempbool = ["1","2"];
-
-            for(var i = 0; i < datatable.length; i++)
+		
+			var datatable = table.rows().data();
+           
+		    var folderArray = [];
+			var tempbool = ["1","2"];
+			
+			for(var i = 0; i < datatable.length; i++)
             {
                 var folder = datatable[i][1];
                 folderArray.push(folder);
-                console.log("Length" + folderArray.length);
+				console.log("Length" + folderArray.length);
             }
-
+			
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function()
             {
                 if (this.readyState == 4 && this.status == 200)
                 {
-                    // alert(xmlhttp.responseText);
-                    //count++;
-                    //console.log("Finished Item " + count );
-                    //console.log("Starting Next Item... ");
-                    JF_LOOP(Query,tempbool, 0);
-                    // document.getElementById("txt_counter").innerHTML = this.responseText;
+                   // alert(xmlhttp.responseText);
+					//count++;
+					//console.log("Finished Item " + count );
+					//console.log("Starting Next Item... ");
+					JF_LOOP(Query,tempbool, 0);
+                   // document.getElementById("txt_counter").innerHTML = this.responseText;
                 }
-
+               
 
             };
 
-
+			
             xmlhttp.open("GET", "JF_QueryHelper.php?col=" + Query + "&column=" + Column + "&foldername=" + tempbool[0] + "&stage=2", true);
             xmlhttp.send();
 
@@ -430,100 +408,100 @@ $Render = new ControlsRender();
             selected = true;
 
             SSP_DataTable($("#ddlCollection").val());
-        }
-        if($("#ddlCollection").val() == "blucherfieldbook")
+		}
+		if($("#ddlCollection").val() == "blucherfieldbook")
         {
-            var Column = "needsreview";
+			var Column = "needsreview";
             var BookTitle = event.path[2].firstChild.textContent;
-            //document.getElementById("loadingfigure").style.display = "block";
-            /* var datatable = table.rows().data();
+			//document.getElementById("loadingfigure").style.display = "block";
+			/* var datatable = table.rows().data();
             console.log("HELLO");
-            var bookArray = [];
-            var tempbool = ["5","14"];
-
-            for(var i = 0; i < datatable.length; i++)
+		    var bookArray = [];
+			var tempbool = ["5","14"];
+			
+			for(var i = 0; i < datatable.length; i++)
             {
                 var book = datatable[i][1];
                 bookArray.push(book);
-                console.log("Length" + bookArray.length);
+				console.log("Length" + bookArray.length);
             }
-     */
-            var xmlhttp = new XMLHttpRequest();
+	 */
+			var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function()
             {
                 if (this.readyState == 4 && this.status == 200)
                 {
-                    // alert(xmlhttp.responseText);
-                    //count++;
-                    //console.log("Finished Item " + count );
-                    //console.log("Starting Next Item... ");
-                    LOOP(Query,BookTitle, 0);
-                    // document.getElementById("txt_counter").innerHTML = this.responseText;
+                   // alert(xmlhttp.responseText);
+					//count++;
+					//console.log("Finished Item " + count );
+					//console.log("Starting Next Item... ");
+					 LOOP(Query,BookTitle, 0);
+                   // document.getElementById("txt_counter").innerHTML = this.responseText;
                 }
-
+               
 
             };
 
-
+			
             xmlhttp.open("GET", "FB_QueryHelper.php?col=" + Query + "&column=" + Column + "&booktitle=" + BookTitle + "&stage=2", true);
             xmlhttp.send();
 
 
 
-
+          
             selected = true;
 
             selected = true;
 
             SSP_DataTable($("#ddlCollection").val());
-        }
+		}
         if (Query.length == 0)
         {
             document.getElementById("txt_counter").innerHTML = "";
             return;
         }
-
+       
     }
-    function onClickCalculate_batch(event,Query)
-    {
-
+	function onClickCalculate_batch(event,Query) 
+	{
+		
 
         event.preventDefault();
-        if($("#ddlCollection").val() == "jobfolder")
+	    if($("#ddlCollection").val() == "jobfolder")
         {
-            console.log("IT IS JOBFOLDER BRUH");
-            var Column = "needsreview";
+			console.log("IT IS JOBFOLDER BRUH");
+			var Column = "needsreview";
             var filename = event.path[2].firstChild.textContent;
-
-            var datatable = table.rows().data();
-
-            var folderArray = [];
-            var tempbool = ["1","2"];
-
-            for(var i = 0; i < datatable.length; i++)
+		
+			var datatable = table.rows().data();
+           
+		    var folderArray = [];
+			var tempbool = ["1","2"];
+			
+			for(var i = 0; i < datatable.length; i++)
             {
                 var folder = datatable[i][1];
                 folderArray.push(folder);
-                console.log("Length" + folderArray.length);
+				console.log("Length" + folderArray.length);
             }
-
+			
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function()
             {
                 if (this.readyState == 4 && this.status == 200)
                 {
-                    // alert(xmlhttp.responseText);
-                    //count++;
-                    //console.log("Finished Item " + count );
-                    //console.log("Starting Next Item... ");
-                    JF_LOOP(Query,tempbool, 0);
-                    // document.getElementById("txt_counter").innerHTML = this.responseText;
+                   // alert(xmlhttp.responseText);
+					//count++;
+					//console.log("Finished Item " + count );
+					//console.log("Starting Next Item... ");
+					JF_LOOP(Query,tempbool, 0);
+                   // document.getElementById("txt_counter").innerHTML = this.responseText;
                 }
-
+               
 
             };
 
-
+			
             xmlhttp.open("GET", "JF_QueryHelper.php?col=" + Query + "&column=" + Column + "&foldername=" + tempbool[0] + "&stage=2", true);
             xmlhttp.send();
 
@@ -532,127 +510,127 @@ $Render = new ControlsRender();
             selected = true;
 
             SSP_DataTable($("#ddlCollection").val());
-        }
-        if($("#ddlCollection").val() == "blucherfieldbook")
+		}
+		if($("#ddlCollection").val() == "blucherfieldbook")
         {
-            //document.getElementById("loadingfigure").style.display = "block";
-            var Column = "needsreview";
-            var BookTitle = event.path[2].firstChild.textContent;
-            var datatable = table.rows().data();
-
-            var bookArray= [];
-            for(var i = 0; i < datatable.length; i++)
+			//document.getElementById("loadingfigure").style.display = "block";
+			var Column = "needsreview";
+            var BookTitle = event.path[2].firstChild.textContent;		
+			var datatable = table.rows().data();         
+		  
+			var bookArray= [];
+			for(var i = 0; i < datatable.length; i++)
             {
                 var book = datatable[i][1];
                 bookArray.push(book);
-                console.log("Length" + bookArray.length);
+				console.log("Length" + bookArray.length);
             }
-
-            var xmlhttp = new XMLHttpRequest();
+	
+			var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function()
             {
                 if (this.readyState == 4 && this.status == 200)
                 {
-                    // alert(xmlhttp.responseText);
-                    //count++;
-                    //console.log("Finished Item " + count );
-                    //console.log("Starting Next Item... ");
-                    LOOP(Query,bookArray, 0);
-                    // document.getElementById("txt_counter").innerHTML = this.responseText;
+                   // alert(xmlhttp.responseText);
+					//count++;
+					//console.log("Finished Item " + count );
+					//console.log("Starting Next Item... ");
+					 LOOP(Query,bookArray, 0);
+                   // document.getElementById("txt_counter").innerHTML = this.responseText;
                 }
-
+               
 
             };
 
-
+			
             xmlhttp.open("GET", "FB_QueryHelper.php?col=" + Query + "&column=" + Column + "&booktitle=" + bookArray[0] + "&stage=2", true);
             xmlhttp.send();
 
 
 
-
+          
             selected = true;
 
             SSP_DataTable($("#ddlCollection").val());
-        }
+		}
         if (Query.length == 0)
         {
             document.getElementById("txt_counter").innerHTML = "";
             return;
         }
-
+       
     }
-    function LOOP(Query,books, index)
-    {
-        var Column = "needsreview";
-        var BookTitle = books[index + 1];
-        if (BookTitle == null)
-        {
-            return false;
-        }
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function()
-        {
-            if (this.readyState == 4 && this.status == 200)
+	function LOOP(Query,books, index) 
+	{		
+            var Column = "needsreview";
+            var BookTitle = books[index + 1];
+			if (BookTitle == null)
+			{
+				return false;
+			}
+          
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function()
             {
+                if (this.readyState == 4 && this.status == 200)
+                {
+               
+					LOOP(Query,books, index + 1);
+					//document.getElementById("loadingfigure").style.display = "none";
+                }          
+            };
 
-                LOOP(Query,books, index + 1);
-                //document.getElementById("loadingfigure").style.display = "none";
-            }
-        };
+			  
+            xmlhttp.open("GET", "FB_QueryHelper.php?col=" + Query + "&column=" + Column + "&booktitle=" + books[index + 1] + "&stage=2", true);
+            xmlhttp.send();
 
+			 selected = true;
 
-        xmlhttp.open("GET", "FB_QueryHelper.php?col=" + Query + "&column=" + Column + "&booktitle=" + books[index + 1] + "&stage=2", true);
-        xmlhttp.send();
+            SSP_DataTable($("#ddlCollection").val());
 
-        selected = true;
+         
 
-        SSP_DataTable($("#ddlCollection").val());
-
-
-
-
+        
         //HMM
     }
-    function JF_LOOP(Query,folders, index)
-    {
-
-
-        var Column = "needsreview";
-        var FolderName = folders[index + 1];
-        if (FolderName == null)
-        {
-            return false;
-        }
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function()
-        {
-            if (this.readyState == 4 && this.status == 200)
+	function JF_LOOP(Query,folders, index) 
+	{
+   
+			
+            var Column = "needsreview";
+            var FolderName = folders[index + 1];
+			if (FolderName == null)
+			{
+				return false;
+			}
+          
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function()
             {
+                if (this.readyState == 4 && this.status == 200)
+                {
+                 
+					JF_LOOP(Query,folders, index + 1);
+                  
+                }
+            
 
-                JF_LOOP(Query,folders, index + 1);
+            };
 
-            }
+			  
+            xmlhttp.open("GET", "JF_QueryHelper.php?col=" + Query + "&column=" + Column + "&foldername=" + folders[index + 1] + "&stage=2", true);
+            xmlhttp.send();
 
+			 selected = true;
 
-        };
+            SSP_DataTable($("#ddlCollection").val());
 
+         
 
-        xmlhttp.open("GET", "JF_QueryHelper.php?col=" + Query + "&column=" + Column + "&foldername=" + folders[index + 1] + "&stage=2", true);
-        xmlhttp.send();
-
-        selected = true;
-
-        SSP_DataTable($("#ddlCollection").val());
-
-
-
-
+        
         //HMM
     }
-
+	
 </script>
-</body>
+
 </html>

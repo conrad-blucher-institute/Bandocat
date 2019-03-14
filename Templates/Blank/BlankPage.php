@@ -13,10 +13,6 @@ $session = new SessionManager();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <title>Blank Page</title>
 
     <!-- Our Custom CSS -->
@@ -30,6 +26,8 @@ $session = new SessionManager();
             <!-- Put Page Contents Here -->
             <h1 class="text-center">Blank Page</h1>
             <hr>
+
+
         </div> <!-- col -->
     </div> <!-- row -->
 </div><!-- Container -->
@@ -50,7 +48,7 @@ $session = new SessionManager();
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
-    /*$(document).ready(function() {
+    $(document).ready(function() {
 
         var docHeight = $(window).height() - $('#megaMenu').height();
         console.log(docHeight);
@@ -62,7 +60,7 @@ $session = new SessionManager();
     });
 
     $( window ).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
+        var docHeight = $(window).height() -  - $('#megaMenu').height();
         var footerHeight = $('#footer').height();
         var footerTop = $('#footer').position().top + footerHeight;
 
@@ -70,7 +68,7 @@ $session = new SessionManager();
         {
             $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
         }
-    });*/
+    });
 </script>
 </body>
 </html>

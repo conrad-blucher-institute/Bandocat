@@ -30,10 +30,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <title>Input Form</title>
 
     <!-- Our Custom CSS -->
@@ -60,7 +56,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" required readonly />
+                                            <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" disabled required />
                                         </div>
                                     </div>
                                     <!-- Document Title -->
@@ -122,7 +118,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtMapScale">Map Scale:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" name = "txtMapScale" id = "txtMapScale" value=""  />
+                                            <input type = "text" class="form-control" name = "txtMapScale" id = "txtMapScale" placeholder="N/A"  />
                                         </div>
                                     </div>
                                     <!-- Document Author -->
@@ -156,11 +152,11 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label">Needs Review:</label>
                                         <div class="col-sm-8">
                                             <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" value="1" checked/>
+                                                <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" value="1" checked />
                                                 <label class="form-check-label" for="rbNeedsReview_yes">Yes</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_no" value="0"  />
+                                                <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_no" value="0" />
                                                 <label class="form-check-label" for="rbNeedsReview_no">No</label>
                                             </div>
                                         </div>
@@ -170,18 +166,18 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label">Has North Arrow:</label>
                                         <div class="col-sm-8">
                                             <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "rbHasNorthArrow" id = "rbHasNorthArrow_yes" value="1" checked/>
+                                                <input type = "radio" class="form-check-input" name = "rbHasNorthArrow" id = "rbHasNorthArrow_yes" value="1" />
                                                 <label class="form-check-label" for="rbHasNorthArrow_yes">Yes</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "rbHasNorthArrow" id = "rbHasNorthArrow_no" value="0"  />
+                                                <input type = "radio" class="form-check-input" name = "rbHasNorthArrow" id = "rbHasNorthArrow_no" value="0" checked />
                                                 <label class="form-check-label" for="rbHasNorthArrow_no">No</label>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Has Street -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has Street:</label>
+                                        <label class="col-sm-4 col-form-label">Has Streets:</label>
                                         <div class="col-sm-8">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbHasStreets" id = "rbHasStreets_yes" value="1" />
@@ -202,7 +198,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                                 <label class="form-check-label" for="rbHasPOI_yes">Yes</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "rbHasPOI" id = "rbHasPOI_no" value="0"  checked/>
+                                                <input type = "radio" class="form-check-input" name = "rbHasPOI" id = "rbHasPOI_no" value="0" checked />
                                                 <label class="form-check-label" for="rbHasPOI_no">No</label>
                                             </div>
                                         </div>
@@ -269,7 +265,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                             </div>
                                         <?php endif; ?>
                                         <?php if($collection == "pennyfenner") : ?>
-                                            <label class="col-sm-4 col-form-label" for="txtJobNumber">Job Number</label>
+                                            <label class="col-sm-4 col-form-label" for="txtJobNumber">Job Number:</label>
                                             <div class="col-sm-8">
                                                 <input type = "text" class="form-control" name = "txtJobNumber" id = "txtJobNumber" value=""/>
                                             </div>
@@ -278,21 +274,21 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Field Book Number -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtFieldBookNumber">Field Book Number</label>
+                                        <label class="col-sm-4 col-form-label" for="txtFieldBookNumber">Field Book Number:</label>
                                         <div class="col-sm-8">
                                             <input type = "text" class="form-control" name = "txtFieldBookNumber" id = "txtFieldBookNumber" value=""/>
                                         </div>
                                     </div>
                                     <!-- Field Book Page -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtFieldBookPage">Field Book Page</label>
+                                        <label class="col-sm-4 col-form-label" for="txtFieldBookPage">Field Book Page:</label>
                                         <div class="col-sm-8">
                                             <input type = "text" class="form-control" name = "txtFieldBookPage" id = "txtFieldBookPage" value="" />
                                         </div>
                                     </div>
                                     <!-- Document Medium -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlMedium">Document Medium</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlMedium">Document Medium:</label>
                                         <div class="col-sm-8">
                                             <select id="ddlMedium" name="ddlMedium" class="form-control" required>
                                                 <!-- GET MAP MEDIUM FOR DDL-->
@@ -304,7 +300,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Readability -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlReadability">Readability</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlReadability">Readability:</label>
                                         <div class="col-sm-8">
                                             <select id="ddlReadability" name="ddlReadability" class="form-control">
                                                 <?php
@@ -315,7 +311,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Rectifiability -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlRectifiability">Rectifiability</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlRectifiability">Rectifiability:</label>
                                         <div class="col-sm-8">
                                             <select id="ddlRectifiability" name="ddlRectifiability" class="form-control">
                                                 <?php
@@ -329,8 +325,8 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label">Front Scan:</label>
                                         <div class="col-sm-8">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
-                                                <label class="custom-file-label" for="fileUpload">Choose file</label>
+                                                <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required/>
+                                                <label class="custom-file-label" for="fileUpload"></label>
                                             </div>
                                         </div>
                                     </div>
@@ -339,8 +335,8 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label">Back Scan:</label>
                                         <div class="col-sm-8">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" />
-                                                <label class="custom-file-label" for="fileUploadBack">Choose file</label>
+                                                <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" onchange="backUpload()" />
+                                                <label class="custom-file-label" for="fileUploadBack"></label>
                                             </div>
                                         </div>
                                     </div>
@@ -348,23 +344,22 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="txtComments" class="col-form-label">Comments:</label>
-                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" ></textarea>
+                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces Co., Texas."></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Buttons -->
                             <div class="form row">
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
-                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/>
+                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" class="btn btn-secondary"/>
                                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
                                         <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                         <span>
                                     <?php if($session->hasWritePermission())
-                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Upload' class='btn btn-primary'/>";}
+                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Submit' class='btn btn-primary'/>";}
                                     ?>
                                     </div>
                                 </div>
@@ -395,16 +390,8 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
     $(document).ready(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
 
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $(window).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
+        var docHeight = $(window).height();
         var footerHeight = $('#footer').height();
         var footerTop = $('#footer').position().top + footerHeight;
 
@@ -494,12 +481,45 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         }
     });
 
-    $('#fileUpload').change(function() {
-        var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
-        filename = filename.replace(/\.tif/, '');
-        $('#txtLibraryIndex').val(filename);
-    });
+    //------------------------------------------------------- SECTION BY JOSE BELOW ---------------------------------------------------------------------------
 
+    // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
+    // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
+    document.getElementById("fileUpload").onchange = frontUpload;
+    function frontUpload() {
+        var fileName = this.value;
+        window.fileName = fileName;
+
+        if ((fileName.includes("back") || fileName.includes("Back")) === true) {
+            alert('Invalid file. Front scan file cannot have the word back');
+            document.getElementById('fileUpload').value = null;
+            document.getElementById('txtLibraryIndex').value = null;
+        }
+        else{
+            console.log('Valid File');
+            document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.'));
+        }
+    }
+
+    document.getElementById("fileUploadBack").onchange = backUpload;
+    function backUpload() {
+        var backFileName = this.value;
+        window.backFileName = backFileName;
+
+        if ((backFileName.includes("back") || backFileName.includes("Back")) === false) {
+            alert('Invalid file. Back scan file needs to have the word back');
+            document.getElementById('fileUploadBack').value = null;
+        }
+        else{
+            console.log('Valid File');
+        }
+    }
+
+    function resetPage(){
+        window.location.reload();
+    }
+
+    //------------------------------------------------------- SECTION BY JOSE ABOVE ---------------------------------------------------------------------------
 
 </script>
 </body>

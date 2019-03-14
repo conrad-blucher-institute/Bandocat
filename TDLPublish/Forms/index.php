@@ -27,9 +27,6 @@ $ini_dir = "BandoCat_config\\tdlconfig.ini";
     <!-- Bootstrap CDN Datatables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
 
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <title>TDL Publishing</title>
 
     <!-- Our Custom CSS -->
@@ -105,8 +102,18 @@ $ini_dir = "BandoCat_config\\tdlconfig.ini";
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
+    /*$(document).ready(function() {
+
+        var docHeight = $(window).height();
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight)
+            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+    });
+
     $( window ).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
+        var docHeight = $(window).height();
         var footerHeight = $('#footer').height();
         var footerTop = $('#footer').position().top + footerHeight;
 
@@ -114,7 +121,7 @@ $ini_dir = "BandoCat_config\\tdlconfig.ini";
         {
             $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
         }
-    });
+    });*/
 </script>
 <script>
     /*******************************************

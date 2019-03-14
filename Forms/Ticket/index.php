@@ -4,9 +4,7 @@ include '../../Library/SessionManager.php';
 $session = new SessionManager();
 if($session->isAdmin()) {
     require('../../Library/DBHelper.php');
-    require('../../Library/Ticket.php');
     $DB = new DBHelper();
-    $ticket = new Ticket();
 }
 else header('Location: ../../');
 ?>
@@ -25,9 +23,6 @@ else header('Location: ../../');
     <!-- Bootstrap CDN Datatables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" crossorigin="anonymous">
 
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <title>Ticket</title>
 
     <!-- Our Custom CSS -->
@@ -41,29 +36,25 @@ else header('Location: ../../');
             <!-- Put Page Contents Here -->
             <h1 class="text-center" id="page_title">Tickets</h1>
             <hr>
-            <table id="dtable" class="table table-bordered table-hover" width="100%" cellspacing="0" data-page-length='20'>
+            <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
                 <thead>
                 <tr>
                     <th></th>
                     <th>Collection</th>
-                    <th>Library Index</th>
-                    <th>Date Submitted</th>
-                    <th>Solved</th>
-                    <th>Last Seen</th>
-                    <th>Error</th>
+                    <th>Subject / Library Index</th>
+                    <th>Submitted Date</th>
+                    <th>Submitter</th>
                     <th>Status</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                     <th></th>
-                    <th>Collection</th>
-                    <th>Library Index</th>
-                    <th>Date Submitted</th>
-                    <th>Solved</th>
-                    <th>Last Seen</th>
-                    <th>Error</th>
-                    <th>Status</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </tfoot>
             </table>
@@ -91,164 +82,133 @@ else header('Location: ../../');
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
 
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
+<!-- Page Level Script -->
 <script>
     $(document).ready(function() {
+        var docID = '';
 
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $(window).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-</script>
-<!-- Page's local script -->
-<script>
-    $(document).ready(function() {
-
-
-        //hide first column (DocID)
-        //table.column(0).visible(true);
-        //showTable();
-        showTable();
-    });
-
-    function showTable()
-    {
-        var counter = 0;
-        // Setup - add a text input to each footer cell
-        $('#dtable tfoot th').each( function () {
-            var title = $(this).text();
-            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-        } );
-
-        // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
-        var table = $('#dtable').DataTable({
+        var table = $('#dtable').DataTable( {
             "processing": true,
-            "serverside": true,
-            "lengthMenu": [20, 40, 60, 80, 100],
-            "destroy": true,
-            "order": [[ 6, "desc" ], [2, "desc"]],
-            /*"initComplete": function () {
-                console.log("Table done loading...");
-            },*/
-            // Getting select statement
-            "ajax": "./table_processing.php",
-            "columns": [
-                {"data": 'ticketID'},
-                {"data": 'displayname'},
+            "serverSide": true,
+            "lengthMenu": [20, 40 , 60, 80, 100],
+            "bStateSave": false,
+            "aaSorting": [ [5,'asc'], [3,'desc'] ],
+            "columnDefs": [
+                //column Ticket Index: Replace with Hyperlink
                 {
-                    "data": 'subject',
-                    "render": function(data, type, row, meta) {
-                        //console.log(data);
-                        //console.log(type);
-                        console.log(row);
-                        //console.log(meta);
-                        //console.log(row);
-                        if(type === "display" && row["jsonlink"] !== null)
-                        {
-                            data = "";
-                            var json = JSON.parse(row["jsonlink"]);
-
-                            if(json.length === 1)
-                            {
-                                data += createLink(json[0], row["templateID"], row["name"]);
-                            }
-
-                            else
-                            {
-                                for(var i = 0; i < json.length; i++)
-                                {
-                                    // Last one
-                                    if(i === json.length - 1)
-                                    {
-                                        data += createLink(json[i], row["templateID"], row["name"]);
-                                    }
-
-                                    // Not last
-                                    else
-                                    {
-                                        data += createLink(json[i], row["templateID"], row["name"]) + "<br>";
-                                    }
-                                }
-                            }
-                        }
-                        return data;
-                    }
+                    "render": function ( data, type, row ) {
+                        return "<a href='ticketview.php?id=" + data + "' target='_blank' >View</a>" ;
+                    },
+                    "targets": 0
                 },
-                {"data": 'submissiondate'},
-                {"data": 'solveddate'},
-                {"data": 'lastseen'},
-                {"data": 'error'},
+                //column Collection
                 {
-                    "data": 'status',
-                    "render":function(data, type, row, meta)
-                    {
-                        data = parseInt(data);
-                        if(data === 1)
-                        {
-                            return "Closed";
+                    "render": function ( data, type, row ) {
+                        //Object that stores the collection name
+                        colData = data;
+                        return data;
+                    },
+                    "targets": 1
+                },
+                //column Subject
+                {
+                    "render": function ( data, type, row ) {
+                        //Stores the collection name to the subject collection variable
+                        switch(colData) {
+                            case 'Blucher Maps':
+                                var dbCol = 'bluchermaps';
+                                var file = 'Map';
+                                break;
+                            case 'Green Maps':
+                                var dbCol = 'greenmaps';
+                                var file = 'Map';
+                                break;
+                            case 'Job Folder':
+                                var dbCol = 'jobfolder';
+                                var file = 'Folder';
+                                break;
+                            case 'Blucher Field Book':
+                                var dbCol = 'blucherfieldbook';
+                                var file = 'FieldBook';
+                                break;
+                            case 'PennyFenner':
+                                var dbCol = 'pennyfenner';
+                                var file = 'Map';
+                                break;
+                            case 'Map Indices':
+                                var dbCol = 'mapindices';
+                                var file = 'Indices';
+                                break;
                         }
+                        //Object with subject collection and subject/library index
+                        var subCol = {"data":[{"subjectCol": dbCol, "subject": data}]};
+                        console.log(subCol);
+                        $.ajax({
+                            url: 'ticketLink.php',
+                            type: 'post',
+                            data: subCol,
+                            success: function (id) {
+                                id = JSON.parse(id);
+                                var td = $('td:contains('+data+')')[0];
+                                if(id.data[0][0] != false)
+                                    $(td).html("<a href='../../Templates/" + file + "/review.php?doc=" + id.data[0][0] + "&col=" + dbCol + "' target='_blank' >"+ id.data[0][1] +"</a>");
+                            }
+                        });
+                        return data
+                    },
+                    "targets": 2
+                },
+                //column : Submitted Date
+                {
+                    "render": function ( data, type, row ) {
+                        return data;
+                    },
+                    "targets": 3
+                },
+                //column : Poster
+                {
+                    "render": function ( data, type, row ) {
+                        return data;
+                    },
+                    "targets": 4
+                },
+                //column : Status
+                {
+                    "render": function ( data, type, row ) {
+                        if(data == 1)
+                            return 'Closed';
+                        return 'Open';
+                    },
+                    "targets": 5
+                },
 
-                        else
-                        {
-                            return "Open";
-                        }
-                    }
-                }
             ],
+            "ajax": "list_processing.php",
             "initComplete": function() {
                 this.api().columns().every( function () {
                     var column = this;
                     switch(column[0][0]) //column number
                     {
-                        case 0:
-                            break;
-
-                        //search text box
-                        case 1:
-                            var that = this;
-
-                            $(column.footer()).empty();
-                            // Create the select list and search operation
-                            var select = $('<select class="form-control form-control-sm" />')
-                                .appendTo(
-                                    this.footer()
-                                )
+                        //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
+                        case 5: //Status column
+                            var select = $('<select style="width:100%"><option value="">Filter...</option><option value="0">Open</option><option value="1">Closed</option></select>')
+                                .appendTo( $(column.footer()).empty() )
                                 .on( 'change', function () {
-                                    that
-                                        .search( $(this).val() )
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+
+                                    column
+                                        .search(val)
                                         .draw();
                                 } );
-
-                            select.append($('<option value="">Filter...</option>'));
-
-                            // Get the search data for the first column and add to the select list
-                            this
-                                .cache( 'search' )
-                                .sort()
-                                .unique()
-                                .each( function ( d ) {
-                                    console.log(d);
-                                    select.append( $('<option value="'+d+'">'+d+'</option>') );
-                                } );
                             break;
+                        //search text box
+                        case 1:
                         case 2:
                         case 3:
                         case 4:
-                        // Search text box for all columns between 1 - 5
-                        case 5:
-                            var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search..." value=""></input>')
+                            var input = $('<input type="text" style="width:100%" placeholder="Search..." value=""></input>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on( 'keyup change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
@@ -259,78 +219,32 @@ else header('Location: ../../');
                                         .search(val)
                                         .draw();
                                 } );
-                            break;
-                        case 6:
-                            var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search..." value=""></input>')
-                                .appendTo( $(column.footer()).empty() )
-                                .on( 'keyup change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                    );
-
-                                    column
-                                        .search(val)
-                                        .draw();
-                                } );
-                            break;
-                        //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
-                        case 7: //Status column
-                            var select = $('<select class="form-control form-control-sm"><option value="">Filter...</option><option value="0">Open</option><option value="1">Closed</option></select>')
-                                .appendTo( $(column.footer()).empty() )
-                                .on( 'change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                    );
-
-                                    column
-                                        .search(val)
-                                        .draw();
-                                } );
-                            break;
-                        default:
-
                             break;
                     }
                 } );
+            },
+        } );
+
+        //hide first column (DocID)
+        table.column(0).visible(true);
+
+        //sorted by submission date
+//            table
+//                .column( '3:visible' )
+//                .order( 'desc' )
+//                .draw();
+
+        // select row on single click
+        $('#dtable tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
             }
-        });
-
-        // When the user clicks on a row on the data table
-        /*$('#dtable tbody').on('click', 'tr', function () {
-            var data = table.row( this ).data();
-            alert( 'You clicked on '+data+'\'s row' );
-            console.log(data);
-        } );*/
-    }
-
-    function createLink(json, templateID, collection)
-    {
-        var tag = "";
-        templateID = parseInt(templateID);
-        // Getting the template
-        switch(templateID)
-        {
-            // Map
-            case 1:
-                tag = '<a href="../../Templates/Map/review.php?doc=' + json["documentID"] + '&col=' + collection + '">' + json["libraryIndex"] + '</a>';
-                break;
-            // Folder
-            case 2:
-                tag = '<a href="../../Templates/Folder/review.php?doc=' + json["documentID"] + '&col=' + collection +'">' + json["libraryIndex"] + '</a>';
-                break;
-            // Field Book
-            case 3:
-                tag = '<a href="../../Templates/FieldBook/review.php?doc=' + json["documentID"] + '&col=' + collection + '">' + json["libraryIndex"] + '</a>';
-                break;
-            // Indices
-            case 4:
-                //tags.push(data);
-                break;
-            default:
-                break;
-        }
-        return tag;
-    }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        } );
+    });
 </script>
 </body>
 </html>
