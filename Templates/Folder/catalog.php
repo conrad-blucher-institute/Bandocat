@@ -2,6 +2,7 @@
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
 var_dump($session);
+$userRole = $session->getRole();
 //get collection name from passed variables col and doc
 if(isset($_GET['col']) && isset($_GET['doc']))
 {
@@ -41,7 +42,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body>
+<body onload="adminValidation()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container">
     <div class="row">
@@ -97,12 +98,12 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                 <label class="col-sm-4 col-form-label">Needs Review:</label>
                                                 <div class="col-sm-8">
                                                     <div class="form-check form-check-inline">
-                                                        <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" value="1" checked />
-                                                        <label class="form-check-label" for="rbNeedsReview_yes">Yes</label>
+                                                        <input type="radio" class="form-check-input" name="folderNeedsReview" id="folderNeedsReview_yes" value="1" checked />
+                                                        <label class="form-check-label" for="folderNeedsReview_yes">Yes</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_no" value="0"/>
-                                                        <label class="form-check-label" for="rbNeedsReview_no">No</label>
+                                                        <input type="radio" class="form-check-input" name="folderNeedsReview" id="folderNeedsReview_no" value="0"/>
+                                                        <label class="form-check-label" for="folderNeedsReview_no">No</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,12 +112,12 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                 <label class="col-sm-4 col-form-label">In a Subfolder:</label>
                                                 <div class="col-sm-8">
                                                     <div class="form-check form-check-inline">
-                                                        <input type = "radio" class="form-check-input" name = "rbHasNorthArrow" id = "rbHasNorthArrow_yes" value="1" />
-                                                        <label class="form-check-label" for="rbHasNorthArrow_yes">Yes</label>
+                                                        <input type="radio" class="form-check-input" name="inSubfolder" id="inSubfolder_yes" value="1" />
+                                                        <label class="form-check-label" for="inSubfolder_yes">Yes</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input type = "radio" class="form-check-input" name = "rbHasNorthArrow" id = "rbHasNorthArrow_no" value="0" checked />
-                                                        <label class="form-check-label" for="rbHasNorthArrow_no">No</label>
+                                                        <input type="radio" class="form-check-input" name="inSubfolder" id="inSubfolder_no" value="0" checked />
+                                                        <label class="form-check-label" for="inSubfolder_no">No</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -290,6 +291,19 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         else{
             console.log('Valid File');
             document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.'));
+        }
+    }
+
+    // RESTRICTS "NO" OPTION FOR "NEEDS REVIEW" IF CURRENT USER IS NOT AN ADMIN
+    function adminValidation(){
+        var userRole = "<?php echo $userRole ?>";
+        if ((userRole === "Admin") || (userRole === "admin")){
+            document.getElementById("folderNeedsReview_no").disabled = false;
+            console.log('User is admin');
+        }
+        else{
+            document.getElementById("folderNeedsReview_no").disabled = true;
+            console.log("User is not admin");
         }
     }
 
