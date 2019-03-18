@@ -428,7 +428,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
 
-            var error = errorHandling($('#txtLibraryIndex'), '<?php echo $collection ?>');
+            /*var error = errorHandling($('#txtLibraryIndex'), '<?php echo $collection ?>');
             if(error.answer){
                 for(i = 0; i < error.desc.length; i++) {
                     alert(error.desc[i].message)
@@ -442,18 +442,26 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                     alert(eScale.desc[i].message)
                 }
                 return false
-            }
+            }*/
 
             //TODO:: removed libraryindex underscore validation
 //            if(validateFormUnderscore("txtLibraryIndex") == true)
 //            {
-            $('#btnSubmit').css("display", "none");
+            $/*('#btnSubmit').css("display", "none");
             //$('#loader').css("display", "inherit");
             $("#overlay").show();
-            $("#loader").show();
-            event.disabled;
+            $("#loader").show();*/
+            //event.disabled;
+            var data = $('#theform').serializeArray();
+
+            for(var i = 0; i < data.length; i++)
+            {
+                console.log("Name ", data[i].name);
+                console.log("Value ", data[i].value);
+            }
 
             event.preventDefault();
+
             /* Send the data using post */
             /*$.ajax({
                 type: 'post',
@@ -530,6 +538,10 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             errorReport("backScan", message, "danger");
         }
     });
+
+    /*$( "#btnSubmit" ).onclick(function() {
+        console.log("sup dog")
+    });*/
 </script>
 
 </body>
