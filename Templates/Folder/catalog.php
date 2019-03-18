@@ -37,7 +37,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Blank Page</title>
+    <title>Job Folder Catalog Form</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
@@ -50,9 +50,6 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             <!-- Put Page Contents Here -->
             <!-- <h1 class="text-center">Blank Page</h1> -->
             <hr>
-
-            <!-- MY PART BELOW -->
-
             <div class="row">
                 <div class="col">
                     <!-- Put Page Contents Here -->
@@ -71,21 +68,21 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
                                                 <div class="col-sm-8">
-                                                    <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" disabled required />
+                                                    <input type = "text" class="form-control" name="txtLibraryIndex" id="txtLibraryIndex" value="" disabled required />
                                                 </div>
                                             </div>
                                             <!-- Document Title -->
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtTitle">Document Title:</label>
                                                 <div class="col-sm-8">
-                                                    <input type = "text" class="form-control" name = "txtTitle" id = "txtTitle" value="" required />
+                                                    <input type="text" class="form-control" name="txtTitle" id="txtTitle" value="" required />
                                                 </div>
                                             </div>
                                             <!-- Document Author -->
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
                                                 <div class="col-sm-8">
-                                                    <input type = "text" class="form-control" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" value="" />
+                                                    <input type = "text" class="form-control" list="lstAuthor" name="txtAuthor" id="txtAuthor" value="" />
                                                     <datalist id="lstAuthor">
                                                         <!-- POPULATE AUTHOR LIST-->
                                                         <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
@@ -94,7 +91,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             </div>
                                             <!-- Radio Buttons Start -->
                                             <!-- Needs Review -->
-                                            <div class="form-group row">
+                                            <div class="form-group row" id="needsReview">
                                                 <label class="col-sm-4 col-form-label">Needs Review:</label>
                                                 <div class="col-sm-8">
                                                     <div class="form-check form-check-inline">
@@ -288,13 +285,15 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 
     // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
     // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
+
+    // Front scan check
     document.getElementById("fileUpload").onchange = frontUpload;
     function frontUpload() {
         var fileName = this.value;
         window.fileName = fileName;
 
         if ((fileName.includes("back") || fileName.includes("Back")) === true) {
-            alert('Invalid file. Front scan file cannot have the word back');
+            alert('Make sure to upload a front scan instead of a back scan.');
             document.getElementById('fileUpload').value = null;
             document.getElementById('txtLibraryIndex').value = null;
         }
@@ -304,13 +303,14 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     }
 
+    // Back scan check
     document.getElementById("fileUploadBack").onchange = backUpload;
     function backUpload() {
         var backFileName = this.value;
         window.backFileName = backFileName;
 
         if ((backFileName.includes("back") || backFileName.includes("Back")) === false) {
-            alert('Invalid file. Back scan file needs to have the word back');
+            alert('Make sure to upload a back scan instead of a front scan.');
             document.getElementById('fileUploadBack').value = null;
         }
         else{
@@ -318,20 +318,21 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     }
 
+    // Page reload
     function resetPage(){
         window.location.reload();
     }
 
-    // RESTRICTS "NO" OPTION FOR "NEEDS REVIEW" IF CURRENT USER IS NOT AN ADMIN
+    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN
     function adminValidation(){
         var userRole = "<?php echo $userRole ?>";
         if ((userRole === "Admin") || (userRole === "admin")){
-            document.getElementById("folderNeedsReview_no").disabled = false;
-            console.log('User is admin');
+            //document.getElementById('needsReview').style.display = 'yes';
+            console.log('Display. User is admin');
         }
         else{
-            document.getElementById("folderNeedsReview_no").disabled = true;
-            console.log("User is not admin");
+            document.getElementById('needsReview').style.display = 'none';
+            console.log("Hide. User is not admin");
         }
     }
 

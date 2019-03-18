@@ -35,7 +35,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body onload="adminValidation">
+<body onload="adminValidation()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container pad-bottom">
     <div class="row">
@@ -148,7 +148,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         </div>
                                     </div>
                                     <!-- Needs Review -->
-                                    <div class="form-group row">
+                                    <div class="form-group row" id="needsReview">
                                         <label class="col-sm-4 col-form-label">Needs Review:</label>
                                         <div class="col-sm-8">
                                             <div class="form-check form-check-inline">
@@ -517,16 +517,16 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         window.location.reload();
     }
 
-    // RESTRICTS "NO" OPTION FOR "NEEDS REVIEW" IF CURRENT USER IS NOT AN ADMIN
+    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN
     function adminValidation(){
         var userRole = "<?php echo $userRole ?>";
         if ((userRole === "Admin") || (userRole === "admin")){
-            document.getElementById("rbNeedsReview_no").disabled = false;
-            console.log('User is admin');
+            //document.getElementById('needsReview').style.display = 'none';
+            console.log('Display. User is admin');
         }
         else{
-            document.getElementById("rbNeedsReview_no").disabled = true;
-            console.log("User is not admin");
+            document.getElementById('needsReview').style.display = 'none';
+            console.log("Hide. User is not admin");
         }
     }
 
