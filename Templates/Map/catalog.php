@@ -391,8 +391,12 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+<!-- JQuery UI cdn -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
+<script type="text/javascript" src="../../Master/errorMessage.js"></script>
 <!--<script type="text/javascript" src="../../Master/errorHandling.js"></script>-->
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
@@ -414,45 +418,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         if (footerTop < docHeight)
             $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
     });
-</script>
-
-<script>
-    var html = '<div class="alert alert-danger alert-dismissible" >\n' +
-        '                                                <button  type="button" class="close" data-dismiss="alert" aria-hidden="true">\n' +
-        '                                                    &times;\n' +
-        '                                                </button>\n' +
-        '                                                <strong>Required Field:</strong> Please input data here\n' +
-        '                                            </div>';
-
-    var frontHasBack = '<div class="alert alert-danger alert-dismissible" >\n' +
-        '                                                <button  type="button" class="close" data-dismiss="alert" aria-hidden="true">\n' +
-        '                                                    &times;\n' +
-        '                                                </button>\n' +
-        '                                                <strong>Wrong Document:</strong> Possibly Back?\n' +
-        '                                            </div>';
-
-    var check = document.getElementById("fileUpload").value;
-    var word = 'back';
-
-    if(check.indexOf(word) != -1)
-    {
-        alert('found')
-        $("#frontScan").append(frontHasBack)
-    }
-    /*var back = /[back]/g;
-
-    var isValid = back.test("#fileUpload");
-
-    if(!isValid)
-    {
-        $("#frontScan").append(frontHasBack);
-    }*/
-
-
-    /*$("#docTitle").append(html);
-    $("#docMedium").append(html);
-    $("#fontScan").append(html);
-    $("#backScan").append(html);*/
 </script>
 
 <script>
@@ -526,24 +491,45 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         });
     });
 
-    $("[type=file]").on("change", function(){
+    $('#fileUpload').change(function() {
         // Name of file and placeholder
         var file = this.files[0].name;
-        var dflt = $(this).attr("placeholder");
+        //var dflt = $(this).attr("placeholder");
         if($(this).val()!=""){
             $(this).next().text(file);
-        } else {
-            $(this).next().text(dflt);
+        }
+
+
+        var word = /back/g;
+
+        if(word.test(file))
+        {
+            var message = '<strong>ERROR:</strong> Wrong Document. Possibly Back?\n'
+            errorReport("fontScan", message, "danger");
+        }
+        else
+        {
+            var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
+            filename = filename.replace(/\.tif/, '');
+            $('#txtLibraryIndex').val(filename);
         }
     });
 
-    $('#fileUpload').change(function() {
-        var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
-        filename = filename.replace(/\.tif/, '');
-        $('#txtLibraryIndex').val(filename);
+    $('#fileUploadBack').change(function() {
+        // Name of file and placeholder
+        var file = this.files[0].name;
+        if($(this).val()!=""){
+            $(this).next().text(file);
+        }
+
+        var word = /back/g;
+
+        if(word.test(file) == false)
+        {
+            var message = '<strong>ERROR:</strong> Document doesn\'t contain back\n'
+            errorReport("backScan", message, "danger");
+        }
     });
-
-
 </script>
 
 </body>
