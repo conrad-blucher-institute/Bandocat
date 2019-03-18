@@ -41,6 +41,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 </head>
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
+
 <div class="container pad-bottom">
     <div class="row">
         <div class="col">
@@ -52,22 +53,24 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                 <!-- Card -->
                 <div class="card" style="width: 75em;">
                     <div class="card-body">
-                        <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
+                        <form id="theform" name="theform" method="post" enctype="multipart/form-data" class="needs-validation" novalidate >
                             <div class="row">
                                 <!-- These are used the most often -->
                                 <div class="col-6">
                                     <!-- Library Index -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="libraryIndex">
                                             <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" required readonly />
                                         </div>
                                     </div>
                                     <!-- Document Title -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtTitle">Document Title:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="docTitle">
                                             <input type = "text" class="form-control" name = "txtTitle" id = "txtTitle" value="" required />
+
+
                                         </div>
                                     </div>
                                     <!-- Subtitle -->
@@ -293,7 +296,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <!-- Document Medium -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlMedium">Document Medium</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="docMedium">
                                             <select id="ddlMedium" name="ddlMedium" class="form-control" required>
                                                 <!-- GET MAP MEDIUM FOR DDL-->
                                                 <?php
@@ -327,7 +330,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <!-- Scan front -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">Front Scan:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="fontScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
                                                 <label class="custom-file-label" for="fileUpload">Choose file</label>
@@ -337,7 +340,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <!-- Scan Back -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">Back Scan:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="backScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" />
                                                 <label class="custom-file-label" for="fileUploadBack">Choose file</label>
@@ -390,7 +393,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
-<script type="text/javascript" src="../../Master/errorHandling.js"></script>
+<!--<script type="text/javascript" src="../../Master/errorHandling.js"></script>-->
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
@@ -414,6 +417,45 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 </script>
 
 <script>
+    var html = '<div class="alert alert-danger alert-dismissible" >\n' +
+        '                                                <button  type="button" class="close" data-dismiss="alert" aria-hidden="true">\n' +
+        '                                                    &times;\n' +
+        '                                                </button>\n' +
+        '                                                <strong>Required Field:</strong> Please input data here\n' +
+        '                                            </div>';
+
+    var frontHasBack = '<div class="alert alert-danger alert-dismissible" >\n' +
+        '                                                <button  type="button" class="close" data-dismiss="alert" aria-hidden="true">\n' +
+        '                                                    &times;\n' +
+        '                                                </button>\n' +
+        '                                                <strong>Wrong Document:</strong> Possibly Back?\n' +
+        '                                            </div>';
+
+    var check = document.getElementById("fileUpload").value;
+    var word = 'back';
+
+    if(check.indexOf(word) != -1)
+    {
+        alert('found')
+        $("#frontScan").append(frontHasBack)
+    }
+    /*var back = /[back]/g;
+
+    var isValid = back.test("#fileUpload");
+
+    if(!isValid)
+    {
+        $("#frontScan").append(frontHasBack);
+    }*/
+
+
+    /*$("#docTitle").append(html);
+    $("#docMedium").append(html);
+    $("#fontScan").append(html);
+    $("#backScan").append(html);*/
+</script>
+
+<script>
     $( document ).ready(function() {
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
@@ -426,6 +468,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                 for(i = 0; i < error.desc.length; i++) {
                     alert(error.desc[i].message)
                 }
+
                 return false
             }
             var eScale = errorHandling($('#txtMapScale'), '<?php echo $collection ?>');
@@ -447,7 +490,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
             event.preventDefault();
             /* Send the data using post */
-            $.ajax({
+            /*$.ajax({
                 type: 'post',
                 url: 'form_processing.php',
                 data:  formData,
@@ -475,11 +518,11 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                     }
                     alert(msg);
                     if (result == 1){
-                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                        window.location.href = "./catalog.php?col=< ?php //echo $_GET['col']; ?>";
                     }
 
                 }
-            });
+            });*/
         });
     });
 
@@ -502,5 +545,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
 
 </script>
+
 </body>
 </html>
