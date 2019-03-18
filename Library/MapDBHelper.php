@@ -489,6 +489,7 @@ class MapDBHelper extends DBHelper
             $sth->execute();
             //returns the map medium
             $result = $sth->fetchAll(PDO::FETCH_NUM);
+            sort($result);
             return $result;
         } else return false;
     }

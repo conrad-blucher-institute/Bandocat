@@ -193,19 +193,21 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label">Front Scan:</label>
                                                 <div class="col-sm-8">
-                                                    <div class="custom-file">
+                                                    <div class="custom-file spinner-border text-dark" role="status">
                                                         <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required/>
                                                         <label class="custom-file-label" for="fileUpload"></label>
+                                                        <span class="sr-only">Loading...</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Scan Back -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Back Scan:</label>
+                                                <label class="col-sm-4 col-form-label spinner-border text-dark" role="status">Back Scan:</label>
                                                 <div class="col-sm-8">
                                                     <div class="custom-file">
                                                         <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" onchange="backUpload()" />
                                                         <label class="custom-file-label" for="fileUploadBack"></label>
+                                                        <span class="sr-only">Loading...</span>
                                                     </div>
                                                 </div>
                                             </div>
