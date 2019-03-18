@@ -303,6 +303,7 @@ class FolderDBHelper extends DBHelper
 
             //returns the classifications and their descriptions
             $result = $sth->fetchAll(PDO::FETCH_NUM);
+            sort($result);
             return $result;
         } else return false;
     }

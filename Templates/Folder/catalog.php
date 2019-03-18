@@ -1,7 +1,7 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-var_dump($session);
+//var_dump($session);
 $userRole = $session->getRole();
 //get collection name from passed variables col and doc
 if(isset($_GET['col']) && isset($_GET['doc']))
@@ -202,6 +202,16 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Scan Back -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Back Scan:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" onchange="backUpload()" />
+                                                        <label class="custom-file-label" for="fileUploadBack"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!-- General Comments -->
                                             <div class="form-row">
                                                 <div class="form-group col">
@@ -290,8 +300,26 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
         else{
             console.log('Valid File');
-            document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.'));
+            document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.tif'));
         }
+    }
+
+    document.getElementById("fileUploadBack").onchange = backUpload;
+    function backUpload() {
+        var backFileName = this.value;
+        window.backFileName = backFileName;
+
+        if ((backFileName.includes("back") || backFileName.includes("Back")) === false) {
+            alert('Invalid file. Back scan file needs to have the word back');
+            document.getElementById('fileUploadBack').value = null;
+        }
+        else{
+            console.log('Valid File');
+        }
+    }
+
+    function resetPage(){
+        window.location.reload();
     }
 
     // RESTRICTS "NO" OPTION FOR "NEEDS REVIEW" IF CURRENT USER IS NOT AN ADMIN

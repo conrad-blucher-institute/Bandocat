@@ -1,7 +1,7 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-
+$userRole = $session->getRole();
 //get collection name from passed variable col
 if(isset($_GET['col']))
 {
@@ -35,7 +35,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body>
+<body onload="adminValidation">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container pad-bottom">
     <div class="row">
@@ -481,8 +481,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         }
     });
 
-    //------------------------------------------------------- SECTION BY JOSE BELOW ---------------------------------------------------------------------------
-
     // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
     // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
     document.getElementById("fileUpload").onchange = frontUpload;
@@ -519,7 +517,18 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         window.location.reload();
     }
 
-    //------------------------------------------------------- SECTION BY JOSE ABOVE ---------------------------------------------------------------------------
+    // RESTRICTS "NO" OPTION FOR "NEEDS REVIEW" IF CURRENT USER IS NOT AN ADMIN
+    function adminValidation(){
+        var userRole = "<?php echo $userRole ?>";
+        if ((userRole === "Admin") || (userRole === "admin")){
+            document.getElementById("rbNeedsReview_no").disabled = false;
+            console.log('User is admin');
+        }
+        else{
+            document.getElementById("rbNeedsReview_no").disabled = true;
+            console.log("User is not admin");
+        }
+    }
 
 </script>
 </body>
