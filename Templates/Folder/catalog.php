@@ -201,10 +201,10 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                 </div>
                                             </div>
                                             <!-- Scan Back -->
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label spinner-border text-dark" role="status">Back Scan:</label>
+                                            <div class="form-group row" >
+                                                <label class="col-sm-4 col-form-label spinner-border text-dark">Back Scan:</label>
                                                 <div class="col-sm-8">
-                                                    <div class="custom-file">
+                                                    <div class="custom-file spinner-border text-dark" role="status">
                                                         <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" onchange="backUpload()" />
                                                         <label class="custom-file-label" for="fileUploadBack"></label>
                                                         <span class="sr-only">Loading...</span>
@@ -241,8 +241,6 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     </div>
                 </div> <!-- col -->
             </div> <!-- row -->
-
-            <!-- MY PART ABOVE -->
 
         </div> <!-- col -->
     </div> <!-- row -->
@@ -302,6 +300,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         else{
             console.log('Valid File');
             document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.tif'));
+            document.getElementById('txtLibraryIndex').style.textAlign = 'center';
         }
     }
 

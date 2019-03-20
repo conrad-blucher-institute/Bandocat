@@ -30,7 +30,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Input Form</title>
+    <title>Maps Catalog Form</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
@@ -56,7 +56,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" disabled required />
+                                            <input type = "text" style="background-color:#f8f8f8;" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" disabled required />
                                         </div>
                                     </div>
                                     <!-- Document Title -->
@@ -118,21 +118,24 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtMapScale">Map Scale:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" name = "txtMapScale" id = "txtMapScale" placeholder="N/A"  />
-                                        </div>
-                                    </div>
-                                    <!-- Document Author -->
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
-                                        <div class="col-sm-8">
-                                            <input type = "text" class="form-control" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" value="" />
-                                            <datalist id="lstAuthor">
-                                                <!-- POPULATE AUTHOR LIST-->
-                                                <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
-                                            </datalist>
+                                            <input type = "text" class="form-control" name="txtMapScale" id="txtMapScale" placeholder="Enter map scale"/>
                                         </div>
                                     </div>
                                     <!-- Radio Buttons -->
+                                    <!-- Has Barscale -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Has Barscale:</label>
+                                        <div class="col-sm-8">
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasBarscale" id = "hasBarscale_yes" onchange="disableScaleText()" value="1"/>
+                                                <label class="form-check-label" for="hasBarscale_yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasBarscale" id = "hasBarscale_no" onchange="disableScaleText()" value="0" checked />
+                                                <label class="form-check-label" for="hasBarscale_no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- is Map -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">Is Map:</label>
@@ -234,14 +237,14 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                 </div>
                                 <!-- the right side -->
                                 <div class="col-6">
-                                    <!-- Customer Name -->
+                                    <!-- Document Author -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtCustomer">Customer Name:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" value="" />
-                                            <datalist id="lstCustomer">
-                                                <!-- POPULATES THE DDL WITH CUSTOMER NAMES -->
-                                                <?php $Render->getDataList($DB->GET_CUSTOMER_LIST($collection)); ?>
+                                            <input type = "text" class="form-control" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" value="" />
+                                            <datalist id="lstAuthor">
+                                                <!-- POPULATE AUTHOR LIST-->
+                                                <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                                             </datalist>
                                         </div>
                                     </div>
@@ -253,6 +256,17 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                             <datalist id="lstCompany">
                                                 <!-- POPULATES DDL FOR COMPANY -->
                                                 <?php $Render->getDataList($DB->GET_COMPANY_LIST($collection)); ?>
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <!-- Customer Name -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtCustomer">Customer Name:</label>
+                                        <div class="col-sm-8">
+                                            <input type = "text" class="form-control" list="lstCustomer" name = "txtCustomer" id = "txtCustomer" value="" />
+                                            <datalist id="lstCustomer">
+                                                <!-- POPULATES THE DDL WITH CUSTOMER NAMES -->
+                                                <?php $Render->getDataList($DB->GET_CUSTOMER_LIST($collection)); ?>
                                             </datalist>
                                         </div>
                                     </div>
@@ -498,6 +512,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         else{
             console.log('Valid File');
             document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.'));
+            document.getElementById('txtLibraryIndex').style.textAlign = 'center';
         }
     }
 
@@ -529,6 +544,19 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         else{
             document.getElementById('needsReview').style.display = 'none';
             console.log("Hide. User is not admin");
+        }
+    }
+
+    document.getElementById('txtMapScale').onchange = disableScaleText();
+    function disableScaleText(){
+        if (document.getElementById('hasBarscale_yes').checked === true ){
+            document.getElementById('txtMapScale').disabled = true;
+            document.getElementById('txtMapScale').value = 'Barscale used instead of written scale text';
+        }
+        else {
+            document.getElementById('txtMapScale').disabled = false;
+            document.getElementById('txtMapScale').value = '';
+            document.getElementById('txtMapScale').style.textAlign = 'center';
         }
     }
 
