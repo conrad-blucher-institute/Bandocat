@@ -69,8 +69,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label" for="txtTitle">Document Title:</label>
                                         <div class="col-sm-8" id="docTitle">
                                             <input type = "text" class="form-control" name = "txtTitle" id = "txtTitle" value="" required />
-
-
                                         </div>
                                     </div>
                                     <!-- Subtitle -->
@@ -329,7 +327,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Scan front -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Front Scan:</label>
+                                        <label class="col-sm-4 col-form-label" for="fileUpload">Front Scan:</label>
                                         <div class="col-sm-8" id="fontScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
@@ -339,7 +337,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Scan Back -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Back Scan:</label>
+                                        <label class="col-sm-4 col-form-label" for="fileUploadBack">Back Scan:</label>
                                         <div class="col-sm-8" id="backScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" />
@@ -425,10 +423,10 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
-            var formData = new FormData($(this)[0]);
+            var formData = new FormData($('#theform'));
             /*jquery that displays the three points loader*/
 
-            /*var error = errorHandling($('#txtLibraryIndex'), '<?php echo $collection ?>');
+            /*var error = errorHandling($('#txtLibraryIndex'), '<//?php echo $collection ?>');
             if(error.answer){
                 for(i = 0; i < error.desc.length; i++) {
                     alert(error.desc[i].message)
@@ -436,7 +434,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
                 return false
             }
-            var eScale = errorHandling($('#txtMapScale'), '<?php echo $collection ?>');
+            var eScale = errorHandling($('#txtMapScale'), '<//?php echo $collection ?>');
             if(eScale.answer){
                 for(i = 0; i < eScale.desc.length; i++) {
                     alert(eScale.desc[i].message)
@@ -447,21 +445,48 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             //TODO:: removed libraryindex underscore validation
 //            if(validateFormUnderscore("txtLibraryIndex") == true)
 //            {
-            $/*('#btnSubmit').css("display", "none");
-            //$('#loader').css("display", "inherit");
+            /*$('#btnSubmit').css("display", "none");
+            $('#loader').css("display", "inherit");
             $("#overlay").show();
             $("#loader").show();*/
             //event.disabled;
+            ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
             var data = $('#theform').serializeArray();
 
-            for(var i = 0; i < data.length; i++)
+            /*for(var i = 0; i < data.length; i++)
             {
+                console.log("****** ", i, " ******");
                 console.log("Name ", data[i].name);
                 console.log("Value ", data[i].value);
+            }*/
+
+            //console.log(data);
+            var test = document.getElementById("fileUpload").value;
+            console.log(test);
+
+            data.push({feeder: 'fileUpload', value: test});
+
+            console.log(data[30].feeder);
+
+            // Using the .submit function in use
+            // Error validation to see if required text boxes are filled
+            var libIndexValue = data[0].value;
+            var docTitleValue = data[1].value;
+
+            if(libIndexValue.value == null)
+            {
+                var message = '<strong>ERROR:</strong> Required text field\n'
+                errorReport("libraryIndex", message, "danger");
+            }
+            if(docTitleValue.value == null)
+            {
+                var message = '<strong>ERROR:</strong> Required text field\n'
+                errorReport("docTitle", message, "danger");
             }
 
-            event.preventDefault();
 
+            //event.preventDefault();
+            ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
             /* Send the data using post */
             /*$.ajax({
                 type: 'post',
@@ -498,7 +523,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             });*/
         });
     });
-
+///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
     $('#fileUpload').change(function() {
         // Name of file and placeholder
         var file = this.files[0].name;
@@ -538,10 +563,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             errorReport("backScan", message, "danger");
         }
     });
-
-    /*$( "#btnSubmit" ).onclick(function() {
-        console.log("sup dog")
-    });*/
+///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
 </script>
 
 </body>
