@@ -328,7 +328,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <!-- Scan front -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="fileUpload">Front Scan:</label>
-                                        <div class="col-sm-8" id="fontScan">
+                                        <div class="col-sm-8" id="frontScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
                                                 <label class="custom-file-label" for="fileUpload">Choose file</label>
@@ -423,7 +423,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
-            var formData = new FormData($('#theform'));
+            //var formData = new FormData($('#theform'));
             /*jquery that displays the three points loader*/
 
             /*var error = errorHandling($('#txtLibraryIndex'), '<//?php echo $collection ?>');
@@ -450,43 +450,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $("#overlay").show();
             $("#loader").show();*/
             //event.disabled;
-            ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
-            var data = $('#theform').serializeArray();
-
-            /*for(var i = 0; i < data.length; i++)
-            {
-                console.log("****** ", i, " ******");
-                console.log("Name ", data[i].name);
-                console.log("Value ", data[i].value);
-            }*/
-
-            //console.log(data);
-            var test = document.getElementById("fileUpload").value;
-            console.log(test);
-
-            data.push({feeder: 'fileUpload', value: test});
-
-            console.log(data[30].feeder);
-
-            // Using the .submit function in use
-            // Error validation to see if required text boxes are filled
-            var libIndexValue = data[0].value;
-            var docTitleValue = data[1].value;
-
-            if(libIndexValue.value == null)
-            {
-                var message = '<strong>ERROR:</strong> Required text field\n'
-                errorReport("libraryIndex", message, "danger");
-            }
-            if(docTitleValue.value == null)
-            {
-                var message = '<strong>ERROR:</strong> Required text field\n'
-                errorReport("docTitle", message, "danger");
-            }
-
-
-            //event.preventDefault();
-            ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
             /* Send the data using post */
             /*$.ajax({
                 type: 'post',
@@ -521,24 +484,99 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
                 }
             });*/
+            ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
+            // Name and values of content on form taken and stored
+            var data = $('#theform').serializeArray();
+            // Manually adding front and back scan values due to Serialize function
+            // not picking up file types in form
+            var frontValue = document.getElementById("fileUpload").value;
+            var backValue = document.getElementById("fileUploadBack").value;
+            data.push({name: 'fileUpload', value: frontValue});
+            data.push({name: 'fileUploadBack', value: backValue});
+
+            // Display data of form on console for development purposes
+            for(var i = 0; i < data.length; i++)
+            {
+                console.log("****** ", i, " ******");
+                console.log("Name ", data[i].name);
+                console.log("Value ", data[i].value);
+            }
+
+            // Error validation to see if required text boxes are filled
+            // Checking to see if form provided has txtLibraryIndex
+            if(data.filter(data => (data.name === 'txtLibraryIndex')).length > 0)
+            {
+                var libIndexObj = data.filter(data => (data.name === 'txtLibraryIndex'));
+                var libIndexValue = libIndexObj[0].value;
+            }
+            // Checking to see if form provided has txtTitle
+            if(data.filter(data => (data.name === 'txtTitle')).length > 0)
+            {
+                var docTitleObj = data.filter(data => (data.name === 'txtTitle'))
+                var docTitleValue = docTitleObj[0].value;
+            }
+            // Checking to see if form provided has txtTitle
+            if(data.filter(data => (data.name === 'fileUpload')).length > 0)
+            {
+                var fileUploadObj = data.filter(data => (data.name === 'fileUpload'))
+                var fileUploadValue = fileUploadObj[0].value;
+            }
+            // Checking to see if form provided has ddlMedium
+            if(data.filter(data => (data.name === 'ddlMedium')).length > 0)
+            {
+                var docMediumObj = data.filter(data => (data.name === 'ddlMedium'))
+                var docMediumValue = docMediumObj[0].value;
+            }
+
+            /// Displays dismissible error message if required values are empty  ///
+            if(libIndexValue == "")
+            {
+                var message = '<strong>ERROR:</strong> Required text field\n'
+                errorReport("libraryIndex", message, "danger");
+            }
+            if(docTitleValue == "")
+            {
+                var message = '<strong>ERROR:</strong> Required text field\n'
+                errorReport("docTitle", message, "danger");
+            }
+            if(fileUploadValue == "")
+            {
+                var message = '<strong>ERROR:</strong> Required text field\n'
+                errorReport("frontScan", message, "danger");
+            }
+            if(fileUploadValue == "")
+            {
+                var message = '<strong>ERROR:</strong> Required text field\n'
+                errorReport("backScan", message, "danger");
+            }
+            if(docMediumValue == "")
+            {
+                var message = '<strong>ERROR:</strong> Required text field\n'
+                errorReport("docMedium", message, "danger");
+            }
+
+
+            event.preventDefault();
+            ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
         });
     });
-///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
     $('#fileUpload').change(function() {
         // Name of file and placeholder
         var file = this.files[0].name;
         //var dflt = $(this).attr("placeholder");
-        if($(this).val()!=""){
+        if($(this).val()!="")
+        {
             $(this).next().text(file);
         }
-
 
         var word = /back/g;
 
         if(word.test(file))
         {
             var message = '<strong>ERROR:</strong> Wrong Document. Possibly Back?\n'
-            errorReport("fontScan", message, "danger");
+            errorReport("frontScan", message, "danger");
         }
         else
         {
@@ -563,7 +601,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             errorReport("backScan", message, "danger");
         }
     });
-///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
 </script>
 
 </body>
