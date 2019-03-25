@@ -116,22 +116,36 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Map Scale -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtMapScale">Map Scale:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" name="txtMapScale" id="txtMapScale" placeholder="Enter map scale"/>
+                                            <div class="d-flex">
+                                                <input type="text" class="form-control">
+                                                <select class="form-control" id="unitLeft">
+                                                    <option value="inches">in</option>
+                                                    <option value="feet">ft</option>
+                                                    <option value="varas">vrs</option>
+                                                </select>
+                                                <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
+                                                <input type="text" class="form-control">
+                                                <select class="form-control" id="unitRight">
+                                                    <option value="feet">ft</option>
+                                                    <option value="varas">vrs</option>
+                                                    <option value="inches">in</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- Radio Buttons -->
-                                    <!-- Has Barscale -->
+                                    <!-- Has Scalebar -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has Barscale:</label>
+                                        <label class="col-sm-4 col-form-label">Has Scalebar:</label>
                                         <div class="col-sm-8">
                                             <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "hasBarscale" id = "hasBarscale_yes" onchange="disableScaleText()" value="1"/>
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_yes" value="1"/>
                                                 <label class="form-check-label" for="hasBarscale_yes">Yes</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "hasBarscale" id = "hasBarscale_no" onchange="disableScaleText()" value="0" checked />
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_no" value="0" checked />
                                                 <label class="form-check-label" for="hasBarscale_no">No</label>
                                             </div>
                                         </div>
@@ -509,9 +523,14 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             document.getElementById('fileUpload').value = null;
             document.getElementById('txtLibraryIndex').value = null;
         }
+        else if ((fileName.includes(" ") || fileName.includes(" - Copy") || fileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Copies must have a version number (i.e. '+ fileName.substring(12, fileName.indexOf(' ')) + '.2)');
+            document.getElementById('fileUpload').value = null;
+            document.getElementById('txtLibraryIndex').value = null;
+        }
         else{
             console.log('Valid File');
-            document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.'));
+            document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.tif'));
             document.getElementById('txtLibraryIndex').style.textAlign = 'center';
         }
     }
@@ -544,19 +563,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         else{
             document.getElementById('needsReview').style.display = 'none';
             console.log("Hide. User is not admin");
-        }
-    }
-
-    document.getElementById('txtMapScale').onchange = disableScaleText();
-    function disableScaleText(){
-        if (document.getElementById('hasBarscale_yes').checked === true ){
-            document.getElementById('txtMapScale').disabled = true;
-            document.getElementById('txtMapScale').value = 'Barscale used instead of written scale text';
-        }
-        else {
-            document.getElementById('txtMapScale').disabled = false;
-            document.getElementById('txtMapScale').value = '';
-            document.getElementById('txtMapScale').style.textAlign = 'center';
         }
     }
 
