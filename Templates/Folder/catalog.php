@@ -241,7 +241,6 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                     </div>
                 </div> <!-- col -->
             </div> <!-- row -->
-
         </div> <!-- col -->
     </div> <!-- row -->
 </div><!-- Container -->
@@ -336,6 +335,11 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             console.log("Hide. User is not admin");
         }
     }
+
+    //  PROVIDES USER W/ INFORMATION ABOUT EACH CLASSIFICATION METHOD
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+    })
 
 </script>
 </body>
