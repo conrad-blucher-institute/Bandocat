@@ -395,6 +395,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
 <script type="text/javascript" src="../../Master/errorMessage.js"></script>
+<script type="text/javascript" src="../../Master/maps-ErrorHandling.js"></script>
 <!--<script type="text/javascript" src="../../Master/errorHandling.js"></script>-->
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
@@ -502,59 +503,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                 console.log("Value ", data[i].value);
             }
 
-            // Error validation to see if required text boxes are filled
-            // Checking to see if form provided has txtLibraryIndex
-            if(data.filter(data => (data.name === 'txtLibraryIndex')).length > 0)
-            {
-                var libIndexObj = data.filter(data => (data.name === 'txtLibraryIndex'));
-                var libIndexValue = libIndexObj[0].value;
-            }
-            // Checking to see if form provided has txtTitle
-            if(data.filter(data => (data.name === 'txtTitle')).length > 0)
-            {
-                var docTitleObj = data.filter(data => (data.name === 'txtTitle'))
-                var docTitleValue = docTitleObj[0].value;
-            }
-            // Checking to see if form provided has txtTitle
-            if(data.filter(data => (data.name === 'fileUpload')).length > 0)
-            {
-                var fileUploadObj = data.filter(data => (data.name === 'fileUpload'))
-                var fileUploadValue = fileUploadObj[0].value;
-            }
-            // Checking to see if form provided has ddlMedium
-            if(data.filter(data => (data.name === 'ddlMedium')).length > 0)
-            {
-                var docMediumObj = data.filter(data => (data.name === 'ddlMedium'))
-                var docMediumValue = docMediumObj[0].value;
-            }
-
-            /// Displays dismissible error message if required values are empty  ///
-            if(libIndexValue == "")
-            {
-                var message = '<strong>ERROR:</strong> Required text field\n'
-                errorReport("libraryIndex", message, "danger");
-            }
-            if(docTitleValue == "")
-            {
-                var message = '<strong>ERROR:</strong> Required text field\n'
-                errorReport("docTitle", message, "danger");
-            }
-            if(fileUploadValue == "")
-            {
-                var message = '<strong>ERROR:</strong> Required text field\n'
-                errorReport("frontScan", message, "danger");
-            }
-            if(fileUploadValue == "")
-            {
-                var message = '<strong>ERROR:</strong> Required text field\n'
-                errorReport("backScan", message, "danger");
-            }
-            if(docMediumValue == "")
-            {
-                var message = '<strong>ERROR:</strong> Required text field\n'
-                errorReport("docMedium", message, "danger");
-            }
-
+            handleError(data);
 
             event.preventDefault();
             ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
@@ -571,7 +520,11 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $(this).next().text(file);
         }
 
-        var word = /back/g;
+        var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
+        filename = filename.replace(/\.tif/, '');
+        $('#txtLibraryIndex').val(filename);
+
+        /*var word = /back/g;
 
         if(word.test(file))
         {
@@ -583,7 +536,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
             filename = filename.replace(/\.tif/, '');
             $('#txtLibraryIndex').val(filename);
-        }
+        }*/
     });
 
     $('#fileUploadBack').change(function() {
@@ -593,13 +546,13 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $(this).next().text(file);
         }
 
-        var word = /back/g;
+        /*var word = /back/g;
 
         if(word.test(file) == false)
         {
             var message = '<strong>ERROR:</strong> Document doesn\'t contain back\n'
             errorReport("backScan", message, "danger");
-        }
+        }*/
     });
     ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
 </script>
