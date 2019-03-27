@@ -63,6 +63,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                 <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
                                     <div class="row">
                                         <!-- These are used the most often -->
+                                        <!-- The Left side -->
                                         <div class="col-6">
                                             <!-- Library Index -->
                                             <div class="form-group row">
@@ -195,7 +196,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                 <div class="col-sm-8">
                                                     <div class="custom-file spinner-border text-dark" role="status">
                                                         <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required/>
-                                                        <label class="custom-file-label" for="fileUpload"></label>
+                                                        <label class="custom-file-label" for="fileUpload">Choose file</label>
                                                         <span class="sr-only">Loading...</span>
                                                     </div>
                                                 </div>
@@ -206,7 +207,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                 <div class="col-sm-8">
                                                     <div class="custom-file spinner-border text-dark" role="status">
                                                         <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" onchange="backUpload()" />
-                                                        <label class="custom-file-label" for="fileUploadBack"></label>
+                                                        <label class="custom-file-label" for="fileUploadBack">Choose file</label>
                                                         <span class="sr-only">Loading...</span>
                                                     </div>
                                                 </div>
@@ -296,6 +297,11 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             document.getElementById('fileUpload').value = null;
             document.getElementById('txtLibraryIndex').value = null;
         }
+        else if ((fileName.includes(" ") || fileName.includes(" - Copy") || fileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ fileName.substring(12, fileName.indexOf(' ')) + '.2)');
+            document.getElementById('fileUpload').value = null;
+            document.getElementById('txtLibraryIndex').value = null;
+        }
         else{
             console.log('Valid File');
             document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.tif'));
@@ -313,12 +319,15 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             alert('Make sure to upload a back scan instead of a front scan.');
             document.getElementById('fileUploadBack').value = null;
         }
+        else if ((backFileName.includes(" ") || backFileName.includes(" - Copy") || backFileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ backFileName.substring(12, backFileName.indexOf('(back)')) + '.2(back)');
+            document.getElementById('fileUploadBack').value = null;
+        }
         else{
             console.log('Valid File');
         }
     }
 
-    // Page reload
     function resetPage(){
         window.location.reload();
     }
@@ -336,10 +345,6 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     }
 
-    //  PROVIDES USER W/ INFORMATION ABOUT EACH CLASSIFICATION METHOD
-    $('.popover-dismiss').popover({
-        trigger: 'focus'
-    })
 
 </script>
 </body>

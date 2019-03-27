@@ -354,7 +354,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <div class="col-sm-8">
                                             <div class="custom-file spinner-border text-dark" role="status">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required/>
-                                                <label class="custom-file-label" for="fileUpload"></label>
+                                                <label class="custom-file-label" for="fileUpload">Choose file</label>
                                                 <span class="sr-only">Loading...</span>
                                             </div>
                                         </div>
@@ -365,7 +365,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <div class="col-sm-8">
                                             <div class="custom-file spinner-border text-dark" role="status">
                                                 <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" onchange="backUpload()" />
-                                                <label class="custom-file-label" for="fileUploadBack"></label>
+                                                <label class="custom-file-label" for="fileUploadBack">Choose file</label>
                                                 <span class="sr-only">Loading...</span>
                                             </div>
                                         </div>
@@ -513,6 +513,8 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
     // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
     // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
+
+    // Front scan check
     document.getElementById("fileUpload").onchange = frontUpload;
     function frontUpload() {
         var fileName = this.value;
@@ -535,6 +537,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         }
     }
 
+    // back scan check
     document.getElementById("fileUploadBack").onchange = backUpload;
     function backUpload() {
         var backFileName = this.value;
