@@ -119,14 +119,14 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
                                             <div class="d-flex">
-                                                <input type="text" class="form-control">
+                                                <input type="number" min="1" class="form-control">
                                                 <select class="form-control" id="unitLeft">
                                                     <option value="inches">in</option>
                                                     <option value="feet">ft</option>
                                                     <option value="varas">vrs</option>
                                                 </select>
                                                 <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
-                                                <input type="text" class="form-control">
+                                                <input type="number" min="1" class="form-control">
                                                 <select class="form-control" id="unitRight">
                                                     <option value="feet">ft</option>
                                                     <option value="varas">vrs</option>
@@ -524,7 +524,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             document.getElementById('txtLibraryIndex').value = null;
         }
         else if ((fileName.includes(" ") || fileName.includes(" - Copy") || fileName.includes("-Copy")) === true) {
-            alert('Invalid file name. Copies must have a version number (i.e. '+ fileName.substring(12, fileName.indexOf(' ')) + '.2)');
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ fileName.substring(12, fileName.indexOf(' ')) + '.2)');
             document.getElementById('fileUpload').value = null;
             document.getElementById('txtLibraryIndex').value = null;
         }
@@ -542,6 +542,10 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
         if ((backFileName.includes("back") || backFileName.includes("Back")) === false) {
             alert('Invalid file. Back scan file needs to have the word back');
+            document.getElementById('fileUploadBack').value = null;
+        }
+        else if ((backFileName.includes(" ") || backFileName.includes(" - Copy") || backFileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ backFileName.substring(12, backFileName.indexOf('(back)')) + '.2(back)');
             document.getElementById('fileUploadBack').value = null;
         }
         else{
