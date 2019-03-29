@@ -196,7 +196,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                 <div class="col-sm-8">
                                                     <div class="custom-file spinner-border text-dark" role="status">
                                                         <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required/>
-                                                        <label class="custom-file-label" for="fileUpload">Choose file</label>
+                                                        <label class="custom-file-label text-truncate" for="fileUpload">Choose file</label>
                                                         <span class="sr-only">Loading...</span>
                                                     </div>
                                                 </div>
@@ -230,9 +230,9 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                                 <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                                 <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                                 <span>
-                                    <?php if($session->hasWritePermission())
-                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Submit' class='btn btn-primary'/>";}
-                                    ?>
+                                                    <?php if($session->hasWritePermission())
+                                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Submit' class='btn btn-primary'/>";}
+                                                    ?>
                                             </div>
                                         </div>
                                     </div>
