@@ -523,20 +523,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
         filename = filename.replace(/\.tif/, '');
         $('#txtLibraryIndex').val(filename);
-
-        /*var word = /back/g;
-
-        if(word.test(file))
-        {
-            var message = '<strong>ERROR:</strong> Wrong Document. Possibly Back?\n'
-            errorReport("frontScan", message, "danger");
-        }
-        else
-        {
-            var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
-            filename = filename.replace(/\.tif/, '');
-            $('#txtLibraryIndex').val(filename);
-        }*/
     });
 
     $('#fileUploadBack').change(function() {
@@ -545,14 +531,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         if($(this).val()!=""){
             $(this).next().text(file);
         }
-
-        /*var word = /back/g;
-
-        if(word.test(file) == false)
-        {
-            var message = '<strong>ERROR:</strong> Document doesn\'t contain back\n'
-            errorReport("backScan", message, "danger");
-        }*/
     });
     ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
 </script>

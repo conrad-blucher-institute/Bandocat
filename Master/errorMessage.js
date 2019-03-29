@@ -1,10 +1,10 @@
-/********************************************************************
-* Function is used to display bootstrap dismissible error messages.
-* Error message can be changed by calling the function and simply
-* passing the "id" of the div you want it to be appended to, the
-* "message" to be displayed, and the "style" of your desired error
-* message(style changes the color of the error message).
-********************************************************************/
+/***************************************************************************************
+ Function: errorReport
+ Description: Easily accessible dismissible error message template
+ Parameter(s): id(div id the message will append to), message(message to be displayed),
+               style(Success=green,Info=blue,Warning=yellow,Danger=red)
+ Return value(s): void (appends dismissible error message wherever needed)
+ **************************************************************************************/
 function errorReport(id, message, style)
 {
     var html = '<div class="alert alert-' + style + ' alert-dismissible" >\n' +

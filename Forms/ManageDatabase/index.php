@@ -44,7 +44,7 @@ else header('Location: ../../');
     <div class="row">
         <div class="col">
             <!-- Put Page Contents Here -->
-            <h1 class="text-center">Blank Page</h1>
+            <h1 class="text-center">Database Manager</h1>
             <hr>
             <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
                 <thead>
@@ -138,7 +138,7 @@ else header('Location: ../../');
             "serverside": true,
             "lengthMenu": [20, 40, 60, 80, 100],
             "destroy": true,
-            "order": [[6, "desc"], [2, "desc"]],
+            "order": [],
 
             // Getting select statement
             "ajax": "./table_processing.php",

@@ -9,7 +9,6 @@ include '../../Library/SessionManager.php';
 $session = new SessionManager();
 $userID = $session->getUserID();
 $userName = $session->getUserName();
-$iName =
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
 
@@ -21,7 +20,7 @@ $sql_details = array(
     'host' => $DB->getHost()
 );
 
-$data = $DB->SP_GET_COLLECTION_CONFIG($iName);
+$data = $DB->DATABASE_MANAGER();
 
 //var_dump($data);
 echo json_encode(array("data" => $data));
