@@ -260,26 +260,97 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 <script type="text/javascript" src="../../Master/master.js"></script>
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
+<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
     $(document).ready(function() {
 
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        console.log(docHeight);
+        var docHeight = $(window).height();
         var footerHeight = $('#footer').height();
         var footerTop = $('#footer').position().top + footerHeight;
 
         if (footerTop < docHeight)
             $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
     });
+</script>
 
-    $( window ).resize(function() {
-        var docHeight = $(window).height() -  - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
+<script>
+    $( document ).ready(function() {
+        /* attach a submit handler to the form */
+        $('#theform').submit(function (event) {
+            /* stop form from submitting normally */
+            var formData = new FormData($(this)[0]);
+            /*jquery that displays the three points loader*/
 
-        if (footerTop < docHeight)
-        {
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+            var error = errorHandling($('#txtLibraryIndex'), '<?php echo $collection ?>');
+            if(error.answer){
+                for(i = 0; i < error.desc.length; i++) {
+                    alert(error.desc[i].message)
+                }
+                return false
+            }
+            var eScale = errorHandling($('#txtMapScale'), '<?php echo $collection ?>');
+            if(eScale.answer){
+                for(i = 0; i < eScale.desc.length; i++) {
+                    alert(eScale.desc[i].message)
+                }
+                return false
+            }
+
+            //TODO:: removed libraryindex underscore validation
+//            if(validateFormUnderscore("txtLibraryIndex") == true)
+//            {
+            $('#btnSubmit').css("display", "none");
+            //$('#loader').css("display", "inherit");
+            $("#overlay").show();
+            $("#loader").show();
+            event.disabled;
+
+            event.preventDefault();
+            /* Send the data using post */
+            $.ajax({
+                type: 'post',
+                url: 'form_processing.php',
+                data:  formData,
+                processData: false,
+                contentType: false,
+                success:function(data){
+                    var json = JSON.parse(data);
+                    var msg = "";
+                    var result = 0;
+                    for(var i = 0; i < json.length; i++)
+                    {
+                        msg += json[i] + "\n";
+                    }
+                    for (var i = 0; i < json.length; i++){
+                        if (json[i].includes("Success")) {
+                            result = 1;
+                        }
+                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                        {
+                            $('#btnSubmit').css("display", "inherit");
+                            //$('#loader').css("display", "none");
+                            $('#overlay').removeAttr("style").hide();
+                            $('#loader').removeAttr("style").hide();
+                        }
+                    }
+                    alert(msg);
+                    if (result == 1){
+                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                    }
+
+                }
+            });
+        });
+    });
+
+    $("[type=file]").on("change", function(){
+        // Name of file and placeholder
+        var file = this.files[0].name;
+        var dflt = $(this).attr("placeholder");
+        if($(this).val()!=""){
+            $(this).next().text(file);
+        } else {
+            $(this).next().text(dflt);
         }
     });
 
