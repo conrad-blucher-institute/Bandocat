@@ -2301,6 +2301,12 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         }
     }
 
+    /**********************************************
+    Function:
+    Description:
+    Parameter(s):
+    Return value(s):
+     ***********************************************/
     function DATABASE_MANAGER()
     {
         $data = array();
@@ -2314,7 +2320,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
             echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
             return false;
         }
-        $sql = "SELECT * FROM `table_name`";
+        $sql = "SELECT * FROM `errorreport`";
         $response = $mysqli->query($sql);
 
         if ($response)
@@ -2328,6 +2334,83 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
         }
+        $mysqli->close();
+        return $data;
+    }
+
+    /**********************************************
+    Function:
+    Description:
+    Parameter(s):
+    Return value(s):
+     ***********************************************/
+    function SHOW_TABLES($dbname)
+    {
+        $data = array();
+
+        // Getting connection
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), $dbname);
+
+        // Checking to see if the connection failed
+        if($mysqli->connect_errno)
+        {
+            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            return false;
+        }
+        $sql = "SHOW TABLES";
+        $response = $mysqli->query($sql);
+
+        if ($response)
+        {
+            while($row = mysqli_fetch_assoc($response))
+            {
+                //$data[] = $row;
+                echo "<option value='" . $row['Tables_in_' . $dbname] . "'>" . $row['Tables_in_' . $dbname] . "</option>";
+            }
+        }
+        else
+        {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+        $mysqli->close();
+        return $data;
+    }
+
+    /**********************************************
+    Function:
+    Description:
+    Parameter(s):
+    Return value(s):
+     ***********************************************/
+    function SHOW_DATABASES()
+    {
+        $data = array();
+
+        // Getting connection
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
+
+        // Checking to see if the connection failed
+        if($mysqli->connect_errno)
+        {
+            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            return false;
+        }
+        $sql = "SHOW DATABASES";
+        $response = $mysqli->query($sql);
+
+        if ($response)
+        {
+            while($row = mysqli_fetch_assoc($response))
+            {
+                //$data[] = $row;
+                echo "<option value='" . $row['Database'] . "'>" . $row['Database'] . "</option>";
+            }
+        }
+        else
+        {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+
         $mysqli->close();
         return $data;
     }

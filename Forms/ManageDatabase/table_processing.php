@@ -22,5 +22,20 @@ $sql_details = array(
 
 $data = $DB->DATABASE_MANAGER();
 
+//
+$temp = array_keys($data[0]);
+$columns = [];
+foreach($temp as $value)
+{
+    $object = array(
+        "data" => $value
+    );
+
+    array_push($columns, $object);
+}
+
 //var_dump($data);
-echo json_encode(array("data" => $data));
+echo json_encode(array(
+    "data" => $data,
+    "columns" => $columns
+));

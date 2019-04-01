@@ -13,6 +13,8 @@ if($session->isAdmin()) {
     $DB = new DBHelper();
 }
 else header('Location: ../../');
+require '../../Library/ControlsRender.php';
+$Render = new ControlsRender();
 ?>
 <!doctype html>
 <html lang="en">
@@ -46,27 +48,41 @@ else header('Location: ../../');
             <!-- Put Page Contents Here -->
             <h1 class="text-center">Database Manager</h1>
             <hr>
+
+            <!-- Document start -->
+            <div class="form-group row">
+                <label class="col-sm-1 col-form-label" for="ddlDatabases">DataBase:</label>
+                <div class="col-sm-4">
+                    <div class="d-flex">
+                        <select class="form-control" name="ddlDatabases" id="ddlDatabases">
+                            <!-- POPULATES THE DDL WITH BANDOCAT DATABASES -->
+                            <?php $DB->SHOW_DATABASES(); ?>
+                        </select>
+                    </div>
+                </div>
+
+                <label class="col-sm-1 col-form-label" for="ddlTables">Table:</label>
+                <div class="col-sm-4">
+                    <div class="d-flex">
+                        <select class="form-control" name="ddlTables" id="ddlTables">
+                            <!-- POPULATES THE DDL WITH DATABASE TABLES -->
+                            <?php //$DB->SHOW_TABLES($_POST['ddlDatabases']); ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
             <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
                 <thead>
-                <tr>
-                    <th></th>
-                    <th>Page Type</th>
-                    <th>Library Index</th>
-                    <th>Book Title</th>
-                    <th>Page Number</th>
-                    <th>Needs Review</th>
-                    <th></th>
+                <tr id="tableHead">
+
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <th></th>
-                    <th>Page Type</th>
-                    <th>Library Index</th>
-                    <th>Book Title</th>
-                    <th>Page Number</th>
-                    <th>Needs Review</th>
-                    <th></th>
+
                 </tr>
                 </tfoot>
             </table>
@@ -94,43 +110,68 @@ else header('Location: ../../');
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
 
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
     $(document).ready(function() {
 
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        console.log(docHeight);
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
+        $.ajax({
+            url: "./table_processing.php",
+            method: "POST",
+            success:function(response)
+            {
+                response = JSON.parse(response);
+                var columns = response["columns"];
 
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+                // Set headers for table
+                for(var i = 0; i < columns.length; i++)
+                {
+                    // Append to header
+                    $('#tableHead').append("<th>" + columns[i]["data"] + "</th>")
+                }
+
+                // Display datatable
+                showTable(response);
+            }
+        });
+
+        getTableList();
     });
 
-    $( window ).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-        {
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-        }
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-        showTable();
+    $('#ddlDatabases').change(function() {
+        getTableList();
     });
 
-    function showTable() {
+    function getTableList()
+    {
+        // Get selected value
+        var dbname = $('#ddlDatabases').val();
+
+        // Check if it exists first
+
+        $.ajax({
+            url: "./show_tables.php",
+            method: "POST",
+            data: {dbname: dbname},
+            success:function(response)
+            {
+                console.log(response);
+                $('#ddlTables').empty();
+                $('#ddlTables').append(response);
+            }
+        });
+    }
+
+    function showTable(response) {
         var counter = 0;
+        var data = response["data"];
+        var columns = response["columns"];
+        //console.log(response["data"]);
+
         // Setup - add a text input to each footer cell
         $('#dtable tfoot th').each(function () {
             var title = $(this).text();
             $(this).html('<input type="text" placeholder="Search ' + title + '" />');
         });
+
 
         // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
         var table = $('#dtable').DataTable({
@@ -141,17 +182,8 @@ else header('Location: ../../');
             "order": [],
 
             // Getting select statement
-            "ajax": "./table_processing.php",
-            "columns": [
-                {"data": ''},
-                {"data": ''},
-                {"data": ''},
-                {"data": ''},
-                {"data": ''},
-                {"data": ''},
-                {"data": ''},
-                {"data": ''},
-            ],
+            "data":data,
+            "columns": columns
         });
     }
 </script>
