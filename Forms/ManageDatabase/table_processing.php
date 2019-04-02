@@ -20,22 +20,32 @@ $sql_details = array(
     'host' => $DB->getHost()
 );
 
-$data = $DB->DATABASE_MANAGER();
-
-//
-$temp = array_keys($data[0]);
-$columns = [];
-foreach($temp as $value)
+if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
 {
+    $data = $DB->DATABASE_MANAGER();
+
+// Obtaining data and pushing to columns array
+    $temp = array_keys($data[0]);
+    $columns = [];
+    foreach($temp as $value)
+    {
+        $object = array(
+            "data" => $value
+        );
+
+        array_push($columns, $object);
+    }
+
+// Manually pushing Delete to the last column
     $object = array(
-        "data" => $value
+        "data" => 'Delete'
     );
-
     array_push($columns, $object);
-}
 
-//var_dump($data);
-echo json_encode(array(
-    "data" => $data,
-    "columns" => $columns
-));
+    echo json_encode(array(
+        "data" => $data,
+        "columns" => $columns
+    ));
+}
+else header('Location: ../../');
+

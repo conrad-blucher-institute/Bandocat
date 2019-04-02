@@ -2302,10 +2302,10 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
     }
 
     /**********************************************
-    Function:
-    Description:
-    Parameter(s):
-    Return value(s):
+    Function: DATABASE_MANAGER
+    Description: Retrieves the desired database that an admin would like to browse
+    Parameter(s): N/A
+    Return value(s): $data
      ***********************************************/
     function DATABASE_MANAGER()
     {
@@ -2338,12 +2338,12 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         return $data;
     }
 
-    /**********************************************
-    Function:
-    Description:
-    Parameter(s):
-    Return value(s):
-     ***********************************************/
+    /*************************************************************************
+    Function: SHOW_TABLE
+    Description: Function retrieves data from a table that the admin selected
+    Parameter(s): $dbname
+    Return value(s): $data
+     *************************************************************************/
     function SHOW_TABLES($dbname)
     {
         $data = array();
@@ -2377,10 +2377,11 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
     }
 
     /**********************************************
-    Function:
-    Description:
-    Parameter(s):
-    Return value(s):
+    Function: SHOW_DATABASES
+    Description: Function retrieves all databases to display in a DDL
+                 for an admin to select
+    Parameter(s): N/A
+    Return value(s): $data
      ***********************************************/
     function SHOW_DATABASES()
     {
@@ -2400,10 +2401,12 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
 
         if ($response)
         {
+
             while($row = mysqli_fetch_assoc($response))
             {
                 //$data[] = $row;
-                echo "<option value='" . $row['Database'] . "'>" . $row['Database'] . "</option>";
+                if(strpos($row['Database'], 'bandocat') !== false)
+                    echo "<option value='" . $row['Database'] . "'>" . $row['Database'] . "</option>";
             }
         }
         else

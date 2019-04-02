@@ -16,7 +16,4 @@ if(isset($_POST["dbname"]))
     $tables = $DB->SHOW_TABLES($dbname);
     $HTML = "";
 }
-else
-{
-
-}
+else header('Location: ../../');

@@ -13,8 +13,6 @@ if($session->isAdmin()) {
     $DB = new DBHelper();
 }
 else header('Location: ../../');
-require '../../Library/ControlsRender.php';
-$Render = new ControlsRender();
 ?>
 <!doctype html>
 <html lang="en">
@@ -49,8 +47,9 @@ $Render = new ControlsRender();
             <h1 class="text-center">Database Manager</h1>
             <hr>
 
-            <!-- Document start -->
+
             <div class="form-group row">
+                <!-- DDL for Database Selection -->
                 <label class="col-sm-1 col-form-label" for="ddlDatabases">DataBase:</label>
                 <div class="col-sm-4">
                     <div class="d-flex">
@@ -61,12 +60,12 @@ $Render = new ControlsRender();
                     </div>
                 </div>
 
+                <!-- DDL for Table Selection -->
                 <label class="col-sm-1 col-form-label" for="ddlTables">Table:</label>
                 <div class="col-sm-4">
                     <div class="d-flex">
                         <select class="form-control" name="ddlTables" id="ddlTables">
-                            <!-- POPULATES THE DDL WITH DATABASE TABLES -->
-                            <?php //$DB->SHOW_TABLES($_POST['ddlDatabases']); ?>
+                            <!-- TABLES APPENDED HERE -->
                         </select>
                     </div>
                 </div>
@@ -74,6 +73,7 @@ $Render = new ControlsRender();
 
             <hr>
 
+            <!-- Data-Table -->
             <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
                 <thead>
                 <tr id="tableHead">
@@ -134,12 +134,22 @@ $Render = new ControlsRender();
         });
 
         getTableList();
+        getUserInput();
     });
 
     $('#ddlDatabases').change(function() {
         getTableList();
     });
 
+    $('#ddlTables').change(function() {
+        getUserInput()
+        showTable(response);
+    });
+
+    /***************************************************************
+     Function: getTableList
+     Description: Appends html of selected data-table to DDL
+     ***************************************************************/
     function getTableList()
     {
         // Get selected value
@@ -160,18 +170,45 @@ $Render = new ControlsRender();
         });
     }
 
+    /***************************************************************
+     Function: getUserInput
+     Description: Passes User Input to change datatable when new
+                  fields are selected from the DDLs
+     ***************************************************************/
+    function getUserInput()
+    {
+        // Get selected value
+        var dbname = $('#ddlDatabases').val();
+        var tblname = $('#ddlTables').val();
+
+        // Check if it exists first
+
+        $.ajax({
+            url: "./table_processing.php",
+            method: "POST",
+            data: {dbname: dbname, tblname: tblname},
+            success:function(response)
+            {
+                console.log(response);
+            }
+        });
+    }
+
+    /*******************************************************************
+     Function: showTable
+     Description: Function displays a dynamic data-table of the chosen
+                  database and table.
+     *******************************************************************/
     function showTable(response) {
-        var counter = 0;
         var data = response["data"];
         var columns = response["columns"];
-        //console.log(response["data"]);
+        var lastColumn = columns.length - 1;
 
         // Setup - add a text input to each footer cell
         $('#dtable tfoot th').each(function () {
             var title = $(this).text();
             $(this).html('<input type="text" placeholder="Search ' + title + '" />');
         });
-
 
         // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
         var table = $('#dtable').DataTable({
@@ -181,9 +218,20 @@ $Render = new ControlsRender();
             "destroy": true,
             "order": [],
 
-            // Getting select statement
+            // Dynamically making table
             "data":data,
-            "columns": columns
+            "columns": columns,
+            "columnDefs":
+                [
+                    {
+                        "render": function ()
+                        {
+                            return "<a href='#'>Delete</a>";
+                        },
+                        "targets": lastColumn,
+                    }
+                ],
+
         });
     }
 </script>
