@@ -354,6 +354,11 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     });
 
+    // Classification explanations
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
     // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
     // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
 
@@ -415,7 +420,6 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             console.log("Hide. User is not admin");
         }
     }
-
 
 </script>
 </body>
