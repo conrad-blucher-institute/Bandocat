@@ -22,9 +22,11 @@ $sql_details = array(
 
 if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
 {
-    $data = $DB->DATABASE_MANAGER();
+    $dbname = $_POST["dbname"];
+    $tblname = $_POST["tblname"];
+    $data = $DB->DATABASE_MANAGER($dbname, $tblname);
 
-// Obtaining data and pushing to columns array
+    // Obtaining data and pushing to columns array
     $temp = array_keys($data[0]);
     $columns = [];
     foreach($temp as $value)
@@ -36,7 +38,7 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
         array_push($columns, $object);
     }
 
-// Manually pushing Delete to the last column
+    // Manually pushing Delete to the last column
     $object = array(
         "data" => 'Delete'
     );
@@ -48,4 +50,6 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
     ));
 }
 else header('Location: ../../');
+
+
 

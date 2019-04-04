@@ -113,28 +113,27 @@ else header('Location: ../../');
 <script>
     $(document).ready(function() {
 
+        var dbname = $('#ddlDatabases').val();
+        var tblname = $('#ddlTables').val();
+
+        //console.log(dbname, tblname);
         $.ajax({
             url: "./table_processing.php",
             method: "POST",
+            data: {dbname: dbname, tblname: tblname},
             success:function(response)
             {
-                response = JSON.parse(response);
-                var columns = response["columns"];
-
-                // Set headers for table
-                for(var i = 0; i < columns.length; i++)
-                {
-                    // Append to header
-                    $('#tableHead').append("<th>" + columns[i]["data"] + "</th>")
-                }
+                //response = JSON.parse(response);
+                //var columns = response["columns"];
+                //console.log(response);
 
                 // Display datatable
-                showTable(response);
+                //showTable(response);
             }
         });
 
         getTableList();
-        getUserInput();
+        //getUserInput();
     });
 
     $('#ddlDatabases').change(function() {
@@ -142,8 +141,7 @@ else header('Location: ../../');
     });
 
     $('#ddlTables').change(function() {
-        getUserInput()
-        showTable(response);
+        getUserInput();
     });
 
     /***************************************************************
@@ -163,9 +161,10 @@ else header('Location: ../../');
             data: {dbname: dbname},
             success:function(response)
             {
-                console.log(response);
+                //console.log(response);
                 $('#ddlTables').empty();
                 $('#ddlTables').append(response);
+                getUserInput();
             }
         });
     }
@@ -189,7 +188,9 @@ else header('Location: ../../');
             data: {dbname: dbname, tblname: tblname},
             success:function(response)
             {
-                console.log(response);
+                //console.log(response);
+                $('#tableHead').empty();
+                showTable(JSON.parse(response));
             }
         });
     }
@@ -209,6 +210,13 @@ else header('Location: ../../');
             var title = $(this).text();
             $(this).html('<input type="text" placeholder="Search ' + title + '" />');
         });
+
+        // Set headers for table
+        for(var i = 0; i < columns.length; i++)
+        {
+            // Append to header
+            $('#tableHead').append("<th>" + columns[i]["data"] + "</th>")
+        }
 
         // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
         var table = $('#dtable').DataTable({

@@ -2307,12 +2307,12 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
     Parameter(s): N/A
     Return value(s): $data
      ***********************************************/
-    function DATABASE_MANAGER()
+    function DATABASE_MANAGER($dbname, $tblname)
     {
         $data = array();
 
         // Getting connection
-        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), $dbname);
 
         // Checking to see if the connection failed
         if($mysqli->connect_errno)
@@ -2320,7 +2320,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
             echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
             return false;
         }
-        $sql = "SELECT * FROM `errorreport`";
+        $sql = "SELECT * FROM " . $tblname;
         $response = $mysqli->query($sql);
 
         if ($response)
@@ -2334,6 +2334,9 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
         }
+
+        //echo "THIS IS IT BRUH " . $tblname . "SQL: ". $sql;
+
         $mysqli->close();
         return $data;
     }
