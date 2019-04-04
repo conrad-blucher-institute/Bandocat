@@ -54,6 +54,7 @@ else header('Location: ../../');
                 <div class="col-sm-4">
                     <div class="d-flex">
                         <select class="form-control" name="ddlDatabases" id="ddlDatabases">
+                            <!--<option value=""></option>-->
                             <!-- POPULATES THE DDL WITH BANDOCAT DATABASES -->
                             <?php $DB->SHOW_DATABASES(); ?>
                         </select>
@@ -111,9 +112,12 @@ else header('Location: ../../');
 <script type="text/javascript" src="../../Master/master.js"></script>
 
 <script>
+
+    //var table;
+
     $(document).ready(function() {
 
-        var dbname = $('#ddlDatabases').val();
+        /*var dbname = $('#ddlDatabases').val();
         var tblname = $('#ddlTables').val();
 
         //console.log(dbname, tblname);
@@ -131,7 +135,7 @@ else header('Location: ../../');
                 //showTable(response);
             }
         });
-
+        */
         getTableList();
         //getUserInput();
     });
@@ -141,6 +145,7 @@ else header('Location: ../../');
     });
 
     $('#ddlTables').change(function() {
+        $('#dtable').empty();
         getUserInput();
     });
 
@@ -189,37 +194,36 @@ else header('Location: ../../');
             success:function(response)
             {
                 //console.log(response);
-                $('#tableHead').empty();
                 showTable(JSON.parse(response));
             }
         });
     }
 
+    var table
     /*******************************************************************
      Function: showTable
      Description: Function displays a dynamic data-table of the chosen
                   database and table.
      *******************************************************************/
-    function showTable(response) {
+    function showTable(response)
+    {
         var data = response["data"];
         var columns = response["columns"];
         var lastColumn = columns.length - 1;
 
-        // Setup - add a text input to each footer cell
-        $('#dtable tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-        });
+        console.log(columns, lastColumn);
 
-        // Set headers for table
-        for(var i = 0; i < columns.length; i++)
+        $('#tableHead').empty();
+
+       for(var i = 0; i < columns.length; i++)
         {
             // Append to header
             $('#tableHead').append("<th>" + columns[i]["data"] + "</th>")
+            console.log(i ,"\n");
         }
 
         // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
-        var table = $('#dtable').DataTable({
+        table = $('#dtable').DataTable({
             "processing": true,
             "serverside": true,
             "lengthMenu": [20, 40, 60, 80, 100],
@@ -239,8 +243,8 @@ else header('Location: ../../');
                         "targets": lastColumn,
                     }
                 ],
-
         });
+
     }
 </script>
 

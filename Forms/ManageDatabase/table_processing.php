@@ -24,6 +24,7 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
 {
     $dbname = $_POST["dbname"];
     $tblname = $_POST["tblname"];
+    $object = array();
     $data = $DB->DATABASE_MANAGER($dbname, $tblname);
 
     // Obtaining data and pushing to columns array
@@ -38,11 +39,13 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
         array_push($columns, $object);
     }
 
+
     // Manually pushing Delete to the last column
     $object = array(
         "data" => 'Delete'
     );
     array_push($columns, $object);
+
 
     echo json_encode(array(
         "data" => $data,
