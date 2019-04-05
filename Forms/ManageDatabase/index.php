@@ -86,30 +86,26 @@ else header('Location: ../../');
 </div><!-- Container -->
 
 <!-- Modal -->
-<div class="modal fade" id="rowModal" tabindex="-1" role="dialog" aria-labelledby="rowModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="rowModalTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="updateDataBase">
-                <div class="modal-body" id="rowModalBody">
-                    <!-- Table ID -->
-                    <div class="form-group row">
-                        <label for="tableID" class="col-sm-3 col-form-label">Table ID</label>
-                        <div class="col-sm-9">
-                            <input type="text" readonly class="form-control-plaintext" id="tableID" name="tableID" value="1234">
-                        </div>
+<div id="Modal">
+    <div class="modal fade" id="rowModal" tabindex="-1" role="dialog" aria-labelledby="rowModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rowModalTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updateDataBase">
+                    <div class="modal-body" id="rowModalBody">
+
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" value="Save Changes" class="btn btn-primary" id="submit">
-                    <input type="button" value="Delete" class="btn btn-danger" id="delete">
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <input type="submit" value="Save Changes" class="btn btn-primary" id="submit">
+                        <input type="button" value="Delete" class="btn btn-danger" id="delete">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -145,30 +141,7 @@ else header('Location: ../../');
 <script type="text/javascript" src="../../Master/master.js"></script>
 
 <script>
-
-    //var table;
-
     $(document).ready(function() {
-
-        /*var dbname = $('#ddlDatabases').val();
-        var tblname = $('#ddlTables').val();
-
-        //console.log(dbname, tblname);
-        $.ajax({
-            url: "./table_processing.php",
-            method: "POST",
-            data: {dbname: dbname, tblname: tblname},
-            success:function(response)
-            {
-                //response = JSON.parse(response);
-                //var columns = response["columns"];
-                //console.log(response);
-
-                // Display datatable
-                //showTable(response);
-            }
-        });
-        */
         getTableList();
         //getUserInput();
         var test = <?php
@@ -177,6 +150,19 @@ else header('Location: ../../');
         //console.log(test);
     });
 
+    $('#ddlDatabases').change(function() {
+        getTableList();
+    });
+
+    $('#ddlTables').change(function() {
+        getUserInput();
+    });
+
+    /***************************************************************
+     Function: removeTable
+     Description: Function removes the old table and appends a new
+                  empty table.
+     ***************************************************************/
     function removeTable()
     {
         $('#dtable').remove();
@@ -185,14 +171,6 @@ else header('Location: ../../');
             '                \n' +
             '            </table>');
     }
-
-    $('#ddlDatabases').change(function() {
-        getTableList();
-    });
-
-    $('#ddlTables').change(function() {
-        getUserInput();
-    });
 
     /***************************************************************
      Function: getTableList
@@ -291,15 +269,41 @@ else header('Location: ../../');
         $('#dtable tbody').on('click', 'tr', function () {
             var rowData = table.row( this ).data();
 
-            // Clear counter for the text area
-            $("#counter").empty();
+            $('#rowModal').remove();
+            $('#Modal').append('<div class="modal fade" id="rowModal" tabindex="-1" role="dialog" aria-labelledby="rowModal" aria-hidden="true">\n' +
+                '        <div class="modal-dialog modal-lg" role="document">\n' +
+                '            <div class="modal-content">\n' +
+                '                <div class="modal-header">\n' +
+                '                    <h5 class="modal-title" id="rowModalTitle">Modal title</h5>\n' +
+                '                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
+                '                        <span aria-hidden="true">&times;</span>\n' +
+                '                    </button>\n' +
+                '                </div>\n' +
+                '                <form id="updateDataBase">\n' +
+                '                    <div class="modal-body" id="rowModalBody">\n' +
+                '                        \n' +
+                '                    </div>\n' +
+                '                    <div class="modal-footer">\n' +
+                '                        <input type="submit" value="Save Changes" class="btn btn-primary" id="submit">\n' +
+                '                        <input type="button" value="Delete" class="btn btn-danger" id="delete">\n' +
+                '                    </div>\n' +
+                '                </form>\n' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>');
 
+            // Clear counter for the text area
             $('#rowModal').modal('show');
             fillModal(rowData);
             console.log(rowData);
         } );
     }
 
+    /***************************************************************
+     Function: fillModal
+     Description: Dynamically fills the modal with the column names
+                  and the content in the selected row
+     ***************************************************************/
     function fillModal(rowData)
     {
         for(var property in rowData)
@@ -317,6 +321,5 @@ else header('Location: ../../');
     }
 
 </script>
-
 </body>
 </html>
