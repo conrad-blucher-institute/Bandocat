@@ -33,7 +33,8 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
     foreach($temp as $value)
     {
         $object = array(
-            "data" => $value
+            "data" => $value,
+            "title" => $value,
         );
 
         array_push($columns, $object);
@@ -41,10 +42,11 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
 
 
     // Manually pushing Delete to the last column
-    $object = array(
-        "data" => 'Delete'
+    /*$object = array(
+        "data" => 'Delete',
+        "title" => "Delete"
     );
-    array_push($columns, $object);
+    array_push($columns, $object);*/
 
 
     echo json_encode(array(

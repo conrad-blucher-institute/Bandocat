@@ -8,6 +8,7 @@
 
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
+$test = [1, 2, 3];
 if($session->isAdmin()) {
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
@@ -33,7 +34,7 @@ else header('Location: ../../');
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 
-    <title>Blank Table Page</title>
+    <title>Database Manager</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
@@ -74,22 +75,45 @@ else header('Location: ../../');
 
             <hr>
 
-            <!-- Data-Table -->
-            <table id="dtable" class="table table-striped table-bordered" width="100%" cellspacing="0" data-page-length='20'>
-                <thead>
-                <tr id="tableHead">
+            <div id="divTable">
+                <!-- Data-Table -->
+                <table id="dtable" class="table table-bordered table-hover" width="100%" cellspacing="0" data-page-length='20'>
 
-                </tr>
-                </thead>
-                <tfoot>
-                <tr>
-
-                </tr>
-                </tfoot>
-            </table>
+                </table>
+            </div>
         </div> <!-- col -->
     </div> <!-- row -->
 </div><!-- Container -->
+
+<!-- Modal -->
+<div class="modal fade" id="rowModal" tabindex="-1" role="dialog" aria-labelledby="rowModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rowModalTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="updateDataBase">
+                <div class="modal-body" id="rowModalBody">
+                    <!-- Table ID -->
+                    <div class="form-group row">
+                        <label for="tableID" class="col-sm-3 col-form-label">Table ID</label>
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control-plaintext" id="tableID" name="tableID" value="1234">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Save Changes" class="btn btn-primary" id="submit">
+                    <input type="button" value="Delete" class="btn btn-danger" id="delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?php include "../../Master/bandocat_footer.php" ?>
 
 
@@ -107,6 +131,15 @@ else header('Location: ../../');
 
 <!-- Bootstrap JS files for datatables CDN -->
 <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+
+<!-- Exporting CDNS -->
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
 
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
@@ -138,14 +171,26 @@ else header('Location: ../../');
         */
         getTableList();
         //getUserInput();
+        var test = <?php
+            $myObj = array("test" => 1, "whatup" => false);
+            echo json_encode($myObj); ?>;
+        //console.log(test);
     });
+
+    function removeTable()
+    {
+        $('#dtable').remove();
+        $('#dtable_wrapper').remove();
+        $('#divTable').append('<table id="dtable" class="table table-bordered table-hover" width="100%" cellspacing="0" data-page-length=\'20\'>\n' +
+            '                \n' +
+            '            </table>');
+    }
 
     $('#ddlDatabases').change(function() {
         getTableList();
     });
 
     $('#ddlTables').change(function() {
-        $('#dtable').empty();
         getUserInput();
     });
 
@@ -184,6 +229,7 @@ else header('Location: ../../');
         // Get selected value
         var dbname = $('#ddlDatabases').val();
         var tblname = $('#ddlTables').val();
+        removeTable();
 
         // Check if it exists first
 
@@ -199,7 +245,6 @@ else header('Location: ../../');
         });
     }
 
-    var table
     /*******************************************************************
      Function: showTable
      Description: Function displays a dynamic data-table of the chosen
@@ -209,43 +254,68 @@ else header('Location: ../../');
     {
         var data = response["data"];
         var columns = response["columns"];
-        var lastColumn = columns.length - 1;
+        //var lastColumn = columns.length - 1;
 
-        console.log(columns, lastColumn);
-
-        $('#tableHead').empty();
-
-       for(var i = 0; i < columns.length; i++)
-        {
-            // Append to header
-            $('#tableHead').append("<th>" + columns[i]["data"] + "</th>")
-            console.log(i ,"\n");
-        }
+        //console.log(columns);
 
         // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
-        table = $('#dtable').DataTable({
-            "processing": true,
-            "serverside": true,
-            "lengthMenu": [20, 40, 60, 80, 100],
-            "destroy": true,
-            "order": [],
+        var table = $('#dtable').DataTable({
+            processing: true,
+            serverside: true,
+            lengthMenu: [20, 40, 60, 80, 100],
+            destroy: true,
+            order: [],
+            scrollX: true,
+            scrollY: "30rem",
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
 
             // Dynamically making table
-            "data":data,
-            "columns": columns,
-            "columnDefs":
+            data:data,
+            columns: columns,
+            /*columnDefs:
                 [
                     {
-                        "render": function ()
+                        render: function ()
                         {
                             return "<a href='#'>Delete</a>";
                         },
-                        "targets": lastColumn,
+                        targets: lastColumn,
                     }
-                ],
+                ],*/
         });
 
+        // When the user clicks on a row on the data table
+        $('#dtable tbody').on('click', 'tr', function () {
+            var rowData = table.row( this ).data();
+
+            // Clear counter for the text area
+            $("#counter").empty();
+
+            $('#rowModal').modal('show');
+            fillModal(rowData);
+            console.log(rowData);
+        } );
     }
+
+    function fillModal(rowData)
+    {
+        for(var property in rowData)
+        {
+            html = ' <div class="form-group row">\n' +
+                '                        <label style="" class="col-sm-3 col-form-label" for="txtSubject1">' + property + '</label>\n' +
+                '                        <div class="col-sm-8">\n' +
+                '                            <input type="text" name="txtSubject" id="txtSubject1" size="32" class="form-control" value="' + rowData[property] + '" required/>\n' +
+                '                        </div>\n' +
+                '                    </div>'
+
+            $("#rowModalBody").append(html);
+            console.log(property);
+        }
+    }
+
 </script>
 
 </body>

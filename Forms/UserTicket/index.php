@@ -472,7 +472,6 @@ $collection_array = $DB->GET_COLLECTION_FOR_DROPDOWN();
      * val (String ) - name of the author
      * Return value(s): None
      ***********************************************/
-
     function add_fields() {
         var html = '<div class="form-group row" id="length' + length + '">' +
             '<label class="col-sm-3 col-form-label" for="txtSubject'+ length + '">Library Index ' + length + ':</label>' +
