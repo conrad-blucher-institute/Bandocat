@@ -121,11 +121,26 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Map Scale -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtMapScale">Map Scale:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" name = "txtMapScale" id = "txtMapScale" value=""  />
+                                            <div class="d-flex">
+                                                <input type="number" min="1" class="form-control">
+                                                <select class="form-control" id="unitLeft">
+                                                    <option value="inches">in</option>
+                                                    <option value="feet">ft</option>
+                                                    <option value="varas">vrs</option>
+                                                </select>
+                                                <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
+                                                <input type="number" min="1" class="form-control">
+                                                <select class="form-control" id="unitRight">
+                                                    <option value="feet">ft</option>
+                                                    <option value="varas">vrs</option>
+                                                    <option value="inches">in</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <!-- Document Author -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
@@ -138,6 +153,20 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         </div>
                                     </div>
                                     <!-- Radio Buttons -->
+                                    <!-- Has Scalebar -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Has Scalebar:</label>
+                                        <div class="col-sm-8 mt-2">
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_yes" value="1"/>
+                                                <label class="form-check-label" for="hasScalebar_yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_no" value="0" checked />
+                                                <label class="form-check-label" for="hasScalebar_no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- is Map -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">Is Map:</label>

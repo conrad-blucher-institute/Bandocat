@@ -1,6 +1,8 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
+//var_dump($session);
+$userRole = $session->getRole();
 //get collection name from passed variables col and doc
 if(isset($_GET['col']) && isset($_GET['doc']))
 {
@@ -23,6 +25,7 @@ $date = new DateHelper();
 //select authors by document
 $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 ?>
+
 <!doctype html>
 <html lang="en">
 <!-- HTML HEADER -->
@@ -34,137 +37,214 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Catalog Form</title>
+    <title>Job Folder Catalog Form</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body>
+<body onload="adminValidation()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container">
     <div class="row">
         <div class="col">
             <!-- Put Page Contents Here -->
-            <h1 class="text-center"><?php echo $config['DisplayName'];?> Catalog Form</h1>
-            <hr>
+            <!-- <h1 class="text-center">Blank Page</h1> -->
+            <div class="row">
+                <div class="col">
+                    <!-- Put Page Contents Here -->
+                    <h1 class="text-center"><?php echo $config["DisplayName"]; ?> Catalog Form</h1>
+                    <hr>
+
+                    <div class="d-flex justify-content-center">
+                        <!-- Card -->
+                        <div class="card" style="width: 75em;">
+                            <div class="card-body">
+                                <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
+                                    <div class="row">
+                                        <!-- These are used the most often -->
+                                        <!-- The Left side -->
+                                        <div class="col-6">
+                                            <!-- Library Index -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
+                                                <div class="col-sm-8">
+                                                    <input type = "text" class="form-control" name="txtLibraryIndex" id="txtLibraryIndex" value="" disabled required />
+                                                </div>
+                                            </div>
+                                            <!-- Document Title -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="txtTitle">Document Title:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" name="txtTitle" id="txtTitle" value="" required />
+                                                </div>
+                                            </div>
+                                            <!-- Document Author -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
+                                                <div class="col-sm-8">
+                                                    <input type = "text" class="form-control" list="lstAuthor" name="txtAuthor" id="txtAuthor" value="" />
+                                                    <datalist id="lstAuthor">
+                                                        <!-- POPULATE AUTHOR LIST-->
+                                                        <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <!-- Radio Buttons Start -->
+                                            <!-- Needs Review -->
+                                            <div class="form-group row" id="needsReview">
+                                                <label class="col-sm-4 col-form-label">Needs Review:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio" class="form-check-input" name="folderNeedsReview" id="folderNeedsReview_yes" value="1" checked />
+                                                        <label class="form-check-label" for="folderNeedsReview_yes">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio" class="form-check-input" name="folderNeedsReview" id="folderNeedsReview_no" value="0"/>
+                                                        <label class="form-check-label" for="folderNeedsReview_no">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- In a Subfolder -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">In a Subfolder:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio" class="form-check-input" name="inSubfolder" id="inSubfolder_yes" value="1" />
+                                                        <label class="form-check-label" for="inSubfolder_yes">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio" class="form-check-input" name="inSubfolder" id="inSubfolder_no" value="0" checked />
+                                                        <label class="form-check-label" for="inSubfolder_no">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Radio Buttons End -->
+                                            <!-- Classification -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="ddlMedium">Classification:</label>
+                                                <div class="col-sm-8">
+                                                    <select id="ddlMedium" name="ddlMedium" class="form-control" required>
+                                                        <!-- GET FOLDER CLASSIFICATION LIST -->
+                                                        <?php
+                                                        $Render->GET_DDL_TOOLTIP($DB->GET_FOLDER_CLASSIFICATION_LIST($collection),$document['Classification']);
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- Classification Comments -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="txtClassificationComments">Classification Comments:</label>
+                                                <div class="col-sm-8" >
+                                                    <textarea type="text" class="form-control" name="txtClassificationComments" id="txtClassificationComments" value=""></textarea>
+                                                </div>
+                                            </div>
+                                            <!-- Subfolder Comments -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="txtSubfolderComments">Subfolder Comments:</label>
+                                                <div class="col-sm-8" >
+                                                    <textarea type="text" class="form-control" name="txtSubfolderComments" id="txtSubfolderComments" value=""></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- The Right Side -->
+                                        <div class="col-6">
+                                            <!-- Document Start Date -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="txtSubtitle">Document Start Date:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="d-flex">
+                                                        <select class="form-control" name="ddlStartMonth" id="ddlStartMonth">
+                                                            <!-- POPULATES THE DDL WITH START MONTHS -->
+                                                            <?php $Render->GET_DDL_MONTH(null); ?>
+                                                        </select>
+                                                        <select class="form-control" name="ddlStartDay" id="ddlStartDay">
+                                                            <!-- POPULATES THE DDL WITH START DAYS -->
+                                                            <?php $Render->GET_DDL_DAY(null); ?>
+                                                        </select>
+
+                                                        <select class="form-control" id="ddlStartYear" name="ddlStartYear">
+                                                            <!-- POPULATES THE DDL WITH START YEARS -->
+                                                            <?php $Render->GET_DDL_YEAR(null); ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Document End Date -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="txtSubtitle">Document End Date:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="d-flex">
+                                                        <select class="form-control" name="ddlEndMonth" id="ddlEndMonth">
+                                                            <!-- POPULATES THE DDL WITH END MONTHS -->
+                                                            <?php $Render->GET_DDL_MONTH(null); ?>
+                                                        </select>
+                                                        <select class="form-control" name="ddlEndDay" id="ddlEndDay">
+                                                            <!-- POPULATES THE DDL WITH END DAYS -->
+                                                            <?php $Render->GET_DDL_DAY(null); ?>
+                                                        </select>
+                                                        <select class="form-control" name="ddlEndYear" id="ddlEndYear">
+                                                            <!-- POPULATES THE DDL WITH END YEARS -->
+                                                            <?php $Render->GET_DDL_YEAR(null); ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Front Scan -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Front Scan:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="custom-file spinner-border text-dark" role="status">
+                                                        <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required/>
+                                                        <label class="custom-file-label text-truncate" for="fileUpload">Choose file</label>
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Scan Back -->
+                                            <div class="form-group row" >
+                                                <label class="col-sm-4 col-form-label spinner-border text-dark">Back Scan:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="custom-file spinner-border text-dark" role="status">
+                                                        <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" onchange="backUpload()" />
+                                                        <label class="custom-file-label" for="fileUploadBack">Choose file</label>
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- General Comments -->
+                                            <div class="form-row">
+                                                <div class="form-group col">
+                                                    <label for="txtComments" class="col-form-label">Comments:</label>
+                                                    <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces Co., Texas."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Buttons -->
+                                    <div class="form row">
+                                        <div class="col">
+                                            <div class="d-flex justify-content-between">
+                                                <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" class="btn btn-secondary"/>
+                                                <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
+                                                <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
+                                                <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
+                                                <span>
+                                                    <?php if($session->hasWritePermission())
+                                                    {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Submit' class='btn btn-primary'/>";}
+                                                    ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> <!-- Card -->
+                    </div>
+                </div> <!-- col -->
+            </div> <!-- row -->
         </div> <!-- col -->
     </div> <!-- row -->
-    <div class="row">
-        <div class="col">
-            <div class="d-flex justify-content-center">
-                <div class="card" style="width: 40em;">
-                    <div class="card-body">
-                        <form id="theform" name="theform" enctype="multipart/form-data" >
-                            <!-- Populates the control with data -->
-                            <datalist id="lstAuthor">
-                                <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
-                            </datalist>
-                            <!-- Library Index and Document title -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="txtLibraryIndex">Library Index</label>
-                                        <input type = "text" name = "txtLibraryIndex" class="form-control" id = "txtLibraryIndex" size="26" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>' required />
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="txtTitle">Document Title</label>
-                                        <input type = "text" name = "txtTitle" class="form-control" id = "txtTitle" size="26" required="true" value='<?php echo htmlspecialchars($document['Title'],ENT_QUOTES);?>' />
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Radio buttons, Needs review and in a subfolder -->
-                            <div class="row">
-                                <div class="col">
-                                    <label for="rbNeedsReview">Needs Review</label>
-                                    <div class="form-group">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" value="1" <?php if($document['NeedsReview'] == 1) echo "checked"; ?> >
-                                            <label class="form-check-label" for="rbNeedsReview_yes">
-                                                Yes
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name = "rbNeedsReview" id = "rbNeedsReview_no" size="26" value="0" <?php if($document['NeedsReview'] == 0) echo "checked"; ?> >
-                                            <label class="form-check-label" for="rbNeedsReview_no">
-                                                No
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <label for="rbNeedsReview">In a Subfolder</label>
-                                    <div class="form-group">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name = "rbInASubfolder" id = "rbInASubfolder_yes" size="26" value="1" <?php if($document['InSubfolder'] == 1) echo "checked"; ?> >
-                                            <label class="form-check-label" for="rbInASubfolder_yes">
-                                                Yes
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name = "rbInASubfolder" id = "rbInASubfolder_no" size="26" value="0" <?php if($document['InSubfolder'] == 0) echo "checked"; ?> >
-                                            <label class="form-check-label" for="rbInASubfolder_no">
-                                                No
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Start date, end date, and classification -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="ddlStart">Document Start Date</label>
-                                        <div class="d-flex">
-                                            <!-- GET START DDL MONTH -->
-                                            <select class="form-control" name="ddlStartMonth" id="ddlStartMonth">
-                                                <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
-                                            </select>
-                                            <!-- GET START DDL DAY -->
-                                            <select class="form-control" name="ddlStartDay" id="ddlStartDay">
-                                                <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
-                                            </select>
-                                            <!-- GET START DDL YEAR -->
-                                            <select class="form-control" id="ddlStartYear" name="ddlStartYear">
-                                                <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="ddlEnd">Document End Date</label>
-                                        <div class="d-flex">
-                                            <!-- GET END DDL MONTH -->
-                                            <select class="form-control" name="ddlEndMonth" id="ddlEndMonth">
-                                                <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
-                                            </select>
-                                            <!-- GET END DDL DAY -->
-                                            <select class="form-control" name="ddlEndDay" id="ddlEndDay">
-                                                <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
-                                            </select>
-                                            <!-- GET END DDL YEAR -->
-                                            <select class="form-control" name="ddlEndYear" id="ddlEndYear">
-                                                <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Subfolder Comments and classification -->
-                            <div class="row">
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div><!-- Container -->
 <?php include "../../Master/bandocat_footer.php" ?>
-
 
 <!-- Complete JavaScript Bundle -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -179,28 +259,160 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 <script type="text/javascript" src="../../Master/master.js"></script>
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
+<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
-    $(document).ready(function() {
+    $( document ).ready(function() {
+        /* attach a submit handler to the form */
+        $('#theform').submit(function (event) {
+            /* stop form from submitting normally */
+            var formData = new FormData($(this)[0]);
+            /*jquery that displays the three points loader*/
 
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        console.log(docHeight);
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
+            var error = errorHandling($('#txtLibraryIndex'), '<?php echo $collection ?>');
+            if(error.answer){
+                for(i = 0; i < error.desc.length; i++) {
+                    alert(error.desc[i].message)
+                }
+                return false
+            }
+            var eScale = errorHandling($('#txtMapScale'), '<?php echo $collection ?>');
+            if(eScale.answer){
+                for(i = 0; i < eScale.desc.length; i++) {
+                    alert(eScale.desc[i].message)
+                }
+                return false
+            }
 
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+            //TODO:: removed libraryindex underscore validation
+//            if(validateFormUnderscore("txtLibraryIndex") == true)
+//            {
+            $('#btnSubmit').css("display", "none");
+            //$('#loader').css("display", "inherit");
+            $("#overlay").show();
+            $("#loader").show();
+            event.disabled;
+
+            event.preventDefault();
+            /* Send the data using post */
+            $.ajax({
+                type: 'post',
+                url: 'form_processing.php',
+                data:  formData,
+                processData: false,
+                contentType: false,
+                success:function(data){
+                    var json = JSON.parse(data);
+                    var msg = "";
+                    var result = 0;
+                    for(var i = 0; i < json.length; i++)
+                    {
+                        msg += json[i] + "\n";
+                    }
+                    for (var i = 0; i < json.length; i++){
+                        if (json[i].includes("Success")) {
+                            result = 1;
+                        }
+                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                        {
+                            $('#btnSubmit').css("display", "inherit");
+                            //$('#loader').css("display", "none");
+                            $('#overlay').removeAttr("style").hide();
+                            $('#loader').removeAttr("style").hide();
+                        }
+                    }
+                    alert(msg);
+                    if (result == 1){
+                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                    }
+
+                }
+            });
+        });
     });
 
-    $( window ).resize(function() {
-        var docHeight = $(window).height() -  - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-        {
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+    $("[type=file]").on("change", function(){
+        // Name of file and placeholder
+        var file = this.files[0].name;
+        var dflt = $(this).attr("placeholder");
+        if($(this).val()!=""){
+            $(this).next().text(file);
+        } else {
+            $(this).next().text(dflt);
         }
     });
+
+    // Classification explanations
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+    // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
+    // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
+
+    // Front scan check
+    document.getElementById("fileUpload").onchange = frontUpload;
+    function frontUpload() {
+        var fileName = this.value;
+        window.fileName = fileName;
+
+        if ((fileName.includes("back") || fileName.includes("Back")) === true) {
+            alert('Make sure to upload a front scan instead of a back scan.');
+            document.getElementById('fileUpload').value = null;
+            document.getElementById('txtLibraryIndex').value = null;
+        }
+        else if ((fileName.includes(" ") || fileName.includes(" - Copy") || fileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ fileName.substring(12, fileName.indexOf(' ')) + '.2)');
+            document.getElementById('fileUpload').value = null;
+            document.getElementById('txtLibraryIndex').value = null;
+        }
+        else{
+            console.log('Valid File');
+            document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.tif'));
+            document.getElementById('txtLibraryIndex').style.textAlign = 'center';
+        }
+    }
+
+    // Back scan check
+    document.getElementById("fileUploadBack").onchange = backUpload;
+    function backUpload() {
+        var backFileName = this.value;
+        window.backFileName = backFileName;
+
+        if ((backFileName.includes("back") || backFileName.includes("Back")) === false) {
+            alert('Make sure to upload a back scan instead of a front scan.');
+            document.getElementById('fileUploadBack').value = null;
+        }
+        else if ((backFileName.includes(" ") || backFileName.includes(" - Copy") || backFileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ backFileName.substring(12, backFileName.indexOf('(back)')) + '.2(back)');
+            document.getElementById('fileUploadBack').value = null;
+        }
+        else{
+            console.log('Valid File');
+        }
+    }
+
+    function resetPage(){
+        window.location.reload();
+    }
+
+    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN
+    function adminValidation(){
+        var userRole = "<?php echo $userRole ?>";
+        if ((userRole === "Admin") || (userRole === "admin")){
+            //document.getElementById('needsReview').style.display = 'yes';
+            console.log('Display. User is admin');
+        }
+        else{
+            document.getElementById('needsReview').style.display = 'none';
+            console.log("Hide. User is not admin");
+        }
+    }
+
+    /******************TOOLTIP**********************/
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
 </script>
 </body>
 </html>
