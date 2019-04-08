@@ -532,6 +532,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                 console.log("Value ", data[i].value);
             }
 
+            $(".alert").remove();
             handleError(data);
 
             event.preventDefault();

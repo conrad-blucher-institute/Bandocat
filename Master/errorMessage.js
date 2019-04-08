@@ -7,7 +7,7 @@
  **************************************************************************************/
 function errorReport(id, message, style)
 {
-    var html = '<div class="alert alert-' + style + ' alert-dismissible" >\n' +
+    var html = '<div id="error" class="alert alert-' + style + ' alert-dismissible" >\n' +
         '                                                <button  type="button" class="close" data-dismiss="alert" aria-hidden="true">\n' +
         '                                                    &times;\n' +
         '                                                </button>\n' +

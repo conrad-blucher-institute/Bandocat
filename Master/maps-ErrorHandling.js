@@ -105,15 +105,18 @@ function handleError(data)
         errorReport("frontScan", message, "danger");
     }
 
-
-
-
     /*************************************** Back Scan ***************************************/
-    // Back scan has to check for "back" and "-_" so I set them to variables here for easier
-    // testing with if statements.
+    // Re-initializing variables for further testing
+    dashUnderScoreCheck = /-_/g;
+    backCheck = /back|Back/g;
+    copyCheck = /copy|Copy/g;
+
     var backDashUnderCheck = dashUnderScoreCheck.test(fileUploadBackValue);
     var backBackCheck = backCheck.test(fileUploadBackValue);
     var backCopyCheck = copyCheck.test(fileUploadBackValue);
+
+    console.log("Result: ", backDashUnderCheck);
+    console.log("Value: ", fileUploadBackValue);
 
     // Function counts the amount of dashes in the given value
     function backDashCount (fileUploadBackValue) {
@@ -125,8 +128,7 @@ function handleError(data)
 
     if(fileUploadBackValue == "") // if value is empty
     {
-        var message = '<strong>ERROR:</strong> Required text field\n'
-        errorReport("backScan", message, "danger");
+        console.log("Back Scan not here");
     }
     else if(backDashUnderCheck == false && backBackCheck == false) // if value doesn't have either
     {
