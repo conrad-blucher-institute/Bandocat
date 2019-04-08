@@ -10,6 +10,7 @@ $announcementJSON = json_encode($announcementData);
 $userID = $session->getUserID();
 $admin = $session->isAdmin();
 ?>
+<!-- Here is a comment -->
 <!doctype html>
 <html lang="en">
 <!-- HTML HEADER -->
