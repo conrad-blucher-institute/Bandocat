@@ -117,17 +117,17 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <!-- Map Scale -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="units">
                                             <div class="d-flex">
                                                 <input type="number" min="1" class="form-control">
-                                                <select class="form-control" id="unitLeft">
+                                                <select class="form-control" id="unitLeft" onchange="validation()">
                                                     <option value="inches">in</option>
                                                     <option value="feet">ft</option>
                                                     <option value="varas">vrs</option>
                                                 </select>
                                                 <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
                                                 <input type="number" min="1" class="form-control">
-                                                <select class="form-control" id="unitRight">
+                                                <select class="form-control" id="unitRight" onchange="validation()">
                                                     <option value="feet">ft</option>
                                                     <option value="varas">vrs</option>
                                                     <option value="inches">in</option>
@@ -568,6 +568,20 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         else{
             document.getElementById('needsReview').style.display = 'none';
             console.log("Hide. User is not admin");
+        }
+    }
+
+    // Validates that units are not the same before submission
+    function validation(){
+        var unitLeft = $('#unitLeft').val();
+        var unitRight = $('#unitRight').val();
+
+        if (unitLeft === unitRight){
+            alert('Units cannot be the same.');
+            document.getElementById('units').style.backgroundColor = "blue";
+        }
+        else{
+            console.log('Units are not the same.');
         }
     }
 
