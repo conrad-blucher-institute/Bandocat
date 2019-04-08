@@ -523,12 +523,10 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         if ((fileName.includes("back") || fileName.includes("Back")) === true) {
             alert('Invalid file. Front scan file cannot have the word back');
             document.getElementById('fileUpload').value = null;
-            document.getElementById('txtLibraryIndex').value = null;
         }
         else if ((fileName.includes(" ") || fileName.includes(" - Copy") || fileName.includes("-Copy")) === true) {
             alert('Invalid file name. Change name to include version of copy (i.e. '+ fileName.substring(12, fileName.indexOf(' ')) + '.2)');
             document.getElementById('fileUpload').value = null;
-            document.getElementById('txtLibraryIndex').value = null;
         }
         else{
             console.log('Valid File');
