@@ -115,8 +115,6 @@ function handleError(data)
     var backBackCheck = backCheck.test(fileUploadBackValue);
     var backCopyCheck = copyCheck.test(fileUploadBackValue);
 
-    console.log("Result: ", backDashUnderCheck);
-    console.log("Value: ", fileUploadBackValue);
 
     // Function counts the amount of dashes in the given value
     function backDashCount (fileUploadBackValue) {
@@ -128,7 +126,7 @@ function handleError(data)
 
     if(fileUploadBackValue == "") // if value is empty
     {
-        console.log("Back Scan not here");
+        console.log("No back scan...");
     }
     else if(backDashUnderCheck == false && backBackCheck == false) // if value doesn't have either
     {

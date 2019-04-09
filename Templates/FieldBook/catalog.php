@@ -15,6 +15,7 @@ require '../../Library/DateHelper.php';
 require '../../Library/ControlsRender.php';
 $Render = new ControlsRender();
 $DB = new FieldBookDBHelper();
+$theDB = new DBHelper();
 //get appropriate DB
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 //select fieldbook documents
@@ -75,18 +76,21 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                     <input type = "text" rel="txtToolTip" data-toggle="tooltip" data-placement="left" title="If you want to edit this index, use the Edit/View operation in the menu" class="form-control-plaintext" name = "txtLibraryIndex" id = "txtLibraryIndex" value="<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>" readonly />
                                 </div>
                             </div>
-                            <!-- Collection -->
-                            <div class="form-group row">
-                                <label for="txtFBCollection" class="col-sm-3 col-form-label">Collection:</label>
-                                <div class="col-sm-9">
-                                    <input type = "text" class="form-control" name = "txtFBCollection" id = "txtFBCollection" value="<?php echo htmlspecialchars($document['Collection'],ENT_QUOTES);?>" required list="lstCollection"/>
-                                </div>
-                            </div>
                             <!-- Book Title -->
                             <div class="form-group row">
                                 <label for="txtBookTitle" class="col-sm-3 col-form-label">Book Title:</label>
                                 <div class="col-sm-9">
-                                    <input type = "text" class="form-control" name = "txtBookTitle" id = "txtBookTitle" value="<?php echo htmlspecialchars($document['BookTitle'],ENT_QUOTES);?>" required />
+                                    <input type = "text" class="form-control-plaintext" name = "txtBookTitle" id = "txtBookTitle" readonly />
+                                </div>
+                            </div>
+                            <!-- Collection -->
+                            <div class="form-group row">
+                                <label for="txtFBCollection" class="col-sm-3 col-form-label">Collection:</label>
+                                <div class="col-sm-9">
+                                    <select id="ddlCollection" name="ddlCollection" class="form-control" required>
+                                        <!-- GET MAP MEDIUM FOR DDL-->
+                                        <?php $Render->GET_DDL_COLLECTION($theDB->GET_COLLECTION_FOR_DROPDOWN(),null);?>
+                                    </select>
                                 </div>
                             </div>
                             <!-- Job Number -->
@@ -173,7 +177,11 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             <div class="form-group row">
                                 <label for="txtBookAuthor" class="col-sm-3 col-form-label">Field Book Author:</label>
                                 <div class="col-sm-9">
-                                    <input type = "text" class="form-control" name = "txtBookAuthor" id = "txtBookAuthor" list="lstAuthor" value="<?php echo htmlspecialchars($document['Author'],ENT_QUOTES);?>"  />
+                                    <select id="txtBookAuthor" name="txtBookAuthor" class="form-control" required>
+                                        <option>Select</option>
+                                        <!-- GET AUTHOR LIST FOR DDL-->
+                                        <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
+                                    </select>
                                 </div>
                             </div>
                             <div id="crewcell">
@@ -181,7 +189,11 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 <div class="form-group row">
                                     <label for="txtCrew[]" class="col-sm-3 col-form-label">Field Crew Member:</label>
                                     <div class="col-sm-8">
-                                        <input type = "text" class="form-control" name = "txtCrew[]" id = "txtCrew[]" value="<?php if(count($crews) > 0){echo htmlspecialchars($crews[0][0],ENT_QUOTES);} ?>" autocomplete="off" list="lstCrew" />
+                                        <select id="txtCrew[]" name="txtCrew[]" class="form-control" required>
+                                            <option>Select</option>
+                                            <!-- GET CREW MEMBERS FOR DDL-->
+                                            <?php $Render->getDataList($DB->GET_CREW_LIST($collection)); ?>
+                                        </select>
                                     </div>
                                     <div class="col-sm-1">
                                         <input type="button" class="btn btn-primary" id="more_fields" onclick="add_fields(null);" value="+"/>
@@ -292,6 +304,10 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 
         if (footerTop < docHeight)
             $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+
+        var n1 = document.getElementById('txtLibraryIndex').value;
+        var newN1 = n1.substr(1);
+        document.getElementById('txtBookTitle').value = newN1;
     });
 </script>
 <script>
@@ -323,6 +339,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
             } ?>" autocomplete="off" list="lstCrew" />\n' +
             '                                </div>\n' +
             '                            </div>';
+
         $("#crewcell").append(div);
     }
 </script>

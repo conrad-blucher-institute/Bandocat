@@ -17,7 +17,6 @@ $DB = new MapDBHelper();
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
 $readrec = array("POOR","GOOD","EXCELLENT");
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -525,14 +524,14 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             data.push({name: 'fileUploadBack', value: backValue});
 
             // Display data of form on console for development purposes
-            for(var i = 0; i < data.length; i++)
+            /*for(var i = 0; i < data.length; i++)
             {
                 console.log("****** ", i, " ******");
                 console.log("Name ", data[i].name);
                 console.log("Value ", data[i].value);
-            }
+            }*/
 
-            $(".alert").remove();
+            $(".alert").remove(); // Clears old alerts for new ones
             handleError(data);
 
             event.preventDefault();
