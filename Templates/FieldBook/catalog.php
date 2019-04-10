@@ -177,11 +177,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             <div class="form-group row">
                                 <label for="txtBookAuthor" class="col-sm-3 col-form-label">Field Book Author:</label>
                                 <div class="col-sm-9">
-                                    <select id="txtBookAuthor" name="txtBookAuthor" class="form-control" required>
-                                        <option>Select</option>
-                                        <!-- GET AUTHOR LIST FOR DDL-->
-                                        <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
-                                    </select>
+                                    <input type = "text" class="form-control" name = "txtBookAuthor" id = "txtBookAuthor" list="lstAuthor" value="<?php echo htmlspecialchars($document['Author'],ENT_QUOTES);?>"  />
                                 </div>
                             </div>
                             <div id="crewcell">
@@ -189,11 +185,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 <div class="form-group row">
                                     <label for="txtCrew[]" class="col-sm-3 col-form-label">Field Crew Member:</label>
                                     <div class="col-sm-8">
-                                        <select id="txtCrew[]" name="txtCrew[]" class="form-control" required>
-                                            <option>Select</option>
-                                            <!-- GET CREW MEMBERS FOR DDL-->
-                                            <?php $Render->getDataList($DB->GET_CREW_LIST($collection)); ?>
-                                        </select>
+                                        <input type = "text" class="form-control" name = "txtCrew[]" id = "txtCrew[]" value="<?php if(count($crews) > 0){echo htmlspecialchars($crews[0][0],ENT_QUOTES);} ?>" autocomplete="off" list="lstCrew" />
                                     </div>
                                     <div class="col-sm-1">
                                         <input type="button" class="btn btn-primary" id="more_fields" onclick="add_fields(null);" value="+"/>
@@ -307,6 +299,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 
         var n1 = document.getElementById('txtLibraryIndex').value;
         var newN1 = n1.substr(1);
+        newN1 = newN1.substr(0, 3);
         document.getElementById('txtBookTitle').value = newN1;
     });
 </script>

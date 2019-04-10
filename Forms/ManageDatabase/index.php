@@ -98,10 +98,10 @@ else header('Location: ../../');
                 </div>
                 <form id="updateDataBase">
                     <div class="modal-body" id="rowModalBody">
-
+                        <!-- CONTENT APPENDED HERE -->
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" value="Save Changes" class="btn btn-primary" id="submit">
+                        <!--<input type="submit" value="Save Changes" class="btn btn-primary" id="submit">-->
                         <input type="button" value="Delete" class="btn btn-danger" id="delete">
                     </div>
                 </form>
@@ -209,8 +209,6 @@ else header('Location: ../../');
         var tblname = $('#ddlTables').val();
         removeTable();
 
-        // Check if it exists first
-
         $.ajax({
             url: "./table_processing.php",
             method: "POST",
@@ -284,7 +282,7 @@ else header('Location: ../../');
                 '                        \n' +
                 '                    </div>\n' +
                 '                    <div class="modal-footer">\n' +
-                '                        <input type="submit" value="Save Changes" class="btn btn-primary" id="submit">\n' +
+                //'                        <input type="submit" value="Save Changes" class="btn btn-primary" id="submit">\n' +
                 '                        <input type="button" value="Delete" class="btn btn-danger" id="delete">\n' +
                 '                    </div>\n' +
                 '                </form>\n' +
@@ -306,17 +304,43 @@ else header('Location: ../../');
      ***************************************************************/
     function fillModal(rowData)
     {
+        var dbname = $('#ddlDatabases').val();
+        var tblname = $('#ddlTables').val();
+
         for(var property in rowData)
         {
-            html = ' <div class="form-group row">\n' +
-                '                        <label style="" class="col-sm-3 col-form-label" for="txtSubject1">' + property + '</label>\n' +
-                '                        <div class="col-sm-8">\n' +
-                '                            <input type="text" name="txtSubject" id="txtSubject1" size="32" class="form-control" value="' + rowData[property] + '" required/>\n' +
-                '                        </div>\n' +
-                '                    </div>'
+            if(tblname == "document" && property == "libraryindex")
+            {
+                $.ajax({
+                    url: "./link_processing.php",
+                    method: "POST",
+                    data: {dbname: dbname},
+                    success:function(response)
+                    {
+                        console.log(response);
+                    }
+                });
+
+                html = ' <div class="form-group row">\n' +
+                    '                        <label style="" class="col-sm-3 col-form-label" for="txtSubject1">' + property + '</label>\n' +
+                    '                        <div class="col-sm-8">\n' +
+                    '                            <a href="../../Templates/Map/review.php?doc=&col=">LINK</a>\n' +
+                    '                        </div>\n' +
+                    '                    </div>'
+            }
+            else
+            {
+                html = ' <div class="form-group row">\n' +
+                    '                        <label style="" class="col-sm-3 col-form-label" for="txtSubject1">' + property + '</label>\n' +
+                    '                        <div class="col-sm-8">\n' +
+                    '                            <input type="text" name="txtSubject" id="txtSubject1" size="32" class="form-control" value="' + rowData[property] + '" required/>\n' +
+                    '                        </div>\n' +
+                    '                    </div>'
+            }
+
 
             $("#rowModalBody").append(html);
-            console.log(property);
+            //console.log(property);
         }
     }
 

@@ -2258,7 +2258,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         $data = array($id);
 
         // Preparing query and binding the parameter
-        $sth = $this->getConn()->prepare("SELECT `name`, `dbname` FROM `collection` WHERE `collectionID` = ?");
+        $sth = $this->getConn()->prepare("SELECT `name`, `dbname` FROM `collection` WHERE `collectionID` = :id");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
 
         // Executing
@@ -2334,8 +2334,6 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
         }
-
-        //echo "THIS IS IT BRUH " . $tblname . "SQL: ". $sql;
 
         $mysqli->close();
         return $data;
@@ -2419,5 +2417,47 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
 
         $mysqli->close();
         return $data;
+    }
+
+    /**********************************************
+    Function: DATABASE_MANAGER
+    Description: Retrieves the desired database that an admin would like to browse
+    Parameter(s): N/A
+    Return value(s): $data
+     ***********************************************/
+    function MODAL_LINK_PATH($dbname)
+    {
+        $data = array();
+
+        // Getting connection
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
+
+        // Checking to see if the connection failed
+        if($mysqli->connect_errno)
+        {
+            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            return false;
+        }
+        $sql = "SELECT `name` FROM `collection` WHERE `dbname` = '".$dbname. "'";
+        $response = $mysqli->query($sql);
+
+        if ($response)
+        {
+            /*while($row = mysqli_fetch_assoc($response))
+            {
+                $data[] = $row;
+            }*/
+            $data = mysqli_fetch_row($response);
+        }
+        else
+        {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+
+        $mysqli->close();
+
+        return $data;
+
+
     }
 }
