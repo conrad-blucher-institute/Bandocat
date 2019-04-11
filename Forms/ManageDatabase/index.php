@@ -41,7 +41,7 @@ else header('Location: ../../');
 </head>
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
-<div class="container">
+<div style="padding-left: 50px; padding-right: 50px;" <!--class="container"-->>
     <div class="row">
         <div class="col">
             <!-- Put Page Contents Here -->
@@ -49,7 +49,7 @@ else header('Location: ../../');
             <hr>
 
 
-            <div class="form-group row">
+            <div class="form-group row" align="center">
                 <!-- DDL for Database Selection -->
                 <label class="col-sm-1 col-form-label" for="ddlDatabases">DataBase:</label>
                 <div class="col-sm-4">
@@ -143,11 +143,9 @@ else header('Location: ../../');
 <script>
     $(document).ready(function() {
         getTableList();
-        //getUserInput();
         var test = <?php
             $myObj = array("test" => 1, "whatup" => false);
             echo json_encode($myObj); ?>;
-        //console.log(test);
     });
 
     $('#ddlDatabases').change(function() {
@@ -215,7 +213,6 @@ else header('Location: ../../');
             data: {dbname: dbname, tblname: tblname},
             success:function(response)
             {
-                //console.log(response);
                 showTable(JSON.parse(response));
             }
         });
@@ -230,9 +227,6 @@ else header('Location: ../../');
     {
         var data = response["data"];
         var columns = response["columns"];
-        //var lastColumn = columns.length - 1;
-
-        //console.log(columns);
 
         // Example dtable using this method: https://datatables.net/examples/ajax/objects.html
         var table = $('#dtable').DataTable({
@@ -251,16 +245,6 @@ else header('Location: ../../');
             // Dynamically making table
             data:data,
             columns: columns,
-            /*columnDefs:
-                [
-                    {
-                        render: function ()
-                        {
-                            return "<a href='#'>Delete</a>";
-                        },
-                        targets: lastColumn,
-                    }
-                ],*/
         });
 
         // When the user clicks on a row on the data table
@@ -293,7 +277,15 @@ else header('Location: ../../');
             // Clear counter for the text area
             $('#rowModal').modal('show');
             fillModal(rowData);
-            console.log(rowData);
+
+            $('#delete').click(function() {
+                var answer = confirm("Are you sure you want to delete this ticket?");
+
+                if(answer)
+                {
+                    // INPUT AJAX HERE
+                }
+            });
         } );
     }
 
@@ -306,44 +298,47 @@ else header('Location: ../../');
     {
         var dbname = $('#ddlDatabases').val();
         var tblname = $('#ddlTables').val();
+        //console.log(rowData);
 
+        // iterates for every column and fills modal
         for(var property in rowData)
         {
+            // Apply a link here
             if(tblname == "document" && property == "libraryindex")
             {
-                $.ajax({
+                var response = $.ajax({
                     url: "./link_processing.php",
                     method: "POST",
+                    async: false,
                     data: {dbname: dbname},
                     success:function(response)
                     {
-                        console.log(response);
+                        return response;
                     }
                 });
+                //console.log(response);
 
                 html = ' <div class="form-group row">\n' +
                     '                        <label style="" class="col-sm-3 col-form-label" for="txtSubject1">' + property + '</label>\n' +
                     '                        <div class="col-sm-8">\n' +
-                    '                            <a href="../../Templates/Map/review.php?doc=&col=">LINK</a>\n' +
+                    '                            <a target="_blank" rel="noopener noreferrer" href="../../Templates/Map/review.php?doc=' + rowData["documentID"] + '&col=' + response["responseText"] + '">' + rowData["libraryindex"] + '</a>\n' +
                     '                        </div>\n' +
                     '                    </div>'
             }
-            else
+            else // Else normal text field
             {
                 html = ' <div class="form-group row">\n' +
                     '                        <label style="" class="col-sm-3 col-form-label" for="txtSubject1">' + property + '</label>\n' +
                     '                        <div class="col-sm-8">\n' +
-                    '                            <input type="text" name="txtSubject" id="txtSubject1" size="32" class="form-control" value="' + rowData[property] + '" required/>\n' +
+                    '                            <input type="text" name="txtSubject" id="txtSubject1" size="32" class="form-control" value="' + rowData[property] + '" required readonly/>\n' +
                     '                        </div>\n' +
                     '                    </div>'
             }
-
 
             $("#rowModalBody").append(html);
             //console.log(property);
         }
     }
-
 </script>
 </body>
 </html>
