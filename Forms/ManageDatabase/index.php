@@ -41,7 +41,7 @@ else header('Location: ../../');
 </head>
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
-<div style="padding-left: 50px; padding-right: 50px;" <!--class="container"-->>
+<div class="container-fluid pl-5 pr-5">
     <div class="row">
         <div class="col">
             <!-- Put Page Contents Here -->
@@ -245,6 +245,9 @@ else header('Location: ../../');
             // Dynamically making table
             data:data,
             columns: columns,
+            language: {
+                processing: "Loading...",
+            }
         });
 
         // When the user clicks on a row on the data table
@@ -284,6 +287,7 @@ else header('Location: ../../');
                 if(answer)
                 {
                     // INPUT AJAX HERE
+
                 }
             });
         } );
