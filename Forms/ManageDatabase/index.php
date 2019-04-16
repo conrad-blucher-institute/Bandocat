@@ -38,21 +38,7 @@ else header('Location: ../../');
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
-    <style>
-        .loader {
-            border: 16px solid #f3f3f3; /* Light grey */
-            border-top: 16px solid #3498db; /* Blue */
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    <!-- Custom CSS for loading gif -->
 </head>
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
@@ -89,6 +75,8 @@ else header('Location: ../../');
             </div>
 
             <hr>
+
+            <?php include "../../Master/loading.php"; ?>
 
             <div id="divTable">
                 <!-- Data-Table -->
@@ -176,6 +164,7 @@ else header('Location: ../../');
 <script type="text/javascript" src="../../Master/master.js"></script>
 
 <script>
+    var count = 0;
     $(document).ready(function() {
         // Function gets DDL values to populate our datatable
         getTableList();
@@ -199,11 +188,10 @@ else header('Location: ../../');
         location.reload();
     });
 
-    /*jQuery.fn.dataTable.Api.register( 'processing()', function ( show ) {
-        return this.iterator( 'table', function ( ctx ) {
-            ctx.oApi._fnProcessingDisplay( ctx, show );
-        } );
-    } );*/
+    function sleep( sleepDuration ){
+        var now = new Date().getTime();
+        while(new Date().getTime() < now + sleepDuration){ /* do nothing */ }
+    }
 
     /***************************************************************
      Function: removeTable
@@ -212,11 +200,26 @@ else header('Location: ../../');
      ***************************************************************/
     function removeTable()
     {
+        // Delaying the loading gif
+        count = 0;
+        setTimeout(loading, 50);
+        // Remove old table and append new one for dynamic content to be added
         $('#dtable').remove();
         $('#dtable_wrapper').remove();
         $('#divTable').append('<table id="dtable" class="table table-bordered table-hover" width="100%" cellspacing="0" data-page-length=\'20\'>\n' +
             '                \n' +
             '            </table>');
+    }
+
+    /***************************************************************
+     Function: loading
+     Description: Function displays a loading gif if the desired
+                  datatable takes too long to load.
+     ***************************************************************/
+    function loading()
+    {
+        if(count == 0)
+            $('#loadingContainer').append('<div class="loader" id="theLoader"></div>');
     }
 
     /***************************************************************
@@ -234,7 +237,6 @@ else header('Location: ../../');
             data: {dbname: dbname},
             success:function(response)
             {
-                //console.log(response);
                 $('#ddlTables').empty();
                 $('#ddlTables').append(response);
                 getUserInput();
@@ -257,7 +259,10 @@ else header('Location: ../../');
         $.ajax({
             url: "./table_processing.php",
             method: "POST",
-            data: {dbname: dbname, tblname: tblname},
+            data: {dbname: dbname, tblname: tblname},/*
+            beforeSend: function() {
+
+            },*/
             success:function(response)
             {
                 showTable(JSON.parse(response));
@@ -288,20 +293,16 @@ else header('Location: ../../');
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
+            initComplete: function( settings, json ) {
+                //console.log("complete bruh");
+                $('#theLoader').remove();
+                count = count + 1;
+            },
 
             // Dynamically making table
             data:data,
             columns: columns,
         });
-
-        /*if(table.processing())
-        {
-            table.processing( true );
-
-            setTimeout( function () {
-                table.processing( false );
-            }, 2000 );
-        }*/
 
         modals(table, columns);
     }

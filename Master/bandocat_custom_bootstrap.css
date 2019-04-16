@@ -102,29 +102,29 @@ body {
     background-color: #007bff; /*This is bootstraps primary color*/
     border-color: #FFFFFF;
 }
-/* Mega Menu */
 
-/*html,body
-{
-    height:100%;
-}*/
-/*
-#wrap
-{
-    min-height: 100%;
+/*************************** Loading Gif ****************************************/
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    transition: 2s;
+    animation: spin 2s linear infinite, myanimation 6s infinite;
 }
 
-#main
-{
-    overflow:auto;
-    padding-bottom:250px;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-.footer
-{
-    position: relative;
-    margin-top: -250px;
-    height: 250px;
-    clear:both;
-    padding-top:20px;
-}/*
+@keyframes myanimation {
+    0% {border-top: 16px solid #00BC65;}
+    25%{border-top: 16px solid #AF80ED;}
+    50%{border-top: 16px solid #1b77cb;}
+    75%{border-top: 16px solid #c43d3d;}
+    100% {border-top: 16px solid #00BC65;}
+}
+/*********************************************************************************/
+
