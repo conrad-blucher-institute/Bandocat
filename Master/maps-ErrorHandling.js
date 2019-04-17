@@ -47,16 +47,16 @@ function handleError(data)
     var copyCheck = /copy|Copy/g;
 
     /*************************************** Library Index ***************************************/
-    if(libIndexValue == "") // if value is empty
+    /*if(libIndexValue == "") // if value is empty
     {
         var message = '<strong>ERROR:</strong> Required text field\n'
         errorReport("libraryIndex", message, "danger");
-    }
-    else if(dashUnderScoreCheck.test(libIndexValue) == false) // if value doesn't contain -_ pattern
+    }*/
+     /*if(dashUnderScoreCheck.test(libIndexValue) == false) // if value doesn't contain -_ pattern
     {
         var message = '<strong>ERROR:</strong> File doesn\'t have -_ pattern\n'
         errorReport("libraryIndex", message, "danger");
-    }
+    }*/
 
     /*************************************** Doc Title ***************************************/
     if(docTitleValue == "") // if value is empty
