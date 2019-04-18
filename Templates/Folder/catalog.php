@@ -42,7 +42,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body onload="adminValidation()">
+<body onload="onloadChecks()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container-fluid">
     <div class="row">
@@ -52,7 +52,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             <div class="row">
                 <!-- Start of description of Classification method chosen-->
                 <div class="col-1" id="classificationCard">
-                    <div class="card" style="width: 16rem; margin-top: 280px; margin-left: 75px;">
+                    <div class="card" id="card" style="width: 16rem; margin-top: 280px; margin-left: 75px;">
                         <div class="card-body">
                             <h5 class="card-title" style="text-align: center; font-size:18px; text-decoration: underline;">Classification Description:</h5>
                             <p class="card-text" id="descriptionText"></p>
@@ -340,7 +340,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         });
     });
 
-    // ****************************************************
+    // *****************************************************************************************************************
     $("[type=file]").on("change", function(){
         // Name of file and placeholder
         var file = this.files[0].name;
@@ -352,6 +352,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     });
 
+    // *****************************************************************************************************************
     // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
     // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
 
@@ -397,12 +398,16 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     }
 
+    // *****************************************************************************************************************
     function resetPage(){
         window.location.reload();
     }
 
-    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN
-    function adminValidation(){
+    // *****************************************************************************************************************
+    /****************** ONLOAD EVENTS (ADMIN CHECK AND CLASSIFICATION CARD VISIBILITY) **********************/
+    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN AND HIDES CLASSIFICATION CARD UNTIL AN OPTION IS SELECTED
+    function onloadChecks(){
+        // Checks if user is admin
         var userRole = "<?php echo $userRole ?>";
         if ((userRole === "Admin") || (userRole === "admin")){
             //document.getElementById('needsReview').style.display = 'yes';
@@ -412,8 +417,21 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             document.getElementById('needsReview').style.display = 'none';
             console.log("Hide. User is not admin");
         }
+
+        // Hides classification card when no viable classification method is selected
+        var description = document.getElementById("classificationMethod").value;
+        var values = ["Correspondence", "Envelope/Binding", "Field Note", "Folder Cover", "Legal Description", "Legal Document", "Legal Document Draft", "Map/Blueprint", "Note", "Separation Sheet", "Stencil", "Survey Calculation"]
+
+        if ((description === values) === true){
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+        else{
+            console.log('hide card');
+            document.getElementById('classificationCard').style.visibility = "hidden";
+        }
     }
 
+    // *****************************************************************************************************************
     /******************CLASSIFICATION DESCRIPTION**********************/
 
     // DISPLAYS CLASSIFICATION DESCRIPTION
@@ -423,59 +441,72 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         // Correspondence
         if ((description === "Correspondence") === true){
             document.getElementById('descriptionText').innerHTML = "Correspondence: appears to be a conversation. Often an official telegram, but can still be messages left at hotels or offices.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Envelope/Binding
         else if ((description === "Envelope/Binding") === true){
             document.getElementById('descriptionText').innerHTML = "Envelope/Binding: anything from an envelope to a taped piece of paper used to bind documents. They are blank and contain no information.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Field note
         else if ((description === "Field Note") === true){
             document.getElementById('descriptionText').innerHTML = "Field note: actual page from a field book or a typed report of field book notes. Often titled 'Field Notes' or is a list of survey point information.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Folder cover
         else if ((description === "Folder Cover") === true){
             document.getElementById('descriptionText').innerHTML = "Folder cover: scanned copy of the original job folder.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         //Legal description
         else if ((description === "Legal Description") === true){
             document.getElementById('descriptionText').innerHTML = "Legal description: written geographical description of a property for the purpose of identifying the property for legal transactions.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Legal document
         else if ((description === "Legal Document") === true){
             document.getElementById('descriptionText').innerHTML = "Legal document: typed and signed documents pertaining to a survey, land tenure or sale, or work contract. Often contains an official stamp or notary.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Legal document Draft
         else if ((description === "Legal Document Draft") === true){
             document.getElementById('descriptionText').innerHTML = "Legal document draft: legal document that has not been officiated or contains review marks.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Map/Blueprint
         else if ((description === "Map/Blueprint") === true){
             document.getElementById('descriptionText').innerHTML = "Map/Blueprint: large sized maps (excludes smaller map drafts because they are considered a sketch, therefore a 'Survey Calculation').";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // None
         else if ((description === "None") === true){
             document.getElementById('descriptionText').innerHTML = "None: No particular classification.";
+            document.getElementById('classificationCard').style.visibility = "hidden";
         }
         // Note
         else if ((description === "Note") === true){
             document.getElementById('descriptionText').innerHTML = "Note: contains minimal information and cannot be otherwise classified.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Separation sheet
         else if ((description === "Separation Sheet") === true){
             document.getElementById('descriptionText').innerHTML = "Separation sheet: index sheet provided by the Mary & Jeff Bell Library at Texas A&M University - Corpus Christi denoting a document whose physical condition is too poor to be scanned. The original map or document can only be accessed on-site, in person.";
+            //document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Stencil
         else if ((description === "Stencil") === true){
             document.getElementById('descriptionText').innerHTML = "Stencil: document used to replicate specific fonts, symbols, or texts.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Survey calculation
         else if ((description === "Survey Calculation") === true){
             document.getElementById('descriptionText').innerHTML = "Survey calculation: recorded arithmetic pertaining to a survey. Often on a yellow paper and contains sketches.";
+            document.getElementById('classificationCard').style.visibility = "visible";
         }
         // Otherwise...
         else {
-            console.log("Falls outside range");
-            document.getElementById('descriptionText').innerHTML = "";
+            console.log("Nothing was selected");
+            document.getElementById('classificationCard').style.visibility = "hidden";
         }
 
         // Classification description layout
