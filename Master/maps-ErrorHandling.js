@@ -47,7 +47,7 @@ function handleError(data)
     var copyCheck = /copy|Copy/g;
 
     /*************************************** Library Index ***************************************/
-    if(libIndexValue == "") // if value is empty
+    /*if(libIndexValue == "") // if value is empty
     {
         var message = '<strong>ERROR:</strong> Required text field\n'
         errorReport("libraryIndex", message, "danger");
@@ -56,7 +56,7 @@ function handleError(data)
     {
         var message = '<strong>ERROR:</strong> File doesn\'t have -_ pattern\n'
         errorReport("libraryIndex", message, "danger");
-    }
+    }*/
 
     /*************************************** Doc Title ***************************************/
     if(docTitleValue == "") // if value is empty
@@ -81,7 +81,7 @@ function handleError(data)
 
     if(fileUploadValue == "") // if value is empty
     {
-        var message = '<strong>ERROR:</strong> Required text field\n'
+        var message = '<strong>ERROR:</strong> File must be uploaded\n'
         errorReport("frontScan", message, "danger");
     }
     else if(frontDashUnderCheck == false)
@@ -96,7 +96,7 @@ function handleError(data)
     }
     else if(frontDashCount(fileUploadValue) > 1)
     {
-        var message = '<strong>ERROR:</strong> File contains more than 1 dash\n'
+        var message = '<strong>ERROR:</strong> File contains more than 1 hyphen\n'
         errorReport("frontScan", message, "danger");
     }
     else if(frontBackCheck == true) // if value does have "back"

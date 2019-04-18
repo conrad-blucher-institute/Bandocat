@@ -24,15 +24,73 @@ $session = new SessionManager();
 </head>
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
-<div class="container">
+
+<!-- Container -->
+<div class="container-fluid pl-5 pr-5">
+    <!-- Put Page Contents Here -->
+    <h1 class="text-center" >Bandocat</h1>
+    <hr>
+
     <div class="row">
         <div class="col">
-            <!-- Put Page Contents Here -->
-            <h1 class="text-center">Main Page</h1>
-            <hr>
+            <!-- I-FRAME -->
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="http://spatialquerylab.com/news/" frameborder="0" style="border: 3px solid #EEE;" allowfullscreen></iframe>
+            </div>
         </div> <!-- Col-9 -->
+        <!-- Announcements -->
+        <div class="col-3 text-center" style="border: 3px solid #EEE;">
+            <h3>Announcements</h3>
+            <hr>
+            <?php
+            if($session->isAdmin())
+            {
+                echo "<input type='button' value='ADD ANNOUNCEMENT' class='btn btn-primary' id='addAnnouncement'>";
+            }
+            else header('Location: ../../');
+            ?>
+        </div> <!-- Col 3 -->
     </div> <!-- row -->
 </div><!-- Container -->
+
+<!-- Modal -->
+<div id="Modal">
+    <div class="modal fade" id="rowModal" tabindex="-1" role="dialog" aria-labelledby="rowModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rowModalTitle">Add Announcement</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updateDataBase">
+                    <div class="modal-body" id="rowModalBody">
+                        <!-- Title -->
+                        <div class="form-group row" align="center">
+                            <label class="col-sm-1 col-form-label">Title:</label>
+                            <div class="col-sm-8" id="title">
+                                <input type = "text" class="form-control" name = "title" id = "title" value="" required />
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="form-group row" align="center">
+                            <label class="col-sm-1 col-form-label">Content:</label>
+                            <div class="col-sm-8" id="content">
+                                <input type = "text" class="form-control" name = "content" id = "content" value="" required />
+                            </div>
+                        </div>
+
+                    <div class="modal-footer">
+                        <input type="submit" value="Add" class="btn btn-primary" id="submit">
+                        <!--<input type="button" value="Delete" class="btn btn-danger" id="delete">-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <?php include "../../Master/bandocat_footer.php" ?>
 
 <!-- Complete JavaScript Bundle -->
@@ -46,26 +104,9 @@ $session = new SessionManager();
 
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
-
-<!-- This Script Needs to Be added to Every Page -->
 <script>
-    $(document).ready(function() {
-
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $(window).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+    $('#addAnnouncement').click(function() {
+        $('#rowModal').modal('show');
     });
 </script>
 </body>

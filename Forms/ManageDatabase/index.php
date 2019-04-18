@@ -76,7 +76,7 @@ else header('Location: ../../');
 
             <hr>
 
-            <?php include "../../Master/loading.php"; ?>
+            <?php include "../../Master/load.php"; ?>
 
             <div id="divTable">
                 <!-- Data-Table -->
@@ -171,6 +171,10 @@ else header('Location: ../../');
         var test = <?php
             $myObj = array("test" => 1, "whatup" => false);
             echo json_encode($myObj); ?>;
+
+        // Adding modal attributes
+        $('#loaderModalContent').append('<div class="modal-body" id="loaderModalBody"></div>');
+        $('#loaderModalBody').append('<div class="d-flex justify-content-center"><img src="../../Images/loading2.gif"></div><h5 class="text-center">Processing Table...</h5>');
     });
 
     // When database DDL is changed
@@ -187,11 +191,6 @@ else header('Location: ../../');
     $('#responseModal').on('hidden.bs.modal', function () {
         location.reload();
     });
-
-    function sleep( sleepDuration ){
-        var now = new Date().getTime();
-        while(new Date().getTime() < now + sleepDuration){ /* do nothing */ }
-    }
 
     /***************************************************************
      Function: removeTable
@@ -218,8 +217,12 @@ else header('Location: ../../');
      ***************************************************************/
     function loading()
     {
+        console.log(count);
         if(count == 0)
-            $('#loadingContainer').append('<div class="loader" id="theLoader"></div>');
+        {
+            // Showing loader modal
+            $("#loaderModal").modal("show");
+        }
     }
 
     /***************************************************************
@@ -295,7 +298,9 @@ else header('Location: ../../');
             ],
             initComplete: function( settings, json ) {
                 //console.log("complete bruh");
-                $('#theLoader').remove();
+                //$('#loadingContainer').hide();
+                // Showing loader modal
+                $("#loaderModal").modal("hide");
                 count = count + 1;
             },
 
