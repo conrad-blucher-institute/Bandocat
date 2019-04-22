@@ -359,7 +359,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label" for="fileUpload">Front Scan:</label>
                                         <div class="col-sm-8" id="frontScan">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
+                                                <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required />
                                                 <label class="custom-file-label" for="fileUpload">Choose file</label>
                                             </div>
                                         </div>
@@ -369,7 +369,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label" for="fileUploadBack">Back Scan:</label>
                                         <div class="col-sm-8" id="backScan">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" />
+                                                <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" onchange="backUpload()"accept=".tif" />
                                                 <label class="custom-file-label" for="fileUploadBack">Choose file</label>
                                             </div>
                                         </div>

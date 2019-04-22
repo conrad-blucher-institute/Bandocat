@@ -52,7 +52,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             <div class="row">
                 <!-- Start of description of Classification method chosen-->
                 <div class="col-1" id="classificationCard">
-                    <div class="card" id="card" style="width: 16rem; margin-top: 280px; margin-left: 75px;">
+                    <div class="card" id="card" style="width: 18rem; margin-left: 65px;">
                         <div class="card-body">
                             <h5 class="card-title" style="text-align: center; font-size:18px; text-decoration: underline;">Classification Description:</h5>
                             <p class="card-text" id="descriptionText"></p>
@@ -224,7 +224,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <div class="form-row">
                                                 <div class="form-group col">
                                                     <label for="txtComments" class="col-form-label">Comments:</label>
-                                                    <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces Co., Texas."></textarea>
+                                                    <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Job No. 4441, Sheet No. 74, with sketch."></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -404,7 +404,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     }
 
     // *****************************************************************************************************************
-    /****************** ONLOAD EVENTS (ADMIN CHECK AND CLASSIFICATION CARD VISIBILITY) **********************/
+    /************************* ONLOAD EVENTS (ADMIN CHECK AND CLASSIFICATION CARD VISIBILITY) ************************/
     // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN AND HIDES CLASSIFICATION CARD UNTIL AN OPTION IS SELECTED
     function onloadChecks(){
         // Checks if user is admin
@@ -432,9 +432,8 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     }
 
     // *****************************************************************************************************************
-    /******************CLASSIFICATION DESCRIPTION**********************/
+    /***************************************** CLASSIFICATION DESCRIPTION *********************************************/
 
-    // DISPLAYS CLASSIFICATION DESCRIPTION
     function classificationDescription() {
         var description = document.getElementById("classificationMethod").value;
 
@@ -442,67 +441,141 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         if ((description === "Correspondence") === true){
             document.getElementById('descriptionText').innerHTML = "Correspondence: appears to be a conversation. Often an official telegram, but can still be messages left at hotels or offices.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "110px";
+
+            var correspondenceImage = new Image(250,350);
+            correspondenceImage.src = 'images/correspondence.jpg';
+            document.getElementById('descriptionText').appendChild(correspondenceImage);
         }
+
         // Envelope/Binding
         else if ((description === "Envelope/Binding") === true){
             document.getElementById('descriptionText').innerHTML = "Envelope/Binding: anything from an envelope to a taped piece of paper used to bind documents. They are blank and contain no information.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "200px";
+
+            var envelopeImage = new Image(250,150);
+            envelopeImage.src = 'images/envelope.jpg';
+            document.getElementById('descriptionText').appendChild(envelopeImage);
         }
+
         // Field note
         else if ((description === "Field Note") === true){
             document.getElementById('descriptionText').innerHTML = "Field note: actual page from a field book or a typed report of field book notes. Often titled 'Field Notes' or is a list of survey point information.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "110px";
+
+            var fieldNoteImage = new Image(250,350);
+            fieldNoteImage.src = 'images/field_note.jpg';
+            document.getElementById('descriptionText').appendChild(fieldNoteImage);
         }
+
         // Folder cover
         else if ((description === "Folder Cover") === true){
             document.getElementById('descriptionText').innerHTML = "Folder cover: scanned copy of the original job folder.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "220px";
+
+            var folderCoverImage = new Image(250,150);
+            folderCoverImage.src = 'images/folder_cover.jpg';
+            document.getElementById('descriptionText').appendChild(folderCoverImage);
         }
+
         //Legal description
         else if ((description === "Legal Description") === true){
             document.getElementById('descriptionText').innerHTML = "Legal description: written geographical description of a property for the purpose of identifying the property for legal transactions.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "210px";
+
+            var legalDescriptionImage = new Image(250,130);
+            legalDescriptionImage.src = 'images/legal_description.jpg';
+            document.getElementById('descriptionText').appendChild(legalDescriptionImage);
         }
+
         // Legal document
         else if ((description === "Legal Document") === true){
             document.getElementById('descriptionText').innerHTML = "Legal document: typed and signed documents pertaining to a survey, land tenure or sale, or work contract. Often contains an official stamp or notary.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "110px";
+
+            var legalDocumentImage = new Image(250,350);
+            legalDocumentImage.src = 'images/legal_document.jpg';
+            document.getElementById('descriptionText').appendChild(legalDocumentImage);
         }
-        // Legal document Draft
+
+        // Legal document draft
         else if ((description === "Legal Document Draft") === true){
             document.getElementById('descriptionText').innerHTML = "Legal document draft: legal document that has not been officiated or contains review marks.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "140px";
+
+            var legalDocumentDraftImage = new Image(250,300);
+            legalDocumentDraftImage.src = 'images/legal_document_draft.jpg';
+            document.getElementById('descriptionText').appendChild(legalDocumentDraftImage);
         }
+
         // Map/Blueprint
         else if ((description === "Map/Blueprint") === true){
             document.getElementById('descriptionText').innerHTML = "Map/Blueprint: large sized maps (excludes smaller map drafts because they are considered a sketch, therefore a 'Survey Calculation').";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "140px";
+
+            var mapImage = new Image(250,300);
+            mapImage.src = 'images/map.jpg';
+            document.getElementById('descriptionText').appendChild(mapImage);
         }
+
         // None
         else if ((description === "None") === true){
             document.getElementById('descriptionText').innerHTML = "None: No particular classification.";
             document.getElementById('classificationCard').style.visibility = "hidden";
         }
+
         // Note
         else if ((description === "Note") === true){
             document.getElementById('descriptionText').innerHTML = "Note: contains minimal information and cannot be otherwise classified.";
             document.getElementById('classificationCard').style.visibility = "visible";
+
+            document.getElementById('classificationCard').style.marginTop = "150px";
+
+            var noteImage = new Image(200,300);
+            noteImage.src = 'images/note.jpg';
+            document.getElementById('descriptionText').appendChild(noteImage)
         }
+
         // Separation sheet
         else if ((description === "Separation Sheet") === true){
             document.getElementById('descriptionText').innerHTML = "Separation sheet: index sheet provided by the Mary & Jeff Bell Library at Texas A&M University - Corpus Christi denoting a document whose physical condition is too poor to be scanned. The original map or document can only be accessed on-site, in person.";
-            //document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "105px";
+
+            var myImage = new Image(250,300);
+            myImage.src = 'images/separation_sheet.jpg';
+            document.getElementById('descriptionText').appendChild(myImage);
         }
+
         // Stencil
         else if ((description === "Stencil") === true){
             document.getElementById('descriptionText').innerHTML = "Stencil: document used to replicate specific fonts, symbols, or texts.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "160px";
+
+            var stencilImage = new Image(200,250);
+            stencilImage.src = 'images/stencil.jpg';
+            document.getElementById('descriptionText').appendChild(stencilImage);
         }
+
         // Survey calculation
         else if ((description === "Survey Calculation") === true){
             document.getElementById('descriptionText').innerHTML = "Survey calculation: recorded arithmetic pertaining to a survey. Often on a yellow paper and contains sketches.";
             document.getElementById('classificationCard').style.visibility = "visible";
+            document.getElementById('classificationCard').style.marginTop = "160px";
+
+            var surveyCalculationImage = new Image(200,250);
+            surveyCalculationImage.src = 'images/survey_calculation.jpg';
+            document.getElementById('descriptionText').appendChild(surveyCalculationImage);
         }
+
         // Otherwise...
         else {
             console.log("Nothing was selected");
