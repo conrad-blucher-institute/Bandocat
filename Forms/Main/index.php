@@ -17,6 +17,7 @@ $session = new SessionManager();
     <!-- Font Awesome CDN CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <title>Welcome to Ed Rachel!</title>
 
     <!-- Our Custom CSS -->
@@ -32,24 +33,41 @@ $session = new SessionManager();
     <hr>
 
     <div class="row">
+
         <div class="col">
             <!-- I-FRAME -->
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="http://spatialquerylab.com/news/" frameborder="0" style="border: 3px solid #EEE;" allowfullscreen></iframe>
+                <iframe class="embed-responsive-item" src="http://spatialquerylab.com/news/" frameborder="0" style="border: 3px solid #1E90FF;" allowfullscreen></iframe>
             </div>
-        </div> <!-- Col-9 -->
+        </div>
+
         <!-- Announcements -->
-        <div class="col-3 text-center" style="border: 3px solid #EEE;">
+        <div class="col-3 text-center" style="border: 3px solid #1E90FF;">
             <h3>Announcements</h3>
             <hr>
             <?php
             if($session->isAdmin())
             {
-                echo "<input type='button' value='ADD ANNOUNCEMENT' class='btn btn-primary' id='addAnnouncement'>";
+                echo "<input type='button' value='ADD ANNOUNCEMENT' class='btn btn-primary' id='addAnnouncement' style='margin-bottom: 1.5em'>";
             }
             else header('Location: ../../');
             ?>
-        </div> <!-- Col 3 -->
+
+            <div class="card mx-auto text-center" style="width: 20rem;">
+                <div class="card-header" style="background-color: #3CB371;">
+                    <font color="white">Title</font>
+                </div>
+
+                <p> Cras justo odio</p>
+                <p> Dapibus ac facilisis in</p>
+                <p> Vestibulum at eros</p>
+                <p> What is up my dude</p>
+                <p> nice wheather tho</p>
+
+            </div>
+
+        </div>
+
     </div> <!-- row -->
 </div><!-- Container -->
 
@@ -78,9 +96,18 @@ $session = new SessionManager();
                         <div class="form-group row" align="center">
                             <label class="col-sm-1 col-form-label">Content:</label>
                             <div class="col-sm-8" id="content">
-                                <input type = "text" class="form-control" name = "content" id = "content" value="" required />
+                                <!--<input type = "text" class="form-control" name = "content" id = "content" value="" required />-->
+                                <textarea class="form-control" name="content" id="content" cols="40" rows="5" required></textarea>
                             </div>
                         </div>
+
+                        <div class="form-group row" align="center">
+                            <label class="col-sm-1 col-form-label">Exp Date:</label>
+                            <div class="col-sm-8" id="date">
+                                <input data-format="yyyy-mm-dd" type = "text" class="form-control" name = "datepicker" id = "datepicker" required />
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="modal-footer">
                         <input type="submit" value="Add" class="btn btn-primary" id="submit">
@@ -102,11 +129,23 @@ $session = new SessionManager();
 <!-- JQuery UI cdn -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
 
+<!-- DatePicker -->
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
 <script>
     $('#addAnnouncement').click(function() {
         $('#rowModal').modal('show');
+    });
+
+    $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap4'
+    });
+
+    // Reloads page when response modal is exited out of or hidden
+    $('#rowModal').on('hidden.bs.modal', function () {
+        location.reload();
     });
 </script>
 </body>
