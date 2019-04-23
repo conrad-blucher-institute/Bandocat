@@ -1,6 +1,7 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
+$userID = $session->getUserID();
 ?>
 <!doctype html>
 <html lang="en">
@@ -63,7 +64,6 @@ $session = new SessionManager();
                 <p> Vestibulum at eros</p>
                 <p> What is up my dude</p>
                 <p> nice wheather tho</p>
-
             </div>
 
         </div>
@@ -87,23 +87,23 @@ $session = new SessionManager();
                         <!-- Title -->
                         <div class="form-group row" align="center">
                             <label class="col-sm-1 col-form-label">Title:</label>
-                            <div class="col-sm-8" id="title">
-                                <input type = "text" class="form-control" name = "title" id = "title" value="" required />
+                            <div class="col-sm-8">
+                                <input type = "text" class="form-control" name = "title" id = "title" required />
                             </div>
                         </div>
 
-                        <!-- Content -->
+                        <!-- Message -->
                         <div class="form-group row" align="center">
-                            <label class="col-sm-1 col-form-label">Content:</label>
-                            <div class="col-sm-8" id="content">
+                            <label class="col-sm-1 col-form-label">Message:</label>
+                            <div class="col-sm-8">
                                 <!--<input type = "text" class="form-control" name = "content" id = "content" value="" required />-->
-                                <textarea class="form-control" name="content" id="content" cols="40" rows="5" required></textarea>
+                                <textarea class="form-control" name="message" id="message" cols="40" rows="5" required></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row" align="center">
                             <label class="col-sm-1 col-form-label">Exp Date:</label>
-                            <div class="col-sm-8" id="date">
+                            <div class="col-sm-8">
                                 <input data-format="yyyy-mm-dd" type = "text" class="form-control" name = "datepicker" id = "datepicker" required />
                             </div>
                         </div>
@@ -135,6 +135,10 @@ $session = new SessionManager();
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
 <script>
+    $(document).ready(function(){
+
+    });
+
     $('#addAnnouncement').click(function() {
         $('#rowModal').modal('show');
     });
@@ -147,6 +151,37 @@ $session = new SessionManager();
     $('#rowModal').on('hidden.bs.modal', function () {
         location.reload();
     });
+
+    $('#submit').click(function(){
+        announcements();
+    });
+
+    function announcements()
+    {
+        var title = $('#title').val();
+        var message = $('#message').val();
+        var date = $('#datepicker').val();
+        var userID = <?php echo $userID ?>;
+
+        $.ajax({
+            url: "./announcement_processing.php",
+            method: "POST",
+            data: {title: title, message: message, date: date, userID: userID, action: 1},
+            success:function(response)
+            {
+                console.log(response);
+                html = '<div class="card mx-auto text-center" style="width: 20rem;">\n' +
+                    '                <div class="card-header" style="background-color: #3CB371;">\n' +
+                    '                    <font color="white">'+ title +'</font>\n' +
+                    '                </div>\n' +
+                    '\n' +
+                    '                <p>'+ message +'</p>\n' +
+                    '            </div>'
+
+                $('#')
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -37,7 +37,7 @@ class AnnouncementDBHelper extends DBHelper
         //The ? in the functions parameter list is a variable that we bind a few lines down.
         //CALL is sql for calling the function built into the db at localhost/phpmyadmin
         $call = $this->getConn()->prepare("CALL SP_ANNOUNCEMENT_INSERT(?,?,?,?)");
-        //Error handleing
+        //Error handling
         if (!$call)
             trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
         //bind parameters to the sql statement
