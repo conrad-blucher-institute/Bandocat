@@ -39,7 +39,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body>
+<body onload="adminValidation()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 
 <div class="container pad-bottom">
@@ -369,7 +369,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label" for="fileUploadBack">Back Scan:</label>
                                         <div class="col-sm-8" id="backScan">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" onchange="backUpload()"accept=".tif" />
+                                                <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" onchange="backUpload()" accept=".tif" />
                                                 <label class="custom-file-label" for="fileUploadBack">Choose file</label>
                                             </div>
                                         </div>
@@ -378,7 +378,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="txtComments" class="col-form-label">Comments:</label>
-                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" ></textarea>
+                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces Co., Texas."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -388,7 +388,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                             <div class="form row">
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
-                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/>
+                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage() class="btn btn-secondary"/>
                                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
                                         <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
@@ -551,7 +551,22 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
         var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
         filename = filename.replace(/\.tif/, '');
-        $('#txtLibraryIndex').val(filename);
+
+        if ((filename.includes ('back') || filename.includes('Back')) === true){
+            alert("Invalid file. Front scan cannot have the word 'back'");
+            $('#txtLibraryIndex').val(null);
+        }
+        else if ((filename.includes(" ") || filename.includes(" - Copy") || filename.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. ' + filename.substring(12, filename.indexOf(' ')) + '.2)');
+            $('#txtLibraryIndex').val(null);
+        }
+
+        else{
+            console.log('Valid file');
+            $('#txtLibraryIndex').val(filename);
+        }
+
+        //$('#txtLibraryIndex').val(filename);
     });
 
     $('#fileUploadBack').change(function() {
@@ -562,6 +577,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         }
     });
     ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
+
 </script>
 
 </body>
