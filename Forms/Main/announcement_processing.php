@@ -6,9 +6,9 @@ $data = $_POST;
 
 $title = htmlspecialchars($data['title'], ENT_QUOTES);
 $message = htmlspecialchars($data['message'], ENT_QUOTES);
-$endDate = $data['endDate'];
+$endDate = $data['date'];
 $expDate = date("Y-m-d H:i:s", strtotime($endDate));
-$user = $data['user'];
+$user = $data['userID'];
 $announcementID = $data['announcementID'];
 $action = $data['action'];
 
