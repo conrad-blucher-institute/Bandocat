@@ -1,7 +1,7 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-
+$userRole = $session->getRole();
 //get collection name from passed variable col
 if(isset($_GET['col']))
 {
@@ -360,17 +360,17 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <div class="col-sm-8" id="frontScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" onchange="frontUpload()" required />
-                                                <label class="custom-file-label" for="fileUpload">Choose file</label>
+                                                <label class="custom-file-label" for="fileUpload" id="frontUploadScan">Choose file</label>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Scan Back -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="fileUploadBack">Back Scan:</label>
-                                        <div class="col-sm-8" id="backScan">
+                                        <div class="col-sm-8">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" onchange="backUpload()" accept=".tif" />
-                                                <label class="custom-file-label" for="fileUploadBack">Choose file</label>
+                                                <label class="custom-file-label" for="fileUploadBack" id="backUploadScan">Choose file</label>
                                             </div>
                                         </div>
                                     </div>
@@ -540,6 +540,8 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     });
 
     ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
+
+    // Front scan check
     $('#fileUpload').change(function() {
         // Name of file and placeholder
         var file = this.files[0].name;
@@ -557,26 +559,103 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $('#txtLibraryIndex').val(null);
         }
         else if ((filename.includes(" ") || filename.includes(" - Copy") || filename.includes("-Copy")) === true) {
-            alert('Invalid file name. Change name to include version of copy (i.e. ' + filename.substring(12, filename.indexOf(' ')) + '.2)');
+            alert('Invalid file name. Change name to include version of copy (i.e. 370-_4.2)');
             $('#txtLibraryIndex').val(null);
+            document.getElementById('fileUpload').value = null;
         }
-
         else{
             console.log('Valid file');
             $('#txtLibraryIndex').val(filename);
+            document.getElementById('txtLibraryIndex').style.textAlign = 'center';
         }
-
-        //$('#txtLibraryIndex').val(filename);
     });
 
+
+    //Back scan check
     $('#fileUploadBack').change(function() {
         // Name of file and placeholder
         var file = this.files[0].name;
         if($(this).val()!=""){
             $(this).next().text(file);
         }
+
+        var backFilename = $('#fileUploadBack').val().replace(/C:\\fakepath\\/i, '');
+        backFilename = backFilename.replace(/\.tif/, '');
+
+        if ((backFilename.includes ('back') || backFilename.includes('Back')) === false){
+            alert("Invalid file. Back scan needs to have the word 'back'");
+        }
+        else if ((backFilename.includes(" ") || backFilename.includes(" - Copy") || backFilename.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. ' + backFilename.substring(12, backFilename.indexOf(' ')) + '.2)');
+        }
+        else{
+            console.log('Valid back file');
+        }
     });
-    ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////// MOVE TO OWN DOC? //////////////////////////////////////////////////
+</script>
+
+
+<script>
+    //*******************************************************************************************************************
+    /*
+    // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
+    // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
+
+    // Front scan check
+    document.getElementById("fileUpload").onchange = frontUpload;
+    function frontUpload() {
+        var fileName = this.value;
+        window.fileName = fileName;
+
+        if ((fileName.includes("back") || fileName.includes("Back")) === true) {
+            alert('Invalid file. Front scan file cannot have the word back');
+            document.getElementById('fileUpload').value = null;
+            document.getElementById('txtLibraryIndex').value = null;
+        }
+        else if ((fileName.includes(" ") || fileName.includes(" - Copy") || fileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ fileName.substring(12, fileName.indexOf(' ')) + '.2)');
+            document.getElementById('fileUpload').value = null;
+            document.getElementById('txtLibraryIndex').value = null;
+        }
+        else{
+            console.log('Valid File');
+            document.getElementById('txtLibraryIndex').value = fileName.substring(12, fileName.indexOf('.tif'));
+            document.getElementById('txtLibraryIndex').style.textAlign = 'center';
+        }
+    }
+
+    // back scan check
+    document.getElementById("fileUploadBack").onchange = backUpload;
+    function backUpload() {
+        var backFileName = this.value;
+        window.backFileName = backFileName;
+
+        if ((backFileName.includes("back") || backFileName.includes("Back")) === false) {
+            alert('Invalid file. Back scan file needs to have the word back');
+            document.getElementById('fileUploadBack').value = null;
+        }
+        else if ((backFileName.includes(" ") || backFileName.includes(" - Copy") || backFileName.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. '+ backFileName.substring(12, backFileName.indexOf('(back)')) + '.2(back)');
+            document.getElementById('fileUploadBack').value = null;
+        }
+        else{
+            console.log('Valid File');
+        }
+    }*/
+
+    // Hides needs review option for non-admins
+    function adminValidation(){
+        var userRole = "<?php echo $userRole ?>";
+        if ((userRole === "Admin") || (userRole === "admin") === true){
+            //document.getElementById('needsReview').style.display = 'none';
+            console.log('Display. User is admin');
+        }
+        else{
+            document.getElementById('needsReview').style.display = 'none';
+            console.log("Hide. User is not admin");
+        }
+    }
 
 </script>
 

@@ -353,7 +353,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     });
 
     // *****************************************************************************************************************
-    // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
+    // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATION.
     // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
 
     // Front scan check
@@ -426,7 +426,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             document.getElementById('classificationCard').style.visibility = "visible";
         }
         else{
-            console.log('hide card');
+            console.log('no classification chosen, hide card');
             document.getElementById('classificationCard').style.visibility = "hidden";
         }
     }
