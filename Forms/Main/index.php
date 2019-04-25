@@ -43,18 +43,18 @@ $userID = $session->getUserID();
         </div>
 
         <!-- Announcements -->
-        <div class="col-3 text-center" style="border: 3px solid #1E90FF;">
+        <div class="col-3 text-center pl-5 pr-5" style="border: 3px solid #1E90FF;" id="announcement">
             <h3>Announcements</h3>
             <hr>
             <?php
             if($session->isAdmin())
             {
-                echo "<input type='button' value='ADD ANNOUNCEMENT' class='btn btn-primary' id='addAnnouncement' style='margin-bottom: 1.5em'>";
+                echo "<input type='button' value='ADD ANNOUNCEMENT' class='btn btn-primary' id='addAnnouncement' >";
             }
             else header('Location: ../../');
             ?>
 
-            <div class="card mx-auto text-center" style="width: 20rem;">
+            <div class="card mx-auto text-center " style="margin-top: 1.5em;">
                 <div class="card-header" style="background-color: #3CB371;">
                     <font color="white">Title</font>
                 </div>
@@ -101,6 +101,7 @@ $userID = $session->getUserID();
                             </div>
                         </div>
 
+                        <!-- Expiration Date -->
                         <div class="form-group row" align="center">
                             <label class="col-sm-1 col-form-label">Exp Date:</label>
                             <div class="col-sm-8">
@@ -136,7 +137,32 @@ $userID = $session->getUserID();
 <script type="text/javascript" src="../../Master/master.js"></script>
 <script>
     $(document).ready(function(){
+        $.ajax({
+            url: "./announcement_processing.php",
+            method: "POST",
+            data: {action: 3},
+            success:function(response)
+            {
+                console.log(JSON.parse(response));
 
+                if(response)
+                {
+                    for(var x = 0; x < JSON.parse(response).length; x++)
+                    {
+                        console.log(typeof response["title"]);
+                        /*var html = '<div class="card mx-auto text-center" style="margin-top: 1.5em">\n' +
+                            '                <div class="card-header" style="background-color: #3CB371;">\n' +
+                            '                    <font color="white">'+ response["title"] +'</font>\n' +
+                            '                </div>\n' +
+                            '\n' +
+                            '                <p>'+ response["message"] +'</p>\n' +
+                            '            </div>';
+
+                        $('#announcement').append(html);*/
+                    }
+                }
+            }
+        });
     });
 
     $('#addAnnouncement').click(function() {
@@ -170,15 +196,6 @@ $userID = $session->getUserID();
             success:function(response)
             {
                 console.log(response);
-                html = '<div class="card mx-auto text-center" style="width: 20rem;">\n' +
-                    '                <div class="card-header" style="background-color: #3CB371;">\n' +
-                    '                    <font color="white">'+ title +'</font>\n' +
-                    '                </div>\n' +
-                    '\n' +
-                    '                <p>'+ message +'</p>\n' +
-                    '            </div>'
-
-                $('#')
             }
         });
     }

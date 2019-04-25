@@ -28,15 +28,6 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
         array_push($columns, $object);
     }
 
-
-    // Manually pushing Delete to the last column
-    /*$object = array(
-        "data" => 'Delete',
-        "title" => "Delete"
-    );
-    array_push($columns, $object);*/
-
-
     echo json_encode(array(
         "data" => $data,
         "columns" => $columns

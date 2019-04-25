@@ -80,12 +80,52 @@ class AnnouncementDBHelper extends DBHelper
 
     function GET_ANNOUNCEMENT_DATA()
     {
-        //Select all relevant data where the expiration date is greater than the current date
-        $sth = $this->getConn()->prepare("SELECT `announcementID`,`title`,`message`, `endtime`, `posttime`, `posterID` FROM `announcement` WHERE `endtime` >= CURRENT_DATE");
-        //Execute SQL statement
-        $sth->execute();
-        //Retrieve results from executed statement
-        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        /*$call = $this->getConn()->prepare("CALL GET_ANNOUNCEMENT_DATA()");
+
+        if (!$call)
+            trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
+
+        $call->execute();
+
+        if ($call)
+        {
+            //Select all relevant data where the expiration date is greater than the current date
+            $sth = $this->getConn()->prepare("SELECT `announcementID`,`title`,`message`, `endtime`, `posttime`, `posterID` FROM `announcement` WHERE `endtime` >= CURRENT_DATE");
+            //Execute SQL statement
+            $sth->execute();
+            //Retrieve results from executed statement
+            $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }
+        return false;*/
+        $data = array();
+
+        // Getting connection
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
+
+        // Checking to see if the connection failed
+        if($mysqli->connect_errno)
+        {
+            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            return false;
+        }
+        $sql = "SELECT `announcementID`,`title`,`message`, `endtime`, `posttime`, `posterID` FROM `announcement` WHERE `endtime` >= CURRENT_DATE";
+        $response = $mysqli->query($sql);
+
+        if ($response)
+        {
+            while($row = mysqli_fetch_assoc($response))
+            {
+                $data[] = $row;
+            }
+        }
+        else
+        {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+
+        $mysqli->close();
+        return $data;
     }
 }
