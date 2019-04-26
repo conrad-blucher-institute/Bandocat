@@ -30,7 +30,7 @@ $userID = $session->getUserID();
 <!-- Container -->
 <div class="container-fluid pl-5 pr-5">
     <!-- Put Page Contents Here -->
-    <h1 class="text-center" >Bandocat</h1>
+    <h1 class="text-center" style="margin-top: .5em">Bandocat</h1>
     <hr>
 
     <div class="row">
@@ -51,20 +51,9 @@ $userID = $session->getUserID();
             {
                 echo "<input type='button' value='ADD ANNOUNCEMENT' class='btn btn-primary' id='addAnnouncement' >";
             }
-            else header('Location: ../../');
             ?>
+            <!-- ANNOUNCEMENTS APPENDED HERE -->
 
-            <div class="card mx-auto text-center " style="margin-top: 1.5em;">
-                <div class="card-header" style="background-color: #3CB371;">
-                    <font color="white">Title</font>
-                </div>
-
-                <p> Cras justo odio</p>
-                <p> Dapibus ac facilisis in</p>
-                <p> Vestibulum at eros</p>
-                <p> What is up my dude</p>
-                <p> nice wheather tho</p>
-            </div>
 
         </div>
 
@@ -96,7 +85,6 @@ $userID = $session->getUserID();
                         <div class="form-group row" align="center">
                             <label class="col-sm-1 col-form-label">Message:</label>
                             <div class="col-sm-8">
-                                <!--<input type = "text" class="form-control" name = "content" id = "content" value="" required />-->
                                 <textarea class="form-control" name="message" id="message" cols="40" rows="5" required></textarea>
                             </div>
                         </div>
@@ -112,7 +100,6 @@ $userID = $session->getUserID();
 
                     <div class="modal-footer">
                         <input type="submit" value="Add" class="btn btn-primary" id="submit">
-                        <!--<input type="button" value="Delete" class="btn btn-danger" id="delete">-->
                     </div>
                 </form>
             </div>
@@ -144,21 +131,19 @@ $userID = $session->getUserID();
             success:function(response)
             {
                 console.log(JSON.parse(response));
-
                 if(response)
                 {
                     for(var x = 0; x < JSON.parse(response).length; x++)
                     {
-                        console.log(typeof response["title"]);
-                        /*var html = '<div class="card mx-auto text-center" style="margin-top: 1.5em">\n' +
+                        var html = '<div class="card mx-auto text-center" style="margin-top: 1.5em">\n' +
                             '                <div class="card-header" style="background-color: #3CB371;">\n' +
-                            '                    <font color="white">'+ response["title"] +'</font>\n' +
+                            '                    <font color="white">'+ JSON.parse(response)[x]["title"] +'</font>\n' +
                             '                </div>\n' +
                             '\n' +
-                            '                <p>'+ response["message"] +'</p>\n' +
+                            '                <p>'+ JSON.parse(response)[x]["message"] +'</p>\n' +
                             '            </div>';
 
-                        $('#announcement').append(html);*/
+                        $('#announcement').append(html);
                     }
                 }
             }

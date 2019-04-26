@@ -60,7 +60,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
                                         <div class="col-sm-8" id="libraryIndex">
-                                            <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" required readonly />
+                                            <input title="REQUIRED: Please enter a front scan to fill this text box." type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" required readonly />
                                         </div>
                                     </div>
                                     <!-- Document Title -->
