@@ -552,6 +552,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
         filename = filename.replace(/\.tif/, '');
         $('#txtLibraryIndex').val(filename);
+        handleError(data);
     });
 
     $('#fileUploadBack').change(function() {

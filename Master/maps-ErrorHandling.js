@@ -88,21 +88,25 @@ function handleError(data)
     {
         var message = '<strong>ERROR:</strong> File doesn\'t have -_ pattern\n'
         errorReport("frontScan", message, "danger");
+        $('#txtLibraryIndex').val(null);
     }
     else if(frontCopyCheck == true)
     {
         var message = '<strong>ERROR:</strong> File is a copy?\n'
         errorReport("frontScan", message, "danger");
+        $('#txtLibraryIndex').val(null);
     }
     else if(frontDashCount(fileUploadValue) > 1)
     {
         var message = '<strong>ERROR:</strong> File contains more than 1 hyphen\n'
         errorReport("frontScan", message, "danger");
+        $('#txtLibraryIndex').val(null);
     }
     else if(frontBackCheck == true) // if value does have "back"
     {
         var message = '<strong>ERROR:</strong> Wrong File. Possibly Back Scan?\n'
         errorReport("frontScan", message, "danger");
+        $('#txtLibraryIndex').val(null);
     }
 
     /*************************************** Back Scan ***************************************/

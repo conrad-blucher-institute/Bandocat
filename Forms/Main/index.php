@@ -30,8 +30,19 @@ $userID = $session->getUserID();
 <!-- Container -->
 <div class="container-fluid pl-5 pr-5">
     <!-- Put Page Contents Here -->
-    <h1 class="text-center" style="margin-top: .5em">Bandocat</h1>
-    <hr>
+
+    <div class="row">
+        <div class="col-9 text-center" style="margin-top: 1em;">
+            <h4><span id="Time_Day"></span></h4>
+            <h4><span id="Greetings"></span></h4>
+
+            <hr>
+        </div>
+
+        <div class="col-3 text-center" style="margin-top: 1em">
+            <img id="header_logo" width="260px" src="../../Images/Logos/bando-logo-medium.png">
+        </div>
+    </div>
 
     <div class="row">
 
@@ -120,6 +131,9 @@ $userID = $session->getUserID();
 <!-- DatePicker -->
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 
+<!-- Greetings -->
+<script type="text/javascript" src="Greetings.js"></script>
+
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
 <script>
@@ -148,6 +162,23 @@ $userID = $session->getUserID();
                 }
             }
         });
+
+        var d = new Date();
+        var n = d.getHours();
+        if(n >= 12)
+        {
+            document.getElementById("Time_Day").innerHTML = "Good Afternoon!";
+        }
+        else
+        {
+            document.getElementById("Time_Day").innerHTML = "Good Morning!";
+        }
+
+
+        var Random = Math.random();
+        var Generic_Number = Random * (Greetings.length);
+        var Integer = parseInt(Generic_Number);
+        document.getElementById("Greetings").innerHTML = Greetings[Integer];
     });
 
     $('#addAnnouncement').click(function() {
@@ -184,6 +215,10 @@ $userID = $session->getUserID();
             }
         });
     }
+</script>
+
+<script>
+
 </script>
 </body>
 </html>
