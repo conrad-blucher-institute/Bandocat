@@ -39,7 +39,7 @@ $userID = $session->getUserID();
             <hr>
         </div>
 
-        <div class="col-3 text-center" style="margin-top: 1em">
+        <div class="col-3 text-center" style="margin-top: 1.5em;">
             <img id="header_logo" width="260px" src="../../Images/Logos/bando-logo-medium.png">
         </div>
     </div>
@@ -167,11 +167,11 @@ $userID = $session->getUserID();
         var n = d.getHours();
         if(n >= 12)
         {
-            document.getElementById("Time_Day").innerHTML = "Good Afternoon!";
+            document.getElementById("Time_Day").innerHTML = "Good Afternoon!\n";
         }
         else
         {
-            document.getElementById("Time_Day").innerHTML = "Good Morning!";
+            document.getElementById("Time_Day").innerHTML = "Good Morning!\n";
         }
 
 
@@ -179,6 +179,92 @@ $userID = $session->getUserID();
         var Generic_Number = Random * (Greetings.length);
         var Integer = parseInt(Generic_Number);
         document.getElementById("Greetings").innerHTML = Greetings[Integer];
+
+        ///////////////////////////////// Game Easter Eggs /////////////////////////////////
+        var map = [];
+        var down = [];
+        $(document).keydown(function(e)
+        {
+            if(!map[e.keyCode])
+            {
+                down.push(e.keyCode);
+            }
+            map[e.keyCode] = true;
+        }).keyup(function(e)
+        {
+            if(down.length > 100)
+            {
+                down.length = 0;
+            }
+            map[e.keyCode] = false;
+            var index, value;
+            console.log(down);
+            for (index = 0; index < down.length; ++index)
+            {
+                value = down[index];
+                //if tetris
+                if (value == "84")
+                {
+                    if(down[index+1] == "69")
+                    {
+                        if(down[index+2] == "84")
+                        {
+                            if(down[index+3] == "82")
+                            {
+                                if(down[index+4] == "73")
+                                {
+                                    if(down[index+5] == "83")
+                                    {
+                                        window.location.replace("../Main/iindex.php");
+                                        // ../../Transcription/Indices/list.php?
+                                        down.length = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                //if asteroids
+                if (value == "65")
+                {
+                    if(down[index+1] == "83")
+                    {
+                        if(down[index+2] == "84")
+                        {
+                            if(down[index+3] == "69")
+                            {
+                                if(down[index+4] == "82")
+                                {
+                                    if(down[index+5] == "79")
+                                    {
+                                        if(down[index+6] == "73")
+                                        {
+                                            if(down[index+7] == "68")
+                                            {
+                                                if(down[index+8] == "83")
+                                                {
+                                                    window.location.replace("../Main/index_asteroids.php");
+                                                    // ../../Transcription/Indices/list.php?
+                                                    down.length = 0;
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            // down.length = 0;
+        });
+
     });
 
     $('#addAnnouncement').click(function() {

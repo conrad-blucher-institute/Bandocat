@@ -46,6 +46,9 @@ function handleError(data)
     var backCheck = /back|Back/g;
     var copyCheck = /copy|Copy/g;
 
+    // Flag to hold error status
+    var flag = true;
+
     /*************************************** Library Index ***************************************/
     /*if(libIndexValue == "") // if value is empty
     {
