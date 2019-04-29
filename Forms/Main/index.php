@@ -257,11 +257,9 @@ $userID = $session->getUserID();
                             }
                         }
                     }
-
                     break;
                 }
             }
-
             // down.length = 0;
         });
 
