@@ -144,14 +144,14 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtClassificationComments">Classification Comments:</label>
                                                 <div class="col-sm-8" >
-                                                    <textarea type="text" class="form-control" name="txtClassificationComments" id="txtClassificationComments" value=""></textarea>
+                                                    <textarea type="text" class="form-control" name="txtClassificationComments" id="txtClassificationComments"></textarea>
                                                 </div>
                                             </div>
                                             <!-- Subfolder Comments -->
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtSubfolderComments">Subfolder Comments:</label>
                                                 <div class="col-sm-8" >
-                                                    <textarea type="text" class="form-control" name="txtSubfolderComments" id="txtSubfolderComments" value=""></textarea>
+                                                    <textarea class="form-control" name="txtSubfolderComments" id="txtSubfolderComments"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -434,6 +434,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     // *****************************************************************************************************************
     /***************************************** CLASSIFICATION DESCRIPTION *********************************************/
 
+    // Card with description of chosen classification
     function classificationDescription() {
         var description = document.getElementById("classificationMethod").value;
 

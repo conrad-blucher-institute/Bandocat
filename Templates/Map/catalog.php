@@ -39,7 +39,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body onload="adminValidation()">
+<body onload="showNeedsReview()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 
 <div class="container pad-bottom">
@@ -357,7 +357,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <!-- Scan front -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="fileUpload">Front Scan:</label>
-                                        <div class="col-sm-8" id="frontScan">
+                                        <div class="col-sm-8">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
                                                 <label class="custom-file-label" for="fileUpload">Choose file</label>
@@ -388,7 +388,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                             <div class="form row">
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
-                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage() class="btn btn-secondary"/>
+                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" class="btn btn-secondary"/>
                                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
                                         <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
@@ -557,10 +557,12 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         if ((filename.includes ('back') || filename.includes('Back')) === true){
             alert("Invalid file. Front scan cannot have the word 'back'");
             $('#txtLibraryIndex').val(null);
+            $('#fileUpload').val(null);
         }
         else if ((filename.includes(" ") || filename.includes(" - Copy") || filename.includes("-Copy")) === true) {
             alert('Invalid file name. Change name to include version of copy (i.e. 370-_4.2)');
             $('#txtLibraryIndex').val(null);
+            $('#fileUpload').val(null);
         }
         else{
             console.log('Valid file');
@@ -596,8 +598,8 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
 <script>
 
-    // Hides needs review option for non-admins
-    function adminValidation(){
+    // Shows needs review block to admins only
+    function showNeedsReview(){
         var userRole = "<?php echo $userRole ?>";
         if ((userRole === "Admin") || (userRole === "admin") === true){
             //document.getElementById('needsReview').style.display = 'none';
@@ -607,6 +609,10 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             document.getElementById('needsReview').style.display = 'none';
             console.log("Hide. User is not admin");
         }
+    }
+
+    function resetPage(){
+        window.location.reload();
     }
 
 </script>
