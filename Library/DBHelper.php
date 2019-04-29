@@ -2300,4 +2300,124 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
             return false;
         }
     }
+
+    /**********************************************
+    Function: DATABASE_MANAGER
+    Description: Retrieves the desired database that an admin would like to browse
+    Parameter(s): N/A
+    Return value(s): $data
+     ***********************************************/
+    function DATABASE_MANAGER($dbname, $tblname)
+    {
+        $data = array();
+
+        // Getting connection
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), $dbname);
+
+        // Checking to see if the connection failed
+        if($mysqli->connect_errno)
+        {
+            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            return false;
+        }
+        $sql = "SELECT * FROM " . $tblname;
+        $response = $mysqli->query($sql);
+
+        if ($response)
+        {
+            while($row = mysqli_fetch_assoc($response))
+            {
+                $data[] = $row;
+            }
+        }
+        else
+        {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+
+        //echo "THIS IS IT BRUH " . $tblname . "SQL: ". $sql;
+
+        $mysqli->close();
+        return $data;
+    }
+
+    /*************************************************************************
+    Function: SHOW_TABLE
+    Description: Function retrieves data from a table that the admin selected
+    Parameter(s): $dbname
+    Return value(s): $data
+     *************************************************************************/
+    function SHOW_TABLES($dbname)
+    {
+        $data = array();
+
+        // Getting connection
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), $dbname);
+
+        // Checking to see if the connection failed
+        if($mysqli->connect_errno)
+        {
+            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            return false;
+        }
+        $sql = "SHOW TABLES";
+        $response = $mysqli->query($sql);
+
+        if ($response)
+        {
+            while($row = mysqli_fetch_assoc($response))
+            {
+                //$data[] = $row;
+                echo "<option value='" . $row['Tables_in_' . $dbname] . "'>" . $row['Tables_in_' . $dbname] . "</option>";
+            }
+        }
+        else
+        {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+        $mysqli->close();
+        return $data;
+    }
+
+    /**********************************************
+    Function: SHOW_DATABASES
+    Description: Function retrieves all databases to display in a DDL
+                 for an admin to select
+    Parameter(s): N/A
+    Return value(s): $data
+     ***********************************************/
+    function SHOW_DATABASES()
+    {
+        $data = array();
+
+        // Getting connection
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
+
+        // Checking to see if the connection failed
+        if($mysqli->connect_errno)
+        {
+            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            return false;
+        }
+        $sql = "SHOW DATABASES";
+        $response = $mysqli->query($sql);
+
+        if ($response)
+        {
+
+            while($row = mysqli_fetch_assoc($response))
+            {
+                //$data[] = $row;
+                if(strpos($row['Database'], 'bandocat') !== false)
+                    echo "<option value='" . $row['Database'] . "'>" . $row['Database'] . "</option>";
+            }
+        }
+        else
+        {
+            echo "Error: " . $sql . "<br>" . $mysqli->error;
+        }
+
+        $mysqli->close();
+        return $data;
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
-
+$userRole = $session->getRole();
 //get collection name from passed variable col
 if(isset($_GET['col']))
 {
@@ -39,8 +39,9 @@ $readrec = array("POOR","GOOD","EXCELLENT");
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body>
+<body onload="showNeedsReview()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
+
 <div class="container pad-bottom">
     <div class="row">
         <div class="col">
@@ -52,21 +53,21 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                 <!-- Card -->
                 <div class="card" style="width: 75em;">
                     <div class="card-body">
-                        <form id="theform" name="theform" method="post" enctype="multipart/form-data" >
+                        <form id="theform" name="theform" method="post" enctype="multipart/form-data" class="needs-validation" novalidate >
                             <div class="row">
                                 <!-- These are used the most often -->
                                 <div class="col-6">
                                     <!-- Library Index -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="libraryIndex">
                                             <input type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" required readonly />
                                         </div>
                                     </div>
                                     <!-- Document Title -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtTitle">Document Title:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="docTitle">
                                             <input type = "text" class="form-control" name = "txtTitle" id = "txtTitle" value="" required />
                                         </div>
                                     </div>
@@ -120,11 +121,26 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Map Scale -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtMapScale">Map Scale:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
-                                            <input type = "text" class="form-control" name = "txtMapScale" id = "txtMapScale" value=""  />
+                                            <div class="d-flex">
+                                                <input type="number" min="1" class="form-control">
+                                                <select class="form-control" id="unitLeft">
+                                                    <option value="inches">in</option>
+                                                    <option value="feet">ft</option>
+                                                    <option value="varas">vrs</option>
+                                                </select>
+                                                <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
+                                                <input type="number" min="1" class="form-control">
+                                                <select class="form-control" id="unitRight">
+                                                    <option value="feet">ft</option>
+                                                    <option value="varas">vrs</option>
+                                                    <option value="inches">in</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <!-- Document Author -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
@@ -137,6 +153,20 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         </div>
                                     </div>
                                     <!-- Radio Buttons -->
+                                    <!-- Has Scalebar -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Has Scalebar:</label>
+                                        <div class="col-sm-8 mt-2">
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_yes" value="1"/>
+                                                <label class="form-check-label" for="hasScalebar_yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_no" value="0" checked />
+                                                <label class="form-check-label" for="hasScalebar_no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- is Map -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label">Is Map:</label>
@@ -293,7 +323,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <!-- Document Medium -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlMedium">Document Medium</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="docMedium">
                                             <select id="ddlMedium" name="ddlMedium" class="form-control" required>
                                                 <!-- GET MAP MEDIUM FOR DDL-->
                                                 <?php
@@ -326,7 +356,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Scan front -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Front Scan:</label>
+                                        <label class="col-sm-4 col-form-label" for="fileUpload">Front Scan:</label>
                                         <div class="col-sm-8">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
@@ -336,7 +366,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     </div>
                                     <!-- Scan Back -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Back Scan:</label>
+                                        <label class="col-sm-4 col-form-label" for="fileUploadBack">Back Scan:</label>
                                         <div class="col-sm-8">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" />
@@ -348,7 +378,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="txtComments" class="col-form-label">Comments:</label>
-                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" ></textarea>
+                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces Co., Texas."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -358,7 +388,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                             <div class="form row">
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
-                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/>
+                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" class="btn btn-secondary"/>
                                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
                                         <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
@@ -388,9 +418,14 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+<!-- JQuery UI cdn -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
-<script type="text/javascript" src="../../Master/errorHandling.js"></script>
+<script type="text/javascript" src="../../Master/errorMessage.js"></script>
+<script type="text/javascript" src="../../Master/maps-ErrorHandling.js"></script>
+<!--<script type="text/javascript" src="../../Master/errorHandling.js"></script>-->
 
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
@@ -418,36 +453,35 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
-            var formData = new FormData($(this)[0]);
+            //var formData = new FormData($('#theform'));
             /*jquery that displays the three points loader*/
 
-            var error = errorHandling($('#txtLibraryIndex'), '<?php echo $collection ?>');
+            /*var error = errorHandling($('#txtLibraryIndex'), '<//?php echo $collection ?>');
             if(error.answer){
                 for(i = 0; i < error.desc.length; i++) {
                     alert(error.desc[i].message)
                 }
+
                 return false
             }
-            var eScale = errorHandling($('#txtMapScale'), '<?php echo $collection ?>');
+            var eScale = errorHandling($('#txtMapScale'), '<//?php echo $collection ?>');
             if(eScale.answer){
                 for(i = 0; i < eScale.desc.length; i++) {
                     alert(eScale.desc[i].message)
                 }
                 return false
-            }
+            }*/
 
             //TODO:: removed libraryindex underscore validation
 //            if(validateFormUnderscore("txtLibraryIndex") == true)
 //            {
-            $('#btnSubmit').css("display", "none");
-            //$('#loader').css("display", "inherit");
+            /*$('#btnSubmit').css("display", "none");
+            $('#loader').css("display", "inherit");
             $("#overlay").show();
-            $("#loader").show();
-            event.disabled;
-
-            event.preventDefault();
+            $("#loader").show();*/
+            //event.disabled;
             /* Send the data using post */
-            $.ajax({
+            /*$.ajax({
                 type: 'post',
                 url: 'form_processing.php',
                 data:  formData,
@@ -475,32 +509,113 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                     }
                     alert(msg);
                     if (result == 1){
-                        window.location.href = "./catalog.php?col=<?php echo $_GET['col']; ?>";
+                        window.location.href = "./catalog.php?col=< ?php //echo $_GET['col']; ?>";
                     }
 
                 }
-            });
+            });*/
+            ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
+            // Name and values of content on form taken and stored
+            var data = $('#theform').serializeArray();
+            // Manually adding front and back scan values due to Serialize function
+            // not picking up file types in form
+            var frontValue = document.getElementById("fileUpload").value;
+            var backValue = document.getElementById("fileUploadBack").value;
+            data.push({name: 'fileUpload', value: frontValue});
+            data.push({name: 'fileUploadBack', value: backValue});
+
+            // Display data of form on console for development purposes
+            for(var i = 0; i < data.length; i++)
+            {
+                console.log("****** ", i, " ******");
+                console.log("Name ", data[i].name);
+                console.log("Value ", data[i].value);
+            }
+
+            handleError(data);
+
+            event.preventDefault();
+            ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
         });
     });
 
-    $("[type=file]").on("change", function(){
+    ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
+
+    // Front scan check
+    $('#fileUpload').change(function() {
         // Name of file and placeholder
         var file = this.files[0].name;
-        var dflt = $(this).attr("placeholder");
-        if($(this).val()!=""){
+        //var dflt = $(this).attr("placeholder");
+        if($(this).val()!="")
+        {
             $(this).next().text(file);
-        } else {
-            $(this).next().text(dflt);
+        }
+
+        var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
+        filename = filename.replace(/\.tif/, '');
+
+        if ((filename.includes ('back') || filename.includes('Back')) === true){
+            alert("Invalid file. Front scan cannot have the word 'back'");
+            $('#txtLibraryIndex').val(null);
+            $('#fileUpload').val(null);
+        }
+        else if ((filename.includes(" ") || filename.includes(" - Copy") || filename.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. 370-_4.2)');
+            $('#txtLibraryIndex').val(null);
+            $('#fileUpload').val(null);
+        }
+        else{
+            console.log('Valid file');
+            $('#txtLibraryIndex').val(filename);
+            document.getElementById('txtLibraryIndex').style.textAlign = 'center';
         }
     });
 
-    $('#fileUpload').change(function() {
-        var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
-        filename = filename.replace(/\.tif/, '');
-        $('#txtLibraryIndex').val(filename);
-    });
 
+    //Back scan check
+    $('#fileUploadBack').change(function() {
+        // Name of file and placeholder
+        var file = this.files[0].name;
+        if($(this).val()!=""){
+            $(this).next().text(file);
+        }
+
+        var backFilename = $('#fileUploadBack').val().replace(/C:\\fakepath\\/i, '');
+        backFilename = backFilename.replace(/\.tif/, '');
+
+        if ((backFilename.includes ('back') || backFilename.includes('Back')) === false){
+            alert("Invalid file. Back scan needs to have the word 'back'");
+        }
+        else if ((backFilename.includes(" ") || backFilename.includes(" - Copy") || backFilename.includes("-Copy")) === true) {
+            alert('Invalid file name. Change name to include version of copy (i.e. ' + backFilename.substring(12, backFilename.indexOf(' ')) + '.2)');
+        }
+        else{
+            console.log('Valid back file');
+        }
+    });
+    ///////////////////////////////////////////////// MOVE TO OWN DOC? //////////////////////////////////////////////////
+</script>
+
+<script>
+
+    // Shows needs review block to admins only
+    function showNeedsReview(){
+        var userRole = "<?php echo $userRole ?>";
+        if ((userRole === "Admin") || (userRole === "admin") === true){
+            //document.getElementById('needsReview').style.display = 'none';
+            console.log('Display. User is admin');
+        }
+        else{
+            document.getElementById('needsReview').style.display = 'none';
+            console.log("Hide. User is not admin");
+        }
+    }
+
+    function resetPage(){
+        window.location.reload();
+    }
 
 </script>
+
 </body>
 </html>

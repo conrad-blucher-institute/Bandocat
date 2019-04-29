@@ -89,7 +89,8 @@ $errorTickets .= $tempt;
                 </a>
                 <a href="../../Forms/ManageUser/" class="dropdown-item">Manage User</a>
                 <a href="../../Forms/NewUser/" class="dropdown-item">Create New User</a>
-                <a href="../../Training/admin/admin.php" class="dropdown-item">Training</a>';
+                <a href="../../Training/admin/admin.php" class="dropdown-item">Training</a>
+                <a href="../../Forms/ManageDatabase/" class="dropdown-item">Database Manager</a>';
                     if($session->isSuperAdmin())
                     {
                         echo '<a href="../../Creator/"  class="dropdown-item">Create New Collection</a>';

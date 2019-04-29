@@ -115,6 +115,23 @@ class ControlsRender
     }
 
     /**********************************************
+     * Function: GET_DDL
+     * Description: gets selected ddl option
+     * Parameter(s):
+     * $input (in array) -
+     * Return value(s): string
+     ***********************************************/
+    function GET_DDL_TOOLTIP($array,$selected)
+    {
+        echo '<option value="">Select</option>';
+        foreach ($array as $item) {
+            if ($selected == $item[0])
+                echo '<option value="' . $item[0] . '" selected data-toggle="tooltip" data-placement="right" title="Tooltip on right">' . $item[0] . '</option>';
+            else echo '<option value="' . $item[0] . '" data-toggle="tooltip" data-placement="right" title="Tooltip on right">' . $item[0] . '</option>';
+        }
+    }
+
+    /**********************************************
      * Function: GET_DDL_ROLE
      * Description: gets DDL role
      * Parameter(s):
