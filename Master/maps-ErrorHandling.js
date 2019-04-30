@@ -140,7 +140,6 @@ function handleError(data)
     if(fileUploadBackValue == "") // if value is empty
     {
         console.log("No back scan...");
-        flag = true;
     }
     else if(backDashUnderCheck == false && backBackCheck == false) // if value doesn't have either
     {

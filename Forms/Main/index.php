@@ -150,9 +150,9 @@ $userID = $session->getUserID();
                     for(var x = 0; x < JSON.parse(response).length; x++)
                     {
                         var html = '<div class="card mx-auto text-center" style="margin-top: 1.5em">\n' +
-                            '                <div class="card-header" style="background-color: #3CB371;">\n' +
+                            '                <header class="card-header" style="background-color: #3CB371;">\n' +
                             '                    <font color="white">'+ JSON.parse(response)[x]["title"] +'</font>\n' +
-                            '                </div>\n' +
+                            '                </header>\n' +
                             '\n' +
                             '                <p>'+ JSON.parse(response)[x]["message"] +'</p>\n' +
                             '            </div>';
@@ -267,6 +267,18 @@ $userID = $session->getUserID();
 
     $('#addAnnouncement').click(function() {
         $('#rowModal').modal('show');
+    });
+
+    $('#announcement').on('click', 'div', function() {
+        // Edit announcements when clicked
+        var aData = $(this).text().split("\n");
+
+        // Syntax saved at spots 2 and 5 due to html make up
+        $('#title').val(aData[2]);
+        $('#message').val(aData[5]);
+        $('#rowModal').modal('show');
+
+        console.log(aData);
     });
 
     $('#datepicker').datepicker({

@@ -513,7 +513,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
 
                 }
             });*/
-            ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
             // Name and values of content on form taken and stored
             var data = $('#theform').serializeArray();
             // Manually adding front and back scan values due to Serialize function
@@ -532,14 +531,22 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             }*/
 
             $(".alert").remove(); // Clears old alerts for new ones
-            handleError(data);
+
+            if(handleError(data) == false)
+            {
+                // Will go into this segment if there are no errors
+                console.log("All good big dog");
+            }
+            else
+            {
+                // Will go here if there are errors
+                console.log("Something wrong big dog");
+            }
 
             event.preventDefault();
-            ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
         });
     });
 
-    ///////////////////////////////////////////////////////// RUBEN'S ////////////////////////////////////////////////////
     $('#fileUpload').change(function() {
         // Name of file and placeholder
         var file = this.files[0].name;
@@ -562,7 +569,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $(this).next().text(file);
         }
     });
-    ///////////////////////////////////////////////// MOVE TO OWN DOC? ///////////////////////////////////////////////////
 </script>
 
 </body>
