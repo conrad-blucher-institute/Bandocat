@@ -87,7 +87,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             <div class="form-group row">
                                 <label for="txtFBCollection" class="col-sm-3 col-form-label">Collection:</label>
                                 <div class="col-sm-9">
-                                    <select id="ddlCollection" name="ddlCollection" class="form-control" required>
+                                    <select id="txtFBCollection" name="txtFBCollection" class="form-control" required>
                                         <!-- GET MAP MEDIUM FOR DDL-->
                                         <?php $Render->GET_DDL_COLLECTION($theDB->GET_COLLECTION_FOR_DROPDOWN(),null);?>
                                     </select>
@@ -361,7 +361,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
             formData.append("crews",JSON.stringify(array_crews));
 
             // Use jquery to show the overlay and the loading circle
-            $("#overlay").show();
+            //$("#overlay").show();
 
             /* Send the data using post */
             $.ajax({

@@ -123,18 +123,18 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
                                             <div class="d-flex">
-                                                <input type="number" min="1" class="form-control">
-                                                <select class="form-control" id="unitLeft">
-                                                    <option value="inches">in</option>
-                                                    <option value="feet">ft</option>
-                                                    <option value="varas">vrs</option>
+                                                <input type="number" min="1" class="form-control" id="numberLeft" name="numberLeft">
+                                                <select class="form-control" id="unitLeft" name="unitLeft">
+                                                    <option value="in">in</option>
+                                                    <option value="ft">ft</option>
+                                                    <option value="vrs">vrs</option>
                                                 </select>
                                                 <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
-                                                <input type="number" min="1" class="form-control">
-                                                <select class="form-control" id="unitRight">
-                                                    <option value="feet">ft</option>
-                                                    <option value="varas">vrs</option>
-                                                    <option value="inches">in</option>
+                                                <input type="number" min="1" class="form-control" id="numberRight" name="numberRight">
+                                                <select class="form-control" id="unitRight" name="unitRight">
+                                                    <option value="ft">ft</option>
+                                                    <option value="vrs">vrs</option>
+                                                    <option value="in">in</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -452,7 +452,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
-            //var formData = new FormData($('#theform'));
+            var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
 
             /*var error = errorHandling($('#txtLibraryIndex'), '<//?php echo $collection ?>');
@@ -480,39 +480,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $("#loader").show();*/
             //event.disabled;
             /* Send the data using post */
-            /*$.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data){
-                    var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
-                    {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                        {
-                            $('#btnSubmit').css("display", "inherit");
-                            //$('#loader').css("display", "none");
-                            $('#overlay').removeAttr("style").hide();
-                            $('#loader').removeAttr("style").hide();
-                        }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        window.location.href = "./catalog.php?col=< ?php //echo $_GET['col']; ?>";
-                    }
 
-                }
-            });*/
             // Name and values of content on form taken and stored
             var data = $('#theform').serializeArray();
             // Manually adding front and back scan values due to Serialize function
@@ -536,6 +504,39 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             {
                 // Will go into this segment if there are no errors
                 console.log("All good big dog");
+                $.ajax({
+                    type: 'post',
+                    url: 'form_processing.php',
+                    data:  formData,
+                    processData: false,
+                    contentType: false,
+                    success:function(data){
+                        /*var json = JSON.parse(data);
+                        var msg = "";
+                        var result = 0;
+                        for(var i = 0; i < json.length; i++)
+                        {
+                            msg += json[i] + "\n";
+                        }
+                        for (var i = 0; i < json.length; i++){
+                            if (json[i].includes("Success")) {
+                                result = 1;
+                            }
+                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
+                            {
+                                $('#btnSubmit').css("display", "inherit");
+                                //$('#loader').css("display", "none");
+                                $('#overlay').removeAttr("style").hide();
+                                $('#loader').removeAttr("style").hide();
+                            }
+                        }
+                        alert(msg);
+                        if (result == 1){
+                            window.location.href = "./catalog.php?col=< ?php //echo $_GET['col']; ?>";
+                        }*/
+                        console.log(data);
+                    }
+                });
             }
             else
             {
