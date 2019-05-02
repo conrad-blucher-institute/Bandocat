@@ -42,19 +42,28 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body onload="adminValidation()">
+<body onload="onloadChecks()">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             <!-- Put Page Contents Here -->
             <!-- <h1 class="text-center">Blank Page</h1> -->
             <div class="row">
+                <!-- Start of description of Classification method chosen-->
+                <div class="col-1" id="classificationCard">
+                    <div class="card" id="card" style="width: 18rem; margin-left: 65px; margin-top: 250px;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="text-align: center; font-size:18px; text-decoration: underline;">Classification Description:</h5>
+                            <p class="card-text" id="descriptionText"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of description of Classification method chosen-->
                 <div class="col">
                     <!-- Put Page Contents Here -->
                     <h1 class="text-center"><?php echo $config["DisplayName"]; ?> Catalog Form</h1>
                     <hr>
-
                     <div class="d-flex justify-content-center">
                         <!-- Card -->
                         <div class="card" style="width: 75em;">
@@ -68,7 +77,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
                                                 <div class="col-sm-8">
-                                                    <input type = "text" class="form-control" name="txtLibraryIndex" id="txtLibraryIndex" value="" disabled required />
+                                                    <input type = "text" class="form-control" name="txtLibraryIndex" id="txtLibraryIndex" value="" disabled/>
                                                 </div>
                                             </div>
                                             <!-- Document Title -->
@@ -121,9 +130,9 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <!-- Radio Buttons End -->
                                             <!-- Classification -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label" for="ddlMedium">Classification:</label>
+                                                <label class="col-sm-4 col-form-label" for="classificationMethod">Classification:</label>
                                                 <div class="col-sm-8">
-                                                    <select id="ddlMedium" name="ddlMedium" class="form-control" required>
+                                                    <select id="classificationMethod" name="classificationMethod" class="form-control" onchange="classificationDescription()" required>
                                                         <!-- GET FOLDER CLASSIFICATION LIST -->
                                                         <?php
                                                         $Render->GET_DDL_TOOLTIP($DB->GET_FOLDER_CLASSIFICATION_LIST($collection),$document['Classification']);
@@ -135,14 +144,14 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtClassificationComments">Classification Comments:</label>
                                                 <div class="col-sm-8" >
-                                                    <textarea type="text" class="form-control" name="txtClassificationComments" id="txtClassificationComments" value=""></textarea>
+                                                    <textarea type="text" class="form-control" name="txtClassificationComments" id="txtClassificationComments"></textarea>
                                                 </div>
                                             </div>
                                             <!-- Subfolder Comments -->
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtSubfolderComments">Subfolder Comments:</label>
                                                 <div class="col-sm-8" >
-                                                    <textarea type="text" class="form-control" name="txtSubfolderComments" id="txtSubfolderComments" value=""></textarea>
+                                                    <textarea class="form-control" name="txtSubfolderComments" id="txtSubfolderComments"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -215,7 +224,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                             <div class="form-row">
                                                 <div class="form-group col">
                                                     <label for="txtComments" class="col-form-label">Comments:</label>
-                                                    <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces Co., Texas."></textarea>
+                                                    <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Job No. 4441, Sheet No. 74, with sketch."></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -244,6 +253,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         </div> <!-- col -->
     </div> <!-- row -->
 </div><!-- Container -->
+
 <?php include "../../Master/bandocat_footer.php" ?>
 
 <!-- Complete JavaScript Bundle -->
@@ -330,6 +340,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         });
     });
 
+    // *****************************************************************************************************************
     $("[type=file]").on("change", function(){
         // Name of file and placeholder
         var file = this.files[0].name;
@@ -341,12 +352,8 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     });
 
-    // Classification explanations
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    })
-
-    // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATIONS.
+    // *****************************************************************************************************************
+    // AUTO POPULATING LIBRARY INDEX FIELD WITH NAME OF UPLOADED FILE. ALSO PERFORMS UPLOADED FILES VALIDATION.
     // UPLOADS THAT FAIL THE VALIDATION TEST ARE DISCARDED
 
     // Front scan check
@@ -391,12 +398,16 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
         }
     }
 
+    // *****************************************************************************************************************
     function resetPage(){
         window.location.reload();
     }
 
-    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN
-    function adminValidation(){
+    // *****************************************************************************************************************
+    /************************* ONLOAD EVENTS (ADMIN CHECK AND CLASSIFICATION CARD VISIBILITY) ************************/
+    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN AND HIDES CLASSIFICATION CARD UNTIL AN OPTION IS SELECTED
+    function onloadChecks(){
+        // Checks if user is admin
         var userRole = "<?php echo $userRole ?>";
         if ((userRole === "Admin") || (userRole === "admin")){
             //document.getElementById('needsReview').style.display = 'yes';
@@ -406,12 +417,115 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
             document.getElementById('needsReview').style.display = 'none';
             console.log("Hide. User is not admin");
         }
+
+        // Hides classification card when no viable classification method is selected
+        var description = document.getElementById("classificationMethod").value;
+        var values = ["Correspondence", "Envelope/Binding", "Field Note", "Folder Cover", "Legal Description", "Legal Document", "Legal Document Draft", "Map/Blueprint", "Note", "Separation Sheet", "Stencil", "Survey Calculation"]
+
+        if ((description === values) === true){
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+        else{
+            console.log('no classification chosen, hide card');
+            document.getElementById('classificationCard').style.visibility = "hidden";
+        }
     }
 
-    /******************TOOLTIP**********************/
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+    // *****************************************************************************************************************
+    /***************************************** CLASSIFICATION DESCRIPTION *********************************************/
+
+    // Card with description of chosen classification
+    function classificationDescription() {
+        var description = document.getElementById("classificationMethod").value;
+
+        // Correspondence
+        if ((description === "Correspondence") === true){
+            document.getElementById('descriptionText').innerHTML = "Correspondence: appears to be a conversation. Often an official telegram, but can still be messages left at hotels or offices.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Envelope/Binding
+        else if ((description === "Envelope/Binding") === true){
+            document.getElementById('descriptionText').innerHTML = "Envelope/Binding: anything from an envelope to a taped piece of paper used to bind documents. They are blank and contain no information.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Field note
+        else if ((description === "Field Note") === true){
+            document.getElementById('descriptionText').innerHTML = "Field note: actual page from a field book or a typed report of field book notes. Often titled 'Field Notes' or is a list of survey point information.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Folder cover
+        else if ((description === "Folder Cover") === true){
+            document.getElementById('descriptionText').innerHTML = "Folder cover: scanned copy of the original job folder.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        //Legal description
+        else if ((description === "Legal Description") === true){
+            document.getElementById('descriptionText').innerHTML = "Legal description: written geographical description of a property for the purpose of identifying the property for legal transactions.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Legal document
+        else if ((description === "Legal Document") === true){
+            document.getElementById('descriptionText').innerHTML = "Legal document: typed and signed documents pertaining to a survey, land tenure or sale, or work contract. Often contains an official stamp or notary.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Legal document draft
+        else if ((description === "Legal Document Draft") === true){
+            document.getElementById('descriptionText').innerHTML = "Legal document draft: legal document that has not been officiated or contains review marks.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Map/Blueprint
+        else if ((description === "Map/Blueprint") === true){
+            document.getElementById('descriptionText').innerHTML = "Map/Blueprint: large sized maps (excludes smaller map drafts because they are considered a sketch, therefore a 'Survey Calculation').";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // None
+        else if ((description === "None") === true){
+            document.getElementById('descriptionText').innerHTML = "None: No particular classification.";
+            document.getElementById('classificationCard').style.visibility = "hidden";
+        }
+
+        // Note
+        else if ((description === "Note") === true){
+            document.getElementById('descriptionText').innerHTML = "Note: contains minimal information and cannot be otherwise classified.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Separation sheet
+        else if ((description === "Separation Sheet") === true){
+            document.getElementById('descriptionText').innerHTML = "Separation sheet: index sheet provided by the Mary & Jeff Bell Library at Texas A&M University - Corpus Christi denoting a document whose physical condition is too poor to be scanned. The original map or document can only be accessed on-site, in person.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Stencil
+        else if ((description === "Stencil") === true){
+            document.getElementById('descriptionText').innerHTML = "Stencil: document used to replicate specific fonts, symbols, or texts.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Survey calculation
+        else if ((description === "Survey Calculation") === true){
+            document.getElementById('descriptionText').innerHTML = "Survey calculation: recorded arithmetic pertaining to a survey. Often on a yellow paper and contains sketches.";
+            document.getElementById('classificationCard').style.visibility = "visible";
+        }
+
+        // Otherwise...
+        else {
+            console.log("Nothing was selected");
+            document.getElementById('classificationCard').style.visibility = "hidden";
+        }
+
+        // Classification description layout
+        document.getElementById('descriptionText').style.textAlign = 'center';
+        document.getElementById('descriptionText').style.fontSize = '13px';
+    }
 
 </script>
 </body>

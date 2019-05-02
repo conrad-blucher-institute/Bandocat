@@ -269,7 +269,8 @@ $userID = $session->getUserID();
         $('#rowModal').modal('show');
     });
 
-    $('#announcement').on('click', 'div', function() {
+    // Update/Edit an already posted announcement
+    /*$('#announcement').on('click', 'div', function() {
         // Edit announcements when clicked
         var aData = $(this).text().split("\n");
 
@@ -279,7 +280,7 @@ $userID = $session->getUserID();
         $('#rowModal').modal('show');
 
         console.log(aData);
-    });
+    });*/
 
     $('#datepicker').datepicker({
         uiLibrary: 'bootstrap4'
