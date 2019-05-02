@@ -118,28 +118,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Map Scale -->
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
-                                        <div class="col-sm-8">
-                                            <div class="d-flex">
-                                                <input type="number" min="1" class="form-control" id="numberLeft" name="numberLeft">
-                                                <select class="form-control" id="unitLeft" name="unitLeft">
-                                                    <option value="in">in</option>
-                                                    <option value="ft">ft</option>
-                                                    <option value="vrs">vrs</option>
-                                                </select>
-                                                <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
-                                                <input type="number" min="1" class="form-control" id="numberRight" name="numberRight">
-                                                <select class="form-control" id="unitRight" name="unitRight">
-                                                    <option value="ft">ft</option>
-                                                    <option value="vrs">vrs</option>
-                                                    <option value="in">in</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <!-- Document Author -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
@@ -149,6 +127,27 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                                 <!-- POPULATE AUTHOR LIST-->
                                                 <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
                                             </datalist>
+                                        </div>
+                                    </div>
+                                    <!-- Map Scale -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
+                                        <div class="col-sm-8">
+                                            <div class="d-flex">
+                                                <input type="number" min="1" class="form-control" id="numberLeft" name="numberLeft" readonly>
+                                                <select class="form-control" id="unitLeft" name="unitLeft" readonly>
+                                                    <option value="in">in</option>
+                                                    <option value="ft">ft</option>
+                                                    <option value="vrs">vrs</option>
+                                                </select>
+                                                <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
+                                                <input type="number" min="1" class="form-control" id="numberRight" name="numberRight" readonly>
+                                                <select class="form-control" id="unitRight" name="unitRight" readonly>
+                                                    <option value="ft">ft</option>
+                                                    <option value="vrs">vrs</option>
+                                                    <option value="in">in</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- Radio Buttons -->
@@ -503,7 +502,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             if(handleError(data) == false)
             {
                 // Will go into this segment if there are no errors
-                console.log("All good big dog");
                 $.ajax({
                     type: 'post',
                     url: 'form_processing.php',
@@ -569,6 +567,10 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         if($(this).val()!=""){
             $(this).next().text(file);
         }
+    });
+
+    $('#hasScalebar').change(function() {
+        console.log("Sup hymie");
     });
 </script>
 

@@ -41,7 +41,7 @@
                     <a class="list-group-item list-group-item-action" href="../../Templates/Map/catalog.php?col=bluchermaps">Maps</a>
                     <a class="list-group-item list-group-item-action" href="../../Templates/FieldBook/list.php?col=blucherfieldbook&action=catalog">Field Book</a>
                     <a class="list-group-item list-group-item-action" href="../../Templates/FieldBookIndices/catalog.php?col=fieldbookindices">Field Book Indices</a>
-                    <a class="list-group-item list-group-item-action" href="../../Templates/Indices/catalog.php?col=mapindicies">Map Indices</a>
+                    <a class="list-group-item list-group-item-action" href="../../Templates/Indices/catalog.php?col=mapindices">Map Indices</a>
                     <a class="list-group-item list-group-item-action" href="../../Templates/Folder/list.php?col=jobfolder&action=catalog">Job Folder</a>
                 </div>
             </div>
