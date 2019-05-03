@@ -84,6 +84,7 @@ $userID = $session->getUserID();
                 </div>
                 <form id="updateDataBase">
                     <div class="modal-body" id="rowModalBody">
+
                         <!-- Title -->
                         <div class="form-group row" align="center">
                             <label class="col-sm-1 col-form-label">Title:</label>
