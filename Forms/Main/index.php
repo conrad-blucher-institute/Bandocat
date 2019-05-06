@@ -28,10 +28,11 @@ $userID = $session->getUserID();
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 
 <!-- Container -->
-<div class="container-fluid pl-5 pr-5">
+<div class="container-fluid pl-5 pr-5" style="background-color: #f1f1f1;">
     <!-- Put Page Contents Here -->
 
     <div class="row">
+        <!-- Home Page Greeting Message -->
         <div class="col-9 text-center" style="margin-top: 1em;">
             <h4><span id="Time_Day"></span></h4>
             <h4><span id="Greetings"></span></h4>
@@ -39,6 +40,7 @@ $userID = $session->getUserID();
             <hr>
         </div>
 
+        <!-- Logo Displayed On Home Page -->
         <div class="col-3 text-center" style="margin-top: 1.5em;">
             <img id="header_logo" width="260px" src="../../Images/Logos/bando-logo-medium.png">
         </div>
@@ -49,12 +51,12 @@ $userID = $session->getUserID();
         <div class="col">
             <!-- I-FRAME -->
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="http://spatialquerylab.com/news/" frameborder="0" style="border: 3px solid #1E90FF;" allowfullscreen></iframe>
+                <iframe class="embed-responsive-item rounded" src="http://spatialquerylab.com/news/" frameborder="0" style="border: 3px solid #1E90FF;" allowfullscreen></iframe>
             </div>
         </div>
 
         <!-- Announcements -->
-        <div class="col-3 text-center pl-5 pr-5" style="border: 3px solid #1E90FF;" id="announcement">
+        <div class="col-3 text-center pl-5 pr-5 rounded" style="border: 3px solid #1E90FF; background-color: #FFFFFF" id="announcement">
             <h3>Announcements</h3>
             <hr>
             <?php
@@ -82,7 +84,7 @@ $userID = $session->getUserID();
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="updateDataBase">
+                <form id="addAnnouncementModal">
                     <div class="modal-body" id="rowModalBody">
 
                         <!-- Title -->

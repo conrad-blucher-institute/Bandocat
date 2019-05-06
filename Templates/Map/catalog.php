@@ -130,19 +130,19 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         </div>
                                     </div>
                                     <!-- Map Scale -->
-                                    <div class="form-group row">
+                                    <div class="form-group row" id="mapScale" hidden>
                                         <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
                                             <div class="d-flex">
-                                                <input type="number" min="1" class="form-control" id="numberLeft" name="numberLeft" readonly>
-                                                <select class="form-control" id="unitLeft" name="unitLeft" readonly>
+                                                <input type="number" min="1" class="form-control" id="numberLeft" name="numberLeft" disabled>
+                                                <select class="form-control" id="unitLeft" name="unitLeft" disabled>
                                                     <option value="in">in</option>
                                                     <option value="ft">ft</option>
                                                     <option value="vrs">vrs</option>
                                                 </select>
                                                 <input type="text" value="=" class="form-control" disabled style="background-color: #FFFFFF; text-align: center; border: none;">
-                                                <input type="number" min="1" class="form-control" id="numberRight" name="numberRight" readonly>
-                                                <select class="form-control" id="unitRight" name="unitRight" readonly>
+                                                <input type="number" min="1" class="form-control" id="numberRight" name="numberRight" disabled>
+                                                <select class="form-control" id="unitRight" name="unitRight" disabled>
                                                     <option value="ft">ft</option>
                                                     <option value="vrs">vrs</option>
                                                     <option value="in">in</option>
@@ -569,8 +569,26 @@ $readrec = array("POOR","GOOD","EXCELLENT");
         }
     });
 
-    $('#hasScalebar').change(function() {
-        console.log("Sup hymie");
+    $('#hasScalebar_yes, #hasScalebar_no').change(function() {
+        var hasMapScale = $('#hasScalebar_yes').prop('checked');
+        if(hasMapScale)
+        {
+            console.log("Map has scale bar...");
+            $('#numberLeft').prop('disabled', false);
+            $('#unitLeft').prop('disabled', false);
+            $('#numberRight').prop('disabled', false);
+            $('#unitRight').prop('disabled', false);
+            $('#mapScale').prop('hidden', false);
+        }
+        else
+        {
+            console.log("Map doesn't have scale bar...");
+            $('#numberLeft').prop('disabled', true);
+            $('#unitLeft').prop('disabled', true);
+            $('#numberRight').prop('disabled', true);
+            $('#unitRight').prop('disabled', true);
+            $('#mapScale').prop('hidden', true);
+        }
     });
 </script>
 

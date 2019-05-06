@@ -291,7 +291,6 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     $( document ).ready(function() {
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
-            console.log("We here big dog");
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
             /*jquery that displays the three points loader*/
@@ -311,6 +310,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                 return false
             }*/
 
+            console.log(formData);
             //TODO:: removed libraryindex underscore validation
             $('#btnSubmit').css("display", "none");
             //$('#loader').css("display", "inherit");
@@ -327,6 +327,8 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                 processData: false,
                 contentType: false,
                 success:function(data){
+                    console.log("We here big dog\n");
+                    console.log(data);
                     /*var json = JSON.parse(data);
                     var msg = "";
                     var result = 0;
@@ -413,7 +415,6 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
 
     $('#classificationMethod').change(function () {
         var classList =  <?php echo json_encode($classification); ?>;
-        console.log(classList);
         $('#classificationCard').show();
         var classText = $('#classificationMethod option:selected').text();
         if(classText == "Select")
