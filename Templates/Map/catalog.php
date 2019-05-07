@@ -130,7 +130,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                         </div>
                                     </div>
                                     <!-- Map Scale -->
-                                    <div class="form-group row" id="mapScale" hidden>
+                                    <div class="form-group row" id="mapScale">
                                         <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
                                             <div class="d-flex">
@@ -578,7 +578,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $('#unitLeft').prop('disabled', false);
             $('#numberRight').prop('disabled', false);
             $('#unitRight').prop('disabled', false);
-            $('#mapScale').prop('hidden', false);
+            //$('#mapScale').prop('hidden', false);
         }
         else
         {
@@ -587,7 +587,7 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $('#unitLeft').prop('disabled', true);
             $('#numberRight').prop('disabled', true);
             $('#unitRight').prop('disabled', true);
-            $('#mapScale').prop('hidden', true);
+            //$('#mapScale').prop('hidden', true);
         }
     });
 </script>

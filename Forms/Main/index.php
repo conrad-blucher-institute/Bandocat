@@ -23,6 +23,28 @@ $userID = $session->getUserID();
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
+    <!--<style>
+        @media only screen and (min-width: 768px) {
+            /* tablets and desktop */
+            body {
+                background-color: dodgerblue;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            /* phones */
+            body {
+                background-color: red;
+            }
+        }
+
+        @media only screen and (max-width: 767px) and (orientation: portrait) {
+            /* portrait phones */
+            body {
+                background-color: yellow;
+            }
+        }
+    </style>-->
 </head>
 <body>
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
@@ -56,7 +78,7 @@ $userID = $session->getUserID();
         </div>
 
         <!-- Announcements -->
-        <div class="col-3 text-center pl-5 pr-5 rounded" style="border: 3px solid #1E90FF; background-color: #FFFFFF" id="announcement">
+        <div class="col-3 text-center pl-5 pr-5 pb-3 rounded" style="border: 3px solid #1E90FF; background-color: #FFFFFF; height: 47.4em; overflow-y: auto" id="announcement">
             <h3>Announcements</h3>
             <hr>
             <?php
