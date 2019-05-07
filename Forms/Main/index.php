@@ -59,7 +59,7 @@ $userID = $session->getUserID();
             <h4><span id="Time_Day"></span></h4>
             <h4><span id="Greetings"></span></h4>
 
-            <hr>
+            <hr style="background-color: #1E90FF">
         </div>
 
         <!-- Logo Displayed On Home Page -->
@@ -80,7 +80,7 @@ $userID = $session->getUserID();
         <!-- Announcements -->
         <div class="col-3 text-center pl-5 pr-5 pb-3 rounded" style="border: 3px solid #1E90FF; background-color: #FFFFFF; height: 47.4em; overflow-y: auto" id="announcement">
             <h3>Announcements</h3>
-            <hr>
+            <hr style="background-color: #1E90FF">
             <?php
             if($session->isAdmin())
             {
@@ -91,7 +91,6 @@ $userID = $session->getUserID();
 
 
         </div>
-
     </div> <!-- row -->
 </div><!-- Container -->
 
