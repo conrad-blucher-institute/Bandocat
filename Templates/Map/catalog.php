@@ -129,8 +129,23 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                             </datalist>
                                         </div>
                                     </div>
+                                    <!-- Radio Buttons -->
+                                    <!-- Has Scalebar -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Has Scalebar:</label>
+                                        <div class="col-sm-8 mt-2">
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_yes" value="1"/>
+                                                <label class="form-check-label" for="hasScalebar_yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_no" value="0" checked />
+                                                <label class="form-check-label" for="hasScalebar_no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- Map Scale -->
-                                    <div class="form-group row" id="mapScale">
+                                    <div class="form-group row" id="mapScale" hidden>
                                         <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
                                         <div class="col-sm-8">
                                             <div class="d-flex">
@@ -147,21 +162,6 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                                                     <option value="vrs">vrs</option>
                                                     <option value="in">in</option>
                                                 </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Radio Buttons -->
-                                    <!-- Has Scalebar -->
-                                    <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has Scalebar:</label>
-                                        <div class="col-sm-8 mt-2">
-                                            <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_yes" value="1"/>
-                                                <label class="form-check-label" for="hasScalebar_yes">Yes</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input type = "radio" class="form-check-input" name = "hasScalebar" id = "hasScalebar_no" value="0" checked />
-                                                <label class="form-check-label" for="hasScalebar_no">No</label>
                                             </div>
                                         </div>
                                     </div>
@@ -578,16 +578,18 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $('#unitLeft').prop('disabled', false);
             $('#numberRight').prop('disabled', false);
             $('#unitRight').prop('disabled', false);
-            //$('#mapScale').prop('hidden', false);
+            $('#mapScale').prop('hidden', false);
         }
         else
         {
+            $('#numberLeft').val("");
+            $('#numberRight').val("");
             console.log("Map doesn't have scale bar...");
             $('#numberLeft').prop('disabled', true);
             $('#unitLeft').prop('disabled', true);
             $('#numberRight').prop('disabled', true);
             $('#unitRight').prop('disabled', true);
-            //$('#mapScale').prop('hidden', true);
+            $('#mapScale').prop('hidden', true);
         }
     });
 </script>
