@@ -91,12 +91,14 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             <!-- Document Author -->
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
-                                                <div class="col-sm-8">
-                                                    <input type = "text" class="form-control" list="lstAuthor" name="txtAuthor" id="txtAuthor" value="" />
-                                                    <datalist id="lstAuthor">
-                                                        <!-- POPULATE AUTHOR LIST-->
-                                                        <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
-                                                    </datalist>
+                                                <div class="col-sm-7">
+                                                    <input class="form-control" type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo htmlspecialchars($authors[0][0],ENT_QUOTES);} ?>"/>
+                                                </div>
+                                                <div>
+                                                    <input type="button" class="btn btn-primary" id="more_fields" onclick="add_fields(null);" value="+"/>
+                                                </div>
+                                                <div>
+                                                    <span id="authorcell"></span>
                                                 </div>
                                             </div>
                                             <!-- Document Start Date -->
@@ -288,11 +290,41 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
 <script>
+    var max = 5;
+    var author_count = 0;
+
+    function add_fields(val)
+    {
+        if(val == null)
+            val = "";
+        if(author_count >= max)
+            return false;
+        author_count++;
+        var objTo = document.getElementById('authorcell');
+        var divtest = document.createElement("div");
+        divtest.innerHTML = '<br><span class="label">Document Author ' + (author_count+1) + '</span><input type = "text" name = "txtAuthor[]" autocomplete="off" id = "txtAuthor" size="26" value="' + val + '" list="lstAuthor" />';
+        objTo.appendChild(divtest);
+    }
+
     $( document ).ready(function() {
+        //Parse out the authors read in to the add_fields function
+        var authors = <?php echo json_encode($authors); ?>;
+        for(var i = 1; i < authors.length; i++)
+        {
+            add_fields(authors[i][0]);
+        }
+
         /* attach a submit handler to the form */
         $('#theform').submit(function (event) {
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
+
+            /Append Authors data to the form
+            var authors = $('[name="txtAuthor[]');
+            var array_authors = [];
+            for(var i = 0; i < authors.length; i++)
+                array_authors.push(authors[i].value);
+            formData.append("authors",JSON.stringify(array_authors));
             /*jquery that displays the three points loader*/
 
             /*var error = errorHandling($('#txtLibraryIndex'), '</?php echo $collection ?>');
@@ -311,12 +343,6 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             }*/
 
             console.log(formData);
-            //TODO:: removed libraryindex underscore validation
-            $('#btnSubmit').css("display", "none");
-            //$('#loader').css("display", "inherit");
-            $("#overlay").show();
-            $("#loader").show();
-            event.disabled;
 
             event.preventDefault();
             /* Send the data using post */
