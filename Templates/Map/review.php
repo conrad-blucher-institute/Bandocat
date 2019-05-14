@@ -509,8 +509,8 @@ $date = new DateHelper();
 //            {
             //Library index was found having a "_" in the string
             /* stop form from submitting normally */
-            $('#overlay').show();
-            event.disabled;
+            //$('#overlay').show();
+            //event.disabled;
 
             event.preventDefault();
             /* Send the data using post */
