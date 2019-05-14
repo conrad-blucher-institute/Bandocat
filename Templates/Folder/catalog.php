@@ -192,14 +192,14 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtClassificationComments">Classification Comments:</label>
                                                 <div class="col-sm-8" >
-                                                    <textarea type="text" class="form-control" name="txtClassificationComments" id="txtClassificationComments"></textarea>
+                                                    <textarea class="form-control" name="txtClassificationComments" id="txtClassificationComments"><?php echo $document["ClassificationComment"];?></textarea>
                                                 </div>
                                             </div>
                                             <!-- Subfolder Comments -->
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtSubfolderComments">Subfolder Comments:</label>
                                                 <div class="col-sm-8" >
-                                                    <textarea class="form-control" name="txtSubfolderComments" id="txtSubfolderComments"></textarea>
+                                                    <textarea class="form-control" name="txtSubfolderComments" id="txtSubfolderComments"><?php echo $document["SubfolderComment"]; ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -247,7 +247,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             <div class="form-row">
                                                 <div class="form-group col">
                                                     <label for="txtComments" class="col-form-label">Comments:</label>
-                                                    <textarea class="form-control" cols="35" rows="4" name="txtComments" id="txtComments" placeholder="Example: Job No. 4441, Sheet No. 74, with sketch."></textarea>
+                                                    <textarea class="form-control" cols="35" rows="4" name="txtComments" id="txtComments" placeholder="Example: Job No. 4441, Sheet No. 74, with sketch."><?php echo $document["Comments"]; ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,7 +257,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                         <div class="col">
                                             <div class="d-flex justify-content-between">
                                                 <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" class="btn btn-secondary"/>
-                                                <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
+                                                <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID; ?>" />
                                                 <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                                 <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
                                                 <span>

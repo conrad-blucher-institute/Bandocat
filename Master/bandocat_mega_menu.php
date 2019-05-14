@@ -376,9 +376,3 @@ $errorTickets .= $tempt;
         </div>
     </div>
 </div>
-<!-- Javascript for the form found in master.js -->
-<script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
