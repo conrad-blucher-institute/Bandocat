@@ -60,6 +60,10 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                         </div>
                     </div>
                 </div>
+                <!-- Populates the control with data -->
+                <datalist id="lstAuthor">
+                    <?php $Render->getDataList($DB->GET_AUTHOR_LIST($collection)); ?>
+                </datalist>
                 <!-- End of description of Classification method chosen-->
                 <div class="col">
                     <!-- Put Page Contents Here -->
@@ -78,7 +82,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
                                                 <div class="col-sm-8">
-                                                    <input type = "text" class="form-control" name="txtLibraryIndex" id="txtLibraryIndex" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>' required disabled/>
+                                                    <input type = "text" class="form-control" name="txtLibraryIndex" id="txtLibraryIndex" value='<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>' required readonly/>
                                                 </div>
                                             </div>
                                             <!-- Document Title -->
@@ -95,11 +99,11 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                                     <input class="form-control" type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo htmlspecialchars($authors[0][0],ENT_QUOTES);} ?>"/>
                                                 </div>
                                                 <div>
-                                                    <input type="button" class="btn btn-primary" id="more_fields" onclick="add_fields(null);" value="+"/>
+                                                    <input type="button" class="btn btn-primary" onclick="add_fields(null);" id="more_fields" value="+"/>
                                                 </div>
-                                                <div>
-                                                    <span id="authorcell"></span>
-                                                </div>
+                                            </div>
+                                            <div class="form-group row" id="authorcell">
+
                                             </div>
                                             <!-- Document Start Date -->
                                             <div class="form-group row">
@@ -293,19 +297,6 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     var max = 5;
     var author_count = 0;
 
-    function add_fields(val)
-    {
-        if(val == null)
-            val = "";
-        if(author_count >= max)
-            return false;
-        author_count++;
-        var objTo = document.getElementById('authorcell');
-        var divtest = document.createElement("div");
-        divtest.innerHTML = '<br><span class="label">Document Author ' + (author_count+1) + '</span><input type = "text" name = "txtAuthor[]" autocomplete="off" id = "txtAuthor" size="26" value="' + val + '" list="lstAuthor" />';
-        objTo.appendChild(divtest);
-    }
-
     $( document ).ready(function() {
         //Parse out the authors read in to the add_fields function
         var authors = <?php echo json_encode($authors); ?>;
@@ -319,7 +310,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             /* stop form from submitting normally */
             var formData = new FormData($(this)[0]);
 
-            /Append Authors data to the form
+            //Append Authors data to the form
             var authors = $('[name="txtAuthor[]');
             var array_authors = [];
             for(var i = 0; i < authors.length; i++)
@@ -383,6 +374,16 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             });
         });
     });
+
+    function add_fields(val)
+    {
+        if(val == null)
+            val = "";
+        if(author_count >= max)
+            return false;
+        author_count++;
+        $('#authorcell').append('<label class="col-sm-4 col-form-label">Document Author ' + (author_count+1) + ':</label><div class="col-sm-8"><input class="form-control" type = "text" name = "txtAuthor[]" autocomplete="off" id = "txtAuthor" size="26" value="' + val + '" list="lstAuthor" /></div><br><br>');
+    }
 
     // *****************************************************************************************************************
     $("[type=file]").on("change", function(){
