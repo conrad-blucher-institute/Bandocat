@@ -40,7 +40,7 @@ require '../../Library/AnnouncementDBHelper.php';
     <script src='asteroids.js' type="text/javascript"></script>
 
     <style>
-        #canvas { border:1px solid black; top:0px; left:0px; margin-left: 10px; }
+        #canvas { border:1px solid black; padding: 0; margin: auto; display: block;}
         .button { position:absolute; border:1px solid black; }
         #left-controls { position:absolute; left:1px; bottom:0px; display:none; }
         #right-controls { position:absolute; right:1px; bottom:0px; display:none; }
@@ -55,18 +55,12 @@ require '../../Library/AnnouncementDBHelper.php';
 <!-- TABLE FOR LAYOUT OF PAGE -->
 <table id="thetable">
     <tr id="trTop">
-        <th class="menu_left" id="thetable_left">
-            <?php include '../../Master/header.php'?>
-        </th>
         <th class="tg-chpy" colspan="2">
             <span id= "lblUsername" class="Username"><a href="../../Forms/AccountSettings"><?php echo $session->getUserName(); ?></a></span>,&nbsp;<span id="Time_Day"></span><span id="Greetings"></span>
         </th>
 
     </tr>
     <tr style="height: 630px">
-        <td class="menu_left" id="thetable_left">
-            <?php include '../../Master/sidemenu.php' ?>
-        </td>
         <td class="tg-zhyu"style="position: relative"><h2>BandoCat</h2>
             <div id="indicatorcontainer"></div>
 
@@ -84,13 +78,10 @@ require '../../Library/AnnouncementDBHelper.php';
 
             <div id="divscroller" style="text-align: center">
                 <div id="post"></div>
+                <a href="../../Forms/Main/index.php">Home</a>
             </div>
         </td>
 
-        <td class="tg-0za1" style="position: relative"><h2>Announcements</h2>
-
-
-        </td>
     </tr>
 
 </table>
