@@ -23,8 +23,13 @@ require '../../Library/AnnouncementDBHelper.php';
 
     <link rel = "stylesheet" type = "text/css" href = "../../Master/master.css" >
     <link rel="stylesheet" type="text/css" href="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.css">
-    <script type="text/javascript" src="../../ExtLibrary/jQuery-2.2.3/jquery-2.2.3.min.js"></script>
-    <script type="text/javascript" src="jquery.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- JQuery UI cdn -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../../ExtLibrary/jQueryUI-1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="Greetings.js"></script>
     <script src="strokeText.js"></script>
@@ -170,14 +175,14 @@ require '../../Library/AnnouncementDBHelper.php';
     /***********************
      * Constant Elements
      ***********************/
-    //Announcement text element
+    /*//Announcement text element
     var annoText = $("<textarea id='annoText' style='height: 85px; width: 85%' required></textarea>");
     //Announcement title element
     var annoTitle = $("<input type='text' id='annoTitle' required>");
     //Image that it is used to trigger a close function
     var closeImg = $("<img src='../../Images/Close_Button.png' height='20' width='20' class='closeAnno' style='margin: 1% -50% -4% 50%; position: inherit;'>");
     //Post announcement
-   // var postButton = $("<input id='postAnno' class='bluebtn' type='submit' value='Post' onclick='postAnno()' style='position:relative; padding: 2%;'>");
+   // var postButton = $("<input id='postAnno' class='bluebtn' type='submit' value='Post' onclick='postAnno()' style='position:relative; padding: 2%;'>");*/
 
 
     /**********************************************
@@ -210,6 +215,7 @@ require '../../Library/AnnouncementDBHelper.php';
 
 
     }
+
     //Post announcement when window loads
     $( window ).load(loadAnnouncement);
 
