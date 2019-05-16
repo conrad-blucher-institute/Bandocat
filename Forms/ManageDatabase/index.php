@@ -173,9 +173,6 @@ else
     $(document).ready(function() {
         // Function gets DDL values to populate our datatable
         getTableList();
-        var test = <?php
-            $myObj = array("test" => 1, "whatup" => false);
-            echo json_encode($myObj); ?>;
 
         // Adding modal attributes
         $('#loaderModalContent').append('<div class="modal-body" id="loaderModalBody"></div>');

@@ -100,7 +100,7 @@ $userID = $session->getUserID();
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="rowModalTitle">Add Announcement</h5>
+                    <h5 class="modal-title" id="rowModalTitle">Add/Update Announcement</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -316,8 +316,8 @@ $userID = $session->getUserID();
 
         // Syntax saved at spots 3 and 6 due to html make up
         announcementID = aData[2];
-        $('#title').val(aData[3]);
-        $('#message').val(aData[6]);
+        $('#title').val(aData[3].trim());
+        $('#message').val(aData[6].trim());
         $('#rowModal').modal('show');
     });
 
@@ -358,7 +358,6 @@ $userID = $session->getUserID();
         titleUpdate = $('#title').val();
         messageUpdate = $('#message').val();
         var dateUpdate = $('#datepicker').val();
-        var userID = <?php echo $userID ?>;
 
         // action 2 = update
         $.ajax({

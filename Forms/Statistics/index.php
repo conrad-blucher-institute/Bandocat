@@ -59,7 +59,6 @@ $collections = $DB->GET_COLLECTION_TABLE();
                         </div>
                 </div>
 
-
                 <div class="row">
                     <div class="col">
                         <nav>
@@ -214,10 +213,7 @@ $collections = $DB->GET_COLLECTION_TABLE();
                     </div>
                 </div>
             </div>
-
-    <div class="full-width-div border">
-        <?php include "../../Master/bandocat_footer.php"; ?>
-    </div>
+    <?php include "../../Master/bandocat_footer.php"; ?>
 </div><!-- Container-fluid -->
 
 <!-- Complete JavaScript Bundle -->
