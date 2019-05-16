@@ -18,7 +18,7 @@ if($action == 1 || $action == 2)
         $announcement = $announceHelper->SP_ANNOUNCEMENT_INSERT($title, $message, $expDate, $user);
     if ($action == 2)
     {
-        $announcementEdit = $announceHelper->SP_ANNOUNCEMENT_UPDATE($title, $message, $expDate, $user, $announcementID);
+        $announcementEdit = $announceHelper->SP_ANNOUNCEMENT_UPDATE($title, $message, $expDate, $announcementID);
         return htmlspecialchars_decode($announcementEdit);
     }
 }
