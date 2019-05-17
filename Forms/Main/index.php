@@ -2,6 +2,7 @@
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
 $userID = $session->getUserID();
+$userRole = $session->getRole();
 ?>
 <!doctype html>
 <html lang="en">
@@ -312,13 +313,19 @@ $userID = $session->getUserID();
     // Update/Edit an already posted announcement
     $('#announcement').on('click', 'div', function() {
         // Splits data by line
-        var aData = $(this).text().split("\n");
+        var aData = $(this).text().split('\n');
 
         // Syntax saved at spots 3 and 6 due to html make up
         announcementID = aData[2];
         $('#title').val(aData[3].trim());
         $('#message').val(aData[6].trim());
-        $('#rowModal').modal('show');
+
+        // Only Admins are allowed to edit announcements
+        var userRole = "<?php echo $userRole ?>";
+        if ((userRole === "Admin"))
+        {
+            $('#rowModal').modal('show');
+        }
     });
 
     $('#submit').click(function(){
