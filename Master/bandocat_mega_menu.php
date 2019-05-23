@@ -376,10 +376,3 @@ $errorTickets .= $tempt;
         </div>
     </div>
 </div>
-
-<script>
-    $( '.menu-item h4' ).on( 'click', function () {
-        $( '.menu-item h4' ).find( 'a.active' ).removeClass( 'active' );
-        $( this ).parent( 'a' ).addClass( 'active' );
-    });
-</script>
