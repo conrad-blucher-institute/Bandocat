@@ -651,6 +651,10 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $('#POI').prop('hidden', true);
         }
     });
+
+    $('#btnReset').click(function() {
+        location.reload();
+    });
 </script>
 
 </body>
