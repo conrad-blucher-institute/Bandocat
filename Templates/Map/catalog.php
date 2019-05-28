@@ -562,7 +562,6 @@ $userRole = $session->getRole();
         var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
         filename = filename.replace(/\.tif/, '');
         $('#txtLibraryIndex').val(filename);
-        //handleError(data);
     });
 
     $('#fileUploadBack').change(function() {
@@ -635,7 +634,7 @@ $userRole = $session->getRole();
     $('#needsReview').ready(function(){
         var userRole = "<?php echo $userRole ?>";
         console.log(userRole);
-        if ((userRole === "Admin") || (userRole === "admin") === false){
+        if ((userRole === "Admin") || (userRole === "Super Admin") === false){
             console.log ('Display. User is admin!');
             $('#needsReview').prop('hidden', false);
         }
