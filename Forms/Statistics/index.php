@@ -197,7 +197,7 @@ $collections = $DB->GET_COLLECTION_TABLE();
 
                 <div class="row">
                     <div class="col">
-                        <!-- Total Mpas Main Content -->
+                        <!-- Total Maps Main Content -->
                         <h3>Collection Distribution</h3>
                         <hr>
                         <!-- The Datatable -->

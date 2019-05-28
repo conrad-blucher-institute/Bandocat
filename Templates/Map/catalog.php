@@ -17,6 +17,7 @@ $DB = new MapDBHelper();
 $config = $DB->SP_GET_COLLECTION_CONFIG($collection);
 $date = new DateHelper();
 $readrec = array("POOR","GOOD","EXCELLENT");
+$userRole = $session->getRole();
 ?>
 <!doctype html>
 <html lang="en">
@@ -534,37 +535,15 @@ $readrec = array("POOR","GOOD","EXCELLENT");
                     processData: false,
                     contentType: false,
                     success:function(data){
-                        /*var json = JSON.parse(data);
-                        var msg = "";
-                        var result = 0;
-                        for(var i = 0; i < json.length; i++)
-                        {
-                            msg += json[i] + "\n";
-                        }
-                        for (var i = 0; i < json.length; i++){
-                            if (json[i].includes("Success")) {
-                                result = 1;
-                            }
-                            else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                            {
-                                $('#btnSubmit').css("display", "inherit");
-                                //$('#loader').css("display", "none");
-                                $('#overlay').removeAttr("style").hide();
-                                $('#loader').removeAttr("style").hide();
-                            }
-                        }
-                        alert(msg);
-                        if (result == 1){
-                            window.location.href = "./catalog.php?col=< ?php //echo $_GET['col']; ?>";
-                        }*/
                         console.log(data);
+                        alert("Catalog Successful!");
                     }
                 });
             }
             else
             {
                 // Will go here if there are errors
-                console.log("Something wrong big dog");
+                console.log("Errors were found big dog");
             }
 
             event.preventDefault();
@@ -649,6 +628,19 @@ $readrec = array("POOR","GOOD","EXCELLENT");
             $('#POIDescription').val("");
             console.log("Map doesn't have scale bar...");
             $('#POI').prop('hidden', true);
+        }
+    });
+
+    // Hides and shows "needs review" option depending on user role
+    $('#needsReview').ready(function(){
+        var userRole = "<?php echo $userRole ?>";
+        console.log(userRole);
+        if ((userRole === "Admin") || (userRole === "admin") === false){
+            console.log ('Display. User is admin!');
+            $('#needsReview').prop('hidden', false);
+        }
+        else{
+            console.log('Hide. User is not admin!');
         }
     });
 
