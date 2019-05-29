@@ -9,7 +9,7 @@
 include '../../Library/SessionManager.php';
 $session = new SessionManager();
 $test = [1, 2, 3];
-if($session->isAdmin()) {
+if($session->isSuperAdmin()) {
     require('../../Library/DBHelper.php');
     $DB = new DBHelper();
 }
