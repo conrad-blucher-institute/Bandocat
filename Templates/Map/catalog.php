@@ -165,8 +165,8 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Map Scale -->
                                     <div class="form-group row" id="mapScale" hidden>
-                                        <label class="col-sm-4 col-form-label" for="txtSubtitle">Map Scale:</label>
-                                        <div class="col-sm-8">
+                                        <label class="col-sm-4 col-form-label" for="mapScale">Map Scale:</label>
+                                        <div class="col-sm-8" id="mainScaleDiv">
                                             <div class="d-flex">
                                                 <input type="number" min="1" class="form-control" id="numberLeft" name="numberLeft">
                                                 <select class="form-control" id="unitLeft" name="unitLeft">
@@ -643,10 +643,11 @@ $userRole = $session->getRole();
         }
     });
 
+    // Reset page
     $('#btnReset').click(function() {
         location.reload();
     });
-</script>
 
+</script>
 </body>
 </html>
