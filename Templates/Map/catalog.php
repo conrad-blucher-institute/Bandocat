@@ -402,7 +402,7 @@ $userRole = $session->getRole();
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="txtComments" class="col-form-label">Comments:</label>
-                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" ></textarea>
+                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Additional information can be placed here" ></textarea>
                                         </div>
                                     </div>
                                 </div>

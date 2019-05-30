@@ -126,6 +126,7 @@ function handleError(data)
     var backBackCheck = backCheck.test(fileUploadBackValue);
     var backCopyCheck = copyCheck.test(fileUploadBackValue);
     var correctFormatCheck = correctBackFormat.test(fileUploadBackValue);
+    var absentBackScan = false;
 
 
     // Function counts the amount of dashes in the given value
@@ -139,6 +140,7 @@ function handleError(data)
     if(fileUploadBackValue == "") // if value is empty
     {
         console.log("No back scan...");
+        absentBackScan = true;
     }
     else if(backDashUnderCheck == false && backBackCheck == false) // if value doesn't have either
     {
@@ -182,12 +184,16 @@ function handleError(data)
     var theFrontScan = fileUploadValue.substr(0,fileUploadValue.length-4);
     var theBackScan = fileUploadBackValue.substr(0,fileUploadBackValue.length-10);
 
-    if(theFrontScan != theBackScan)
+    // Only performs this check if the front and back scan are both present
+    if(absentBackScan == false)
     {
-        var message = '<strong>ERROR:</strong> front and back scan must be the same\n'
-        errorReport("frontScan", message, "danger");
-        errorReport("backScan", message, "danger");
-        flag = true;
+        if(theFrontScan != theBackScan)
+        {
+            var message = '<strong>ERROR:</strong> front and back scan must be the same\n'
+            errorReport("frontScan", message, "danger");
+            errorReport("backScan", message, "danger");
+            flag = true;
+        }
     }
 
     /*************************************** Doc Medium ***************************************/
