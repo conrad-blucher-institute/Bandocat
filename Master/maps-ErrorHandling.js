@@ -40,6 +40,7 @@ function handleError(data)
     // Variables contain words or symbols that have to be checked in user input
     var dashUnderScoreCheck = /-_/g;
     var backCheck = /back|Back/g;
+    var correctBackFormat = /\(back\)/g;
     var copyCheck = /copy|Copy/g;
 
     // Flag to hold error status
@@ -118,11 +119,13 @@ function handleError(data)
     // Re-initializing variables for further testing
     dashUnderScoreCheck = /-_/g;
     backCheck = /back|Back/g;
+    correctBackFormat = /\(back\)/g;
     copyCheck = /copy|Copy/g;
 
     var backDashUnderCheck = dashUnderScoreCheck.test(fileUploadBackValue);
     var backBackCheck = backCheck.test(fileUploadBackValue);
     var backCopyCheck = copyCheck.test(fileUploadBackValue);
+    var correctFormatCheck = correctBackFormat.test(fileUploadBackValue);
 
 
     // Function counts the amount of dashes in the given value
@@ -164,6 +167,25 @@ function handleError(data)
     else if(backBackCheck == false) // if value doesn't contain "back"
     {
         var message = '<strong>ERROR:</strong> File doesn\'t contain back\n'
+        errorReport("backScan", message, "danger");
+        flag = true;
+    }
+    else if(correctFormatCheck == false)
+    {
+        var message = '<strong>ERROR:</strong> Syntax wrong! Try (back)\n'
+        errorReport("backScan", message, "danger");
+        flag = true;
+    }
+
+    /********************************** Front/Back Scan Check **********************************/
+    // This section compares the values from the front and back scan to see if they are the same
+    var theFrontScan = fileUploadValue.substr(0,fileUploadValue.length-4);
+    var theBackScan = fileUploadBackValue.substr(0,fileUploadBackValue.length-10);
+
+    if(theFrontScan != theBackScan)
+    {
+        var message = '<strong>ERROR:</strong> front and back scan must be the same\n'
+        errorReport("frontScan", message, "danger");
         errorReport("backScan", message, "danger");
         flag = true;
     }

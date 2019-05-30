@@ -556,7 +556,7 @@ $userRole = $session->getRole();
                         console.log(data);
                         //alert("Catalog Successful!");
                         $('#responseModalBody').empty();
-                        $('#responseModalBody').append('<p><font style="color: green">Catalog Successful!! Thank You</font></p>');
+                        $('#responseModalBody').append('<p><font style="color: green">Catalog Successful!! ...Loading blank form</font></p>');
                         $('#responseModal').modal('show');
                     },
                     fail: function() {
