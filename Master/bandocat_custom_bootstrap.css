@@ -126,5 +126,11 @@ body {
     75%{border-top: 16px solid #c43d3d;}
     100% {border-top: 16px solid #00BC65;}
 }
+
+/**************** Aligning radio buttons and respective text fields ***************/
+.radioButton{
+    margin-top: 10px;
+}
+
 /*********************************************************************************/
 
