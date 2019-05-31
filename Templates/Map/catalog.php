@@ -402,7 +402,7 @@ $userRole = $session->getRole();
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="txtComments" class="col-form-label">Comments:</label>
-                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Additional information can be placed here" ></textarea>
+                                            <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces County" ></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -534,12 +534,12 @@ $userRole = $session->getRole();
             data.push({name: 'fileUploadBack', value: backValue});
 
             // Display data of form on console for development purposes
-            for(var i = 0; i < data.length; i++)
+            /*for(var i = 0; i < data.length; i++)
             {
                 console.log("****** ", i, " ******");
                 console.log("Name ", data[i].name);
                 console.log("Value ", data[i].value);
-            }
+            }*/
 
             $(".alert").remove(); // Clears old alerts for new ones
 
