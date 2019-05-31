@@ -8,12 +8,30 @@ function handleError(data)
 {
     ///////////////////////////// Initializing variables from serialized array /////////////////////////////
     /*************************************** Library Index ***************************************/
-    var libIndexObj = data.filter(data => (data.name === 'txtLibraryIndex'));
-    var libIndexValue = libIndexObj[0].value;
+    /*var libIndexObj = data.filter(data => (data.name === 'txtLibraryIndex'));
+    var libIndexValue = libIndexObj[0].value;*/
 
     /**************************************** Doc Title ****************************************/
     var docTitleObj = data.filter(data => (data.name === 'txtTitle'));
     var docTitleValue = docTitleObj[0].value;
+
+    /**************************************** Scale Units ****************************************/
+    var unitLeftObj =  data.filter(data => (data.name === 'unitLeft'));
+    var unitRightObj =  data.filter(data => (data.name === 'unitRight'));
+    var unitLeftValue = unitLeftObj[0].value;
+    var unitRightValue = unitRightObj[0].value;
+
+    /**************************************** Doc Medium ****************************************/
+    var docMediumObj = data.filter(data => (data.name === 'ddlMedium'));
+    var docMediumValue = docMediumObj[0].value;
+
+    /**************************************** Readability ***************************************/
+    var readabilityObj = data.filter(data => (data.name === 'ddlReadability'));
+    var readabilityValue = readabilityObj[0].value;
+
+    /*************************************** Rectifiability *************************************/
+    var rectifiabilityObj = data.filter(data => (data.name === 'ddlRectifiability'));
+    var rectifiabilityValue = rectifiabilityObj[0].value;
 
     /**************************************** Front Scan ****************************************/
     var fileUploadObj = data.filter(data => (data.name === 'fileUpload'));
@@ -22,16 +40,6 @@ function handleError(data)
     /**************************************** Back Scan ****************************************/
     var fileUploadBackObj = data.filter(data => (data.name === 'fileUploadBack'));
     var fileUploadBackValue = fileUploadBackObj[0].value;
-
-    /**************************************** Doc Medium ****************************************/
-    var docMediumObj = data.filter(data => (data.name === 'ddlMedium'));
-    var docMediumValue = docMediumObj[0].value;
-
-    /**************************************** Scale Units ****************************************/
-    var unitLeftObj =  data.filter(data => (data.name === 'unitLeft'));
-    var unitRightObj =  data.filter(data => (data.name === 'unitRight'));
-    var unitLeftValue = unitLeftObj[0].value;
-    var unitRightValue = unitRightObj[0].value;
 
     ///////////////////////////// Variable Initialization Ends Here //////////////////////////////////////
 
@@ -63,6 +71,38 @@ function handleError(data)
     {
         var message = '<strong>ERROR:</strong> Required text field\n'
         errorReport("docTitle", message, "danger");
+        flag = true;
+    }
+
+    /************************************ Map Scale Units ************************************/
+    if (unitLeftValue == unitRightValue)
+    {
+        var message = '<strong>ERROR:</strong> Units cannot be the same\n';
+        errorReport("mainScaleDiv", message, "danger");
+        flag = true;
+    }
+
+    /*************************************** Doc Medium ***************************************/
+    if(docMediumValue == "") // if value is empty
+    {
+        var message = '<strong>ERROR:</strong> Selection required\n'
+        errorReport("docMedium", message, "danger");
+        flag = true;
+    }
+
+    /*************************************** Readability ***************************************/
+    if(readabilityValue == "") // if value is empty
+    {
+        var message = '<strong>ERROR:</strong> Selection required\n'
+        errorReport("readability", message, "danger");
+        flag = true;
+    }
+
+    /************************************** Rectifiability **************************************/
+    if(rectifiabilityValue == "") // if value is empty
+    {
+        var message = '<strong>ERROR:</strong> Selection required\n'
+        errorReport("rectifiability", message, "danger");
         flag = true;
     }
 
@@ -189,28 +229,11 @@ function handleError(data)
     {
         if(theFrontScan != theBackScan)
         {
-            var message = '<strong>ERROR:</strong> front and back scan must be the same\n'
+            var message = '<strong>ERROR:</strong> front and back scan must have the same name\n'
             errorReport("frontScan", message, "danger");
             errorReport("backScan", message, "danger");
             flag = true;
         }
-    }
-
-    /*************************************** Doc Medium ***************************************/
-    if(docMediumValue == "") // if value is empty
-    {
-        var message = '<strong>ERROR:</strong> Required text field\n'
-        errorReport("docMedium", message, "danger");
-        flag = true;
-    }
-
-    /************************************ Map Scale Units ************************************/
-
-    if (unitLeftValue == unitRightValue)
-    {
-        var message = '<strong>ERROR:</strong> Units cannot be the same\n';
-        errorReport("mainScaleDiv", message, "danger");
-        flag = true;
     }
 
     ///////////////////////////////// Error Displaying Ends Here ///////////////////////////////////////

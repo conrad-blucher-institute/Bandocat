@@ -359,7 +359,7 @@ $userRole = $session->getRole();
                                     <!-- Readability -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlReadability">Readability</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="readability">
                                             <select id="ddlReadability" name="ddlReadability" class="form-control">
                                                 <?php
                                                 $Render->GET_DDL2($readrec,null);
@@ -370,7 +370,7 @@ $userRole = $session->getRole();
                                     <!-- Rectifiability -->
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-form-label" for="ddlRectifiability">Rectifiability</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" id="rectifiability">
                                             <select id="ddlRectifiability" name="ddlRectifiability" class="form-control">
                                                 <?php
                                                 $Render->GET_DDL2($readrec,null);
@@ -534,12 +534,12 @@ $userRole = $session->getRole();
             data.push({name: 'fileUploadBack', value: backValue});
 
             // Display data of form on console for development purposes
-            /*for(var i = 0; i < data.length; i++)
+            for(var i = 0; i < data.length; i++)
             {
                 console.log("****** ", i, " ******");
                 console.log("Name ", data[i].name);
                 console.log("Value ", data[i].value);
-            }*/
+            }
 
             $(".alert").remove(); // Clears old alerts for new ones
 
