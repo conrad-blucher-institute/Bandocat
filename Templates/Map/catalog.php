@@ -199,9 +199,9 @@ $userRole = $session->getRole();
                                         </div>
                                     </div>
                                     <!-- Needs Review -->
-                                    <div class="form-group row">
+                                    <div class="form-group row" id="needsReview" hidden>
                                         <label class="col-sm-4 col-form-label">Needs Review:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" >
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" value="1" checked/>
                                                 <label class="form-check-label" for="rbNeedsReview_yes">Yes</label>
@@ -660,7 +660,7 @@ $userRole = $session->getRole();
     $('#needsReview').ready(function(){
         var userRole = "<?php echo $userRole ?>";
         console.log(userRole);
-        if ((userRole === "Admin") || (userRole === "Super Admin") === false){
+        if ((userRole === "Admin") || (userRole === "Super Admin")){
             console.log ('Display. User is admin!');
             $('#needsReview').prop('hidden', false);
         }
