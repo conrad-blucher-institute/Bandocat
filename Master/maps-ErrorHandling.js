@@ -11,7 +11,7 @@ function handleError(data)
     /*var libIndexObj = data.filter(data => (data.name === 'txtLibraryIndex'));
     var libIndexValue = libIndexObj[0].value;*/
 
-    /**************************************** Doc Title ****************************************/
+    /***************************************** Doc Title *****************************************/
     var docTitleObj = data.filter(data => (data.name === 'txtTitle'));
     var docTitleValue = docTitleObj[0].value;
 
@@ -69,7 +69,7 @@ function handleError(data)
     /*************************************** Doc Title ***************************************/
     if(docTitleValue == "") // if value is empty
     {
-        var message = '<strong>ERROR:</strong> Required text field\n'
+        var message = '<strong>ERROR:</strong> Document title required\n'
         errorReport("docTitle", message, "danger");
         flag = true;
     }
@@ -85,7 +85,7 @@ function handleError(data)
     /*************************************** Doc Medium ***************************************/
     if(docMediumValue == "") // if value is empty
     {
-        var message = '<strong>ERROR:</strong> Selection required\n'
+        var message = '<strong>ERROR:</strong> Please make a selection\n'
         errorReport("docMedium", message, "danger");
         flag = true;
     }
@@ -93,7 +93,7 @@ function handleError(data)
     /*************************************** Readability ***************************************/
     if(readabilityValue == "") // if value is empty
     {
-        var message = '<strong>ERROR:</strong> Selection required\n'
+        var message = '<strong>ERROR:</strong> Please make a selection\n'
         errorReport("readability", message, "danger");
         flag = true;
     }
@@ -101,7 +101,7 @@ function handleError(data)
     /************************************** Rectifiability **************************************/
     if(rectifiabilityValue == "") // if value is empty
     {
-        var message = '<strong>ERROR:</strong> Selection required\n'
+        var message = '<strong>ERROR:</strong> Please make a selection\n'
         errorReport("rectifiability", message, "danger");
         flag = true;
     }

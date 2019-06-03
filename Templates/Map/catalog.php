@@ -556,12 +556,12 @@ $userRole = $session->getRole();
                         console.log(data);
                         //alert("Catalog Successful!");
                         $('#responseModalBody').empty();
-                        $('#responseModalBody').append('<p><font style="color: green">Catalog Successful!! ...Loading blank form</font></p>');
+                        $('#responseModalBody').append('<p style="text-align: center"><font style="color: green">Catalog Successful!! <br> ...Loading blank form</font></p>');
                         $('#responseModal').modal('show');
                     },
                     fail: function() {
                         $('#responseModalBody').empty();
-                        $('#responseModalBody').append('<p><font style="color: red">ERROR: Catalog Unsuccessful. Please report error!!</font></p>');
+                        $('#responseModalBody').append('<p style="text-align: center"><font style="color: red">ERROR: Catalog Unsuccessful. Please report error!!</font></p>');
                         $('#responseModal').modal('show');
                     }
                 });
