@@ -70,7 +70,7 @@ switch($option)
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 </head>
-<body style="background-color: #f1f1f1;">
+<body style="background-color: #f1f1f1; background-size: 80% 80%; background-repeat: no-repeat; background-position: center; background-blend-mode: hard-light" background="../../Images/World_map_green.png">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container">
     <div class="row">
@@ -78,9 +78,11 @@ switch($option)
             <!-- Put Page Contents Here -->
             <h1 class="text-center"><?php echo $option; ?></h1>
             <hr>
-            <h5 class="text-center">Please Select a Collection</h5>
-            <div class="d-flex justify-content-center">
-                <?php include "$pageContents"; ?>
+            <div style="text-align: center;">
+                <h5 class="text-center">Please Select a Collection</h5>
+                <div class="d-flex justify-content-center">
+                    <?php include "$pageContents"; ?>
+                </div>
             </div>
         </div>
     </div> <!-- row -->
