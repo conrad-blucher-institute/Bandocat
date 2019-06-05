@@ -274,7 +274,7 @@ $errorTickets .= $tempt;
         <!-- Website Errors -->
         <ul class="navbar-nav ml-auto">
             <!-- Translation buttons -->
-            <div class="pt-2 pl-1" id="google_translate_element"></div>
+            <div class="pt-2 pr-2" id="google_translate_element"></div>
             <!-- Bug Reporting (Website errors) -->
             <li class="nav-item" data-toggle="modal" data-target="#bugReportModal">
                 <a class="nav-link">
