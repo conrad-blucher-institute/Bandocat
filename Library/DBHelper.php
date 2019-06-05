@@ -2254,15 +2254,12 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         // Getting the connection to the bandocatdb
         $this->getConn()->exec('USE bandocatdb');
 
-        // Creating array for query
-        $data = array($id);
-
         // Preparing query and binding the parameter
         $sth = $this->getConn()->prepare("SELECT `name`, `dbname` FROM `collection` WHERE `collectionID` = :id");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
 
         // Executing
-        if($sth->execute($data) !== false)
+        if($sth->execute() !== false)
         {
             // Only gets first column though
             // This statement is only getting the name
