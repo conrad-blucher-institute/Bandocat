@@ -275,11 +275,10 @@ else header('Location: ../../');
         });
 
         // When the user clicks on a row on the data table
-        /*$('#dtable tbody').on('click', 'tr', function () {
+        $('#dtable tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
-            alert( 'You clicked on '+data+'\'s row' );
-            console.log(data);
-        } );*/
+            window.open("./ticketview.php?id=" + data.ticketID);
+        });
     }
 
     function createLink(json, templateID, collection)
