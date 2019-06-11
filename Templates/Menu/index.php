@@ -69,8 +69,18 @@ switch($option)
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
+
+    <style>
+        .background {
+            background-image: url("../../Images/Transparent_blue_map.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #f1f1f1;
+        }
+    </style>
+
 </head>
-<body style="background-color: #f1f1f1; background-size: 80% 80%; background-repeat: no-repeat; background-position: center;" background="../../Images/Transparent_blue_map.png">
+<body class="background">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container">
     <div class="row" >
