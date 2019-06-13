@@ -70,9 +70,10 @@ switch($option)
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
 
+    <!-- Style For Background Image -->
     <style>
         .background {
-            background-image: url("../../Images/Transparent_blue_map.png");
+            background-image: url("../../Images/blue-trans-worldmap.png");
             background-repeat: no-repeat;
             background-position: center;
             background-color: #f1f1f1;
