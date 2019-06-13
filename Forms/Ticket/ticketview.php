@@ -105,7 +105,7 @@ $ticket = $DB->SP_ADMIN_TICKET_SELECT($tID); //assoc array contains ticket info
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="Notes"><strong>Notes:</strong></label>
-                                    <textarea rows="8" cols="75" id="Notes" name="txtNotes" class="form-control"></textarea>
+                                    <textarea rows="8" cols="75" id="Notes" name="txtNotes" class="form-control"><?php echo $ticket["Notes"]; ?></textarea>
                                 </div>
                             </div>
                             <input class="btn btn-primary" type="submit" name="btnSubmit" id="btnSubmit"/>

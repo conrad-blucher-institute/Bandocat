@@ -222,7 +222,7 @@ $userRole = $session->getRole();
                                 {
                                     if(down[index+5] == "83")
                                     {
-                                        window.location.replace("../Main/iindex.php");
+                                        window.location.replace("../Main/tetris.php");
                                         // ../../Transcription/Indices/list.php?
                                         down.length = 0;
                                     }

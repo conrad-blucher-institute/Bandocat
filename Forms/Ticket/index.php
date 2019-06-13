@@ -91,27 +91,6 @@ else header('Location: ../../');
 <!-- Our custom javascript file -->
 <script type="text/javascript" src="../../Master/master.js"></script>
 
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
-<script>
-    $(document).ready(function() {
-
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $(window).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-</script>
 <!-- Page's local script -->
 <script>
     $(document).ready(function() {
@@ -296,11 +275,10 @@ else header('Location: ../../');
         });
 
         // When the user clicks on a row on the data table
-        /*$('#dtable tbody').on('click', 'tr', function () {
+        $('#dtable tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
-            alert( 'You clicked on '+data+'\'s row' );
-            console.log(data);
-        } );*/
+            window.open("./ticketview.php?id=" + data.ticketID);
+        });
     }
 
     function createLink(json, templateID, collection)
