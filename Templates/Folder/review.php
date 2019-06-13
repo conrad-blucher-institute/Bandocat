@@ -21,6 +21,7 @@ $document = $DB->SP_TEMPLATE_FOLDER_DOCUMENT_SELECT($collection, $docID);
 $date = new DateHelper();
 //get the authors by document id
 $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
+$classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
 ?>
 <!doctype html>
 <html lang="en">
@@ -100,7 +101,7 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                                 <!-- Loose Document -->
                                 <div class="col">
                                     <label class="col col-form-label">In a Subfolder:</label>
-                                    <div class="form-check col-sm-10">
+                                    <div class="form-check col-sm-10" id="subFolder">
                                         <div class="form-check form-check">
                                             <input type = "radio" class="form-control-input" name = "rbInASubfolder" id = "rbInASubfolder_yes" size="26" value="1" <?php if($document['InSubfolder'] == 1) echo "checked"; ?> />
                                             <label class="form-check-label" for="rbInASubfolder_yes">Yes</label>
@@ -263,6 +264,15 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 </div> <!-- Card -->
             </div>
         </div> <!-- Col -->
+        <!-- Start of description of Classification method chosen-->
+        <div class="col-1" id="classificationCard" style="display: none">
+            <div class="card" id="card" style="width: 18rem; margin-left: 65px; margin-top: 250px;">
+                <div class="card-body">
+                    <h5 class="card-title" id="className" style="text-align: center; font-size:18px; text-decoration: underline;"></h5>
+                    <p class="card-text" id="classDesc" style="text-align: center; font-size: 13px"></p>
+                </div>
+            </div>
+        </div>
     </div> <!-- row -->
 </div><!-- Container -->
 <!-- Doesn't matter where these go, this is for overlay effect and loader -->
@@ -321,6 +331,22 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
 
     $( document ).ready(function()
     {
+
+        var classList =  <?php echo json_encode($classification); ?>;
+        $('#classificationCard').show();
+        var classText = $('#ddlClassification option:selected').text();
+        if(classText == "Select")
+        {
+            $('#classificationCard').hide();
+        }
+
+        $("#className").text(classText);
+        for(var x = 0; x < classList.length; x++) {
+            if(classList[x][0] == classText) {
+                $('#classDesc').text(classList[x][1])
+            }
+        }
+
         var authors = <?php echo json_encode($authors); ?>;
         for(var i = 1; i < authors.length; i++)
         {
@@ -375,6 +401,42 @@ $authors = $DB->GET_FOLDER_AUTHORS_BY_DOCUMENT_ID($collection,$docID);
                 }
             });
         });
+
+        var libIndex = $('#txtLibraryIndex').val();
+        var decimal = /\./g;
+
+        var decimalCheck = decimal.test(libIndex);
+
+        /*console.log("Title", docTitle);
+        console.log("check", decimalCheck);*/
+
+        if(decimalCheck == true)
+        {
+            $('#subFolder').append('<font style="color: red">File must be subfolder </font>');
+            $('#rbInASubfolder_yes').prop("checked", true);
+
+            $('#rbInASubfolder_yes, #rbInASubfolder_no').change(function() {
+                alert("ERROR: Must be checked yes when decimal is present!");
+                $('#rbInASubfolder_yes').prop("checked", true);
+            });
+        }
+    });
+
+    $('#ddlClassification').change(function () {
+        var classList =  <?php echo json_encode($classification); ?>;
+        $('#classificationCard').show();
+        var classText = $('#ddlClassification option:selected').text();
+        if(classText == "Select")
+        {
+            $('#classificationCard').hide();
+        }
+
+        $("#className").text(classText);
+        for(var x = 0; x < classList.length; x++) {
+            if(classList[x][0] == classText) {
+                $('#classDesc').text(classList[x][1])
+            }
+        }
     });
 </script>
 </body>

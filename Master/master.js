@@ -20,6 +20,7 @@ $(document).ready(function() {
     $(function () {
         $("#documentHistory").draggable({helper: 'clone'});
     });
+    //$('[data-toggle="tooltip"]').tooltip();
 });
 
 //*********************************************************************/
@@ -89,3 +90,5 @@ $('#bugReport').submit(function(event) {
     // Preventing default actions of a form
     event.preventDefault();
 });
+
+

@@ -17,7 +17,7 @@
     </ul>
 </div>-->
 
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 20rem; border-color: #0c0c0c; border-width: 3px">
     <div class="list-group list-group-flush">
         <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#blucher">Blucher</a>
         <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#green">Green</a>
@@ -93,7 +93,7 @@
                 <h5 class="text-center">Please select an option</h5>
                 <div class="list-group">
                     <a class="list-group-item list-group-item-action" href="../../Templates/Map/list.php?col=pennyfenner">Maps</a>
-                    <a class="list-group-item list-group-item-action disabled" href="#">Field Book</a>
+                    <a class="list-group-item list-group-item-action" href="../../Templates/FieldBook/list.php?col=pennyfennerfieldbook&action=catalog">Field Book</a>
                     <a class="list-group-item list-group-item-action disabled" href="#">Field Book Indices</a>
                     <a class="list-group-item list-group-item-action disabled" href="#">Map Indices</a>
                     <a class="list-group-item list-group-item-action disabled" href="#">Job Folder</a>

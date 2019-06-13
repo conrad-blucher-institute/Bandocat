@@ -69,18 +69,31 @@ switch($option)
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
+
+    <!-- Style For Background Image -->
+    <style>
+        .background {
+            background-image: url("../../Images/blue-trans-worldmap.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #f1f1f1;
+        }
+    </style>
+
 </head>
-<body>
+<body class="background">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container">
-    <div class="row">
+    <div class="row" >
         <div class="col">
             <!-- Put Page Contents Here -->
             <h1 class="text-center"><?php echo $option; ?></h1>
-            <hr>
-            <h5 class="text-center">Please Select a Collection</h5>
-            <div class="d-flex justify-content-center">
-                <?php include "$pageContents"; ?>
+            <hr style="color: #0c0c0c">
+            <div style="text-align: center;">
+                <h4 class="text-center">Please Select a Collection</h4>
+                <div class="d-flex justify-content-center">
+                    <?php include "$pageContents"; ?>
+                </div>
             </div>
         </div>
     </div> <!-- row -->
