@@ -266,6 +266,30 @@ $userRole = $session->getRole();
                     }
                     break;
                 }
+                //if flappy bird
+                if (value == "70")
+                {
+                    if(down[index+1] == "76")
+                    {
+                        if(down[index+2] == "65")
+                        {
+                            if(down[index+3] == "80")
+                            {
+                                if(down[index+4] == "80")
+                                {
+                                    if(down[index+5] == "89")
+                                    {
+                                        window.location.replace("../Main/flappy_bird.php");
+                                        // ../../Transcription/Indices/list.php?
+                                        down.length = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+                }
             }
             // down.length = 0;
         });
