@@ -120,14 +120,14 @@ $errorTickets .= $tempt;
                     <div class="container-fluid">
                         <div class="row">
                             <!-- Training -->
-                            <!--<div class="col">
+                            <div class="col">
                                 <h5>Training</h5>
                                 <div class="d-flex flex-column">
-                                    <a href="../../Training/jobfolder/Forms/list.php?col=jobfolder&action=training&type=none" class="dropdown-item text-dark p-1">Job Folder Training</a>
+                                    <a href="../../Training/Forms/jobfolder.php?doc=30233&col=jobfolder" class="dropdown-item text-dark p-1">Job Folder Training</a>
                                     <a href="../../Training/maps/Forms/list.php?col=maps&action=training&type=none" class="dropdown-item text-dark p-1">Maps Training</a>
                                     <a href="../../Training/fieldbook/Forms/list.php?col=fieldbook&action=training&type=none" class="dropdown-item text-dark p-1">Field Book Training</a>
                                 </div>
-                            </div>-->
+                            </div>
                             <!-- Indices Transition -->
                             <div class="col">
                                 <h5>Indices Transition</h5>
