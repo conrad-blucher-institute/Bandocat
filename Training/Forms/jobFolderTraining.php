@@ -7,7 +7,8 @@ $userRole = $session->getRole();
 if(isset($_GET['col']) && isset($_GET['doc']))
 {
     $collection = $_GET['col'];
-    $docID = $_GET['doc'];
+    //$docID = $_GET['doc'];
+    $docID = mt_rand(1, 1000);
 }
 else header('Location: ../../');
 
@@ -69,6 +70,8 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                     <!-- Put Page Contents Here -->
                     <h1 class="text-center"><?php echo $config["DisplayName"]; ?> Catalog Form Training</h1>
                     <hr>
+
+                    <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
                     <div class="d-flex justify-content-center">
                         <!-- Card -->
                         <div class="card" style="width: 75em;">
@@ -277,6 +280,24 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     </div> <!-- row -->
 </div><!-- Container -->
 
+<!-- Response Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="helpModalTitle">Help</h5>
+                <input type="text" hidden value="" id="status">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="helpModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include "../../Master/bandocat_footer.php" ?>
 
 <!-- Complete JavaScript Bundle -->
@@ -336,42 +357,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             console.log(formData);
 
             event.preventDefault();
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data){
-                    console.log("We here big dog\n");
-                    console.log(data);
-                    /*var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
-                    {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                        {
-                            $('#btnSubmit').css("display", "inherit");
-                            //$('#loader').css("display", "none");
-                            $('#overlay').removeAttr("style").hide();
-                            $('#loader').removeAttr("style").hide();
-                        }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        window.location.href = "./catalog.php?col=</?php echo $_GET['col']; ?>";
-                    }*/
 
-                }
-            });
         });
 
         var libIndex = $('#txtLibraryIndex').val();
@@ -391,6 +377,21 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                 alert("ERROR: Must be checked yes when decimal is present!");
                 $('#inSubfolder_yes').prop("checked", true);
             });
+        }
+
+        var classList =  <?php echo json_encode($classification); ?>;
+        $('#classificationCard').show();
+        var classText = $('#classificationMethod option:selected').text();
+        if(classText == "Select")
+        {
+            $('#classificationCard').hide();
+        }
+
+        $("#className").text(classText);
+        for(var x = 0; x < classList.length; x++) {
+            if(classList[x][0] == classText) {
+                $('#classDesc').text(classList[x][1])
+            }
         }
     });
 
@@ -475,6 +476,11 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             }
         }
 
+    });
+
+    // Reset page
+    $('#help').click(function() {
+        $('#helpModal').modal('show');
     });
 
 </script>
