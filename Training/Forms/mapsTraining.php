@@ -66,14 +66,14 @@ $userRole = $session->getRole();
                                 <div class="col-6">
                                     <!-- Library Index -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtLibraryIndex">Library Index:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtLibraryIndex" title="Auto-fills once a front scan is entered"><font style="color: red">* </font>Library Index:</label>
                                         <div class="col-sm-8" id="libraryIndex">
                                             <input title="REQUIRED: Please enter a front scan to fill this text box." type = "text" class="form-control" name = "txtLibraryIndex" id = "txtLibraryIndex" value="" required readonly />
                                         </div>
                                     </div>
                                     <!-- Document Title -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtTitle">Document Title:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtTitle" title="Title of the document(can also be a description)"><font style="color: red">* </font>Document Title:</label>
                                         <div class="col-sm-8" id="docTitle">
                                             <input type = "text" class="form-control" name = "txtTitle" id = "txtTitle" value="" required />
                                         </div>
@@ -353,7 +353,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Document Medium -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlMedium">Document Medium</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlMedium"><font style="color: red">* </font>Document Medium</label>
                                         <div class="col-sm-8" id="docMedium">
                                             <select id="ddlMedium" name="ddlMedium" class="form-control" required>
                                                 <!-- GET MAP MEDIUM FOR DDL-->
@@ -365,7 +365,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Readability -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlReadability">Readability</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlReadability"><font style="color: red">* </font>Readability</label>
                                         <div class="col-sm-8" id="readability">
                                             <select id="ddlReadability" name="ddlReadability" class="form-control">
                                                 <?php
@@ -376,7 +376,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Rectifiability -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlRectifiability">Rectifiability</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlRectifiability"><font style="color: red">* </font>Rectifiability</label>
                                         <div class="col-sm-8" id="rectifiability">
                                             <select id="ddlRectifiability" name="ddlRectifiability" class="form-control">
                                                 <?php
@@ -387,7 +387,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Scan front -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="fileUpload">Front Scan:</label>
+                                        <label class="col-sm-4 col-form-label" for="fileUpload"><font style="color: red">* </font>Front Scan:</label>
                                         <div class="col-sm-8" id="frontScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
@@ -419,7 +419,11 @@ $userRole = $session->getRole();
                             <div class="form row">
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
-                                        <input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/>
+                                        <div class="row">
+                                            <input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/>
+                                            <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
+                                        </div>
+
                                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
                                         <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                         <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
@@ -458,6 +462,28 @@ $userRole = $session->getRole();
         </div>
     </div>
 </div>
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="helpModalTitle">Helpful Tips</h5>
+                <input type="text" hidden value="" id="status">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="helpModalBody">
+                <P>- Library Index will auto-populate when a front scan is entered</P>
+                <p>- Fill in the missing information</p>
+                <p>- Hover over text for a helpful description</p>
+                <p>- Required fields have a red asterisk <font style="color: red">*</font></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include "../../Master/bandocat_footer.php" ?>
 
 
@@ -684,6 +710,11 @@ $userRole = $session->getRole();
     // Reloads page when response modal is exited out of or hidden
     $('#responseModal').on('hidden.bs.modal', function () {
         location.reload();
+    });
+
+    // displays the help modal
+    $('#help').click(function() {
+        $('#helpModal').modal('show');
     });
 
 </script>

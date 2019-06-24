@@ -125,7 +125,7 @@ $errorTickets .= $tempt;
                                 <div class="d-flex flex-column">
                                     <a href="../../Training/Forms/jobFolderTraining.php?doc=&col=jobfolder" class="dropdown-item text-dark p-1">Job Folder Training</a>
                                     <a href="../../Training/Forms/mapsTraining.php?col=bluchermaps" class="dropdown-item text-dark p-1">Maps Training</a>
-                                    <a href="../../Training/Forms/fieldBookTraining.php?doc=21406&col=blucherfieldbook" class="dropdown-item text-dark p-1">Field Book Training</a>
+                                    <a href="../../Training/Forms/fieldBookTraining.php?doc=&col=blucherfieldbook" class="dropdown-item text-dark p-1">Field Book Training</a>
                                 </div>
                             </div>
                             <!-- Indices Transition -->

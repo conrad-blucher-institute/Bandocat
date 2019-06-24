@@ -11,7 +11,8 @@ $session = new SessionManager();
 if(isset($_GET['col']) && isset($_GET['doc']))
 {
     $collection = $_GET['col'];
-    $docID = $_GET['doc'];
+    //$docID = $_GET['doc'];
+    $docID = mt_rand(1, 500);
 }
 else header('Location: ../../');
 

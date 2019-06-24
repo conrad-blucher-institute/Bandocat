@@ -71,7 +71,6 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                     <h1 class="text-center"><?php echo $config["DisplayName"]; ?> Catalog Form Training</h1>
                     <hr>
 
-                    <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
                     <div class="d-flex justify-content-center">
                         <!-- Card -->
                         <div class="card" style="width: 75em;">
@@ -90,14 +89,14 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             </div>
                                             <!-- Document Title -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label" for="txtTitle"><font style="color: red">* </font>Document Title:</label>
+                                                <label class="col-sm-4 col-form-label" for="txtTitle" data-toggle="tooltip" title="Keep in mind that the Document Title can be the same as the Library Index but doesn't always have to be (Can also be some form of description)"><font style="color: red">* </font>Document Title:</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" name="txtTitle" id="txtTitle" value='<?php echo htmlspecialchars($document['Title'],ENT_QUOTES);?>' required />
+                                                    <input type="text" class="form-control" name="txtTitle" id="txtTitle" required />
                                                 </div>
                                             </div>
                                             <!-- Document Author -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
+                                                <label class="col-sm-4 col-form-label" for="txtAuthor" data-toggle="tooltip" title="Provide if information is given (MAX of 6)">Document Author:</label>
                                                 <div class="col-sm-7">
                                                     <input class="form-control" type="text" id="txtAuthor" name="txtAuthor[]" size="26" list="lstAuthor" value="<?php if(count($authors) > 0){echo htmlspecialchars($authors[0][0],ENT_QUOTES);} ?>"/>
                                                 </div>
@@ -152,7 +151,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             <!-- Radio Buttons Start -->
                                             <!-- Needs Review -->
                                             <div class="form-group row" id="needsReview">
-                                                <label class="col-sm-4 col-form-label">Needs Review:</label>
+                                                <label class="col-sm-4 col-form-label" data-toggle="tooltip" title="If document needs to be reviewed by an admin">Needs Review:</label>
                                                 <div class="col-sm-8">
                                                     <div class="form-check form-check-inline">
                                                         <input type="radio" class="form-check-input" name="folderNeedsReview" id="folderNeedsReview_yes" value="1" checked />
@@ -166,7 +165,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             </div>
                                             <!-- In a Subfolder -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">In a Subfolder:</label>
+                                                <label class="col-sm-4 col-form-label" data-toggle="tooltip" title="This will auto check if document has a period in its name. Otherwise keep it checked as no">In a Subfolder:</label>
                                                 <div class="col-sm-8" id="subFolder">
                                                     <div class="form-check form-check-inline">
                                                         <input type="radio" class="form-check-input" name="rbInASubfolder" id="inSubfolder_yes" value="1" />
@@ -181,7 +180,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             <!-- Radio Buttons End -->
                                             <!-- Classification -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label" for="classificationMethod"><font style="color: red">* </font>Classification:</label>
+                                                <label class="col-sm-4 col-form-label" for="classificationMethod" data-toggle="tooltip" title="Describes the document type"><font style="color: red">* </font>Classification:</label>
                                                 <div class="col-sm-8">
                                                     <select id="classificationMethod" name="classificationMethod" class="form-control" required>
                                                         <!-- GET FOLDER CLASSIFICATION LIST -->
@@ -193,14 +192,14 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                             </div>
                                             <!-- Classification Comments -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label" for="txtClassificationComments">Classification Comments:</label>
+                                                <label class="col-sm-4 col-form-label" for="txtClassificationComments" data-toggle="tooltip" title="Further comments can be provided if necessary">Classification Comments:</label>
                                                 <div class="col-sm-8" >
                                                     <textarea class="form-control" name="txtClassificationComments" id="txtClassificationComments"><?php echo $document["ClassificationComment"];?></textarea>
                                                 </div>
                                             </div>
                                             <!-- Subfolder Comments -->
                                             <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label" for="txtSubfolderComments">Subfolder Comments:</label>
+                                                <label class="col-sm-4 col-form-label" for="txtSubfolderComments" data-toggle="tooltip" title="Further comments can be provided if necessary">Subfolder Comments:</label>
                                                 <div class="col-sm-8" >
                                                     <textarea class="form-control" name="txtSubfolderComments" id="txtSubfolderComments"><?php echo $document["SubfolderComment"]; ?></textarea>
                                                 </div>
@@ -214,7 +213,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                                     <tr>
                                                         <td style="text-align: center;">
                                                             <!-- Scan of Front -->
-                                                            <span class="label" style="text-align: center;"> Scan of Front:</span><br>
+                                                            <span class="label" style="text-align: center;" data-toggle="tooltip" title="Displays front scan"> Scan of Front:</span><br>
                                                             <?php
                                                             echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . str_replace(".tif",".jpg",$document['FileName']) . " ' alt = Error /></a>";
                                                             echo "<br>Size: " . round(filesize($config['StorageDir'] . $document['FileNamePath'])/1024/1024, 2) . " MB";
@@ -229,7 +228,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                                 <table>
                                                     <tr>
                                                         <td style="text-align: center;">
-                                                            <span class="label" style="text-align: center;"> Scan of Back:</span><br>
+                                                            <span class="label" style="text-align: center;" data-toggle="tooltip" title="Displays back scan if any is provided"> Scan of Back:</span><br>
                                                             <?php
                                                             if($document['FileNameBack'] != '') //has Back Scan
                                                             {
@@ -259,7 +258,10 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                     <div class="form row">
                                         <div class="col">
                                             <div class="d-flex justify-content-between">
-                                                <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" class="btn btn-secondary"/>
+                                                <div class="row">
+                                                    <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" data-toggle="tooltip" title="Will display a new document for training" class="btn btn-secondary"/>
+                                                    <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
+                                                </div>
                                                 <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID; ?>" />
                                                 <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
                                                 <input type = "hidden" id="txtCollection" name="txtCollection" value="<?php echo $collection; ?>" />
@@ -280,19 +282,22 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     </div> <!-- row -->
 </div><!-- Container -->
 
-<!-- Response Modal -->
+<!-- Help Modal -->
 <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="helpModalTitle">Help</h5>
+                <h5 class="modal-title" id="helpModalTitle">Helpful Tips</h5>
                 <input type="text" hidden value="" id="status">
                 <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body" id="helpModalBody">
-
+                <p>- Library Index is auto-populated</p>
+                <p>- Fill in the missing information</p>
+                <p>- Hover over text for a helpful description</p>
+                <p>- Required fields have a red asterisk <font style="color: red">*</font></p>
             </div>
         </div>
     </div>
@@ -432,30 +437,6 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     }
 
     // *****************************************************************************************************************
-    /************************* ONLOAD EVENTS (ADMIN CHECK AND CLASSIFICATION CARD VISIBILITY) ************************/
-    // HIDES "NEEDS REVIEW" DIV IF CURRENT USER IS NOT AN ADMIN AND HIDES CLASSIFICATION CARD UNTIL AN OPTION IS SELECTED
-    function onloadChecks(){
-        // Checks if user is admin
-        var userRole = "<?php echo $userRole ?>";
-        if ((userRole === "Admin") || (userRole === "admin")){
-            //document.getElementById('needsReview').style.display = 'yes';
-            console.log('Display. User is admin');
-        }
-        else{
-            document.getElementById('needsReview').style.display = 'none';
-            console.log("Hide. User is not admin");
-        }
-
-        if ((description === values) === true){
-            document.getElementById('classificationCard').style.visibility = "visible";
-        }
-        else{
-            console.log('no classification chosen, hide card');
-            document.getElementById('classificationCard').style.visibility = "hidden";
-        }
-    }
-
-    // *****************************************************************************************************************
     /***************************************** CLASSIFICATION DESCRIPTION *********************************************/
 
     // Card with description of chosen classification
@@ -478,7 +459,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
 
     });
 
-    // Reset page
+    // displays the help modal
     $('#help').click(function() {
         $('#helpModal').modal('show');
     });
