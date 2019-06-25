@@ -13,24 +13,40 @@ $session = new SessionManager();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Font Awesome CDN CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-    <title>Blank Page</title>
+    <title>Flappy Bird</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
+
+    <!-- Style For Background Image -->
+    <style>
+        .canvas {
+            border: 1px solid black;
+            display: block;
+            padding: 0;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
 </head>
-<body>
+<body class="background">
 <?php include "../../Master/bandocat_mega_menu.php"; ?>
 <div class="container">
-    <div class="row">
+    <div class="row" >
         <div class="col">
             <!-- Put Page Contents Here -->
-            <h1 class="text-center">Blank Page</h1>
+            <h1 class="text-center">Flappy Bird</h1>
             <hr>
-        </div> <!-- col -->
+            <div style="text-align: center;">
+                <canvas class="canvas"></canvas>
+            </div>
+
+            <div style="text-align: center">
+                <a href="../../Forms/Main/index.php">Home</a>
+            </div>
+        </div>
     </div> <!-- row -->
 </div><!-- Container -->
 <?php include "../../Master/bandocat_footer.php" ?>
@@ -38,17 +54,10 @@ $session = new SessionManager();
 
 <!-- Complete JavaScript Bundle -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<!-- JQuery UI cdn -->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-
-<!-- Our custom javascript file -->
-<script type="text/javascript" src="../../Master/master.js"></script>
-
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
+<!-- This Script Needs to Be added to Every Page -->
 <script>
     $(document).ready(function() {
 

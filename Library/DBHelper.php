@@ -2255,7 +2255,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         $this->getConn()->exec('USE bandocatdb');
 
         // Preparing query and binding the parameter
-        $sth = $this->getConn()->prepare("SELECT `name`, `dbname` FROM `collection` WHERE `collectionID` = :id");
+        $sth = $this->getConn()->prepare("SELECT `name`, `dbname` FROM `collection` WHERE `collectionID` = ?");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
 
         // Executing
@@ -2331,6 +2331,8 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         {
             echo "Error: " . $sql . "<br>" . $mysqli->error;
         }
+
+        //echo "THIS IS IT BRUH " . $tblname . "SQL: ". $sql;
 
         $mysqli->close();
         return $data;
@@ -2413,87 +2415,6 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         }
 
         $mysqli->close();
-        return $data;
-    }
-
-    /**********************************************
-    Function: MODAL_LINK_PATH
-    Description: Retrieves the collection name for a link path
-    Parameter(s): N/A
-    Return value(s): $data
-    ***********************************************/
-    function MODAL_LINK_PATH($dbname)
-    {
-        $data = array();
-
-        // Getting connection
-        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
-
-        // Checking to see if the connection failed
-        if($mysqli->connect_errno)
-        {
-            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-            return false;
-        }
-        $sql = "SELECT `name` FROM `collection` WHERE `dbname` = '".$dbname. "'";
-        $response = $mysqli->query($sql);
-
-        if ($response)
-        {
-            /*while($row = mysqli_fetch_assoc($response))
-            {
-                $data[] = $row;
-            }*/
-            $data = mysqli_fetch_row($response);
-        }
-        else
-        {
-            echo "Error: " . $sql . "<br>" . $mysqli->error;
-        }
-
-        $mysqli->close();
-
-        return $data;
-    }
-
-    /**********************************************
-    Function: MODAL_DELETE_ROW
-    Description: Dynamically deletes data from any
-                 table in any bandocat database.
-    Parameter(s): $tblname, $columnID, $idNumber, $dbname
-    Return value(s): $data
-     ***********************************************/
-    function MODAL_DELETE_ROW($tblname, $columnID, $idNumber, $dbname)
-    {
-        $data = array();
-
-        // Getting connection
-        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), $dbname);
-
-        // Checking to see if the connection failed
-        if($mysqli->connect_errno)
-        {
-            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-            return false;
-        }
-        $sql = "DELETE FROM ". $tblname ." WHERE ". $columnID. "ID = ". $idNumber;
-        $response = $mysqli->query($sql);
-
-        if ($response)
-        {
-            while($row = mysqli_fetch_assoc($response))
-            {
-                $data[] = $row;
-            }
-            //$data = mysqli_fetch_row($response);
-        }
-        else
-        {
-            echo "Error: " . $sql . "<br>" . $mysqli->error;
-        }
-
-        $mysqli->close();
-
         return $data;
     }
 }

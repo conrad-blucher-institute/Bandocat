@@ -5,8 +5,20 @@
  * Date: 3/28/2019
  * Time: 4:35 PM
  */
+include '../../Library/SessionManager.php';
+$session = new SessionManager();
+$userID = $session->getUserID();
+$userName = $session->getUserName();
 require('../../Library/DBHelper.php');
 $DB = new DBHelper();
+
+// SQL server connection information
+$sql_details = array(
+    'user' => $DB->getUser(),
+    'pass' => $DB->getPwd(),
+    'db'   => 'bandocatdb',
+    'host' => $DB->getHost()
+);
 
 if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
 {
@@ -27,6 +39,15 @@ if(isset($_POST["dbname"]) && isset($_POST["tblname"]))
 
         array_push($columns, $object);
     }
+
+
+    // Manually pushing Delete to the last column
+    /*$object = array(
+        "data" => 'Delete',
+        "title" => "Delete"
+    );
+    array_push($columns, $object);*/
+
 
     echo json_encode(array(
         "data" => $data,

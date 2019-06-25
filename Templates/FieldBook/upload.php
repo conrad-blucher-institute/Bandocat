@@ -96,7 +96,7 @@ else header('Location: ../../');
             </div> <!-- d-flex center -->
 
             <!-- Importing loading modal -->
-            <?php include "../../Master/load.php"; ?>
+            <?php include "../../Templates/Load/load.php"; ?>
 
         </div> <!-- col -->
     </div> <!-- row -->

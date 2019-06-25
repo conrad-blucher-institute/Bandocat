@@ -45,7 +45,7 @@ $bugs .= $tempb;
 $errorTickets .= $tempt;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="megaMenu">
-    <a class="navbar-brand" href="../../Forms/Landing/"><img id="header_logo" src="../../Images/Logos/bando-logo-small.png"></a>
+    <a class="navbar-brand" href="../../Forms/Landing/"><img id="header_logo" src="../../Images/Logos/bando-logo-small-white.png"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -120,14 +120,14 @@ $errorTickets .= $tempt;
                     <div class="container-fluid">
                         <div class="row">
                             <!-- Training -->
-                            <!--<div class="col">
+                            <div class="col">
                                 <h5>Training</h5>
                                 <div class="d-flex flex-column">
-                                    <a href="../../Training/jobfolder/Forms/list.php?col=jobfolder&action=training&type=none" class="dropdown-item text-dark p-1">Job Folder Training</a>
-                                    <a href="../../Training/maps/Forms/list.php?col=maps&action=training&type=none" class="dropdown-item text-dark p-1">Maps Training</a>
-                                    <a href="../../Training/fieldbook/Forms/list.php?col=fieldbook&action=training&type=none" class="dropdown-item text-dark p-1">Field Book Training</a>
+                                    <a href="../../Training/Forms/jobFolderTraining.php?doc=&col=jobfolder" class="dropdown-item text-dark p-1">Job Folder Training</a>
+                                    <a href="../../Training/Forms/mapsTraining.php?col=bluchermaps" class="dropdown-item text-dark p-1">Maps Training</a>
+                                    <a href="../../Training/Forms/fieldBookTraining.php?doc=&col=blucherfieldbook" class="dropdown-item text-dark p-1">Field Book Training</a>
                                 </div>
-                            </div>-->
+                            </div>
                             <!-- Indices Transition -->
                             <div class="col">
                                 <h5>Indices Transition</h5>
@@ -274,7 +274,7 @@ $errorTickets .= $tempt;
         <!-- Website Errors -->
         <ul class="navbar-nav ml-auto">
             <!-- Translation buttons -->
-            <div class="pt-2 pl-1" id="google_translate_element"></div>
+            <div class="pt-2 pr-2" id="google_translate_element"></div>
             <!-- Bug Reporting (Website errors) -->
             <li class="nav-item" data-toggle="modal" data-target="#bugReportModal">
                 <a class="nav-link">
