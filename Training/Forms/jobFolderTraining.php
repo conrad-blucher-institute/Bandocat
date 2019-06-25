@@ -39,7 +39,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Job Folder Catalog Form</title>
+    <title>Job Folder Catalog Form Training</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
@@ -114,16 +114,16 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                                     <div class="d-flex">
                                                         <select class="form-control" name="ddlStartMonth" id="ddlStartMonth">
                                                             <!-- POPULATES THE DDL WITH START MONTHS -->
-                                                            <?php $Render->GET_DDL_MONTH(null); ?>
+                                                            <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
                                                         </select>
                                                         <select class="form-control" name="ddlStartDay" id="ddlStartDay">
                                                             <!-- POPULATES THE DDL WITH START DAYS -->
-                                                            <?php $Render->GET_DDL_DAY(null); ?>
+                                                            <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
                                                         </select>
 
                                                         <select class="form-control" id="ddlStartYear" name="ddlStartYear">
                                                             <!-- POPULATES THE DDL WITH START YEARS -->
-                                                            <?php $Render->GET_DDL_YEAR(null); ?>
+                                                            <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -135,15 +135,15 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                                     <div class="d-flex">
                                                         <select class="form-control" name="ddlEndMonth" id="ddlEndMonth">
                                                             <!-- POPULATES THE DDL WITH END MONTHS -->
-                                                            <?php $Render->GET_DDL_MONTH(null); ?>
+                                                            <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
                                                         </select>
                                                         <select class="form-control" name="ddlEndDay" id="ddlEndDay">
                                                             <!-- POPULATES THE DDL WITH END DAYS -->
-                                                            <?php $Render->GET_DDL_DAY(null); ?>
+                                                            <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
                                                         </select>
                                                         <select class="form-control" name="ddlEndYear" id="ddlEndYear">
                                                             <!-- POPULATES THE DDL WITH END YEARS -->
-                                                            <?php $Render->GET_DDL_YEAR(null); ?>
+                                                            <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -258,9 +258,11 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                     <div class="form row">
                                         <div class="col">
                                             <div class="d-flex justify-content-between">
-                                                <div class="row">
+                                                <div class="row pl-3">
                                                     <input type="reset" id="btnReset" name="btnReset" value="Reset" onclick="resetPage()" data-toggle="tooltip" title="Will display a new document for training" class="btn btn-secondary"/>
-                                                    <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
+                                                    <div class="pl-2">
+                                                        <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
+                                                    </div>
                                                 </div>
                                                 <input type = "hidden" id="txtDocID" name = "txtDocID" value = "<?php echo $docID; ?>" />
                                                 <input type = "hidden" id="txtAction" name="txtAction" value="catalog" />  <!-- catalog or review -->
@@ -282,6 +284,24 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     </div> <!-- row -->
 </div><!-- Container -->
 
+<!-- Response Modal -->
+<div class="modal fade" id="responseModal" tabindex="-1" role="dialog" aria-labelledby="responseModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="responseModalTitle">Instant Feedback Report</h5>
+                <input type="text" hidden value="" id="status">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="responseModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Help Modal -->
 <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -296,7 +316,7 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             <div class="modal-body" id="helpModalBody">
                 <p>- Library Index is auto-populated</p>
                 <p>- Fill in the missing information</p>
-                <p>- Hover over text for a helpful description</p>
+                <p>- Hover over text of difficult fields for a helpful description</p>
                 <p>- Required fields have a red asterisk <font style="color: red">*</font></p>
             </div>
         </div>
@@ -360,8 +380,11 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             }*/
 
             console.log(formData);
-
             event.preventDefault();
+
+            $('#responseModalBody').empty();
+            $('#responseModalBody').append('<p style="text-align: center"><font style="color: green">Job Folder Catalog Training Successful!! <br> ...Loading new form</font></p>');
+            $('#responseModal').modal('show');
 
         });
 

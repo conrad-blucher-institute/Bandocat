@@ -41,7 +41,7 @@ $userRole = $session->getRole();
     <!-- Font Awesome CDN CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <title>Input Form</title>
+    <title>Maps Catalog Form Training</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
@@ -128,7 +128,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Document Author -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="txtAuthor">Document Author:</label>
+                                        <label class="col-sm-4 col-form-label" for="txtAuthor" title="Enter one if there are any">Document Author:</label>
                                         <div class="col-sm-8">
                                             <input type = "text" class="form-control" list="lstAuthor" name = "txtAuthor" id = "txtAuthor" value="" />
                                             <datalist id="lstAuthor">
@@ -140,7 +140,7 @@ $userRole = $session->getRole();
                                     <!-- Radio Buttons -->
                                     <!-- Has Scale -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has Scale:</label>
+                                        <label class="col-sm-4 col-form-label" title="Does the map have a scale/scale bar?">Has Scale:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name ="hasScale" id ="hasScale_yes"
@@ -156,7 +156,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Has Scale Bar-->
                                     <div class="form-group row" id="ScaleBar" hidden>
-                                        <label class="col-sm-4 col-form-label">Has Scale Bar:</label>
+                                        <label class="col-sm-4 col-form-label" title="Does the map have a scale bar that relates distance on the map to distance in real life?">Has Scale Bar:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name ="hasScaleBar" id ="hasScaleBar_yes"
@@ -172,7 +172,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Map Scale -->
                                     <div class="form-group row" id="mapScale" hidden>
-                                        <label class="col-sm-4 col-form-label" for="mapScale">Map Scale:</label>
+                                        <label class="col-sm-4 col-form-label" for="mapScale" title="If a scale bar isn't present, enter the map scale please.">Map Scale:</label>
                                         <div class="col-sm-8" id="mainScaleDiv">
                                             <div class="d-flex">
                                                 <input type="number" min="1" class="form-control" id="numberLeft" name="numberLeft">
@@ -193,7 +193,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- is Map -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Is Map:</label>
+                                        <label class="col-sm-4 col-form-label" title="Is this document a map?">Is Map:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbIsMap" id = "rbIsMap_yes" value="1" checked/>
@@ -207,7 +207,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Needs Review -->
                                     <div class="form-group row" id="needsReview" hidden>
-                                        <label class="col-sm-4 col-form-label">Needs Review:</label>
+                                        <label class="col-sm-4 col-form-label" title="Does the document need to be reviewed by an admin?">Needs Review:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" value="1" checked/>
@@ -221,7 +221,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Has North Arrow -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has North Arrow:</label>
+                                        <label class="col-sm-4 col-form-label" title="Does the document have a compass of sort or an arrow signifying which direction is North?">Has North Arrow:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbHasNorthArrow" id = "rbHasNorthArrow_yes" value="1" checked/>
@@ -235,7 +235,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Has Street -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has Street:</label>
+                                        <label class="col-sm-4 col-form-label" title="Are there streets present in this document?">Has Street:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbHasStreets" id = "rbHasStreets_yes" value="1" />
@@ -249,7 +249,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- POI -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has POI:</label>
+                                        <label class="col-sm-4 col-form-label" title="May include but not limited to: Railroads, Rivers, Cemetery, Highways, Named Parks, Hospitals">Has POI:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbHasPOI" id = "rbHasPOI_yes" value="1" />
@@ -263,14 +263,14 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- POI Description -->
                                     <div class="form-group row" id="POI" hidden>
-                                        <label for="POIDescription" class="col-sm-4 col-form-label">POI Description:</label>
+                                        <label for="POIDescription" class="col-sm-4 col-form-label" title="Simple description of the POI">POI Description:</label>
                                         <div class="col-sm-8">
                                             <textarea class="form-control" cols="35" rows="2" name="POIDescription" id="POIDescription" ></textarea>
                                         </div>
                                     </div>
                                     <!-- Has Coordinates -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has Coordinates:</label>
+                                        <label class="col-sm-4 col-form-label" title="Are there coordinates present on the document?">Has Coordinates:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbHasCoordinates" id = "rbHasCoordinates_yes" value="1" />
@@ -284,7 +284,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Has Coast -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Has Coast:</label>
+                                        <label class="col-sm-4 col-form-label" title="Is there a coast present on the document?">Has Coast:</label>
                                         <div class="col-sm-8 radioButton">
                                             <div class="form-check form-check-inline">
                                                 <input type = "radio" class="form-check-input" name = "rbHasCoast" id = "rbHasCoast_yes" value="1" />
@@ -324,7 +324,7 @@ $userRole = $session->getRole();
                                     <!-- Document type or Job number -->
                                     <div class="form-group row">
                                         <?php if($collection != "pennyfenner") : ?>
-                                            <label class="col-sm-4 col-form-label" for="txtType">Document Type</label>
+                                            <label class="col-sm-4 col-form-label" for="txtType" title="Is this document a map or another type of document?">Document Type</label>
                                             <div class="col-sm-8">
                                                 <input type = "text" class="form-control" name = "txtType" id = "txtType" value="" />
                                             </div>
@@ -353,7 +353,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Document Medium -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlMedium"><font style="color: red">* </font>Document Medium</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlMedium" title="What kind of material is the document on?"><font style="color: red">* </font>Document Medium</label>
                                         <div class="col-sm-8" id="docMedium">
                                             <select id="ddlMedium" name="ddlMedium" class="form-control" required>
                                                 <!-- GET MAP MEDIUM FOR DDL-->
@@ -365,7 +365,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Readability -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlReadability"><font style="color: red">* </font>Readability</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlReadability" title="Fairly judge the quality of the document"><font style="color: red">* </font>Readability</label>
                                         <div class="col-sm-8" id="readability">
                                             <select id="ddlReadability" name="ddlReadability" class="form-control">
                                                 <?php
@@ -376,7 +376,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Rectifiability -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="ddlRectifiability"><font style="color: red">* </font>Rectifiability</label>
+                                        <label class="col-sm-4 col-form-label" for="ddlRectifiability" title="Is the document capable of being repaired or maintained?"><font style="color: red">* </font>Rectifiability</label>
                                         <div class="col-sm-8" id="rectifiability">
                                             <select id="ddlRectifiability" name="ddlRectifiability" class="form-control">
                                                 <?php
@@ -387,7 +387,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Scan front -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="fileUpload"><font style="color: red">* </font>Front Scan:</label>
+                                        <label class="col-sm-4 col-form-label" for="fileUpload" title="Front scan of the document"><font style="color: red">* </font>Front Scan:</label>
                                         <div class="col-sm-8" id="frontScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUpload" id="fileUpload" accept=".tif" required />
@@ -397,7 +397,7 @@ $userRole = $session->getRole();
                                     </div>
                                     <!-- Scan Back -->
                                     <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label" for="fileUploadBack">Back Scan:</label>
+                                        <label class="col-sm-4 col-form-label" for="fileUploadBack" title="Back scan of the document (not always present)">Back Scan:</label>
                                         <div class="col-sm-8" id="backScan">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="fileUploadBack" id="fileUploadBack" accept=".tif" />
@@ -408,7 +408,7 @@ $userRole = $session->getRole();
                                     <!-- Comments -->
                                     <div class="form-row">
                                         <div class="form-group col">
-                                            <label for="txtComments" class="col-form-label">Comments:</label>
+                                            <label for="txtComments" class="col-form-label" title="Any further details that may have been left out that may be important">Comments:</label>
                                             <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" placeholder="Example: Tract located in Corpus Christi, Nueces County" ></textarea>
                                         </div>
                                     </div>
@@ -419,9 +419,11 @@ $userRole = $session->getRole();
                             <div class="form row">
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
-                                        <div class="row">
-                                            <input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/>
-                                            <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
+                                        <div class="row pl-3">
+                                            <input type="reset" id="btnReset" name="btnReset" value="Reset" title="Will clear the page of all content" class="btn btn-secondary"/>
+                                            <div class="pl-2">
+                                                <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
+                                            </div>
                                         </div>
 
                                         <input type = "hidden" id="txtDocID" name = "txtDocID" value = "" />
@@ -475,9 +477,10 @@ $userRole = $session->getRole();
                 </button>
             </div>
             <div class="modal-body" id="helpModalBody">
+                <p>- When the "Upload" option is pressed you will either get error messages or an instant feedback report displaying that your catalog was successful!</p>
                 <P>- Library Index will auto-populate when a front scan is entered</P>
-                <p>- Fill in the missing information</p>
-                <p>- Hover over text for a helpful description</p>
+                <!--<p>- Fill in the missing information</p>-->
+                <p>- Hover over text of difficult fields for a helpful description</p>
                 <p>- Required fields have a red asterisk <font style="color: red">*</font></p>
             </div>
         </div>
@@ -578,26 +581,10 @@ $userRole = $session->getRole();
 
             if(handleError(data) == false)
             {
-                // Will go into this segment if there are no errors
-                $.ajax({
-                    type: 'post',
-                    url: 'form_processing.php',
-                    data:  formData,
-                    processData: false,
-                    contentType: false,
-                    success:function(data){
-                        console.log(data);
-                        //alert("Catalog Successful!");
-                        $('#responseModalBody').empty();
-                        $('#responseModalBody').append('<p style="text-align: center"><font style="color: green">Catalog Successful!! <br> ...Loading blank form</font></p>');
-                        $('#responseModal').modal('show');
-                    },
-                    fail: function() {
-                        $('#responseModalBody').empty();
-                        $('#responseModalBody').append('<p style="text-align: center"><font style="color: red">ERROR: Catalog Unsuccessful. Please report error!!</font></p>');
-                        $('#responseModal').modal('show');
-                    }
-                });
+                // Lets the trainy know that the catalog was successful
+                $('#responseModalBody').empty();
+                $('#responseModalBody').append('<p style="text-align: center"><font style="color: green">Training Catalog Successful!! <br> ...Loading blank form</font></p>');
+                $('#responseModal').modal('show');
             }
             else
             {

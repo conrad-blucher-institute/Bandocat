@@ -47,7 +47,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
     <!-- Font Awesome CDN CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <title>Catalog Form</title>
+    <title>Field Book Catalog Training</title>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="../../Master/bandocat_custom_bootstrap.css">
@@ -79,21 +79,21 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             </datalist>
                             <!-- Library Index -->
                             <div class="form-group row">
-                                <label for="txtLibraryIndex" class="col-sm-3 col-form-label">Library Index:</label>
+                                <label for="txtLibraryIndex" class="col-sm-3 col-form-label" title="Always auto-populated">Library Index:</label>
                                 <div class="col-sm-9">
                                     <input type = "text" rel="txtToolTip" data-toggle="tooltip" data-placement="left" title="If you want to edit this index, use the Edit/View operation in the menu" class="form-control-plaintext" name = "txtLibraryIndex" id = "txtLibraryIndex" value="<?php echo htmlspecialchars($document['LibraryIndex'],ENT_QUOTES);?>" readonly />
                                 </div>
                             </div>
                             <!-- Book Title -->
                             <div class="form-group row">
-                                <label for="txtBookTitle" class="col-sm-3 col-form-label">Book Title:</label>
+                                <label for="txtBookTitle" class="col-sm-3 col-form-label" title="Always auto-populated">Book Title:</label>
                                 <div class="col-sm-9">
                                     <input type = "text" class="form-control-plaintext" name = "txtBookTitle" id = "txtBookTitle" readonly />
                                 </div>
                             </div>
                             <!-- Collection -->
                             <div class="form-group row">
-                                <label for="txtFBCollection" class="col-sm-3 col-form-label">Collection:</label>
+                                <label for="txtFBCollection" class="col-sm-3 col-form-label" title="Please select the collection of this field book"><font style="color: red">* </font>Collection:</label>
                                 <div class="col-sm-9">
                                     <select id="txtFBCollection" name="txtFBCollection" class="form-control" required>
                                         <!-- GET MAP MEDIUM FOR DDL-->
@@ -117,7 +117,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             </div>
                             <!-- Indexed Page -->
                             <div class="form-group row">
-                                <label for="txtIndexedPage" class="col-sm-3 col-form-label">Indexed Page:</label>
+                                <label for="txtIndexedPage" class="col-sm-3 col-form-label" title="Page of the field book">Indexed Page:</label>
                                 <div class="col-sm-9">
                                     <input type = "text" class="form-control" name = "txtIndexedPage" id = "txtIndexedPage" value="<?php echo htmlspecialchars($document['IndexedPage'],ENT_QUOTES);?>"  />
                                 </div>
@@ -140,7 +140,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <!-- Sketch -->
                                 <div class="col">
-                                    <label class="col col-form-label">Sketch:</label>
+                                    <label class="col col-form-label" title="Is this document drawn?">Sketch:</label>
                                     <div class="form-check col-sm-10">
                                         <div class="form-check form-check">
                                             <input type = "radio" class="form-check-input" name = "rbSketch" id = "rbSketch_yes" value="1" <?php if($document['IsSketch'] == 1) echo "checked"; ?>/>
@@ -154,7 +154,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <!-- Loose Document -->
                                 <div class="col">
-                                    <label class="col col-form-label">Loose Document:</label>
+                                    <label class="col col-form-label" title="Is this document free from others?">Loose Document:</label>
                                     <div class="form-check col-sm-10">
                                         <div class="form-check form-check">
                                             <input type = "radio" class="form-control-input" name = "rbLooseDocument" id = "rbLooseDocument_yes" value="1" <?php if($document['IsLooseDoc'] == 1) echo "checked"; ?>/>
@@ -168,7 +168,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                 </div>
                                 <!-- Needs Review -->
                                 <div class="col">
-                                    <label class="col col-form-label">Needs Review:</label>
+                                    <label class="col col-form-label" title="Does an admin need to review this document?">Needs Review:</label>
                                     <div class="form-check col-sm-10 bg-white">
                                         <div class="form-check form-check">
                                             <input type = "radio" class="form-control-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" <?php if($document['NeedsReview'] == 1) echo "checked"; ?> />
@@ -183,7 +183,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             </div>
                             <!-- Field Book Author -->
                             <div class="form-group row">
-                                <label for="txtBookAuthor" class="col-sm-3 col-form-label">Field Book Author:</label>
+                                <label for="txtBookAuthor" class="col-sm-3 col-form-label" title="Provide if information is given">Field Book Author:</label>
                                 <div class="col-sm-9">
                                     <input type = "text" class="form-control" name = "txtBookAuthor" id = "txtBookAuthor" list="lstAuthor" value="<?php echo htmlspecialchars($document['Author'],ENT_QUOTES);?>"  />
                                 </div>
@@ -191,7 +191,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             <div id="crewcell">
                                 <!-- Field Crew Member -->
                                 <div class="form-group row">
-                                    <label for="txtCrew[]" class="col-sm-3 col-form-label">Field Crew Member:</label>
+                                    <label for="txtCrew[]" class="col-sm-3 col-form-label" title="Provide if information is given(multiple may be accepted)">Field Crew Member:</label>
                                     <div class="col-sm-8">
                                         <input type = "text" class="form-control" name = "txtCrew[]" id = "txtCrew[]" value="<?php if(count($crews) > 0){echo htmlspecialchars($crews[0][0],ENT_QUOTES);} ?>" autocomplete="off" list="lstCrew" />
                                     </div>
@@ -246,14 +246,14 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             </div>
                             <!-- Comments -->
                             <div class="form-group row">
-                                <label for="txtComments" class="col-sm-3 col-form-label">Comments:</label>
+                                <label for="txtComments" class="col-sm-3 col-form-label" title="Any additional comments">Comments:</label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control" cols="35" rows="5" name="txtComments" id="txtComments" ><?php echo $document['Comments']?></textarea>
                                 </div>
                             </div>
                             <!-- Scan of Page -->
                             <div class="form-group row">
-                                <div class="col-sm-3 col-form-label">Scan of Page:</div>
+                                <div class="col-sm-3 col-form-label" title="Auto populated Scan of page">Scan of Page:</div>
                                 <div class="col-sm-9">
                                     <?php echo "<a href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\">(Click to download)</a><br>";
                                     echo "<a id='download_front' href=\"download.php?file=$config[StorageDir]$document[FileNamePath]\"><br><img src='" .  '../../' . $config['ThumbnailDir'] . $document['Thumbnail'] . " ' alt = Error /></a>";
@@ -264,7 +264,12 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                             <div class="form-group row">
                                 <div class="col">
                                     <div class="d-flex justify-content-between">
-                                        <div><input type="reset" id="btnReset" name="btnReset" value="Reset" class="btn btn-secondary"/></div>
+                                        <div class="row pl-3">
+                                            <div><input type="reset" id="btnReset" name="btnReset" value="Reset" title="Will display a new document for training" class="btn btn-secondary"/></div>
+                                            <div class="pl-2">
+                                                <input type='button' id='help' name='help' value='Help' data-toggle="tooltip" title="Click here for tips!" class='btn btn-success'/>
+                                            </div>
+                                        </div>
                                         <div><?php if($session->hasWritePermission())
                                             {echo "<input type='submit' id='btnSubmit' name='btnSubmit' value='Update' class='btn btn-primary'/>";}
                                             ?></div>
@@ -284,6 +289,28 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 </div><!-- Container -->
 <!-- Doesn't matter where these go, this is for overlay effect and loader -->
 <div id="overlay"></div>
+
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="helpModalTitle">Helpful Tips</h5>
+                <input type="text" hidden value="" id="status">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="helpModalBody">
+                <p>- First 2 fields are always auto populated (Library Index & Book Title)</p>
+                <p>- Fill in the missing information</p>
+                <p>- Hover over text of difficult fields for a helpful description</p>
+                <p>- Required fields have a red asterisk <font style="color: red">*</font></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include "../../Master/bandocat_footer.php" ?>
 
 <!-- Complete JavaScript Bundle -->
@@ -291,6 +318,9 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- JQuery UI cdn -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
 
 <script type="text/javascript" src="../../Master/errorHandling.js"></script>
 
@@ -347,6 +377,13 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 <script>
     $(document).ready(function()
     {
+        var libIndex = $('#txtLibraryIndex').val();
+        console.log(libIndex);
+        if(libIndex == "")
+        {
+            location.reload();
+        }
+
         var crews = <?php echo json_encode($crews); ?>;
         //Parse out the authors read in to the add_fields function
         for(var i = 1; i < crews.length; i++)
@@ -371,41 +408,18 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
             // Use jquery to show the overlay and the loading circle
             //$("#overlay").show();
 
-            /* Send the data using post */
-            $.ajax({
-                type: 'post',
-                url: 'form_processing.php',
-                data:  formData,
-                processData: false,
-                contentType: false,
-                success:function(data)
-                {
-                    var json = JSON.parse(data);
-
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
-                    {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                        {
-                            $('#overlay').removeAttr("style").hide();
-                        }
-                    }
-                    if (result == 1){
-                        alert(msg);
-                        $('#overlay').removeAttr("style").hide();
-                        self.close();
-                    }
-
-                }
-            });
+            // AJAX was here
         });
+    });
+
+    // Reset page
+    $('#btnReset').click(function() {
+        location.reload();
+    });
+
+    // displays the help modal
+    $('#help').click(function() {
+        $('#helpModal').modal('show');
     });
 </script>
 </body>

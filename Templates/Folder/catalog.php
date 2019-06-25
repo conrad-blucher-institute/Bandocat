@@ -112,16 +112,16 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                                     <div class="d-flex">
                                                         <select class="form-control" name="ddlStartMonth" id="ddlStartMonth">
                                                             <!-- POPULATES THE DDL WITH START MONTHS -->
-                                                            <?php $Render->GET_DDL_MONTH(null); ?>
+                                                            <?php $Render->GET_DDL_MONTH($date->splitDate($document['StartDate'])['Month']); ?>
                                                         </select>
                                                         <select class="form-control" name="ddlStartDay" id="ddlStartDay">
                                                             <!-- POPULATES THE DDL WITH START DAYS -->
-                                                            <?php $Render->GET_DDL_DAY(null); ?>
+                                                            <?php $Render->GET_DDL_DAY($date->splitDate($document['StartDate'])['Day']); ?>
                                                         </select>
 
                                                         <select class="form-control" id="ddlStartYear" name="ddlStartYear">
                                                             <!-- POPULATES THE DDL WITH START YEARS -->
-                                                            <?php $Render->GET_DDL_YEAR(null); ?>
+                                                            <?php $Render->GET_DDL_YEAR($date->splitDate($document['StartDate'])['Year']); ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -133,15 +133,15 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                                                     <div class="d-flex">
                                                         <select class="form-control" name="ddlEndMonth" id="ddlEndMonth">
                                                             <!-- POPULATES THE DDL WITH END MONTHS -->
-                                                            <?php $Render->GET_DDL_MONTH(null); ?>
+                                                            <?php $Render->GET_DDL_MONTH($date->splitDate($document['EndDate'])['Month']); ?>
                                                         </select>
                                                         <select class="form-control" name="ddlEndDay" id="ddlEndDay">
                                                             <!-- POPULATES THE DDL WITH END DAYS -->
-                                                            <?php $Render->GET_DDL_DAY(null); ?>
+                                                            <?php $Render->GET_DDL_DAY($date->splitDate($document['EndDate'])['Day']); ?>
                                                         </select>
                                                         <select class="form-control" name="ddlEndYear" id="ddlEndYear">
                                                             <!-- POPULATES THE DDL WITH END YEARS -->
-                                                            <?php $Render->GET_DDL_YEAR(null); ?>
+                                                            <?php $Render->GET_DDL_YEAR($date->splitDate($document['EndDate'])['Year']); ?>
                                                         </select>
                                                     </div>
                                                 </div>
