@@ -496,7 +496,8 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
 
     // Reloads page when response modal is exited out of or hidden
     $('#responseModal').on('hidden.bs.modal', function () {
-        window.location = "../../Templates/Folder/list.php?col=jobfolder&action=catalog";
+        window.opener.close()
+        window.location.replace("../../Templates/Folder/list.php?col=jobfolder&action=catalog");
     });
 
 </script>
