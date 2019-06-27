@@ -277,6 +277,23 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
     </div> <!-- row -->
 </div><!-- Container -->
 
+<!-- Response Modal -->
+<div class="modal fade" id="responseModal" tabindex="-1" role="dialog" aria-labelledby="responseModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="responseModalTitle">Instant Feedback Report</h5>
+                <input type="text" hidden value="" id="status">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="responseModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
 <?php include "../../Master/bandocat_footer.php" ?>
 
 <!-- Complete JavaScript Bundle -->
@@ -346,30 +363,15 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                 success:function(data){
                     console.log("We here big dog\n");
                     console.log(data);
-                    /*var json = JSON.parse(data);
-                    var msg = "";
-                    var result = 0;
-                    for(var i = 0; i < json.length; i++)
-                    {
-                        msg += json[i] + "\n";
-                    }
-                    for (var i = 0; i < json.length; i++){
-                        if (json[i].includes("Success")) {
-                            result = 1;
-                        }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                        {
-                            $('#btnSubmit').css("display", "inherit");
-                            //$('#loader').css("display", "none");
-                            $('#overlay').removeAttr("style").hide();
-                            $('#loader').removeAttr("style").hide();
-                        }
-                    }
-                    alert(msg);
-                    if (result == 1){
-                        window.location.href = "./catalog.php?col=</?php echo $_GET['col']; ?>";
-                    }*/
 
+                    $('#responseModalBody').empty();
+                    $('#responseModalBody').append('<p style="text-align: center"><font style="color: green">Catalog Successful!! <br> ...Redirecting back to list</font></p>');
+                    $('#responseModal').modal('show');
+                },
+                fail: function() {
+                    $('#responseModalBody').empty();
+                    $('#responseModalBody').append('<p style="text-align: center"><font style="color: red">ERROR: Catalog Unsuccessful. Please report error!!</font></p>');
+                    $('#responseModal').modal('show');
                 }
             });
         });
@@ -391,6 +393,21 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
                 alert("ERROR: Must be checked yes when decimal is present!");
                 $('#inSubfolder_yes').prop("checked", true);
             });
+        }
+
+        var classList =  <?php echo json_encode($classification); ?>;
+        $('#classificationCard').show();
+        var classText = $('#classificationMethod option:selected').text();
+        if(classText == "Select")
+        {
+            $('#classificationCard').hide();
+        }
+
+        $("#className").text(classText);
+        for(var x = 0; x < classList.length; x++) {
+            if(classList[x][0] == classText) {
+                $('#classDesc').text(classList[x][1])
+            }
         }
     });
 
@@ -475,6 +492,12 @@ $classification = $DB->GET_FOLDER_CLASSIFICATION_LIST($collection);
             }
         }
 
+    });
+
+    // Reloads page when response modal is exited out of or hidden
+    $('#responseModal').on('hidden.bs.modal', function () {
+        window.opener.close()
+        window.location.replace("../../Templates/Folder/list.php?col=jobfolder&action=catalog");
     });
 
 </script>
