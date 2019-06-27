@@ -74,7 +74,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 <!--Title Section/Loading Modal Divs-->
 
 <div id = 'title'><?php echo $collection['DisplayName']; ?> Georeferencer</div>
-<div id = 'logo'> <img src = "../../Images/Logos/bando-logo-small.png"></div>
+<div id = 'logo'></div>
 <h1 id = 'fileName'></h1>
 
 <div id="fade_1"></div>
