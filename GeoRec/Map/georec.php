@@ -41,7 +41,7 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <script src='../../ExtLibrary/rastercoords.js'></script>
     <script src="../../ExtLibrary/Leaflet.MakiMarkers.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="javascript/l.control.geosearch.js"></script>
     <script src="javascript/l.geosearch.provider.esri.js"></script>
     <script type="text/javascript" src="javascript/bandocatRectification.js"></script>
