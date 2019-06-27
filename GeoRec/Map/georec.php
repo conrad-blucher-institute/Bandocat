@@ -36,18 +36,18 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
     <link href='css/styles.css' rel='stylesheet' />
     <link rel="stylesheet" href= "css/l.geosearch.css"/>
     <link rel="stylesheet" href= "../../Master/master.css"/>
-    <link rel="stylesheet" href="../../ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.css">
-    <link rel="stylesheet" href="../../ExtLibrary/PolylineMeasure/PolylineMeasure.css" />
+    <link rel="stylesheet" href="./ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.css">
+    <link rel="stylesheet" href="./ExtLibrary/PolylineMeasure/PolylineMeasure.css" />
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
-    <script src='../../ExtLibrary/rastercoords.js'></script>
-    <script src="../../ExtLibrary/Leaflet.MakiMarkers.js"></script>
+    <script src='./ExtLibrary/rastercoords.js'></script>
+    <script src="./ExtLibrary/Leaflet.MakiMarkers.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="javascript/l.control.geosearch.js"></script>
     <script src="javascript/l.geosearch.provider.esri.js"></script>
     <script type="text/javascript" src="javascript/bandocatRectification.js"></script>
-    <script src="../../ExtLibrary/PolylineMeasure/PolylineMeasure.js"></script>
-    <script src="../../ExtLibrary/L.GeometryUtil/L.GeometryUtil.js"></script>
-    <script type="text/javascript" src="../../ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.js"></script>
+    <script src="./ExtLibrary/PolylineMeasure/PolylineMeasure.js"></script>
+    <script src="./ExtLibrary/L.GeometryUtil/L.GeometryUtil.js"></script>
+    <script type="text/javascript" src="./ExtLibrary/L.Control.MousePosition/L.Control.MousePosition.js"></script>
 </head>
 <style>
     /*    Styles for popup Update Status */
