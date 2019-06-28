@@ -201,7 +201,7 @@ $errorTickets .= $tempt;
                 </div>
             </li>
             <ul class="navbar-nav ml-auto">
-                <!--<img src="../../Images/moon.png">-->
+                <!--<input class="btn button" onclick="dark()" value="night mode">-->
             </ul>
             <!-- Mega Menu for Collections -->
             <!--<li class="nav-item dropdown position-static">

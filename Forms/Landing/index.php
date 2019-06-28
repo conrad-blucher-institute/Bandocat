@@ -103,14 +103,14 @@ $admin = $session->isAdmin();
         <!-- ED RACHEL CONTENT -->
         <div class="col">
             <div class="text-center">
-                <a class="btn btn-secondary" href="../Main/" role="button">Visit Ed Rachel &raquo;</a>
+                <a class="btn btn-secondary" href="../Main/" role="button">Visit Blucher Land &raquo;</a>
             </div>
         </div>
         <!-- USACE CONTENT -->
         <div class="col">
             <div class="container">
                 <div class="text-center">
-                    <a class="btn btn-secondary" href="#" role="button">Visit USACE &raquo;</a>
+                    <a class="btn btn-secondary" href="#" role="button">Visit Shoreline &raquo;</a>
                 </div>
             </div>
         </div>
