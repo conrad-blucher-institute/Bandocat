@@ -193,13 +193,16 @@ $errorTickets .= $tempt;
                     <a class="dropdown-item" href="../../Templates/FieldBookIndices/index.php?col=fieldbookindices">Field Book Indices</a>
                     <a class="dropdown-item" href="../../Templates/Folder/index.php?col=jobfolder">Job Folder</a>
                     <a class="dropdown-item" href="../../Templates/Map/index.php?col=pennyfenner">Pennyfenner Maps</a>-->
+                    <a class="dropdown-item" href="../../Templates/Menu/index.php?option=Upload">Upload</a>
                     <a class="dropdown-item" href="../../Templates/Menu/index.php?option=Catalog">Catalog</a>
                     <a class="dropdown-item" href="../../Templates/Menu/index.php?option=Edit/View">Edit/View</a>
                     <a class="dropdown-item" href="../../Templates/Menu/index.php?option=Rectify">Rectify</a>
-                    <a class="dropdown-item" href="../../Templates/Menu/index.php?option=Upload">Upload</a>
                     <a class="dropdown-item" href="../../Templates/Menu/index.php?option=Transcribe">Transcribe</a>
                 </div>
             </li>
+            <ul class="navbar-nav ml-auto">
+                <!--<img src="../../Images/moon.png">-->
+            </ul>
             <!-- Mega Menu for Collections -->
             <!--<li class="nav-item dropdown position-static">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -382,6 +385,16 @@ $errorTickets .= $tempt;
 <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+
+    function dark() {
+        if (document.body.style.backgroundColor == 'rgb(255, 255, 255)') {
+
+            document.body.style.backgroundColor = '#333';
+        }
+        else {
+            document.body.style.backgroundColor = 'rgb(255, 255, 255)';
+        }
     }
 </script>
 

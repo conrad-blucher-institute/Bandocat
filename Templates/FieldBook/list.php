@@ -176,8 +176,10 @@ else header('Location: ../../');
                             },
                             "targets": 0
                         },
+                        { "width": 30, "targets": 0 },
                         { "searchable": false, "targets": 0 },
-
+                        { "width": 30, "targets": 1 },
+                        { "width": 200, "targets": 2 },
                         //column : NeedsInput
                         {
                             "render": function ( data, type, row ) {
@@ -196,13 +198,15 @@ else header('Location: ../../');
                             },
                             "targets": 5
                         },
+                        { "width": 20, "targets": 5 },
                         {
                             "render": function ( data, type, row )
                             {
                                 return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
                             },
                             "targets": 6
-                        }
+                        },
+                        { "width": 30, "targets": 6 },
 
                     ],
                 "ajax": "list_processing.php?col=" + collection_config.Name + "&action=" + '<?php echo $action; ?>',
