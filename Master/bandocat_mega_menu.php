@@ -200,9 +200,9 @@ $errorTickets .= $tempt;
                     <a class="dropdown-item" href="../../Templates/Menu/index.php?option=Transcribe">Transcribe</a>
                 </div>
             </li>
-            <ul class="navbar-nav ml-auto">
-                <!--<input class="btn button" onclick="dark()" value="night mode">-->
-            </ul>
+            <!--<ul class="navbar-nav ml-auto">
+                <input class="btn button" onclick="dark()" value="night mode">
+            </ul>-->
             <!-- Mega Menu for Collections -->
             <!--<li class="nav-item dropdown position-static">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -388,13 +388,9 @@ $errorTickets .= $tempt;
     }
 
     function dark() {
-        if (document.body.style.backgroundColor == 'rgb(255, 255, 255)') {
-
-            document.body.style.backgroundColor = '#333';
-        }
-        else {
-            document.body.style.backgroundColor = 'rgb(255, 255, 255)';
-        }
+        var element = document.getElementById("megaMenu");
+        console.log("sup dog:", element);
+        //element.classList.toggle("mystyle");
     }
 </script>
 

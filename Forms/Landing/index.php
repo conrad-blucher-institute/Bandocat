@@ -110,7 +110,7 @@ $admin = $session->isAdmin();
         <div class="col">
             <div class="container">
                 <div class="text-center">
-                    <a class="btn btn-secondary" href="#" role="button">Visit Shoreline &raquo;</a>
+                    <a class="btn btn-secondary" href="#" role="button">coming soon</a>
                 </div>
             </div>
         </div>
@@ -118,7 +118,7 @@ $admin = $session->isAdmin();
         <div class="col">
             <div class="container">
                 <div class="text-center">
-                    <a class="btn btn-secondary text-center" href="../../../TonyAmos/Forms/TonyAmosCollection.php" role="button">Visit Tony Amos &raquo;</a>
+                    <a class="btn btn-secondary text-center" href="../Main/" role="button">Visit Tony Amos &raquo;</a>
                 </div>
             </div>
         </div>

@@ -16,13 +16,56 @@
 
                 <!-- Content -->
                 <h5 class="text-uppercase">About this website</h5>
-                <p>This webpage is currently under construction and more changes will be coming soon! The original Bandocat website can be accessed through the Ed Rachel links.</p>
+                <p>The Spatial {Query} Lab's mission is to make spatial technology, education, and information accessible to everyone.
+
+                    While our current projects may seem quite different from each other, they all have the same overarching goal: accessibility.
+
+                    Check out the latest news over in the News section. Feel free to Contact Us if you have any questions or comments.
+
+                    The Spatial {Query} Lab is located at Texas A&M University - Corpus Christi, in sunny Corpus Christi, TX, USA.</p>
             </div>
             <!-- Grid column -->
             <hr class="clearfix w-100 d-md-none pb-3">
+
             <!-- Grid column -->
             <div class="col-md-3 mb-md-0 mb-3">
                 <!-- Links -->
+                <h5 class="text-uppercase">Partners</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://www.edrachal.org/">Mary and Jeff Bell Library</a>
+                    </li>
+                    <li>
+                        <a href="https://www.swg.usace.army.mil/">Coastal Bend Bays Estuaries Program</a>
+                    </li>
+                    <li>
+                        <a href="https://www.cbbep.org/">University of Texas Marine Science Institute</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+                <!-- Links -->
+                <h5 class="text-uppercase">Sponsors</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://www.edrachal.org/">Ed Rachel</a>
+                    </li>
+                    <li>
+                        <a href="https://www.swg.usace.army.mil/">US Army Corps of Engineers </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cbbep.org/">Coastal Bend Bays Estuaries Program</a>
+                    </li>
+                    <li>
+                        <a href="http://www.11thhourproject.org/">11th Hour Project</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Grid column -->
+            <!--<div class="col-md-3 mb-md-0 mb-3">
+
                 <h5 class="text-uppercase">Projects</h5>
                 <ul class="list-unstyled">
                     <li>
@@ -35,28 +78,7 @@
                         <a href="../../../TonyAmos/Forms/TonyAmosCollection.php">Tony Amos</a>
                     </li>
                 </ul>
-            </div>
-            <!-- Grid column -->
-
-            <!-- Grid column -->
-            <div class="col-md-3 mb-md-0 mb-3">
-                <!-- Links -->
-                <h5 class="text-uppercase">More Links Coming Soon</h5>
-                <!--<ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 4</a>
-                    </li>
-                </ul>-->
-            </div>
+            </div>-->
             <!-- Grid column -->
         </div>
         <!-- Grid row -->
