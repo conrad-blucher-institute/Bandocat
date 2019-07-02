@@ -91,31 +91,6 @@ else header('Location: ../../');
 <!-- Bootstrap JS files for datatables CDN -->
 <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
-<script>
-    $(document).ready(function() {
-
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        console.log(docHeight);
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $( window ).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-        {
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-        }
-    });
-</script>
-
 <!-- Script for this page -->
 <script>
     /**********************************************
