@@ -383,7 +383,9 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                     }
                     if (result == 1){
                         alert(msg);
-                        self.close();
+                        //self.close();
+                        window.opener.close()
+                        window.location.replace("../../Templates/FieldBook/list.php?col=blucherfieldbook&action=review");
                     }
                 }
             });
