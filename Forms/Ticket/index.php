@@ -254,7 +254,7 @@ else header('Location: ../../');
                             break;
                         //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
                         case 7: //Status column
-                            var select = $('<select class="form-control form-control-sm"><option value="">Filter...</option><option value="0">Open</option><option value="1">Closed</option></select>')
+                            var select = $('<select class="form-control form-control-sm"><option value="">Filter...</option><option value="Open">Open</option><option value="Closed">Closed</option></select>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on( 'change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
