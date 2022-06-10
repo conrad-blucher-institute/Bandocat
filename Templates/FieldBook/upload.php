@@ -103,6 +103,24 @@ else header('Location: ../../');
 </div><!-- Container -->
 <?php include "../../Master/bandocat_footer.php" ?>
 
+<!-- Response Modal -->
+<div class="modal fade" id="responseModal" tabindex="-1" role="dialog" aria-labelledby="responseModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="responseModalTitle">Instant Feedback Report</h5>
+                <input type="text" hidden value="" id="status">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="responseModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Complete JavaScript Bundle -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -151,6 +169,7 @@ else header('Location: ../../');
         selTable = document.querySelector("#selectedFilesTable");
         selTableFooter = document.querySelector("#selectedFilesTableFooter");
     }
+
     /**********************************************
      * Function: handleFileSelect
      * Description: handles the selcected files
@@ -226,6 +245,7 @@ else header('Location: ../../');
             selTableFooter.deleteRow(1);
         }
     }
+
     //frmUpload is the form that holds the btn submit
     $("#frmUpload").submit(function(event)
     {
@@ -252,21 +272,30 @@ else header('Location: ../../');
             processData: false,
             success: function (data)
             {
-                data = JSON.parse(data);
+                //$("#loaderModal").modal("hide");
+                /*data = JSON.parse(data);
                 for(var i = 0; i < data.length; i++)
                 {
-
                     document.getElementById(data[i][0]).innerHTML = data[i][1];
                     if(data[i][1] == "Uploaded")
                         document.getElementById(data[i][0]).style.color = "green";
                     else document.getElementById(data[i][0]).style.color = "red";
                 }
                 $("#btnUpload").val("Upload");
-                $("#btnUpload").attr("disabled",false);
-                // Showing loader modal
+                $("#btnUpload").attr("disabled",false);*/
                 $("#loaderModal").modal("hide");
+                $('#responseModalBody').empty();
+                $('#responseModalBody').append('<p style="text-align: center"><font style="color: green">Upload Successful!! <br> ...Please exit to continue</font></p>');
+                $('#responseModal').modal('show');
+                // Hiding loader modal
+
             }
         });
+    });
+
+    // Reloads page when response modal is exited out of or hidden
+    $('#responseModal').on('hidden.bs.modal', function () {
+        window.location.reload();
     });
 </script>
 </body>

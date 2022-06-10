@@ -48,34 +48,35 @@ $admin = $session->isAdmin();
         <div class="col">
             <div class="container">
                 <div class="text-center">
-                    <h1>Ed Rachel</h1>
+                    <h1>Blucher Land Record</h1>
                 </div>
                 <!-- Text Contents -->
                 <div>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                </div>
-                <div class="text-center">
-                    <a class="btn btn-secondary" href="../Main/" role="button">Visit Ed Rachel &raquo;</a>
+                    <p>The Blucher Land Records project is an effort to create a digital land record system containing historic South Texas land records from 11 prominent land surveyors.</p>
+                    <p>The project is a collaborative effort by the Conrad Blucher Institute for Surveying and Science and the Mary and Jeff Bell Library. </p>
+                    <p>The Ed Rachal Foundation has sponsored this project since 2014 and provide professional support by way of Mr. Ron Brister, RPLS.</p>
                 </div>
             </div>
+            <!--<div class="text-center">
+                <a class="btn btn-secondary" href="../Main/" role="button">Visit Ed Rachel &raquo;</a>
+            </div>-->
         </div>
         <!-- USACE CONTENT -->
         <div class="col">
             <div class="container">
                 <div class="text-center">
-                    <h1>USACE</h1>
+                    <h1> Shoreline Digitization</h1>
                 </div>
                 <!-- Text Contents -->
                 <div>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p>The Shoreline Digitization project aims to provide the public with historic shoreline information from the Texas coast dating back to the 1960s. </p>
+                    <p>This project is being completed by the Conrad Blucher Institute for Surveying in Science’s Spatial {Query} Lab and Coastal Dynamics Lab.
+                        The imagery being processed is from the US Army Corps of Engineers – Galveston District and is also sponsored by them. </p>
+                    <p>Public access to records we be maintained by CBI (digitally) and the Texas Natural Resource Information System (physically).</p>
                 </div>
-                <div class="text-center">
+                <!--<div class="text-center">
                     <a class="btn btn-secondary" href="#" role="button">Visit USACE &raquo;</a>
-                </div>
+                </div>-->
             </div>
         </div>
         <!-- TONY AMOS CONTENT -->
@@ -86,12 +87,38 @@ $admin = $session->isAdmin();
                 </div>
                 <!-- Text Contents -->
                 <div>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p>Dr. Tony Amos was a renowned scientist at the University of Texas Marine Science Institute who collected over 40 years of data along beaches near Port Aransas, Texas. </p>
+                    <p>This data includes everything from environmental, to species, to shore debris and pollution information.
+                        Dr. Amos conducted this research on his own time with his own resources in order to help protect public Texas beaches through beneficial research. </p>
+                    <p>After his passing, UTMSI and CBI connected to help process his data and make it available to the public.
+                        Thanks to project sponsorship from the Coastal Bend Bays and Estuaries Program, Dr. Amos’ efforts are able to continue to impact decision making related to Texas beaches.</p>
                 </div>
-                <div class="text-center">
+                <!--<div class="text-center">
                     <a class="btn btn-secondary text-center" href="../../../TonyAmos/Forms/TonyAmosCollection.php" role="button">Visit Tony Amos &raquo;</a>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- ED RACHEL CONTENT -->
+        <div class="col">
+            <div class="text-center">
+                <a class="btn btn-secondary" href="../Main/" role="button">Visit Blucher Land &raquo;</a>
+            </div>
+        </div>
+        <!-- USACE CONTENT -->
+        <div class="col">
+            <div class="container">
+                <div class="text-center">
+                    <a class="btn btn-secondary" href="#" role="button">coming soon</a>
+                </div>
+            </div>
+        </div>
+        <!-- TONY AMOS CONTENT -->
+        <div class="col">
+            <div class="container">
+                <div class="text-center">
+                    <a class="btn btn-secondary text-center" href="../Main/" role="button">Visit Tony Amos &raquo;</a>
                 </div>
             </div>
         </div>

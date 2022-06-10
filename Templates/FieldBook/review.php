@@ -179,7 +179,7 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                                     <label class="col col-form-label">Needs Review:</label>
                                     <div class="form-check col-sm-10 bg-white">
                                         <div class="form-check form-check">
-                                            <input type = "radio" class="form-control-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" size="26" <?php if($document['NeedsReview'] == 1) echo "checked"; ?> />
+                                            <input type = "radio" class="form-control-input" name = "rbNeedsReview" id = "rbNeedsReview_yes" value="1" <?php if($document['NeedsReview'] == 1) echo "checked"; ?> />
                                             <label class="form-check-label" for="rbNeedsReview_yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check">
@@ -302,18 +302,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
 
 <script type="text/javascript" src="../../Master/errorHandling.js"></script>
 
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
-<script>
-    $(document).ready(function() {
-        $('[data-toggle="tooltip"]').tooltip();
-        var docHeight = $(window).height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-</script>
 <script>
     /**********************************************
      * Function: add_fields
@@ -370,9 +358,6 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                 array_crews.push(crews[i].value);
             formData.append("crews",JSON.stringify(array_crews));
 
-            // Use jquery to show the overlay and the loading circle
-            $("#overlay").show();
-
             /* Send the data using post */
             $.ajax({
                 type: 'post',
@@ -390,19 +375,17 @@ $crews = $DB->GET_FIELDBOOK_CREWS_BY_DOCUMENT_ID($collection,$docID);
                     {
                         msg += json[i] + "\n";
                     }
+
                     for (var i = 0; i < json.length; i++){
                         if (json[i].includes("Success")) {
                             result = 1;
                         }
-                        else if(json[i].includes("Fail") || json[i].includes("EXISTED"))
-                        {
-                            $('#overlay').removeAttr("style").hide();
-                        }
                     }
                     if (result == 1){
                         alert(msg);
-                        $('#overlay').removeAttr("style").hide();
-                        self.close();
+                        //self.close();
+                        window.opener.close()
+                        window.location.replace("../../Templates/FieldBook/list.php?col=blucherfieldbook&action=review");
                     }
                 }
             });

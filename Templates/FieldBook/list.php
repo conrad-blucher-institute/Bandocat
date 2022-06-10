@@ -91,31 +91,6 @@ else header('Location: ../../');
 <!-- Bootstrap JS files for datatables CDN -->
 <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 
-<!-- This Script Needs to Be added to Every Page, If the Sizing is off from dynamic content loading, then this will need to be taken away or adjusted -->
-<script>
-    $(document).ready(function() {
-
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        console.log(docHeight);
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-    });
-
-    $( window ).resize(function() {
-        var docHeight = $(window).height() - $('#megaMenu').height();
-        var footerHeight = $('#footer').height();
-        var footerTop = $('#footer').position().top + footerHeight;
-
-        if (footerTop < docHeight)
-        {
-            $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
-        }
-    });
-</script>
-
 <!-- Script for this page -->
 <script>
     /**********************************************
@@ -176,8 +151,10 @@ else header('Location: ../../');
                             },
                             "targets": 0
                         },
+                        { "width": 30, "targets": 0 },
                         { "searchable": false, "targets": 0 },
-
+                        { "width": 30, "targets": 1 },
+                        { "width": 200, "targets": 2 },
                         //column : NeedsInput
                         {
                             "render": function ( data, type, row ) {
@@ -196,13 +173,15 @@ else header('Location: ../../');
                             },
                             "targets": 5
                         },
+                        { "width": 20, "targets": 5 },
                         {
                             "render": function ( data, type, row )
                             {
                                 return "<a href='#' onclick='DeleteDocument(" + JSON.stringify(collection_config.Name) + "," + row[0] + ")'>Delete</a>";
                             },
                             "targets": 6
-                        }
+                        },
+                        { "width": 30, "targets": 6 },
 
                     ],
                 "ajax": "list_processing.php?col=" + collection_config.Name + "&action=" + '<?php echo $action; ?>',
