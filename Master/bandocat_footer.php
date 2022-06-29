@@ -2,14 +2,13 @@
     <div class="row">
         <div class="col-md-6">
             <h5 class="text-uppercase">Contact Information</h5>
-            <p>Website Admin: <strong>hreeves@islander.tamucc.edu</strong></p>
-            <p>Project Manager: <strong>bryan.gillis@tamucc.edu</strong></p>
+            <p>Point of Contact: <strong>son.nguyen@tamucc.edu</strong></p>
         </div>
         <div class="col-md-3">
             <h5 class="text-uppercase">Projects</h5>
             <ul class="list-unstyled">
                 <li>
-                    <a href="../../Forms/Main/">Ed Rachel</a>
+                    <a href="../../Forms/Main/">Ed Rachal</a>
                 </li>
                 <li>
                     <a href="#!">USACE</a>
