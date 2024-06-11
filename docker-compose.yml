@@ -42,6 +42,7 @@ services:
     links:
       - db
     environment:
+      UPLOAD_LIMIT: 100M
       PMA_HOST: db
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
