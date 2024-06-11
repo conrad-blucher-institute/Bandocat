@@ -1,4 +1,8 @@
 FROM php:8.0-apache
 RUN apt-get update
 RUN apt-get install -y imagemagick
-RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+
+# install gdal to generate thumbnails + python 2.7
+RUN apt-get install -y gdal-bin python2.7
+RUN ln -s /usr/bin/python2.7 /usr/bin/python

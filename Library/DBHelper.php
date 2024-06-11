@@ -36,7 +36,7 @@ class DBHelper
         // $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
         // $config = parse_ini_file($root . DBHelper::$ini_dir);
         $this->host = getenv("HOST_NAME");
-        $this->user = 'root'; //
+        $this->user = 'root';
         $this->pwd = getenv("DB_PASSWORD");
         $this->maindb = 'bandocatdb';
            /*if not currently connected, attempt to connect to DB*/
@@ -75,7 +75,7 @@ class DBHelper
         if ($db == "" || $db == null) //empty parameter = default = bandocatdb
             $db = "bandocatdb";
         /* assign conn as a PHP Data Object, concat the host, user and pwd */
-        $this->conn = new PDO('mysql:host=' . 'db' . ';dbname=' . $db, 'root', 'somepassword');
+        $this->conn = new PDO('mysql:host=' . 'db' . ';dbname=' . $db, $this->user, $this->pwd);
         return 0;
     }
 

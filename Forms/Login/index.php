@@ -6,7 +6,7 @@
  * a session identifier passed via a GET or POST request,
  * or passed via a cookie.
  *******************************************/
-session_start();
+// session_start();
 ?>
 <!doctype html>
 <html lang="en">
@@ -145,24 +145,23 @@ session_start();
 
     <div class="footer-right">
         <div>
-            <a href="http://spatialquerylab.com/" target="_blank" ><img class="Logo" src="../../Images/Query.PNG" title="Spatial Query Lab Website"/></a>
-            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/facebook-small.png"/></a>
-            <a href="http://spatialquerylab.com/" target="_blank"><img class="Logo" src="../../Images/twitter_35x35.png"/></a>
+            <a href="https://spatialquerylab.org/" target="_blank" ><img class="Logo" src="../../Images/Query.PNG" title="Spatial Query Lab Website"/></a>
+            <a href="https://spatialquerylab.org/" target="_blank"><img class="Logo" src="../../Images/facebook-small.png"/></a>
+            <a href="https://spatialquerylab.org/" target="_blank"><img class="Logo" src="../../Images/twitter_35x35.png"/></a>
         </div>
     </div>
 
     <div class="footer-left">
 
         <p class="footer-links" style="white-space: nowrap"> Learn more about BandoCat at the
-            <a href="http://spatialquerylab.com/" target="_blank"><u>Spatial {Query} Lab</u></a>
+            <a href="https://spatialquerylab.org/" target="_blank"><u>Spatial {Query} Lab</u></a>
         </p>
 
     </div>
 
     <p>Contact Information:</p>
     <ul>
-        <li>Website Admin: <a href="mailto:hreeves@islander.tamucc.edu" target="_top">hreeves@islander.tamucc.edu</a></li>
-        <li>Project Manager: <a href="mailto:bryan.gillis@tamucc.edu" target="_top">bryan.gillis@tamucc.edu</a></li>
+        <li>Website Admin: <a href="mailto:son.nguyen@tamucc.edu" target="_top">son.nguyen@tamucc.edu</a></li>
     </ul>
     <p class = "Copyrights">Copyright <span id="CBI_Year"></span> Conrad Blucher Institute for Surveying and Science  </p>
 </footer>
