@@ -1,41 +1,53 @@
-version: "3.8"
-
 services:
   bandocat:
     build:
       dockerfile: Dockerfile.frontend
     image: bandocat
     container_name: bandocat
-    env_file: .env.dist
+    env_file: .env
     ports:
       - "80:80"
-    volumes:
-      - type: bind
-        source: ./
-        target: /var/www/html/
+    develop:
+      watch:
+        - action: sync
+          source: ./
+          target: /var/www/html/
+          path: /var/www/html/
     environment:
       DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       HOST_NAME: ${HOST_NAME}
     networks:
       - bandonet
+    volumes:
+      - ./:/var/www/html/
   db:
-    image: mysql:latest
+    image: mariadb:latest
     container_name: bandocatdb
-    env_file: .env.dist
-    command: --default-authentication-plugin=mysql_native_password
+    env_file: .env
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
     networks:
       - bandonet
     volumes:
-      - ./db/:/docker-entrypoint-initdb.d
-  adminer:
-    image: adminer
+      - ./db/:/var/lib/mysql/ # persist data
+      - ./init_db/:/docker-entrypoint-initdb.d # initialize db (first time only)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
     restart: always
     ports:
-      - 8080:8080
+      - 8081:80
     networks:
       - bandonet
 networks:

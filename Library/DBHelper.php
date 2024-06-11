@@ -22,7 +22,7 @@ class DBHelper
 {
     use TDLPublishTrait;
     //Members
-     static protected $ini_dir = "Bandocat_config\\bandoconfig.ini";
+    //  static protected $ini_dir = "Bandocat_config\\bandoconfig.ini";
      protected $host;
      protected $user;
      protected $pwd;
@@ -33,12 +33,12 @@ class DBHelper
 
     function __construct()
     {
-        $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
-        $config = parse_ini_file($root . DBHelper::$ini_dir);
-        $this->host = $config['servername'];
-        $this->user = $config['username']; //
-        $this->pwd = $config['password'];
-        $this->maindb = $config['dbname'];
+        // $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
+        // $config = parse_ini_file($root . DBHelper::$ini_dir);
+        $this->host = getenv("HOST_NAME");
+        $this->user = 'root'; //
+        $this->pwd = getenv("DB_PASSWORD");
+        $this->maindb = 'bandocatdb';
            /*if not currently connected, attempt to connect to DB*/
            if ($this->getConn() == null)
                $this->DB_CONNECT(null);
@@ -75,7 +75,7 @@ class DBHelper
         if ($db == "" || $db == null) //empty parameter = default = bandocatdb
             $db = "bandocatdb";
         /* assign conn as a PHP Data Object, concat the host, user and pwd */
-        $this->conn = new PDO('mysql:host=' . $this->getHost() . ';dbname=' . $db, $this->getUser(), $this->getPwd());
+        $this->conn = new PDO('mysql:host=' . 'db' . ';dbname=' . $db, 'root', 'somepassword');
         return 0;
     }
 

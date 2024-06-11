@@ -10,10 +10,14 @@ _____
 - Python 2.7 + GDAL library
 _____
 ## Development Environment Setup (Docker-Compose)
-1. `docker-compose up`
-2. Go to adminer interface at: `localhost:8080` and enter the credentials to login (server: `db`, username: `root`, password: `<MYSQL_ROOT_PASSWORD>` from `.env.dist`)
-3. Once you are logged in, import all the databases including `bandocatdb` and the collection databases. Please reach out to @snguyen1 for the .sql files
-4. Bandocat should be accessible via `localhost`
+1. Clone the repository
+2. Copy `.env.dist` to `.env` and update the environment variables
+3. Move .sql database files to `init_db` folder in the root directory (Create the folder if it does not exist) - Reach out to @snguyen1 to get the database files
+4. Run `docker-compose up`
+5. Wait for the db to finish initializing
+6. Bandocat should be accessible via `http://localhost`
+7. PHPMyAdmin should be accessible via `http://localhost:8081` (server: `db`, username: `root`, password: See variable `MYSQL_ROOT_PASSWORD` in `.env` file)
+
 
 Have fun programming! :)
 

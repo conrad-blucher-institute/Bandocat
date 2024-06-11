@@ -1,3 +1,13 @@
+# Store thumbnails file after uploading files
 Thumbnails/
 .idea/
+# Store persistent db volume data for persistence
 db
+# Environment variable
+.env
+# Store db initialization
+init_db
+# Log
+debug.log
+
+
