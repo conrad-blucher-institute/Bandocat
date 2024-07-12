@@ -1,4 +1,5 @@
 <?php
+    require_once 'DBHelper.php';
 //NOTE:
 /*
 - BEFORE EXECUTING QUERIES OR CALL SPs, MUST EITHER:
@@ -73,7 +74,7 @@ class AnnouncementDBHelper extends DBHelper
         $data = array();
 
         // Getting connection
-        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
+        $mysqli = new mysqli("bandocatdb", 'root', 'root', "bandocatdb");
 
         // Checking to see if the connection failed
         if($mysqli->connect_errno)

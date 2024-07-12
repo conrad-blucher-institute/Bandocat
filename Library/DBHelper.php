@@ -35,9 +35,9 @@ class DBHelper
     {
         // $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
         // $config = parse_ini_file($root . DBHelper::$ini_dir);
-        $this->host = getenv("HOST_NAME");
-        $this->user = 'root';
-        $this->pwd = getenv("DB_PASSWORD");
+        $this->host = getenv('HOST_NAME');
+        $this->user = getenv('MYSQL_USER');
+        $this->pwd = getenv('MYSQL_PASSWORD');
         $this->maindb = 'bandocatdb';
            /*if not currently connected, attempt to connect to DB*/
            if ($this->getConn() == null)
@@ -267,7 +267,7 @@ class DBHelper
     function GET_USER_INFO($userID)
     {
         //USE is sql for changing to the database supplied after the concat.
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         //r.name = role name
         //Select all relevant data to the supplied userID excluding password
         $sth = $this->getConn()->prepare("SELECT `username`,`fullname`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` WHERE `userID` = :userID LIMIT 1");
@@ -289,7 +289,7 @@ class DBHelper
      ***********************************************/
     function GET_ACTIVE_USER_TABLE()
     {
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT `username`,`userID`,`email`,r.`name` FROM `user` LEFT JOIN `role` AS r ON r.`roleID` = `user`.`roleID` WHERE  NOT `user`.`roleID`=0 ORDER BY `username` ASC ");
         $sth->execute();
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -304,7 +304,7 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_FOR_DROPDOWN()
     {
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT `collectionID`,`name`,`displayname` FROM `collection`");
         $sth->execute();
 
@@ -322,7 +322,7 @@ class DBHelper
     function GET_COLLECTION_FOR_DROPDOWN_FROM_TEMPLATEID($iATemplateID, $iSwitch)
     {
 
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
 //        if($iSwitch == null)
 //        {
 //            //if the user failed to supply an indicator supply true to find exact what is passed
@@ -372,7 +372,7 @@ class DBHelper
      ***********************************************/
     function GET_ACTION_UNIQUE()
     {
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT DISTINCT `action` FROM `log`");
         $sth->execute();
 
@@ -389,7 +389,7 @@ class DBHelper
      ***********************************************/
     function GET_COLLECTION_TABLE()
     {
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("SELECT * FROM `collection`");
         $sth->execute();
 
@@ -406,7 +406,7 @@ class DBHelper
      ***********************************************/
     function GET_USER_ROLE_FOR_DROPDOWN()
     {
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $call = $this->getConn()->prepare("SELECT `roleID`,`name`, `description` FROM `bandocatdb`.`role`");
         $call->execute();
 
@@ -425,7 +425,7 @@ class DBHelper
     function GET_USER_ROLE($userID)
     {
         //USE is sql for changing to the database supplied after the concat.
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         //Select all relevant data to the supplied userID excluding password
         $sth = $this->getConn()->prepare("SELECT `user`.`userID`,`user`.`roleID`, `role`.`name` FROM `user` INNER JOIN `role` ON `user`.`roleID` = `role`.`roleID` WHERE `userID` = :userID");
         //Bind the supplied userID into the select statement above.
@@ -445,7 +445,7 @@ class DBHelper
      ***********************************************/
     function USER_ROLE_UPDATE($iUserID,$iNewRole)
     {
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         $sth = $this->getConn()->prepare("UPDATE `user` SET `roleID` = :newrole WHERE `userID` = :uID LIMIT 1");
         $sth->bindParam(':newrole',$iNewRole,PDO::PARAM_STR);
         $sth->bindParam(':uID',$iUserID,PDO::PARAM_INT);
@@ -466,7 +466,7 @@ class DBHelper
         //select only active USERs
         if($bActive == true)
         {
-            $this->getConn()->exec('USE' . $this->maindb);
+            $this->getConn()->exec('USE ' . $this->maindb);
             $call = $this->getConn()->prepare("SELECT `userID`,`username` FROM `user` WHERE `roleID` != 0");
             $call->execute();
 
@@ -474,7 +474,7 @@ class DBHelper
             return $role;
         }else
         {
-            $this->getConn()->exec('USE' . $this->maindb);
+            $this->getConn()->exec('USE ' . $this->maindb);
             $call = $this->getConn()->prepare("SELECT `userID`,`username` FROM `user`");
             $call->execute();
 
@@ -634,7 +634,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
      * $iUserID (in string) -  userID of user who performs the action
      ***********************************************/
     function SP_USER_INSERT($iUsername, $iPassword, $iFullname, $iEmail, $iRoleID, &$oMessage){
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         /*PREPARE STATEMENT*/
         /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
         $call = $this->getConn()->prepare("CALL SP_USER_INSERT(?,?,?,?,?,@oMessage)");
@@ -2216,7 +2216,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         // AND `weeklyreport`.`collectionID` = ?'
         $data = array($id);
         $sth = $this->getConn()->prepare("SELECT `email` FROM `user` WHERE `userID` = ?");
-        $sth->bindParam(':bookTitle',$booktitle,PDO::PARAM_INT);
+        
         $sth->execute($data);
         //return the result
         $result = $sth->fetchColumn();
