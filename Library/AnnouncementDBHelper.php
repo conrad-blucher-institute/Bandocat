@@ -74,7 +74,7 @@ class AnnouncementDBHelper extends DBHelper
         $data = array();
 
         // Getting connection
-        $mysqli = new mysqli("bandocatdb", 'root', 'root', "bandocatdb");
+        $mysqli = new mysqli($this->getHost(), $this->getUser(), $this->getPwd(), "bandocatdb");
 
         // Checking to see if the connection failed
         if($mysqli->connect_errno)
