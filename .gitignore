@@ -10,4 +10,7 @@ init_db
 # Log
 debug.log
 
+Collections
+
+vendor
 

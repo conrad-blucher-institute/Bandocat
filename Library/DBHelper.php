@@ -1094,7 +1094,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
      * $result  (int) - number of tickets
      ***********************************************/
     function GET_ADMIN_OPENTICKET_COUNT()
-    {
+{
         //switch to correct db
         $this->getConn()->exec('USE ' . $this->maindb);
         /* PREPARE STATEMENT */
@@ -1114,7 +1114,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         return $result;
 
 //
-    }
+}
 
 
 
@@ -2255,7 +2255,7 @@ INNER JOIN `user` ON (`ticket`.`posterID` = `user`.`userID`) LEFT JOIN `error` O
         $this->getConn()->exec('USE bandocatdb');
 
         // Preparing query and binding the parameter
-        $sth = $this->getConn()->prepare("SELECT `name`, `dbname` FROM `collection` WHERE `collectionID` = ?");
+        $sth = $this->getConn()->prepare("SELECT `name`, `dbname` FROM `collection` WHERE `collectionID` = :id");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
 
         // Executing

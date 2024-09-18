@@ -194,7 +194,7 @@ else header('Location: ../../');
                             //case: use dropdown filtering for column that has boolean value (Yes/No or 1/0)
                             case 4: //needs input
                             case 5: //column needsreview
-                                var select = $('<select style="width:100%"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
+                                var select = $('<select class="form-control"><option value="">Filter...</option><option value="1">Yes</option><option value="0">No</option></select>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'change', function () {
                                         var val = $.fn.dataTable.util.escapeRegex(
@@ -210,7 +210,7 @@ else header('Location: ../../');
                             case 1:
                             case 2:
                             case 3:
-                                var input = $('<input type="text" style="width:100%" placeholder="Search..." value="">')
+                                var input = $('<input type="text" class="form-control" placeholder="Search..." value=""></input>')
                                     .appendTo( $(column.footer()).empty() )
                                     .on( 'keyup change', function () {
                                         var val = $.fn.dataTable.util.escapeRegex(
@@ -224,7 +224,7 @@ else header('Location: ../../');
                                 break;
                         }
                     } );
-                }
+                },
             } );
 
         //hide first column (DocID)

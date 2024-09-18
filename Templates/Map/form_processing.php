@@ -168,12 +168,12 @@ else if($action == "catalog")
     //Check folder, create folder
     if ($valid == true) {
         if (!is_dir($filenamepath))
-            mkdir($filenamepath, 0777);
+            mkdir($filenamepath, 0777, true);
         move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $filenamepath . '/' . basename($_FILES["fileUpload"]["name"]));
 
         if ($hasBack == true) {
             if (!is_dir($filenamebackpath))
-                mkdir($filenamebackpath, 0777);
+                mkdir($filenamebackpath, 0777, true);
             move_uploaded_file($_FILES["fileUploadBack"]["tmp_name"], $filenamebackpath . '/' . basename($_FILES["fileUploadBack"]["name"]));
         }
 
@@ -213,8 +213,9 @@ else if($action == "catalog")
 
         $exec1 = "convert " . $filenamepath . '/' . basename($_FILES["fileUpload"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $frontthumbnail;
         exec($exec1, $yaks1);
+
         if ($hasBack == true) {
-            $exec2 = "convert " . $filenamebackpath . '/' . basename($_FILES["fileUploadBack"]["name"]) . " -deskew 40% -fuzz 50% -trim -resize 200 " . '../../' . $backthumbnail;
+            $exec2 = "convert " . escapeshellarg($filenamebackpath . '/' . basename($_FILES["fileUploadBack"]["name"])) . " -deskew 40% -fuzz 50% -trim -resize 200 " . escapeshellarg('../../' . $backthumbnail);
             exec($exec2, $yaks2);
         }
 

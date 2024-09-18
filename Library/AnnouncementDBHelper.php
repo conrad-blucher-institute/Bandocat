@@ -56,7 +56,7 @@ class AnnouncementDBHelper extends DBHelper
 
     function SP_ANNOUNCEMENT_UPDATE($iTitle, $iMessage, $iEndtime, $iAnnouncementID)
     {
-        $this->getConn()->exec('USE' . $this->maindb);
+        $this->getConn()->exec('USE ' . $this->maindb);
         var_dump("THETITLE: ", $iTitle, "  THEMESSAGE: ", $iMessage);
         $sth = $this->getConn()->prepare("UPDATE `announcement` SET `title` = :title,`message` = :message, `endtime` = :endtime WHERE `announcementID` = :AID");
         $sth->bindParam(':title',$iTitle,PDO::PARAM_STR);

@@ -6,7 +6,7 @@ $session = new SessionManager();
 $DB = new DBHelper();
 $Render = new ControlsRender();
 $baseUrl; //store the TDL REST URL
-$ini_dir = "BandoCat_config\\tdlconfig.ini";
+$ini_dir = "../../BandoCat_config/tdlconfig.ini";
  $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
  $config = parse_ini_file($root . $ini_dir);
  $baseUrl = $config['baseURL'];

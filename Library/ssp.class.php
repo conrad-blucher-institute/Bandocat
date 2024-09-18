@@ -276,7 +276,7 @@ class SSP {
         // Main query to actually get the data
         $data = self::sql_exec( $db, $bindings,
             "SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
-			 FROM `$table`
+			 FROM `$table`     
 			 $where
 			 $order
 			 $limit"

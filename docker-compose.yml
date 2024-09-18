@@ -7,12 +7,12 @@ services:
     env_file: .env
     ports:
       - "80:80"
-    develop:
-      watch:
-        - action: sync
-          source: ./
-          target: /var/www/html/
-          path: /var/www/html/
+    #develop:
+     # watch:
+      #  - action: sync
+       #   source: ./
+        #  target: /var/www/html/
+         # path: /var/www/html/
     environment:
       DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       HOST_NAME: ${HOST_NAME}
@@ -27,7 +27,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: root
+      MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"

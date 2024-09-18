@@ -180,7 +180,7 @@ $Render = new ControlsRender();
                                 {
 
                                     //return "<a href='' onclick=onClickCalculate(event,document.getElementById('ddlCollection').value)>Select</a>" ;
-                                    return "<a target='_blank'  href='/BandoCat/Templates/Folder/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
+                                    return "<a target='_blank'  href='/../../Templates/Folder/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
                                 }
                                 //READY FOR PDF
                                 if(document.getElementById('ddlCollection2').value == 1)
@@ -194,7 +194,7 @@ $Render = new ControlsRender();
                                 {
 
                                     //return "<a href='' onclick=onClickCalculate(event,document.getElementById('ddlCollection').value)>Select</a>" ;
-                                    return "<a target='_blank'  href='/BandoCat/Templates/Folder/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
+                                    return "<a target='_blank'  href='/../../Templates/Folder/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
                                 }
 
                             },
@@ -259,7 +259,7 @@ $Render = new ControlsRender();
                                 {
 
                                     //return "<a href='' onclick=onClickCalculate(event,document.getElementById('ddlCollection').value)>Select</a>" ;
-                                    return "<a target='_blank'  href='/BandoCat/Templates/FieldBook/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
+                                    return "<a target='_blank'  href='../../Templates/FieldBook/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
                                 }
                                 //READY FOR PDF
                                 if(document.getElementById('ddlCollection2').value == 1)
@@ -273,7 +273,7 @@ $Render = new ControlsRender();
                                 {
 
                                     //return "<a href='' onclick=onClickCalculate(event,document.getElementById('ddlCollection').value)>Select</a>" ;
-                                    return "<a target='_blank'  href='/BandoCat/Templates/FieldBook/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
+                                    return "<a target='_blank'  href='../../Templates/FieldBook/index.php?&col=" + $('#ddlCollection').val() + "&pagekey=review'>Edit/View</a>"
                                 }
 
                             },

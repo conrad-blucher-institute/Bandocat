@@ -6,7 +6,7 @@
  * Time: 4:26 PM
  */
 require("../../Library/DBHelper.php");
-require("C:/xampp/htdocs/TonyAmos/Classes/TonyDBHelper.php");
+require("../../xampp/htdocs/TonyAmos/Classes/TonyDBHelper.php");
 $DB = new DBHelper();
 $TDB = new TonyDBHelper();
 
