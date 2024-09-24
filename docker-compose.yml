@@ -6,28 +6,34 @@ services:
     container_name: bandocat
     env_file: .env
     ports:
-      - "80:80"
-    #develop:
-     # watch:
-      #  - action: sync
-       #   source: ./
-        #  target: /var/www/html/
-         # path: /var/www/html/
+      - '${HOST_PORT_BANDOCAT_PHP:-80}:80'
+    develop:
+     watch:
+       - action: sync
+         target: /var/www/html/
+         path: ./
     environment:
-      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: 'bandocat_user'
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       HOST_NAME: ${HOST_NAME}
+      HOST_ABS_PATH_STORAGE: ${HOST_ABS_PATH_STORAGE}
+      HOST_ABS_PATH_THUMBNAILS: ${HOST_ABS_PATH_THUMBNAILS}
     networks:
       - bandonet
     volumes:
-      - ./:/var/www/html/
-  db:
-    image: mariadb:latest
+      - ./:/var/www/html/ # Don't need to mount source code in prod
+      - ${HOST_ABS_PATH_STORAGE:-./Uploads}:/var/www/html/Uploads/ # persist storage data
+      - ${HOST_ABS_PATH_THUMBNAILS:-./Thumbnails}:/var/www/html/Thumbnails/ # persist thumbnails data
+      - ./ErrorLog/:/var/www/html/ErrorLog/ # persist error log
+      # NEEDS TO MOUNT STORAGE DIR
+  db: # DO NOT CHANGE THIS SERVICE NAME, will affect connection from front-end (DBHelper and PHPMyAdmin)
+    image: mariadb:11.4.3
     container_name: bandocatdb
     env_file: .env
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_USER: 'bandocat_user' # make this static to simplify the connection
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
@@ -48,7 +54,7 @@ services:
       PMA_ARBITRARY: 1
     restart: always
     ports:
-      - 8081:80
+      - '${HOST_PORT_BANDOCAT_PHPMYADMIN:-8081}:80'
     networks:
       - bandonet
 networks:

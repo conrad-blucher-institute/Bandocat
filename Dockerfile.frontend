@@ -20,12 +20,12 @@ RUN apt-get update && apt-get install -y \
 # Install required PHP extensions
 RUN docker-php-ext-install bz2 curl fileinfo gd gettext mbstring exif pdo_mysql pdo_sqlite mysqli
 
-# Custom php ini config
-COPY php.ini.dist /usr/local/etc/php/
-
 # Install GDAL and NumPy for Python 3 via pip
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install numpy gdal
+
+# Custom php ini config
+COPY php.ini.dist /usr/local/etc/php/php.ini
 
 # Set up Python path for Python 3
 ENV PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python3/site-packages"

@@ -35,7 +35,7 @@ class DBHelper
     {
         // $root = substr(getcwd(),0,strpos(getcwd(),"htdocs\\")); //point to xampp// directory
         // $config = parse_ini_file($root . DBHelper::$ini_dir);
-        $this->host = getenv('HOST_NAME');
+        $this->host = 'db'; // this is to point to db-service in docker-compose
         $this->user = getenv('MYSQL_USER');
         $this->pwd = getenv('MYSQL_PASSWORD');
         $this->maindb = 'bandocatdb';
