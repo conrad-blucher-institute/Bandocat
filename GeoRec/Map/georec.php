@@ -14,11 +14,6 @@ require_once('../../Library/DBHelper.php');
 require_once('../../Library/MapDBHelper.php');
 $DB = new MapDBHelper();
 
-require_once '../../vendor/autoload.php'; 
-
-// Load the .env file
-$dotenv = Dotenv\Dotenv::createImmutable('/var/www/html');
-$dotenv->load();
 
 // Get the access token from the .env file
 $accessToken = $_ENV['MAPBOX_ACCESS_TOKEN'];
