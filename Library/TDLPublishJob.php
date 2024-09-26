@@ -5,7 +5,7 @@
 class TDLPublishJob
 {
 
-    static protected $ini_dir = "BandoCat_config\\tdlconfig.ini"; //this point to the directory of the TDL configuration file that has TDL REST URL, username (islander email), password
+    static protected $ini_dir = "../../BandoCat_config/tdlconfig.ini"; //this point to the directory of the TDL configuration file that has TDL REST URL, username (islander email), password
     protected $cookie; //$cookie (authentication cookie) returned to perform POST,PUT,DELETE request
     protected $tdl_email; //store the TDL username/email credential from tdlconfig.ini
     protected $tdl_pwd;  //store the authentication TDL password

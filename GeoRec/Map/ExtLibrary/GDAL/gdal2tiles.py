@@ -135,7 +135,7 @@ class GlobalMercator(object):
 
       [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244]
       Constant 20037508.342789244 comes from the circumference of the Earth in meters,
-      which is 40 thousand kilometers, the coordinate origin is in the middle of extent.
+he middle of extent.
       In fact you can calculate the constant as: 2 * math.pi * 6378137 / 2.0
       $ echo 180 85 | gdaltransform -s_srs EPSG:4326 -t_srs EPSG:900913
       Polar areas with abs(latitude) bigger then 85.05112878 are clipped off.

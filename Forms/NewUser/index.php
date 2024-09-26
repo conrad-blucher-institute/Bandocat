@@ -114,7 +114,7 @@ $Render = new ControlsRender();
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="email" placeholder="Password">
+                                        <input type="text" class="form-control" id="email" placeholder="Email">
                                         <div class="valid-feedback">
                                             Looks good!
                                         </div>

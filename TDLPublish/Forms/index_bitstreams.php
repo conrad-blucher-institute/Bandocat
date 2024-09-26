@@ -9,7 +9,7 @@ $Render = new ControlsRender();
 
 if(isset($_GET['docID']) && isset($_GET['col']))
 {
-    $ini_dir = "BandoCat_config\\tdlconfig.ini";
+    $ini_dir = "../../BandoCat_config/tdlconfig.ini";
     $docID = $_GET['docID'];
 	$col = $_GET['col'];
 	//switch to the currently working Database

@@ -24786,7 +24786,7 @@ Wed, 10 Oct 2018 19:28:23 +0200:  Post new item success! DspaceID: e2d0172a-1779
 Wed, 10 Oct 2018 19:28:27 +0200:ITEM ID PASSED: e2d0172a-1779-447b-8cf8-22a1b430d4d0 
 Wed, 10 Oct 2018 19:28:27 +0200: IB:::TDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:28:27 +0200: NUM:1 
-Wed, 10 Oct 2018 19:28:27 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Wed, 10 Oct 2018 19:28:27 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:28:27 +0200: nameTDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:36:58 +0200: bluchermaps is the selected collection.
 Wed, 10 Oct 2018 19:36:58 +0200: Job Started.
@@ -24799,7 +24799,7 @@ Wed, 10 Oct 2018 19:36:59 +0200:  Post new item success! DspaceID: 04de57de-5c60
 Wed, 10 Oct 2018 19:37:02 +0200:ITEM ID PASSED: 04de57de-5c60-4f63-baa0-39835c3a95ba 
 Wed, 10 Oct 2018 19:37:02 +0200: IB:::TDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:37:02 +0200: NUM:1 
-Wed, 10 Oct 2018 19:37:02 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Wed, 10 Oct 2018 19:37:02 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:37:02 +0200: nameTDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:37:03 +0200: NUM:2200 
 Wed, 10 Oct 2018 19:37:04 +0200: Document ID: 9749 has been published!
@@ -24814,7 +24814,7 @@ Wed, 10 Oct 2018 19:45:40 +0200:  Post new item success! DspaceID: 88ee2c30-dcc0
 Wed, 10 Oct 2018 19:45:43 +0200:ITEM ID PASSED: 88ee2c30-dcc0-4c3a-a2d3-f3d69eae7100 
 Wed, 10 Oct 2018 19:45:43 +0200: IB:::TDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:45:43 +0200: NUM:1 
-Wed, 10 Oct 2018 19:45:43 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Wed, 10 Oct 2018 19:45:43 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:45:43 +0200: nameTDL-_testdocument.jpg 
 Wed, 10 Oct 2018 19:45:44 +0200: NUM:2200 
 Wed, 10 Oct 2018 19:45:45 +0200: Document ID: 9749 has been published!
@@ -24832,12 +24832,12 @@ Thu, 11 Oct 2018 20:20:05 +0200:  Post new item success! DspaceID: 1e45da42-c0c6
 Thu, 11 Oct 2018 20:20:11 +0200:ITEM ID PASSED: 1e45da42-c0c6-4bae-9d16-448f4848bdd4 
 Thu, 11 Oct 2018 20:20:11 +0200: IB:::TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 20:20:11 +0200: NUM:1 
-Thu, 11 Oct 2018 20:20:11 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Thu, 11 Oct 2018 20:20:11 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 20:20:11 +0200: nameTDL-_testdocument.jpg 
 Thu, 11 Oct 2018 20:20:11 +0200:ITEM ID PASSED: 06a00759-111c-4610-b2bf-8c1363cd4d34 
 Thu, 11 Oct 2018 20:20:11 +0200: IB:::TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 20:20:11 +0200: NUM:1 
-Thu, 11 Oct 2018 20:20:11 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Thu, 11 Oct 2018 20:20:11 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 20:20:11 +0200: nameTDL-_testdocument.jpg 
 Thu, 11 Oct 2018 20:20:11 +0200: NUM:2200 
 Thu, 11 Oct 2018 20:20:12 +0200: NUM:2200 
@@ -24851,7 +24851,7 @@ Thu, 11 Oct 2018 21:01:37 +0200:  Post new item success! DspaceID: 763c521b-e444
 Thu, 11 Oct 2018 21:01:42 +0200:ITEM ID PASSED: 763c521b-e444-4447-a363-3823e453c5d4 
 Thu, 11 Oct 2018 21:01:42 +0200: IB:::TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:01:42 +0200: NUM:1 
-Thu, 11 Oct 2018 21:01:42 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Thu, 11 Oct 2018 21:01:42 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:01:42 +0200: nameTDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:01:42 +0200: NUM:2200 
 Thu, 11 Oct 2018 21:01:44 +0200: Document ID: 9749 has been published!
@@ -24861,7 +24861,7 @@ Thu, 11 Oct 2018 21:31:31 +0200:  Post new item success! DspaceID: a1f5540c-a40b
 Thu, 11 Oct 2018 21:31:35 +0200:ITEM ID PASSED: a1f5540c-a40b-489b-a413-69f1fd5df80b 
 Thu, 11 Oct 2018 21:31:35 +0200: IB:::TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:31:35 +0200: NUM:1 
-Thu, 11 Oct 2018 21:31:35 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Thu, 11 Oct 2018 21:31:35 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:31:35 +0200: nameTDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:31:36 +0200: NUM:2500 
 Thu, 11 Oct 2018 21:31:36 +0200: Publishing item ID:9749
@@ -24871,7 +24871,7 @@ Thu, 11 Oct 2018 21:31:39 +0200: Job dspacePublishedID: 11
 Thu, 11 Oct 2018 21:31:40 +0200:ITEM ID PASSED: a1f5540c-a40b-489b-a413-69f1fd5df80b 
 Thu, 11 Oct 2018 21:31:40 +0200: IB:::TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:31:40 +0200: NUM:1 
-Thu, 11 Oct 2018 21:31:40 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Thu, 11 Oct 2018 21:31:40 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:31:40 +0200: nameTDL-_testdocument.jpg 
 Thu, 11 Oct 2018 21:31:40 +0200: NUM:2200 
 Thu, 11 Oct 2018 21:31:41 +0200: Document ID: 9749 has been published!
@@ -24884,7 +24884,7 @@ Mon, 15 Oct 2018 17:02:59 +0200:  Post new item success! DspaceID: 57ddbd52-e854
 Mon, 15 Oct 2018 17:03:05 +0200:ITEM ID PASSED: 57ddbd52-e854-473a-86e9-b2c353893008 
 Mon, 15 Oct 2018 17:03:05 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:03:05 +0200: NUM:1 
-Mon, 15 Oct 2018 17:03:05 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:03:05 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:03:05 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:03:05 +0200: NUM:2200 
 Mon, 15 Oct 2018 17:03:07 +0200: Document ID: 9749 has been published!
@@ -24894,7 +24894,7 @@ Mon, 15 Oct 2018 17:10:12 +0200:  Post new item success! DspaceID: 11f6e419-8b7c
 Mon, 15 Oct 2018 17:10:15 +0200:ITEM ID PASSED: 11f6e419-8b7c-45de-80e5-576747f5ad9b 
 Mon, 15 Oct 2018 17:10:15 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:10:15 +0200: NUM:1 
-Mon, 15 Oct 2018 17:10:15 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:10:15 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:10:15 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:10:15 +0200: NUM:2200 
 Mon, 15 Oct 2018 17:10:17 +0200: Document ID: 9749 has been published!
@@ -24904,7 +24904,7 @@ Mon, 15 Oct 2018 17:19:23 +0200:  Post new item success! DspaceID: 9d1c72ab-88a3
 Mon, 15 Oct 2018 17:19:27 +0200:ITEM ID PASSED: 9d1c72ab-88a3-4d75-bdf0-df11eb57dbe0 
 Mon, 15 Oct 2018 17:19:27 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:19:27 +0200: NUM:1 
-Mon, 15 Oct 2018 17:19:27 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:19:27 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:19:27 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:19:28 +0200: NUM:2500 
 Mon, 15 Oct 2018 17:19:28 +0200: Publishing item ID:9749
@@ -24912,7 +24912,7 @@ Mon, 15 Oct 2018 17:19:28 +0200: Job dspacePublishedID: 11
 Mon, 15 Oct 2018 17:19:32 +0200:ITEM ID PASSED: 9d1c72ab-88a3-4d75-bdf0-df11eb57dbe0 
 Mon, 15 Oct 2018 17:19:32 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:19:32 +0200: NUM:1 
-Mon, 15 Oct 2018 17:19:32 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:19:32 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:19:32 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:19:33 +0200: NUM:2200 
 Mon, 15 Oct 2018 17:19:34 +0200: Document ID: 9749 has been published!
@@ -24935,7 +24935,7 @@ Mon, 15 Oct 2018 17:26:10 +0200:ITEM ID PASSED123: 059da179-1f77-418b-9619-aac66
 Mon, 15 Oct 2018 17:26:10 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:26:10 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 17:26:10 +0200: NUM:1 
-Mon, 15 Oct 2018 17:26:10 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:26:10 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:26:10 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:26:11 +0200: NUM:2200 
 Mon, 15 Oct 2018 17:26:11 +0200:ITEM ID PASSED: 059da179-1f77-418b-9619-aac66952a700 
@@ -24956,7 +24956,7 @@ Mon, 15 Oct 2018 17:31:27 +0200:ITEM ID PASSED123: 0d88ceb7-b646-4217-9862-b3134
 Mon, 15 Oct 2018 17:31:27 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:31:27 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 17:31:27 +0200: NUM:1 
-Mon, 15 Oct 2018 17:31:27 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:31:27 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:31:27 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:31:27 +0200: NUM:2500 
 Mon, 15 Oct 2018 17:31:27 +0200: Publishing item ID:9749
@@ -24965,7 +24965,7 @@ Mon, 15 Oct 2018 17:31:31 +0200:ITEM ID PASSED123: 0d88ceb7-b646-4217-9862-b3134
 Mon, 15 Oct 2018 17:31:31 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:31:31 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 17:31:31 +0200: NUM:1 
-Mon, 15 Oct 2018 17:31:31 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:31:31 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:31:31 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:31:31 +0200: NUM:2200 
 Mon, 15 Oct 2018 17:31:32 +0200: Document ID: 9749 has been published!
@@ -24983,7 +24983,7 @@ Mon, 15 Oct 2018 17:38:26 +0200:ITEM ID PASSED123: 42c2265e-9619-453b-9f7c-5d246
 Mon, 15 Oct 2018 17:38:26 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:38:26 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 17:38:26 +0200: NUM:1 
-Mon, 15 Oct 2018 17:38:26 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 17:38:26 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:38:26 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 17:38:26 +0200: NUM:2200 
 Mon, 15 Oct 2018 17:38:27 +0200: Document ID: 9749 has been published!
@@ -25001,7 +25001,7 @@ Mon, 15 Oct 2018 19:29:21 +0200:ITEM ID PASSED123: b578704e-b5ae-4825-85d0-85ad7
 Mon, 15 Oct 2018 19:29:21 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 19:29:21 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 19:29:21 +0200: NUM:1 
-Mon, 15 Oct 2018 19:29:21 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 19:29:21 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 19:29:21 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 19:29:21 +0200: NUM:2200 
 Mon, 15 Oct 2018 19:29:22 +0200: Document ID: 9749 has been published!
@@ -25019,7 +25019,7 @@ Mon, 15 Oct 2018 19:36:27 +0200:ITEM ID PASSED123: 238732d0-9cd4-41fc-9663-7fad6
 Mon, 15 Oct 2018 19:36:27 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 19:36:27 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 19:36:27 +0200: NUM:1 
-Mon, 15 Oct 2018 19:36:27 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 19:36:27 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 19:36:27 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 19:36:33 +0200: NUM:2200 
 Mon, 15 Oct 2018 19:36:34 +0200: Document ID: 9749 has been published!
@@ -25037,7 +25037,7 @@ Mon, 15 Oct 2018 20:21:24 +0200:ITEM ID PASSED123: 2c4c1606-9dee-4c08-8f90-bd039
 Mon, 15 Oct 2018 20:21:24 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:21:24 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 20:21:24 +0200: NUM:1 
-Mon, 15 Oct 2018 20:21:24 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 20:21:24 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:21:24 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:21:30 +0200: NUM:2200 
 Mon, 15 Oct 2018 20:21:31 +0200: Document ID: 9749 has been published!
@@ -25055,19 +25055,19 @@ Mon, 15 Oct 2018 20:45:17 +0200:ITEM ID PASSED123: b243839c-c34a-474f-8f6d-329ee
 Mon, 15 Oct 2018 20:45:17 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:45:17 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 20:45:17 +0200: NUM:1 
-Mon, 15 Oct 2018 20:45:17 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 20:45:17 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:45:17 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:45:18 +0200: NUM:2500 
 Mon, 15 Oct 2018 20:45:18 +0200: IB:::TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 20:45:18 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 20:45:18 +0200: NUM:1 
-Mon, 15 Oct 2018 20:45:18 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 15 Oct 2018 20:45:18 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 20:45:18 +0200: nameTDL-_testdocument.kmz 
 Mon, 15 Oct 2018 20:45:18 +0200: NUM:2500 
 Mon, 15 Oct 2018 20:45:18 +0200: IB:::TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 20:45:18 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 20:45:18 +0200: NUM:1 
-Mon, 15 Oct 2018 20:45:18 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 15 Oct 2018 20:45:18 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 20:45:18 +0200: nameTDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 20:45:21 +0200: NUM:2200 
 Mon, 15 Oct 2018 20:45:21 +0200: Publishing item ID:9749
@@ -25076,13 +25076,13 @@ Mon, 15 Oct 2018 20:45:25 +0200:ITEM ID PASSED123: b243839c-c34a-474f-8f6d-329ee
 Mon, 15 Oct 2018 20:45:25 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:45:25 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 20:45:25 +0200: NUM:1 
-Mon, 15 Oct 2018 20:45:25 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 20:45:25 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:45:25 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 20:45:30 +0200: NUM:2200 
 Mon, 15 Oct 2018 20:45:30 +0200: IB:::TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 20:45:30 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 20:45:30 +0200: NUM:1 
-Mon, 15 Oct 2018 20:45:30 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 15 Oct 2018 20:45:30 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 20:45:30 +0200: nameTDL-_testdocument.kmz 
 Mon, 15 Oct 2018 20:45:35 +0200: NUM:2200 
 Mon, 15 Oct 2018 20:45:35 +0200: IB:::TDL-_testdocument_rectified.tif 
@@ -25101,19 +25101,19 @@ Mon, 15 Oct 2018 21:17:51 +0200:ITEM ID PASSED123: 6e1ab9f9-30cf-4540-b435-7ac1d
 Mon, 15 Oct 2018 21:17:51 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:17:51 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:17:51 +0200: NUM:1 
-Mon, 15 Oct 2018 21:17:51 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 21:17:51 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:17:51 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:17:57 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:17:57 +0200: IB:::TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:17:57 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:17:57 +0200: NUM:1 
-Mon, 15 Oct 2018 21:17:57 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 15 Oct 2018 21:17:57 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:17:57 +0200: nameTDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:17:57 +0200: NUM:2500 
 Mon, 15 Oct 2018 21:17:57 +0200: IB:::TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:17:57 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:17:57 +0200: NUM:1 
-Mon, 15 Oct 2018 21:17:57 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 15 Oct 2018 21:17:57 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:17:57 +0200: nameTDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:18:00 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:18:00 +0200: Publishing item ID:9749
@@ -25123,20 +25123,20 @@ Mon, 15 Oct 2018 21:18:04 +0200: IB:::TDL-_testdocument.jpg
 Mon, 15 Oct 2018 21:18:04 +0200: http_retval3405 
 Mon, 15 Oct 2018 21:18:04 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:18:04 +0200: NUM:1 
-Mon, 15 Oct 2018 21:18:04 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 21:18:04 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:18:04 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:18:10 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:18:10 +0200: IB:::TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:18:10 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:18:10 +0200: NUM:1 
-Mon, 15 Oct 2018 21:18:10 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 15 Oct 2018 21:18:10 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:18:10 +0200: nameTDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:18:14 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:18:14 +0200: IB:::TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:18:15 +0200: http_retval3405 
 Mon, 15 Oct 2018 21:18:15 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:18:15 +0200: NUM:1 
-Mon, 15 Oct 2018 21:18:15 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 15 Oct 2018 21:18:15 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:18:15 +0200: nameTDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:18:18 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:18:19 +0200: Document ID: 9749 has been published!
@@ -25154,19 +25154,19 @@ Mon, 15 Oct 2018 21:21:21 +0200:ITEM ID PASSED123: d336a93c-6a46-4dcf-91f7-c9056
 Mon, 15 Oct 2018 21:21:21 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:21:21 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:21:21 +0200: NUM:1 
-Mon, 15 Oct 2018 21:21:21 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 21:21:21 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:21:21 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:21:27 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:21:27 +0200: IB:::TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:21:27 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:21:27 +0200: NUM:1 
-Mon, 15 Oct 2018 21:21:27 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 15 Oct 2018 21:21:27 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:21:27 +0200: nameTDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:21:31 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:21:31 +0200: IB:::TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:21:31 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:21:31 +0200: NUM:1 
-Mon, 15 Oct 2018 21:21:31 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 15 Oct 2018 21:21:31 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:21:31 +0200: nameTDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:21:31 +0200: NUM:2500 
 Mon, 15 Oct 2018 21:21:31 +0200: Publishing item ID:9749
@@ -25176,20 +25176,20 @@ Mon, 15 Oct 2018 21:21:35 +0200: IB:::TDL-_testdocument.jpg
 Mon, 15 Oct 2018 21:21:35 +0200: http_retval3200 
 Mon, 15 Oct 2018 21:21:35 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:21:35 +0200: NUM:1 
-Mon, 15 Oct 2018 21:21:35 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 21:21:35 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:21:35 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:21:41 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:21:41 +0200: IB:::TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:21:41 +0200: http_retval3200 
 Mon, 15 Oct 2018 21:21:41 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:21:41 +0200: NUM:1 
-Mon, 15 Oct 2018 21:21:41 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 15 Oct 2018 21:21:41 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:21:41 +0200: nameTDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:21:45 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:21:45 +0200: IB:::TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:21:45 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:21:45 +0200: NUM:1 
-Mon, 15 Oct 2018 21:21:45 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 15 Oct 2018 21:21:45 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:21:45 +0200: nameTDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:21:48 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:21:49 +0200: Document ID: 9749 has been published!
@@ -25207,19 +25207,19 @@ Mon, 15 Oct 2018 21:50:11 +0200:ITEM ID PASSED123: 65e785bb-286a-43e7-8a31-d1e39
 Mon, 15 Oct 2018 21:50:11 +0200: IB:::TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:50:11 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:50:11 +0200: NUM:1 
-Mon, 15 Oct 2018 21:50:11 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 15 Oct 2018 21:50:11 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:50:11 +0200: nameTDL-_testdocument.jpg 
 Mon, 15 Oct 2018 21:50:17 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:50:17 +0200: IB:::TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:50:17 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:50:17 +0200: NUM:1 
-Mon, 15 Oct 2018 21:50:17 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 15 Oct 2018 21:50:17 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:50:17 +0200: nameTDL-_testdocument.kmz 
 Mon, 15 Oct 2018 21:50:21 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:50:21 +0200: IB:::TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:50:21 +0200: ISPUBLISHED?: 
 Mon, 15 Oct 2018 21:50:21 +0200: NUM:1 
-Mon, 15 Oct 2018 21:50:21 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 15 Oct 2018 21:50:21 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:50:21 +0200: nameTDL-_testdocument_rectified.tif 
 Mon, 15 Oct 2018 21:50:24 +0200: NUM:2200 
 Mon, 15 Oct 2018 21:50:25 +0200: Document ID: 9749 has been published!
@@ -25237,19 +25237,19 @@ Tue, 16 Oct 2018 16:51:09 +0200:ITEM ID PASSED123: e21d60e9-020d-40d4-aee1-b113d
 Tue, 16 Oct 2018 16:51:09 +0200: IB:::TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 16:51:09 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 16:51:09 +0200: NUM:1 
-Tue, 16 Oct 2018 16:51:09 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 16 Oct 2018 16:51:09 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 16:51:09 +0200: nameTDL-_testdocument.jpg 
 Tue, 16 Oct 2018 16:51:15 +0200: NUM:2200 
 Tue, 16 Oct 2018 16:51:15 +0200: IB:::TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 16:51:15 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 16:51:15 +0200: NUM:1 
-Tue, 16 Oct 2018 16:51:15 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Tue, 16 Oct 2018 16:51:15 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 16:51:15 +0200: nameTDL-_testdocument.kmz 
 Tue, 16 Oct 2018 16:51:15 +0200: NUM:2200 
 Tue, 16 Oct 2018 16:51:15 +0200: IB:::TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 16:51:15 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 16:51:15 +0200: NUM:1 
-Tue, 16 Oct 2018 16:51:15 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Tue, 16 Oct 2018 16:51:15 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 16:51:15 +0200: nameTDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 16:51:16 +0200: NUM:2200 
 Tue, 16 Oct 2018 16:51:17 +0200: Document ID: 9749 has been published!
@@ -25262,13 +25262,13 @@ Tue, 16 Oct 2018 18:06:37 +0200:ITEM ID PASSED123: 42e01c31-8081-4740-ae53-8f8d4
 Tue, 16 Oct 2018 18:06:37 +0200: IB:::TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:06:37 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 18:06:37 +0200: NUM:1 
-Tue, 16 Oct 2018 18:06:37 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 16 Oct 2018 18:06:37 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:06:37 +0200: nameTDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:06:42 +0200: NUM:2200 
 Tue, 16 Oct 2018 18:06:42 +0200: IB:::TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:06:42 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 18:06:42 +0200: NUM:1 
-Tue, 16 Oct 2018 18:06:42 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 16 Oct 2018 18:06:42 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:06:42 +0200: nameTDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:06:46 +0200: NUM:2200 
 Tue, 16 Oct 2018 18:06:47 +0200: Document ID: 9760 has been published!
@@ -25286,13 +25286,13 @@ Tue, 16 Oct 2018 18:30:00 +0200:ITEM ID PASSED123: e0729891-31be-423e-b305-8179a
 Tue, 16 Oct 2018 18:30:00 +0200: IB:::TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:30:00 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 18:30:00 +0200: NUM:1 
-Tue, 16 Oct 2018 18:30:00 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 16 Oct 2018 18:30:00 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:30:00 +0200: nameTDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:30:01 +0200: NUM:2200 
 Tue, 16 Oct 2018 18:30:01 +0200: IB:::TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:30:01 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 18:30:01 +0200: NUM:1 
-Tue, 16 Oct 2018 18:30:01 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 16 Oct 2018 18:30:01 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:30:01 +0200: nameTDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:30:01 +0200: NUM:2200 
 Tue, 16 Oct 2018 18:30:02 +0200: Document ID: 9760 has been published!
@@ -25305,13 +25305,13 @@ Tue, 16 Oct 2018 18:59:52 +0200:ITEM ID PASSED123: 00b98f4e-32e6-4d0a-8ee7-a7684
 Tue, 16 Oct 2018 18:59:52 +0200: IB:::TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:59:52 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 18:59:52 +0200: NUM:1 
-Tue, 16 Oct 2018 18:59:52 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 16 Oct 2018 18:59:52 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:59:52 +0200: nameTDL-_testdocument.jpg 
 Tue, 16 Oct 2018 18:59:52 +0200: NUM:2200 
 Tue, 16 Oct 2018 18:59:52 +0200: IB:::TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:59:52 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 18:59:52 +0200: NUM:1 
-Tue, 16 Oct 2018 18:59:52 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 16 Oct 2018 18:59:52 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:59:52 +0200: nameTDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 18:59:53 +0200: NUM:2200 
 Tue, 16 Oct 2018 18:59:54 +0200: Document ID: 9760 has been published!
@@ -25324,37 +25324,37 @@ Tue, 16 Oct 2018 19:33:20 +0200:ITEM ID PASSED123: d21ca43c-8c7a-4834-8b59-e271c
 Tue, 16 Oct 2018 19:33:20 +0200: IB:::TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 19:33:20 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 19:33:20 +0200: NUM:1 
-Tue, 16 Oct 2018 19:33:20 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 16 Oct 2018 19:33:20 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 19:33:20 +0200: nameTDL-_testdocument.jpg 
 Tue, 16 Oct 2018 19:33:27 +0200: NUM:2200 
 Tue, 16 Oct 2018 19:33:27 +0200: IB:::TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 19:33:27 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 19:33:27 +0200: NUM:1 
-Tue, 16 Oct 2018 19:33:27 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 16 Oct 2018 19:33:27 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 19:33:27 +0200: nameTDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 19:33:31 +0200: NUM:2200 
 Tue, 16 Oct 2018 19:33:31 +0200: IB:::TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 19:33:31 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 19:33:31 +0200: NUM:1 
-Tue, 16 Oct 2018 19:33:31 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Tue, 16 Oct 2018 19:33:31 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 19:33:31 +0200: nameTDL-_testdocument.kmz 
 Tue, 16 Oct 2018 19:33:32 +0200: NUM:2200 
 Tue, 16 Oct 2018 19:33:32 +0200: IB:::TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 19:33:32 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 19:33:32 +0200: NUM:1 
-Tue, 16 Oct 2018 19:33:32 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Tue, 16 Oct 2018 19:33:32 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 19:33:32 +0200: nameTDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 19:33:32 +0200: NUM:2200 
 Tue, 16 Oct 2018 19:33:32 +0200: IB:::TDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 19:33:32 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 19:33:32 +0200: NUM:1 
-Tue, 16 Oct 2018 19:33:32 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Tue, 16 Oct 2018 19:33:32 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 19:33:32 +0200: nameTDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 19:33:33 +0200: NUM:2200 
 Tue, 16 Oct 2018 19:33:33 +0200: IB:::TDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 19:33:33 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 19:33:33 +0200: NUM:1 
-Tue, 16 Oct 2018 19:33:33 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Tue, 16 Oct 2018 19:33:33 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 19:33:33 +0200: nameTDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 19:33:33 +0200: NUM:2200 
 Tue, 16 Oct 2018 19:33:34 +0200: Document ID: 9760 has been published!
@@ -25367,37 +25367,37 @@ Tue, 16 Oct 2018 20:24:44 +0200:ITEM ID PASSED123: b50024f7-8d6f-41ae-beb9-d9931
 Tue, 16 Oct 2018 20:24:44 +0200: IB:::TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 20:24:44 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:24:44 +0200: NUM:1 
-Tue, 16 Oct 2018 20:24:44 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 16 Oct 2018 20:24:44 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 20:24:44 +0200: nameTDL-_testdocument.jpg 
 Tue, 16 Oct 2018 20:24:44 +0200: NUM:2500 
 Tue, 16 Oct 2018 20:24:44 +0200: IB:::TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 20:24:44 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:24:44 +0200: NUM:1 
-Tue, 16 Oct 2018 20:24:44 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 16 Oct 2018 20:24:44 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 20:24:44 +0200: nameTDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 20:24:48 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:24:48 +0200: IB:::TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 20:24:48 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:24:48 +0200: NUM:1 
-Tue, 16 Oct 2018 20:24:48 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Tue, 16 Oct 2018 20:24:48 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 20:24:48 +0200: nameTDL-_testdocument.kmz 
 Tue, 16 Oct 2018 20:24:48 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:24:48 +0200: IB:::TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 20:24:48 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:24:48 +0200: NUM:1 
-Tue, 16 Oct 2018 20:24:48 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Tue, 16 Oct 2018 20:24:48 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 20:24:48 +0200: nameTDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 20:24:51 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:24:51 +0200: IB:::TDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 20:24:51 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:24:51 +0200: NUM:1 
-Tue, 16 Oct 2018 20:24:51 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Tue, 16 Oct 2018 20:24:51 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 20:24:51 +0200: nameTDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 20:24:51 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:24:51 +0200: IB:::TDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 20:24:51 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:24:51 +0200: NUM:1 
-Tue, 16 Oct 2018 20:24:51 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Tue, 16 Oct 2018 20:24:51 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 20:24:51 +0200: nameTDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 20:24:53 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:24:53 +0200: Publishing item ID:9760
@@ -25406,42 +25406,42 @@ Tue, 16 Oct 2018 20:25:01 +0200:ITEM ID PASSED123: b50024f7-8d6f-41ae-beb9-d9931
 Tue, 16 Oct 2018 20:25:01 +0200: IB:::TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 20:25:01 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:25:01 +0200: NUM:1 
-Tue, 16 Oct 2018 20:25:01 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 16 Oct 2018 20:25:01 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 16 Oct 2018 20:25:01 +0200: nameTDL-_testdocument.jpg 
 Tue, 16 Oct 2018 20:25:07 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:25:07 +0200: IB:::TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 20:25:07 +0200: http_retval3200 
 Tue, 16 Oct 2018 20:25:07 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:25:07 +0200: NUM:1 
-Tue, 16 Oct 2018 20:25:07 +0200: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 16 Oct 2018 20:25:07 +0200: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 20:25:07 +0200: nameTDL-_testdocument(back).jpg 
 Tue, 16 Oct 2018 20:25:10 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:25:10 +0200: IB:::TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 20:25:11 +0200: http_retval3200 
 Tue, 16 Oct 2018 20:25:11 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:25:11 +0200: NUM:1 
-Tue, 16 Oct 2018 20:25:11 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Tue, 16 Oct 2018 20:25:11 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Tue, 16 Oct 2018 20:25:11 +0200: nameTDL-_testdocument.kmz 
 Tue, 16 Oct 2018 20:25:11 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:25:11 +0200: IB:::TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 20:25:11 +0200: http_retval3200 
 Tue, 16 Oct 2018 20:25:11 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:25:11 +0200: NUM:1 
-Tue, 16 Oct 2018 20:25:11 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Tue, 16 Oct 2018 20:25:11 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 20:25:11 +0200: nameTDL-_testdocument_rectified.tif 
 Tue, 16 Oct 2018 20:25:14 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:25:14 +0200: IB:::TDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 20:25:15 +0200: http_retval3200 
 Tue, 16 Oct 2018 20:25:15 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:25:15 +0200: NUM:1 
-Tue, 16 Oct 2018 20:25:15 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Tue, 16 Oct 2018 20:25:15 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 20:25:15 +0200: nameTDL-_testdocument(back).kmz 
 Tue, 16 Oct 2018 20:25:18 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:25:18 +0200: IB:::TDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 20:25:18 +0200: http_retval3200 
 Tue, 16 Oct 2018 20:25:18 +0200: ISPUBLISHED?: 
 Tue, 16 Oct 2018 20:25:18 +0200: NUM:1 
-Tue, 16 Oct 2018 20:25:18 +0200: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Tue, 16 Oct 2018 20:25:18 +0200: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 20:25:18 +0200: nameTDL-_testdocument(back)_rectified.tif 
 Tue, 16 Oct 2018 20:25:20 +0200: NUM:2200 
 Tue, 16 Oct 2018 20:25:21 +0200: Document ID: 9760 has been published!
@@ -25522,7 +25522,7 @@ Mon, 05 Nov 2018 19:25:08 +0100:ITEM ID PASSED123: 68a158c7-5e12-4862-872b-77c27
 Mon, 05 Nov 2018 19:25:08 +0100: IB::: 
 Mon, 05 Nov 2018 19:25:08 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 19:25:08 +0100: NUM:1 
-Mon, 05 Nov 2018 19:25:08 +0100: NpathM:/FieldBook/uploads/0005/0005-001.jpg 
+Mon, 05 Nov 2018 19:25:08 +0100: Npath../FieldBook/uploads/0005/0005-001.jpg 
 Mon, 05 Nov 2018 19:25:08 +0100: name 
 Mon, 05 Nov 2018 19:25:08 +0100: NUM:2500 
 Mon, 05 Nov 2018 19:25:08 +0100: Publishing item ID:1
@@ -25547,7 +25547,7 @@ Mon, 05 Nov 2018 19:44:43 +0100:ITEM ID PASSED123: 33
 Mon, 05 Nov 2018 19:44:43 +0100: IB::: 
 Mon, 05 Nov 2018 19:44:43 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 19:44:43 +0100: NUM:1 
-Mon, 05 Nov 2018 19:44:43 +0100: NpathM:/FieldBook/uploads/0005/0005-002.jpg 
+Mon, 05 Nov 2018 19:44:43 +0100: Npath../FieldBook/uploads/0005/0005-002.jpg 
 Mon, 05 Nov 2018 19:44:43 +0100: name 
 Mon, 05 Nov 2018 19:44:45 +0100: NUM:2404 
 Mon, 05 Nov 2018 19:44:45 +0100: Publishing item ID:2
@@ -25566,7 +25566,7 @@ Mon, 05 Nov 2018 19:53:33 +0100:ITEM ID PASSED123: 9e9516d2-140f-4531-a784-0cb04
 Mon, 05 Nov 2018 19:53:33 +0100: IB::: 
 Mon, 05 Nov 2018 19:53:33 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 19:53:33 +0100: NUM:1 
-Mon, 05 Nov 2018 19:53:33 +0100: NpathM:/FieldBook/uploads/0005/0005-001.jpg 
+Mon, 05 Nov 2018 19:53:33 +0100: Npath../FieldBook/uploads/0005/0005-001.jpg 
 Mon, 05 Nov 2018 19:53:33 +0100: name 
 Mon, 05 Nov 2018 19:53:33 +0100: NUM:2500 
 Mon, 05 Nov 2018 19:53:33 +0100: Publishing item ID:1
@@ -25585,7 +25585,7 @@ Mon, 05 Nov 2018 20:11:31 +0100:ITEM ID PASSED123: 9c600aee-6108-4029-b89c-d07c0
 Mon, 05 Nov 2018 20:11:31 +0100: IB::: 
 Mon, 05 Nov 2018 20:11:31 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 20:11:31 +0100: NUM:1 
-Mon, 05 Nov 2018 20:11:31 +0100: NpathM:/FieldBook/uploads/0005/0005-001.jpg 
+Mon, 05 Nov 2018 20:11:31 +0100: Npath../FieldBook/uploads/0005/0005-001.jpg 
 Mon, 05 Nov 2018 20:11:31 +0100: name 
 Mon, 05 Nov 2018 20:11:32 +0100: NUM:2200 
 Mon, 05 Nov 2018 20:11:32 +0100: Publishing item ID:2
@@ -25827,31 +25827,31 @@ Mon, 05 Nov 2018 21:33:01 +0100:ITEM ID PASSED123: ca0fe4c7-43df-4f25-a5be-71114
 Mon, 05 Nov 2018 21:33:01 +0100: IB:::TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 21:33:01 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:33:01 +0100: NUM:1 
-Mon, 05 Nov 2018 21:33:01 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 05 Nov 2018 21:33:01 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 21:33:01 +0100: nameTDL-_testdocument.jpg 
 Mon, 05 Nov 2018 21:33:01 +0100: NUM:2500 
 Mon, 05 Nov 2018 21:33:01 +0100: IB:::TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 21:33:01 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:33:01 +0100: NUM:1 
-Mon, 05 Nov 2018 21:33:01 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Mon, 05 Nov 2018 21:33:01 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 21:33:01 +0100: nameTDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 21:33:05 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:33:05 +0100: IB:::TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 21:33:05 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:33:05 +0100: NUM:1 
-Mon, 05 Nov 2018 21:33:05 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 05 Nov 2018 21:33:05 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 21:33:05 +0100: nameTDL-_testdocument.kmz 
 Mon, 05 Nov 2018 21:33:09 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:33:09 +0100: IB:::TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 21:33:09 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:33:09 +0100: NUM:1 
-Mon, 05 Nov 2018 21:33:09 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 05 Nov 2018 21:33:09 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 21:33:09 +0100: nameTDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 21:33:11 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:33:11 +0100: IB:::TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 21:33:11 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:33:11 +0100: NUM:1 
-Mon, 05 Nov 2018 21:33:11 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Mon, 05 Nov 2018 21:33:11 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 21:33:11 +0100: nameTDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 21:34:33 +0100: bluchermaps is the selected collection.
 Mon, 05 Nov 2018 21:34:33 +0100: Job Started.
@@ -25876,37 +25876,37 @@ Mon, 05 Nov 2018 21:34:43 +0100:ITEM ID PASSED123: 70b04cde-c4d8-460d-b9c7-c22e0
 Mon, 05 Nov 2018 21:34:43 +0100: IB:::TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 21:34:43 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:34:43 +0100: NUM:1 
-Mon, 05 Nov 2018 21:34:43 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 05 Nov 2018 21:34:43 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 21:34:43 +0100: nameTDL-_testdocument.jpg 
 Mon, 05 Nov 2018 21:34:49 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:34:49 +0100: IB:::TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 21:34:49 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:34:49 +0100: NUM:1 
-Mon, 05 Nov 2018 21:34:49 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Mon, 05 Nov 2018 21:34:49 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 21:34:49 +0100: nameTDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 21:34:52 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:34:52 +0100: IB:::TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 21:34:52 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:34:52 +0100: NUM:1 
-Mon, 05 Nov 2018 21:34:52 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 05 Nov 2018 21:34:52 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 21:34:52 +0100: nameTDL-_testdocument.kmz 
 Mon, 05 Nov 2018 21:34:57 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:34:57 +0100: IB:::TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 21:34:57 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:34:57 +0100: NUM:1 
-Mon, 05 Nov 2018 21:34:57 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 05 Nov 2018 21:34:57 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 21:34:57 +0100: nameTDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 21:34:59 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:34:59 +0100: IB:::TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 21:34:59 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:34:59 +0100: NUM:1 
-Mon, 05 Nov 2018 21:34:59 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Mon, 05 Nov 2018 21:34:59 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 21:34:59 +0100: nameTDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 21:35:02 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:35:02 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 21:35:02 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 21:35:02 +0100: NUM:1 
-Mon, 05 Nov 2018 21:35:02 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Mon, 05 Nov 2018 21:35:02 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 21:35:02 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 21:35:04 +0100: NUM:2200 
 Mon, 05 Nov 2018 21:41:05 +0100: blucherfieldbook is the selected collection.
@@ -26012,7 +26012,7 @@ Mon, 05 Nov 2018 22:11:59 +0100:ITEM ID PASSED123: 5a7c43af-b121-4a6c-8b17-eeca6
 Mon, 05 Nov 2018 22:11:59 +0100: IB::: 
 Mon, 05 Nov 2018 22:11:59 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 22:11:59 +0100: NUM:1 
-Mon, 05 Nov 2018 22:11:59 +0100: NpathM:/FieldBook/uploads/ 
+Mon, 05 Nov 2018 22:11:59 +0100: Npath../FieldBook/uploads/ 
 Mon, 05 Nov 2018 22:11:59 +0100: name 
 Mon, 05 Nov 2018 22:11:59 +0100: NUM:2200 
 Mon, 05 Nov 2018 22:17:16 +0100: blucherfieldbook is the selected collection.
@@ -26138,37 +26138,37 @@ Mon, 05 Nov 2018 23:01:59 +0100:ITEM ID PASSED123: 4e229916-20ef-45f7-afe8-b2f75
 Mon, 05 Nov 2018 23:01:59 +0100: IB:::TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:01:59 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:01:59 +0100: NUM:1 
-Mon, 05 Nov 2018 23:01:59 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 05 Nov 2018 23:01:59 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:01:59 +0100: nameTDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:02:05 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:02:05 +0100: IB:::TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:02:05 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:02:05 +0100: NUM:1 
-Mon, 05 Nov 2018 23:02:05 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Mon, 05 Nov 2018 23:02:05 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:02:05 +0100: nameTDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:02:08 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:02:08 +0100: IB:::TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:02:08 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:02:08 +0100: NUM:1 
-Mon, 05 Nov 2018 23:02:08 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 05 Nov 2018 23:02:08 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:02:08 +0100: nameTDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:02:12 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:02:12 +0100: IB:::TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:02:12 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:02:12 +0100: NUM:1 
-Mon, 05 Nov 2018 23:02:12 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 05 Nov 2018 23:02:12 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:02:12 +0100: nameTDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:02:15 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:02:15 +0100: IB:::TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:02:15 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:02:15 +0100: NUM:1 
-Mon, 05 Nov 2018 23:02:15 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Mon, 05 Nov 2018 23:02:15 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:02:15 +0100: nameTDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:02:15 +0100: NUM:2500 
 Mon, 05 Nov 2018 23:02:48 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:02:48 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:02:48 +0100: NUM:1 
-Mon, 05 Nov 2018 23:02:48 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Mon, 05 Nov 2018 23:02:48 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:02:48 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:02:50 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:06:33 +0100: blucherfieldbook is the selected collection.
@@ -26194,37 +26194,37 @@ Mon, 05 Nov 2018 23:06:43 +0100:ITEM ID PASSED123: ec540ee6-c585-46d0-8ad2-7e871
 Mon, 05 Nov 2018 23:06:43 +0100: IB:::TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:06:43 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:06:43 +0100: NUM:1 
-Mon, 05 Nov 2018 23:06:43 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 05 Nov 2018 23:06:43 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:06:43 +0100: nameTDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:06:49 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:06:49 +0100: IB:::TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:06:49 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:06:49 +0100: NUM:1 
-Mon, 05 Nov 2018 23:06:49 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Mon, 05 Nov 2018 23:06:49 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:06:49 +0100: nameTDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:06:53 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:06:53 +0100: IB:::TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:06:53 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:06:53 +0100: NUM:1 
-Mon, 05 Nov 2018 23:06:53 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 05 Nov 2018 23:06:53 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:06:53 +0100: nameTDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:06:57 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:06:57 +0100: IB:::TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:06:57 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:06:57 +0100: NUM:1 
-Mon, 05 Nov 2018 23:06:57 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 05 Nov 2018 23:06:57 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:06:57 +0100: nameTDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:06:59 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:06:59 +0100: IB:::TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:06:59 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:06:59 +0100: NUM:1 
-Mon, 05 Nov 2018 23:06:59 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Mon, 05 Nov 2018 23:06:59 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:06:59 +0100: nameTDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:07:02 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:07:02 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:07:02 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:07:02 +0100: NUM:1 
-Mon, 05 Nov 2018 23:07:02 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Mon, 05 Nov 2018 23:07:02 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:07:02 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:07:05 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:21:56 +0100: blucherfieldbook is the selected collection.
@@ -26255,37 +26255,37 @@ Mon, 05 Nov 2018 23:32:07 +0100:ITEM ID PASSED123: 3d5e0955-292e-46d7-af57-97c0f
 Mon, 05 Nov 2018 23:32:07 +0100: IB:::TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:32:07 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:07 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:07 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 05 Nov 2018 23:32:07 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:32:07 +0100: nameTDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:32:13 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:13 +0100: IB:::TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:32:13 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:13 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:13 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Mon, 05 Nov 2018 23:32:13 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:32:13 +0100: nameTDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:32:13 +0100: NUM:2500 
 Mon, 05 Nov 2018 23:32:13 +0100: IB:::TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:32:13 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:13 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:13 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 05 Nov 2018 23:32:13 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:32:13 +0100: nameTDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:32:18 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:18 +0100: IB:::TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:32:18 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:18 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:18 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 05 Nov 2018 23:32:18 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:32:18 +0100: nameTDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:32:18 +0100: NUM:2500 
 Mon, 05 Nov 2018 23:32:18 +0100: IB:::TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:32:18 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:18 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:18 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Mon, 05 Nov 2018 23:32:18 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:32:18 +0100: nameTDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:32:21 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:21 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:32:21 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:21 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:21 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Mon, 05 Nov 2018 23:32:21 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:32:21 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:32:23 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:23 +0100: Publishing item ID:9760
@@ -26295,40 +26295,40 @@ Mon, 05 Nov 2018 23:32:33 +0100: IB:::TDL-_testdocument.jpg
 Mon, 05 Nov 2018 23:32:33 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:32:33 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:33 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:33 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 05 Nov 2018 23:32:33 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:32:33 +0100: nameTDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:32:39 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:39 +0100: IB:::TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:32:39 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:39 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:39 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Mon, 05 Nov 2018 23:32:39 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:32:39 +0100: nameTDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:32:40 +0100: NUM:2500 
 Mon, 05 Nov 2018 23:32:40 +0100: IB:::TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:32:40 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:32:40 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:40 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:40 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 05 Nov 2018 23:32:40 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:32:40 +0100: nameTDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:32:44 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:44 +0100: IB:::TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:32:44 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:44 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:44 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 05 Nov 2018 23:32:44 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:32:44 +0100: nameTDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:32:47 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:47 +0100: IB:::TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:32:47 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:32:47 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:47 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:47 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Mon, 05 Nov 2018 23:32:47 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:32:47 +0100: nameTDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:32:47 +0100: NUM:2500 
 Mon, 05 Nov 2018 23:32:47 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:32:47 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:32:47 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:47 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:47 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Mon, 05 Nov 2018 23:32:47 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:32:47 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:32:50 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:32:50 +0100: Publishing item ID:9760
@@ -26338,40 +26338,40 @@ Mon, 05 Nov 2018 23:32:59 +0100: IB:::TDL-_testdocument.jpg
 Mon, 05 Nov 2018 23:32:59 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:32:59 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:32:59 +0100: NUM:1 
-Mon, 05 Nov 2018 23:32:59 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Mon, 05 Nov 2018 23:32:59 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:32:59 +0100: nameTDL-_testdocument.jpg 
 Mon, 05 Nov 2018 23:33:05 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:33:05 +0100: IB:::TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:33:05 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:33:05 +0100: NUM:1 
-Mon, 05 Nov 2018 23:33:05 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Mon, 05 Nov 2018 23:33:05 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:33:05 +0100: nameTDL-_testdocument(back).jpg 
 Mon, 05 Nov 2018 23:33:08 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:33:08 +0100: IB:::TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:33:09 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:33:09 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:33:09 +0100: NUM:1 
-Mon, 05 Nov 2018 23:33:09 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Mon, 05 Nov 2018 23:33:09 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:33:09 +0100: nameTDL-_testdocument.kmz 
 Mon, 05 Nov 2018 23:33:13 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:33:13 +0100: IB:::TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:33:13 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:33:13 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:33:13 +0100: NUM:1 
-Mon, 05 Nov 2018 23:33:13 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Mon, 05 Nov 2018 23:33:13 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:33:13 +0100: nameTDL-_testdocument_rectified.tif 
 Mon, 05 Nov 2018 23:33:15 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:33:15 +0100: IB:::TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:33:15 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:33:15 +0100: NUM:1 
-Mon, 05 Nov 2018 23:33:15 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Mon, 05 Nov 2018 23:33:15 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:33:15 +0100: nameTDL-_testdocument(back).kmz 
 Mon, 05 Nov 2018 23:33:19 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:33:19 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:33:19 +0100: http_retval3200 
 Mon, 05 Nov 2018 23:33:19 +0100: ISPUBLISHED?: 
 Mon, 05 Nov 2018 23:33:19 +0100: NUM:1 
-Mon, 05 Nov 2018 23:33:19 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Mon, 05 Nov 2018 23:33:19 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:33:19 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Mon, 05 Nov 2018 23:33:21 +0100: NUM:2200 
 Mon, 05 Nov 2018 23:40:20 +0100: bluchermaps is the selected collection.
@@ -26471,37 +26471,37 @@ Tue, 06 Nov 2018 00:01:18 +0100:ITEM ID PASSED123: 92362545-1be0-4615-a166-3cdd6
 Tue, 06 Nov 2018 00:01:18 +0100: IB:::TDL-_testdocument.jpg 
 Tue, 06 Nov 2018 00:01:18 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:18 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:18 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 06 Nov 2018 00:01:18 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 06 Nov 2018 00:01:18 +0100: nameTDL-_testdocument.jpg 
 Tue, 06 Nov 2018 00:01:24 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:01:24 +0100: IB:::TDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:01:24 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:24 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:24 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 06 Nov 2018 00:01:24 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:01:24 +0100: nameTDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:01:27 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:01:27 +0100: IB:::TDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:01:27 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:27 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:27 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Tue, 06 Nov 2018 00:01:27 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:01:27 +0100: nameTDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:01:32 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:01:32 +0100: IB:::TDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:01:32 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:32 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:32 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Tue, 06 Nov 2018 00:01:32 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:01:32 +0100: nameTDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:01:32 +0100: NUM:2500 
 Tue, 06 Nov 2018 00:01:33 +0100: IB:::TDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:01:33 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:33 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:33 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Tue, 06 Nov 2018 00:01:33 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:01:33 +0100: nameTDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:01:35 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:01:35 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:01:35 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:35 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:35 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Tue, 06 Nov 2018 00:01:35 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:01:35 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:01:37 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:01:38 +0100: Publishing item ID:9760
@@ -26511,41 +26511,41 @@ Tue, 06 Nov 2018 00:01:48 +0100: IB:::TDL-_testdocument.jpg
 Tue, 06 Nov 2018 00:01:48 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:01:48 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:48 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:48 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 06 Nov 2018 00:01:48 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 06 Nov 2018 00:01:48 +0100: nameTDL-_testdocument.jpg 
 Tue, 06 Nov 2018 00:01:54 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:01:54 +0100: IB:::TDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:01:55 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:01:55 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:55 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:55 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 06 Nov 2018 00:01:55 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:01:55 +0100: nameTDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:01:58 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:01:58 +0100: IB:::TDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:01:59 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:01:59 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:59 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:59 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Tue, 06 Nov 2018 00:01:59 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:01:59 +0100: nameTDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:01:59 +0100: NUM:2500 
 Tue, 06 Nov 2018 00:01:59 +0100: IB:::TDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:01:59 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:01:59 +0100: NUM:1 
-Tue, 06 Nov 2018 00:01:59 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Tue, 06 Nov 2018 00:01:59 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:01:59 +0100: nameTDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:02:01 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:01 +0100: IB:::TDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:02:02 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:02:02 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:02 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:02 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Tue, 06 Nov 2018 00:02:02 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:02:02 +0100: nameTDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:02:05 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:05 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:02:05 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:02:05 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:05 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:05 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Tue, 06 Nov 2018 00:02:05 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:02:05 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:02:07 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:07 +0100: Publishing item ID:9760
@@ -26555,41 +26555,41 @@ Tue, 06 Nov 2018 00:02:16 +0100: IB:::TDL-_testdocument.jpg
 Tue, 06 Nov 2018 00:02:17 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:02:17 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:17 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:17 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
+Tue, 06 Nov 2018 00:02:17 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument.jpg 
 Tue, 06 Nov 2018 00:02:17 +0100: nameTDL-_testdocument.jpg 
 Tue, 06 Nov 2018 00:02:22 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:22 +0100: IB:::TDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:02:22 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:02:22 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:22 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:22 +0100: NpathM:/BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
+Tue, 06 Nov 2018 00:02:22 +0100: Npath../BlucherCollection/uploads/TDL/TDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:02:22 +0100: nameTDL-_testdocument(back).jpg 
 Tue, 06 Nov 2018 00:02:26 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:26 +0100: IB:::TDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:02:26 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:26 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:26 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
+Tue, 06 Nov 2018 00:02:26 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:02:26 +0100: nameTDL-_testdocument.kmz 
 Tue, 06 Nov 2018 00:02:30 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:30 +0100: IB:::TDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:02:30 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:02:30 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:30 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:30 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
+Tue, 06 Nov 2018 00:02:30 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:02:30 +0100: nameTDL-_testdocument_rectified.tif 
 Tue, 06 Nov 2018 00:02:33 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:33 +0100: IB:::TDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:02:33 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:02:33 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:33 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:33 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
+Tue, 06 Nov 2018 00:02:33 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:02:33 +0100: nameTDL-_testdocument(back).kmz 
 Tue, 06 Nov 2018 00:02:36 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:02:36 +0100: IB:::TDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:02:36 +0100: http_retval3200 
 Tue, 06 Nov 2018 00:02:36 +0100: ISPUBLISHED?: 
 Tue, 06 Nov 2018 00:02:36 +0100: NUM:1 
-Tue, 06 Nov 2018 00:02:36 +0100: NpathM:/BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
+Tue, 06 Nov 2018 00:02:36 +0100: Npath../BlucherCollection/georec/TDL/TDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:02:36 +0100: nameTDL-_testdocument(back)_rectified.tif 
 Tue, 06 Nov 2018 00:02:38 +0100: NUM:2200 
 Tue, 06 Nov 2018 00:10:47 +0100: blucherfieldbook is the selected collection.

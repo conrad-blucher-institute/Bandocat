@@ -1,5 +1,11 @@
 (function () {
   "use strict";
+
+  if (typeof accessToken === 'undefined') {
+    console.error("Mapbox access token is not defined!");
+    return;
+  }
+
   L.MakiMarkers = {
     // Available Maki Icons
     icons: ["airfield","airport","alcohol-shop","america-football","art-gallery","bakery","bank","bar",
@@ -82,9 +88,9 @@
 
         pin += "+" + options.color;
       }
-
-      options.iconUrl = "" + L.MakiMarkers.apiUrl + pin +  ".png";
-      options.iconRetinaUrl = L.MakiMarkers.apiUrl + pin + "@2x.png";
+      
+      options.iconUrl = "" + L.MakiMarkers.apiUrl + pin +  ".png" + "?access_token=" + accessToken;
+      options.iconRetinaUrl = L.MakiMarkers.apiUrl + pin + "@2x.png" + "?access_token=" + accessToken;
     }
   });
 

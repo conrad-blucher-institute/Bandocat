@@ -193,9 +193,9 @@ $arrayTemplates = $DB->GET_TEMPLATES();
                 default:
                     var parName = dispName.toLowerCase().replace(/\s/g, '');
                     var dbName = parName + "inventory";
-                    var storDir = "M:/" + dispName.replace(/\s/g, '') + "/uploads/";
+                    var storDir = "../../" + dispName.replace(/\s/g, '') + "/uploads/";
                     var thumbDir = "Thumbnails/" + parName + "/";
-                    var georecdir = "M:/" + dispName.replace(/\s/g, '') + "/georec/";
+                    var georecdir = "../../" + dispName.replace(/\s/g, '') + "uploads/georec/";
                     break;
             }
             $("#txtParameterName").val(parName);

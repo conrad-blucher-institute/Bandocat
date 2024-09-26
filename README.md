@@ -24,3 +24,8 @@ Have fun programming! :)
 ___
 ## Point of Contact:
 Son Nguyen - son.nguyen@tamucc.edu
+
+## Issues: 
+    - Mapbox will need to have an account that can be used for the TOKEN to have markers on georectification
+    - Menu/Procedure&SupportSoftware restricted 
+    -

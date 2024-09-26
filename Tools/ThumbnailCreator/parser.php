@@ -20,7 +20,7 @@ if(isset($_FILES['file_array']))
 	$size_array = $_FILES['file_array']['size'];
 	$error_array = $_FILES['file_array']['error'];
 
-	$pathThumbnail = "C:/uploads/thumbnails/";
+	$pathThumbnail = "../../Thumbnails/";
 	//THUMBNAIL DIRECTORY CHECK
 	if(!(is_dir($pathThumbnail)))
 	{
@@ -48,7 +48,7 @@ if(isset($_FILES['file_array']))
 			$exp = explode ("-", $fileName1);
 			$name = $exp[0]; //to create new folder
 
-			$path = "C:/uploads/" . $name . "/"; //NEW PATH****
+			$path = "../../Thumbnails/" . $name . "/"; //NEW PATH****
 			$img1Path = $path . $fileName1; //full-path
 
 			//for thumbnails

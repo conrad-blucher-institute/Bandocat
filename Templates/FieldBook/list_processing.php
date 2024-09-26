@@ -47,12 +47,12 @@ $primaryKey = 'documentID';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(
-    array( 'db' => 'documentID', 'dt' => 0),
-    array( 'db' => 'booktitle', 'dt' => 1),
-    array( 'db' => 'libraryindex', 'dt' => 2),
-    array( 'db' => 'jobtitle', 'dt' => 3),
-    array( 'db' => 'needsinput', 'dt' => 4 ),
-    array( 'db' => 'needsreview',  'dt' => 5 )
+    array( 'db' => 'documentID', 'dt' => 0, 'field' => 'documentID'),
+    array( 'db' => 'booktitle', 'dt' => 1, 'field' => 'booktitle'),
+    array( 'db' => 'libraryindex', 'dt' => 2, 'field' => 'libraryindex'),
+    array( 'db' => 'jobtitle', 'dt' => 3, 'field' => 'jobtitle'),
+    array( 'db' => 'needsinput', 'dt' => 4, 'field' => 'needsinput'),
+    array( 'db' => 'needsreview',  'dt' => 5, 'field' => 'needsreview')
 );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -66,5 +66,5 @@ if($action == "catalog")
 else $where = "`document`.`needsinput` = 0"; //review
 
 echo json_encode(
-    SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, $where )
+    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, null, $where )
 );

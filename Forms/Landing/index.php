@@ -5,7 +5,7 @@ require '../../Library/AnnouncementDBHelper.php';
 $session = new SessionManager();
 $announcement = new AnnouncementDBHelper();
 $announcementData = $announcement->GET_ANNOUNCEMENT_DATA();
-$announcementLenght = count($announcementData);
+$announcementLength = count($announcementData);
 $announcementJSON = json_encode($announcementData);
 $userID = $session->getUserID();
 $admin = $session->isAdmin();
