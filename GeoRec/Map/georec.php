@@ -14,6 +14,10 @@ require_once('../../Library/DBHelper.php');
 require_once('../../Library/MapDBHelper.php');
 $DB = new MapDBHelper();
 
+
+// Get the access token from the .env file
+$accessToken = $_ENV['MAPBOX_ACCESS_TOKEN'];
+
 //get collection information from bandocatdb table (to get DisplayName mostly)
 $collection = $DB->SP_GET_COLLECTION_CONFIG($_GET['col']);
 
@@ -28,6 +32,10 @@ $georec_status = $DB->DOCUMENT_GEORECSTATUS_SELECT($_GET['docID'],$isBack);
 ?>
 <!DOCTYPE html>
 <html>
+<script>
+    // Pass the PHP variable to JavaScript
+    var accessToken = "<?php echo $accessToken; ?>";
+</script>
 <head>
     <title><?php echo $collection['DisplayName']; ?> Georectification</title>
     <meta charset="utf-8"/>

@@ -1,1 +1,1 @@
-php C:\xampp\htdocs\BandoCat\TDLPublish\Cron\cron.php
+php ..\..\xampp\htdocs\BandoCat\TDLPublish\Cron\cron.php

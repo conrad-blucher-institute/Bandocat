@@ -34,7 +34,7 @@ foreach($_FILES as $f)
         $fullpath = $config['StorageDir'] . $folder . "/" . $filename;
         //check if the directory exists
         if (!is_dir($config['StorageDir'] . $folder))
-            mkdir($config['StorageDir'] . $folder, 0777);
+            mkdir($config['StorageDir'] . $folder, 0777, true);
         //check if the file already exists
         if(file_exists($fullpath))
         {
@@ -50,11 +50,11 @@ foreach($_FILES as $f)
         $thumbFilenamepath = "../../" . $config['ThumbnailDir'];
         //check if thumbnail dir exists
         if (!is_dir($thumbFilenamepath))
-            mkdir($thumbFilenamepath, 0777);
+            mkdir($thumbFilenamepath, 0777, true);
         //remove thumbnail if it exists
         if (file_exists($thumbFilenamepath . $thumbnail))
         {
-            chmod($thumbFilenamepath . $thumbnail, 0755); //Change the file permissions if allowed
+            chmod($thumbFilenamepath . $thumbnail, 0755, true); //Change the file permissions if allowed
             unlink($thumbFilenamepath . $thumbnail); //remove the file
         }
         //executes a php function to convert the image supplied to the supplied jpg

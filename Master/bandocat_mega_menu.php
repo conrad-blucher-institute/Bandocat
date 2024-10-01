@@ -303,7 +303,7 @@ $errorTickets .= $tempt;
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="User Settings">
                     <a class="dropdown-item" href="../../Forms/AccountSettings/">Account Settings</a>
-                    <a class="dropdown-item" href="../../../Bandocat/Forms/Logout/">Logout as <?php echo $session->getUsername(); ?></a>
+                    <a class="dropdown-item" href="../../Forms/Logout/">Logout as <?php echo $session->getUsername(); ?></a>
                 </div>
             </li>
         </ul>

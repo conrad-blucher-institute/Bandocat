@@ -1,5 +1,6 @@
 # Store thumbnails file after uploading files
 Thumbnails/
+Uploads/
 .idea/
 # Store persistent db volume data for persistence
 db
@@ -10,4 +11,13 @@ init_db
 # Log
 debug.log
 
+/Collections/
 
+/vendor/
+
+php.ini
+
+ErrorLog
+
+**/Temp/
+**/Tiles/

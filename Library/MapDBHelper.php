@@ -380,7 +380,7 @@ class MapDBHelper extends DBHelper
                                              $iNeedsReview, $iComments, $iCustomerID, $iStartDate,
                                              $iEndDate,$iJobNumber, $iFieldBookNumber, $iFieldBookPage, $iReadability,
                                              $iRectifiability, $iCompanyID,$iType, $iMedium,
-                                             $iAuthorID,$iFileNamePath,$iFileNameBackPath,$iHasScaleBar)
+                                             $iAuthorID,$iFileNamePath,$iFileNameBackPath)
     {
         $dbname = $this->SP_GET_COLLECTION_CONFIG(htmlspecialchars($collection))['DbName'];
         if ($dbname != null && $dbname != "") {
@@ -388,7 +388,7 @@ class MapDBHelper extends DBHelper
             /* PREPARE STATEMENT */
             /* Prepares the SQL query, and returns a statement handle to be used for further operations on the statement*/
             // sql statement CALL calls the function pointed to in the db
-            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_WITH_JOBNUMBER_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $call = $this->getConn()->prepare("CALL SP_TEMPLATE_MAP_DOCUMENT_WITH_JOBNUMBER_INSERT(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             if (!$call)
                 trigger_error("SQL failed: " . $this->getConn()->errorCode() . " - " . $this->conn->errorInfo()[0]);
             //Binds all parameters to the prepared SQL statement
@@ -420,7 +420,7 @@ class MapDBHelper extends DBHelper
             $call->bindParam(26, $iAuthorID, PDO::PARAM_INT);
             $call->bindParam(27, $iFileNamePath, PDO::PARAM_STR);
             $call->bindParam(28, $iFileNameBackPath, PDO::PARAM_STR);
-            $call->bindParam(29, $iHasScaleBar, PDO::PARAM_INT);
+            
 
             /* EXECUTE STATEMENT */
             $ret = $call->execute();

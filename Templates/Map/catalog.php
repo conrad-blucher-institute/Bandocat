@@ -585,7 +585,7 @@ $userRole = $session->getRole();
             $(this).next().text(file);
         }
 
-        var filename = $('#fileUpload').val().replace(/C:\\fakepath\\/i, '');
+        var filename = $('#fileUpload').val().replace(/..\\fakepath\\/i, '');
         filename = filename.replace(/\.tif/, '');
         $('#txtLibraryIndex').val(filename);
     });

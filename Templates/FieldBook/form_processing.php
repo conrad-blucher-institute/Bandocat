@@ -60,7 +60,7 @@ else if($action == "delete")
     //store the filenamepath into frontscanpath
     $frontScanPath = $config['StorageDir'].$info['FileNamePath'];
     //store the directory
-    $directory = $_SERVER['DOCUMENT_ROOT']."/BandoCat";
+    $directory = $_SERVER['DOCUMENT_ROOT']."../../";
     //store the thumbnailpath
     $frontThumbnailPath = "../../" . $config['ThumbnailDir'].$info['Thumbnail'];
     //call the delete document function passing in the collection, and the documentId

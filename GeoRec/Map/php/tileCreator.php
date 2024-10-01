@@ -17,11 +17,11 @@ $document = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($_POST['collection'],$_POST['do
 	{
 		case "front":
 			$image = $document['FileName'];
-			$imagepath = $collection['StorageDir'] . $document['FileNamePath'];
+			$imagepath ='../' . $collection['StorageDir'] . $document['FileNamePath'];
 			break;
 		case "back":
 			$image = $document['FileNameBack'];
-			$imagepath = $collection['StorageDir'] . $document['FileNameBackPath'];
+			$imagepath = '../' . $collection['StorageDir'] . $document['FileNameBackPath'];
 			break;
 		default: // this case should not happen
 			$image = "";
@@ -79,7 +79,7 @@ $imageInfo = array(
 	//compute and run shell command to create tiles
 	$zoom = log(max($imageInfo['width'], $imageInfo['height'])/256, 2);
 	$zoom = ceil($zoom);
-	$command = "python ../ExtLibrary/GDAL/gdal2tiles-multiprocess.py -l -p raster -z 0-" . $zoom . " -w none -e " . $imagepath . " ../Temp/Tiles/". $imageInfo['tempSubDirectory'];
+	$command = "python3 ../../../GeoRec/Map/ExtLibrary/GDAL/gdal2tiles-multiprocess.py -l -p raster -z 0-" . $zoom . " -w none -e " . $imagepath . " ../Temp/Tiles/". $imageInfo['tempSubDirectory'];
 	exec($command,$output,$ret);
 	//echo $command . "<br>";
 	//print_r(array($output,$ret)); //use this to debug $command

@@ -22,24 +22,22 @@ $DB = new MapDBHelper();
 	$collection_info = $DB->SP_GET_COLLECTION_CONFIG($imageInfo['collection']);
 	//get information from a map in document table and store them in array $document
 	$document = $DB->SP_TEMPLATE_MAP_DOCUMENT_SELECT($imageInfo['collection'],$imageInfo['docID']);
-
+	
 	//Specify the input and ouput Path for translated image on temporary workspace
 	//type == front
 	if($imageInfo['type'] == "front") {
-
-		$inputTranslatePath = $collection_info['StorageDir'] . $document['FileNamePath'];
-
+		$inputTranslatePath = '../' . $collection_info['StorageDir'] . $document['FileNamePath'];
         $outputTranslatePath = "../Temp/translated_" . $document['FileName'];
     }
 	else //type == back
     {
-		$inputTranslatePath = $collection_info['StorageDir'] . $document['FileNameBackPath'];
+		$inputTranslatePath = '../' . $collection_info['StorageDir'] . $document['FileNameBackPath'];
         $outputTranslatePath = "../Temp/translated_" . $document['FileNameBack'];
     }
     //generate shell script for translate and warp
     $GeoTIFFsPath = "../Temp/GeoTIFFs/" . $imageInfo['geoTIFFName'];
     
-	$command = $script->translate . " " . $inputTranslatePath . " " . $outputTranslatePath ; //translate script
+	$command = $script->translate . " -b 1 -b 2 -b 3 " . $inputTranslatePath . " " . $outputTranslatePath ; //translate script
 	$command2 = $script -> warp . " " . $outputTranslatePath . " " . $GeoTIFFsPath ; //warp script
 
 	//run translation script on CLI
@@ -71,22 +69,24 @@ $DB = new MapDBHelper();
         return;
     }
     //specify full directory of georec file ot use in CLI
-	$geoRec_fulldir = $collection_info['GeoRecDir'] . $imageInfo['subDirectory'];
+	$geoRec_fulldir = '../' . $collection_info['GeoRecDir'] . $imageInfo['subDirectory'];
 
-	//check and create GeoRecDir if needed
-	$cmd_georecdir = 'if not exist "' . $collection_info['GeoRecDir'] . '" mkdir "' . $collection_info['GeoRecDir'] . '"';
-	exec($cmd_georecdir,$retcode);
+	// Check and create GeoRecDir if needed
+	$cmd_georecdir = 'mkdir -p "' . $collection_info['GeoRecDir'] . '"';
+	exec($cmd_georecdir, $retcode);
 
-	//create subfolder;
-	$cmd_mkdir = 'if not exist "' . $geoRec_fulldir  . '" mkdir  "' . $geoRec_fulldir .  '"';
-	exec($cmd_mkdir,$output,$code);
-	//move rectified TIF to GeoRecDir/DrawerName;
-	$cmd_movetif =  'cd "../Temp/GeoTIFFs/" & move /Y "' . $imageInfo['geoTIFFName'] . '" "' . $geoRec_fulldir . '/"';
-	exec($cmd_movetif,$output2,$code2);
-	//print_r($output);
-	//move KMZ to GeoRecDir/DrawerName
-	$cmd_moveKMZ = 'cd "../Temp/GeoTIFFs/" & move /Y "' . $imageInfo['KMZname'] . '" "' . $geoRec_fulldir . '/"';
-	exec($cmd_moveKMZ,$output3,$code3);
+	// Create subfolder
+	$cmd_mkdir = 'mkdir -p "' . $geoRec_fulldir . '"';
+	exec($cmd_mkdir, $output, $code);
+
+	// Move rectified TIF to GeoRecDir/DrawerName
+	$cmd_movetif = 'mv -f "../Temp/GeoTIFFs/' . $imageInfo['geoTIFFName'] . '" "' . $geoRec_fulldir . '/"';
+	exec($cmd_movetif, $output2, $code2);
+
+// Move KMZ to GeoRecDir/DrawerName
+	$cmd_moveKMZ = 'mv -f "../Temp/GeoTIFFs/' . $imageInfo['KMZname'] . '" "' . $geoRec_fulldir . '/"';
+	exec($cmd_moveKMZ, $output3, $code3);
+
 	//print_r($output2);
 	//get points
 	$error_flag = false;

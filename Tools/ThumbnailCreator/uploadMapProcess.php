@@ -36,7 +36,7 @@
                     $exp = explode ("-", $fileName1);
                     $name = $exp[0];
 
-                    if (file_exists("C:/uploads/" . $name . "/" . $fileName1))
+                    if (file_exists("../../uploads/" . $name . "/" . $fileName1))
                     {
                         ?>
                         <div class = "error message"><p><?php
@@ -47,7 +47,7 @@
                     }               
                     else
                     {
-                        $path = "C:/uploads/" . $name . "/";
+                        $path = "../../uploads/" . $name . "/";
                         if(is_dir($path))                       //check if directory uploads/$name exists
                         {
                             
@@ -56,7 +56,7 @@
                             $infoFile1 = pathinfo($fileName1);
                             $nameFile1NoExt = basename($fileName1, '.'.$infoFile1['extension']);
    
-                            $pathThumbNail = "C:/uploads/thumbnails/";
+                            $pathThumbNail = "../../uploads/thumbnails/";
                             
                             if(is_dir($pathThumbNail))          //check if directory thumbnails exists
                             {
@@ -118,7 +118,7 @@
                                 $nameFile1NoExt = basename($fileName1, '.'.$infoFile1['extension']);
 
                                 
-                                $pathThumbNail = "C:/uploads/thumbnails/";
+                                $pathThumbNail = "../../uploads/thumbnails/";
                 
 
                                 if(is_dir($pathThumbNail))          //check if directory thumbnails exists
@@ -226,7 +226,7 @@
                     $exp = explode ("-", $fileName1);
                     $name = $exp[0];
 
-                    if (file_exists("C:/uploads/" . $name . "/" . $fileName1))
+                    if (file_exists("../../uploads/" . $name . "/" . $fileName1))
                     {
                     ?>
                         <div class = "error message">
@@ -238,7 +238,7 @@
                     }
                     else
                     {   
-                        $path = "C:/uploads/" . $name . "/";
+                        $path = "../../uploads/" . $name . "/";
                         if(is_dir($path))                           //check if directory uploads/$name exists
                         {
                             
@@ -248,7 +248,7 @@
                             $infoFile1 = pathinfo($fileName1);
                             $nameFile1NoExt = basename($fileName1, '.'.$infoFile1['extension']);
                             
-                            $pathThumbNail = "C:/uploads/thumbnails/";
+                            $pathThumbNail = "../../uploads/thumbnails/";
                             
                             if(is_dir($pathThumbNail))          //check if directory thumbnails exists
                             {               
@@ -318,7 +318,7 @@
                                 $infoFile1 = pathinfo($fileName1);
                                 $nameFile1NoExt = basename($fileName1, '.'.$infoFile1['extension']);
 
-                                $pathThumbNail = "C:/uploads/thumbnails/";
+                                $pathThumbNail = "../../uploads/thumbnails/";
 
                                 if(is_dir($pathThumbNail))          //check if directory thumbnails exists
                                 {                           
