@@ -1,6 +1,7 @@
 # Store thumbnails file after uploading files
 Thumbnails/
 Uploads/
+**/Uploads/
 .idea/
 # Store persistent db volume data for persistence
 db

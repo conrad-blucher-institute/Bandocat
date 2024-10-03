@@ -2,6 +2,8 @@ services:
   bandocat:
     build:
       dockerfile: Dockerfile.frontend
+      args:
+        HOST_USERNAME: ${HOST_USERNAME}
     image: bandocat
     container_name: bandocat
     env_file: .env

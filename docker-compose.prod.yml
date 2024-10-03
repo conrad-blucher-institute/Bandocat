@@ -1,0 +1,58 @@
+services:
+  bandocat:
+    build:
+      dockerfile: Dockerfile.frontend
+      args:
+        HOST_USERNAME: ${HOST_USERNAME}
+    image: bandocat
+    container_name: bandocat
+    env_file: .env
+    ports:
+      - '${HOST_PORT_BANDOCAT_PHP:-80}:80'
+    environment:
+      MYSQL_USER: 'bandocat_user'
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      HOST_NAME: ${HOST_NAME}
+      HOST_ABS_PATH_STORAGE: ${HOST_ABS_PATH_STORAGE}
+      HOST_ABS_PATH_THUMBNAILS: ${HOST_ABS_PATH_THUMBNAILS}
+    networks:
+      - bandonet
+    volumes:
+      - ./:/var/www/html/ # Don't need to mount source code in prod
+      - ${HOST_ABS_PATH_STORAGE:-./Uploads}:/var/www/html/Uploads/ # persist storage data
+      - ${HOST_ABS_PATH_THUMBNAILS:-./Thumbnails}:/var/www/html/Thumbnails/ # persist thumbnails data
+      - ./ErrorLog/:/var/www/html/ErrorLog/ # persist error log
+  db: # DO NOT CHANGE THIS SERVICE NAME, will affect connection from front-end (DBHelper and PHPMyAdmin)
+    image: mariadb:11.4.3
+    container_name: bandocatdb
+    env_file: .env
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: 'bandocat_user' # make this static to simplify the connection
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    networks:
+      - bandonet
+    volumes:
+      - ./db/:/var/lib/mysql/ # persist data
+      - ./init_db/:/docker-entrypoint-initdb.d # initialize db (first time only)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      UPLOAD_LIMIT: 100M
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - '${HOST_PORT_BANDOCAT_PHPMYADMIN:-8081}:80'
+    networks:
+      - bandonet
+networks:
+  bandonet:
+    driver: bridge

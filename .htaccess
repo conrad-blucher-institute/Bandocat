@@ -1,0 +1,12 @@
+<FilesMatch "^\.env$">
+    <If "%{HTTP_USER_AGENT} != ''">
+        Require all denied
+    </If>
+</FilesMatch>
+
+# Restrict access for .gitignore, .dockerignore, dev directory
+<Files ~ "^(\.gitignore|\.dockerignore|dev)">
+    <If "%{HTTP_USER_AGENT} != ''">
+        Require all denied
+    </If>
+</Files>
