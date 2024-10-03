@@ -9,6 +9,7 @@ services:
     env_file: .env
     ports:
       - '${HOST_PORT_BANDOCAT_PHP:-80}:80'
+    restart: always
     environment:
       MYSQL_USER: 'bandocat_user'
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
