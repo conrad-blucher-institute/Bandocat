@@ -37,19 +37,36 @@ if(strchr($image, ".tif") == ".tif")
 if (strchr($image, ".tiff") == ".tiff")
     $tempSubDir = str_replace(".tiff", "", $image);
 
+	
+// Define the permissions
+$permissions = 0755;
 
-	//create Temp folder if needed (to store tiles temporarily)
-	if(!is_dir("../Temp"))
-    	mkdir("../Temp");
-//create Tiles folder in Temp if needed (to store tiles temporarily)
-	if(!is_dir("../Temp/Tiles"))
-		mkdir("../Temp/Tiles");
-//create GeoTiffs folder in Temp if needed (to temporarily store GeoTIFFS for later user)
-	if(!is_dir("../Temp/GeoTIFFs"))
-		mkdir("../Temp/GeoTIFFs");
-	//create sub directory inside Temp folder
-	if(!is_dir("../Temp/Tiles/".$tempSubDir))
-		mkdir("../Temp/Tiles/".$tempSubDir);
+// Create Temp folder if needed (to store tiles temporarily)
+if (!is_dir("../Temp")) {
+    if (!mkdir("../Temp", $permissions, true)) {
+        die("Failed to create directory: ../Temp");
+    }
+}
+
+// Create Tiles folder in Temp if needed (to store tiles temporarily)
+if (!is_dir("../Temp/Tiles")) {
+    if (!mkdir("../Temp/Tiles", $permissions, true)) {
+        die("Failed to create directory: ../Temp/Tiles");
+    }
+}
+
+// Create GeoTiffs folder in Temp if needed (to temporarily store GeoTIFFS for later use)
+if (!is_dir("../Temp/GeoTIFFs")) {
+    if (!mkdir("../Temp/GeoTIFFs", $permissions, true)) {
+        die("Failed to create directory: ../Temp/GeoTIFFs");
+    }
+}
+
+// Create sub directory inside Temp folder
+if (!is_dir("../Temp/Tiles/" . $tempSubDir)) {
+    if (!mkdir("../Temp/Tiles/" . $tempSubDir, $permissions, true)) {
+        die("Failed to create directory: ../Temp/Tiles/" . $tempSubDir);
+    }
 
 	//shell command that return width and height of the image
 	$cmd_imagesize = 'identify -format "%w,%h" "' . $imagepath . '"';
