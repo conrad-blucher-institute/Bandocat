@@ -1,7 +1,7 @@
 services:
   bandocat:
     build:
-      dockerfile: Dockerfile.frontend
+      dockerfile: Dockerfile.prod.frontend
       args:
         HOST_USERNAME: ${HOST_USERNAME}
     image: bandocat
@@ -19,7 +19,6 @@ services:
     networks:
       - bandonet
     volumes:
-      - ./:/var/www/html/ # Don't need to mount source code in prod
       - ${HOST_ABS_PATH_STORAGE:-./Uploads}:/var/www/html/Uploads/ # persist storage data
       - ${HOST_ABS_PATH_THUMBNAILS:-./Thumbnails}:/var/www/html/Thumbnails/ # persist thumbnails data
       - ./ErrorLog/:/var/www/html/ErrorLog/ # persist error log
