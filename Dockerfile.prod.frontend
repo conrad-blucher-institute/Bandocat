@@ -46,6 +46,9 @@ RUN chown -R "$HOST_USERNAME":www-data /var/www/html
 # Switch to the new user
 USER "$HOST_USERNAME"
 
+# Copy the application code
+COPY . /var/www/html
+
 # Expose the port the service runs on
 EXPOSE 80
 
