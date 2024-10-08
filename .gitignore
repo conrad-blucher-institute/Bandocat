@@ -20,5 +20,5 @@ php.ini
 
 ErrorLog
 
-**/Temp/
-**/Tiles/
+**/Temp/*
+**/Tiles/*
