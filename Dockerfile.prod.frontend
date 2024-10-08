@@ -30,6 +30,9 @@ COPY php.ini.dist /usr/local/etc/php/php.ini
 # Set up Python path for Python 3
 ENV PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python3/site-packages"
 
+# Copy the application code
+COPY . /var/www/html
+
 # Accept build argument for user name
 ARG HOST_USERNAME
 
@@ -45,9 +48,6 @@ RUN chown -R "$HOST_USERNAME":www-data /var/www/html
 
 # Switch to the new user
 USER "$HOST_USERNAME"
-
-# Copy the application code
-COPY . /var/www/html
 
 # Expose the port the service runs on
 EXPOSE 80
