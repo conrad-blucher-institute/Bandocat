@@ -54,7 +54,7 @@ register_long_arrays=Off
 magic_quotes_gpc=Off
 magic_quotes_runtime=Off
 magic_quotes_sybase=Off
-;extension=php_openssl.dll
+extension=php_openssl.dll
 ;extension=php_ftp.dll
 
 [MySQLi]

@@ -37,23 +37,19 @@ if(strchr($image, ".tif") == ".tif")
 if (strchr($image, ".tiff") == ".tiff")
     $tempSubDir = str_replace(".tiff", "", $image);
 
+	
+// Define the permissions
+$permissions = 0755;
 
-	//create Temp folder if needed (to store tiles temporarily)
-	if(!is_dir("../Temp"))
-    	mkdir("../Temp");
-//create Tiles folder in Temp if needed (to store tiles temporarily)
-	if(!is_dir("../Temp/Tiles"))
-		mkdir("../Temp/Tiles");
-//create GeoTiffs folder in Temp if needed (to temporarily store GeoTIFFS for later user)
-	if(!is_dir("../Temp/GeoTIFFs"))
-		mkdir("../Temp/GeoTIFFs");
-	//create sub directory inside Temp folder
-	if(!is_dir("../Temp/Tiles/".$tempSubDir))
-		mkdir("../Temp/Tiles/".$tempSubDir);
 
-	//shell command that return width and height of the image
-	$cmd_imagesize = 'identify -format "%w,%h" "' . $imagepath . '"';
-	exec($cmd_imagesize,$dimensions_output);
+// Create sub directory inside Temp folder
+if (!is_dir("../Temp/Tiles/" . $tempSubDir)) {
+    $output = mkdir("../Temp/Tiles/" . $tempSubDir, $permissions, true);
+}
+
+//shell command that return width and height of the image
+$cmd_imagesize = 'identify -format "%w,%h" "' . $imagepath . '"';
+exec($cmd_imagesize,$dimensions_output);
 
 //Conditional statement that replacess .tif or .tiff extension from the image info
 if(strchr($image, ".tif") == ".tif")
@@ -81,6 +77,9 @@ $imageInfo = array(
 	$zoom = ceil($zoom);
 	$command = "python3 ../../../GeoRec/Map/ExtLibrary/GDAL/gdal2tiles-multiprocess.py -l -p raster -z 0-" . $zoom . " -w none -e " . $imagepath . " ../Temp/Tiles/". $imageInfo['tempSubDirectory'];
 	exec($command,$output,$ret);
+	if ($ret != 0) {
+            echo "Python script failed with status $ret\n";
+	}
 	//echo $command . "<br>";
 	//print_r(array($output,$ret)); //use this to debug $command
 //return image info array

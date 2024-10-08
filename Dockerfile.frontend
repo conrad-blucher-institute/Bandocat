@@ -29,3 +29,25 @@ COPY php.ini.dist /usr/local/etc/php/php.ini
 
 # Set up Python path for Python 3
 ENV PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python3/site-packages"
+
+# Accept build argument for user name
+ARG HOST_USERNAME
+
+# Create a new user and group
+RUN groupadd -r docker && useradd -r -g docker "$HOST_USERNAME"
+
+# Add the user to the www-data group
+RUN usermod -aG www-data "$HOST_USERNAME"
+
+# Set the appropriate permissions (if needed)
+# Example: Change ownership of the web root directory
+RUN chown -R "$HOST_USERNAME":www-data /var/www/html
+
+# Switch to the new user
+USER "$HOST_USERNAME"
+
+# Expose the port the service runs on
+EXPOSE 80
+
+# Start the Apache server
+CMD ["apache2-foreground"]
