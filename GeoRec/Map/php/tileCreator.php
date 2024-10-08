@@ -75,7 +75,7 @@ $imageInfo = array(
 	//compute and run shell command to create tiles
 	$zoom = log(max($imageInfo['width'], $imageInfo['height'])/256, 2);
 	$zoom = ceil($zoom);
-	$command = "python3 ../../../GeoRec/Map/ExtLibrary/GDAL/gdal2tiles-multiprocess.py -l -p raster -z 0-" . $zoom . " -w none -e " . $imagepath . " ../../Temp/Tiles/". $imageInfo['tempSubDirectory'];
+	$command = "python3 ../../../GeoRec/Map/ExtLibrary/GDAL/gdal2tiles-multiprocess.py -l -p raster -z 0-" . $zoom . " -w none -e " . $imagepath . " ../Temp/Tiles/". $imageInfo['tempSubDirectory'];
 	exec($command,$output,$ret);
 	if ($ret != 0) {
             echo "Python script failed with status $ret\n";
